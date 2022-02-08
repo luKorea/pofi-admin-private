@@ -1,3 +1,11 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:45
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-08 17:06:57
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/components/nav-header/src/nav-header.vue
+-->
 <template>
   <div class="nav-header">
     <i
@@ -6,7 +14,8 @@
       @click="handleFoldClick"
     ></i>
     <div class="content">
-      <hy-breadcrumb :breadcrumbs="breadcrumbs" />
+      <div>Pofi Create 后台管理系统 · 生产</div>
+      <!-- <hy-breadcrumb :breadcrumbs="breadcrumbs" /> -->
       <user-info />
     </div>
   </div>
@@ -15,7 +24,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
 import UserInfo from './user-info.vue'
-import HyBreadcrumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
+// import HyBreadcrumb, { IBreadcrumb } from '@/base-ui/breadcrumb'
 
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router'
@@ -23,8 +32,8 @@ import { pathMapBreadcrumbs } from '@/utils/map-menus'
 
 export default defineComponent({
   components: {
-    UserInfo,
-    HyBreadcrumb
+    UserInfo
+    // HyBreadcrumb
   },
   emits: ['foldChange'],
   setup(props, { emit }) {

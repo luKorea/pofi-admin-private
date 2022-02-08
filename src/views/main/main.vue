@@ -75,6 +75,8 @@ export default defineComponent({
 
 .el-header {
   height: 48px !important;
+  background: linear-gradient(90deg, #a9c9ff, #ffbbec);
+  color: #fff;
 }
 
 .el-aside {
