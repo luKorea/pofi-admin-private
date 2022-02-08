@@ -78,6 +78,7 @@ export default defineComponent({
     // event handle
     const handleMenuItemClick = (item: any) => {
       console.log('--------')
+      store.dispatch('addTags', item)
       router.push({
         path: item.url ?? '/not-found'
       })
