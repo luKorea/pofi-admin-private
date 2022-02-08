@@ -14,6 +14,7 @@
       style="width: 100%"
       @selection-change="handleSelectionChange"
       v-bind="childrenProps"
+      row-key="id"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -56,7 +57,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+import SortTable from 'sortablejs'
 
 export default defineComponent({
   props: {
@@ -95,10 +97,33 @@ export default defineComponent({
     showFooter: {
       type: Boolean,
       default: true
+    },
+    // 控制表格是否可以拖动
+    drawTable: {
+      type: Boolean,
+      default: true
     }
   },
-  emits: ['selectionChange', 'update:page'],
+  emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
+    onMounted(() => {
+      if (props.drawTable) {
+        handleSortTable()
+      }
+    })
+    // TODO 表格拖动
+    const handleSortTable = () => {
+      const tableSort = document.getElementsByTagName('tbody')[0] as HTMLElement
+      new SortTable(tableSort, {
+        animation: 150,
+        onEnd(evt: any) {
+          emit('drawTable', {
+            oldIndex: evt.oldIndex,
+            newIndex: evt.newIndex
+          })
+        }
+      })
+    }
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }

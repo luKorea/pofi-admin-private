@@ -5,6 +5,7 @@
       :listCount="dataCount"
       v-bind="contentTableConfig"
       v-model:page="pageInfo"
+      @drawTable="drawTable"
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
@@ -94,6 +95,21 @@ export default defineComponent({
   emits: ['newBtnClick', 'editBtnClick'],
   setup(props, { emit }) {
     const store = useStore()
+    // TODO 处理用户拖动表格后更新数据
+    const drawTable = (propsIndex: any) => {
+      console.log(propsIndex)
+      const cloneTableData = JSON.stringify(dataList.value)
+      const data = JSON.parse(cloneTableData)
+      const currentRow = data.splice(propsIndex.oldIndex, 1)[0]
+      data.splice(propsIndex.newIndex, 0, currentRow) // 新数组重新排序, 改变值无需用到
+      currentRow['sortIndex'] = propsIndex.newIndex + 1 // 根据用户拖动到的下标改变该行的位置并发送给后台
+      console.log(
+        currentRow,
+        '当前行',
+        propsIndex.newIndex,
+        '当前行移动到的位置'
+      )
+    }
 
     // 0.获取操作的权限
     const isCreate = usePermission(props.pageName, 'create')
@@ -154,6 +170,7 @@ export default defineComponent({
     }
 
     return {
+      drawTable,
       dataList,
       getPageData,
       dataCount,
