@@ -1,9 +1,17 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:45
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-08 16:54:22
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
+-->
 <template>
   <div class="page-search">
     <hy-form v-bind="searchFormConfig" v-model="formData">
-      <template #header>
+      <!-- <template #header>
         <h1 class="header">高级检索</h1>
-      </template>
+      </template> -->
       <template #footer>
         <div class="handle-btns">
           <el-button icon="el-icon-refresh" @click="handleResetClick"
@@ -70,11 +78,17 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.page-search {
+  padding: 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
+}
 .header {
   color: red;
 }
 .handle-btns {
-  text-align: right;
-  padding: 0 50px 20px 0;
+  display: flex;
+  justify-content: flex-end;
+  /* text-align: right;
+  padding: 0 50px 20px 0; */
 }
 </style>

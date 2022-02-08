@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 10:18:11
+ * @LastEditTime: 2022-02-08 16:47:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/system/user/config/modal.config.ts
  */
@@ -10,6 +10,60 @@ import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
   formItems: [
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
+    {
+      field: 'name',
+      type: 'input',
+      label: '用户名',
+      placeholder: '请输入用户名'
+    },
     {
       field: 'name',
       type: 'input',

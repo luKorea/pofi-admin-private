@@ -1,10 +1,15 @@
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:58
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-08 16:37:57
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/views/main/system/user/config/search.config.ts
+ */
 import { IForm } from '@/base-ui/form'
 
 export const searchFormConfig: IForm = {
   labelWidth: '120px',
-  itemStyle: {
-    padding: '10px 40px'
-  },
   colLayout: {
     span: 8
   },

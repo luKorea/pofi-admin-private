@@ -10,11 +10,12 @@
     </div>
     <el-table
       :data="listData"
-      border
+      stripe
       style="width: 100%"
       @selection-change="handleSelectionChange"
       v-bind="childrenProps"
       row-key="id"
+      empty-text="暂时没有其他数据"
     >
       <el-table-column
         v-if="showSelectColumn"

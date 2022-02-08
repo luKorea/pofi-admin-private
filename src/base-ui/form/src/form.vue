@@ -3,8 +3,8 @@
     <div class="header">
       <slot name="header"></slot>
     </div>
-    <el-form :label-width="labelWidth">
-      <el-row>
+    <el-form :label-width="labelWidth" label-position="top">
+      <el-row :gutter="12">
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
             <el-form-item
@@ -80,7 +80,7 @@ export default defineComponent({
     },
     itemStyle: {
       type: Object,
-      default: () => ({ padding: '10px 40px' })
+      default: () => ({})
     },
     colLayout: {
       type: Object,
@@ -121,6 +121,11 @@ export default defineComponent({
 
 <style scoped lang="less">
 .hy-form {
-  padding-top: 22px;
+  padding-top: 10px;
+}
+</style>
+<style>
+.el-form--label-top .el-form-item__label {
+  padding: 0 !important;
 }
 </style>

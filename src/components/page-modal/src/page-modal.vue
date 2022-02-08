@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 10:13:22
+ * @LastEditTime: 2022-02-08 16:52:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -10,7 +10,7 @@
   <div class="page-modal">
     <el-drawer
       v-model="dialogVisible"
-      direction="ltr"
+      direction="rtl"
       size="50%"
       :show-close="false"
       :close-on-click-modal="false"
@@ -28,7 +28,7 @@
         </div>
       </template>
       <template #default>
-        <div style="margin-right: 20px">
+        <div style="padding: 0 20px">
           <hy-form v-bind="modalConfig" v-model="formData"></hy-form>
           <slot></slot>
         </div>
@@ -116,6 +116,13 @@ export default defineComponent({
 <style>
 .el-drawer__body {
   overflow: auto !important;
+}
+.el-drawer__header {
+  margin-bottom: 0 !important;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #dcdfe6;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
 }
 </style>
 <style scoped lang="less">
