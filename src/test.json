@@ -1,0 +1,1012 @@
+  {
+    "result": [
+      {
+        "id": 9,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 24,
+            "parent": 9,
+            "show": 1,
+            "children": [],
+            "path": "router",
+            "name": "router",
+            "title": "路由列表",
+            "component": "oa/router/Router",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "路由列表"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 20,
+            "parent": 9,
+            "show": 1,
+            "children": [],
+            "path": "permission",
+            "name": "oa_permission",
+            "title": "权限列表",
+            "component": "oa/permission/Permission",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "权限列表"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 21,
+            "parent": 9,
+            "show": 1,
+            "children": [],
+            "path": "role",
+            "name": "oa_role",
+            "title": "角色列表",
+            "component": "oa/role/Role",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "角色列表"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 22,
+            "parent": 9,
+            "show": 1,
+            "children": [],
+            "path": "user",
+            "name": "oa_user",
+            "title": "用户列表",
+            "component": "oa/user/User",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "用户列表"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/oa",
+        "name": "oa",
+        "title": "系统管理",
+        "component": "layout/Layout",
+        "icon": "el-icon-menu",
+        "props": false,
+        "meta": {
+          "title": "系统管理"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 172,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 173,
+            "parent": 172,
+            "show": 1,
+            "children": [],
+            "path": "feedback",
+            "name": "feedback_list",
+            "title": "问题列表",
+            "component": "feedback/Feedback",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "问题列表"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/feedback",
+        "name": "feedback",
+        "title": "意见反馈",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-comment",
+        "props": false,
+        "meta": {
+          "title": "意见反馈"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 174,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 175,
+            "parent": 174,
+            "show": 1,
+            "children": [],
+            "path": "userModify",
+            "name": "userModify",
+            "title": "用户资料审核",
+            "component": "audit/userModify/userModify",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "用户资料审核"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/audit",
+        "name": "audit",
+        "title": "审核管理",
+        "component": "layout/Layout",
+        "icon": "el-icon-message",
+        "props": false,
+        "meta": {
+          "title": "审核管理"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 177,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 198,
+            "parent": 177,
+            "show": 1,
+            "children": [],
+            "path": "good",
+            "name": "goods_good",
+            "title": "资源商品",
+            "component": "goods/good/Good",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "资源商品"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 178,
+            "parent": 177,
+            "show": 1,
+            "children": [],
+            "path": "recharge",
+            "name": "goods_recharge",
+            "title": "充值套餐",
+            "component": "goods/recharge/Recharge",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "充值套餐"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 179,
+            "parent": 177,
+            "show": 1,
+            "children": [],
+            "path": "function",
+            "name": "goods_function",
+            "title": "功能套餐",
+            "component": "goods/function/Function",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "功能套餐"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 180,
+            "parent": 177,
+            "show": 1,
+            "children": [],
+            "path": "description",
+            "name": "function_description",
+            "title": "套餐文案",
+            "component": "goods/description/Description",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "套餐文案"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/goods",
+        "name": "goods",
+        "title": "商品中心",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-goods",
+        "props": false,
+        "meta": {
+          "title": "商品中心"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 181,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 182,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "resourceCenter",
+            "name": "resource_center",
+            "title": "资源管理中心",
+            "component": "resource/center/Center",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "资源管理中心"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 194,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "data",
+            "name": "resource_data",
+            "title": "资源数据统计",
+            "component": "resource/data/Data",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "资源数据统计"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 195,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "topic",
+            "name": "resource_topic",
+            "title": "专题管理",
+            "component": "resource/topic/Topic",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "专题管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 196,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "index",
+            "name": "resource_index",
+            "title": "首页管理",
+            "component": "index/Index",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "首页管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 193,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "series",
+            "name": "resource_series",
+            "title": "系列管理",
+            "component": "resource/series/Series",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "系列管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 191,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "classify",
+            "name": "resource_classify",
+            "title": "分类管理",
+            "component": "resource/classify/Classify",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "分类管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 192,
+            "parent": 181,
+            "show": 1,
+            "children": [],
+            "path": "keyword",
+            "name": "resource_keyword",
+            "title": "关键词管理",
+            "component": "resource/keyword/Keyword",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "关键词管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/resource",
+        "name": "resource",
+        "title": "资料库",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-cooperation",
+        "props": false,
+        "meta": {
+          "title": "资料库"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 153,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 154,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "accessory",
+            "name": "base_accessory",
+            "title": "附件管理",
+            "component": "base/accessory/Accessory",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "附件管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 166,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "jump",
+            "name": "base_jump",
+            "title": "跳转设置",
+            "component": "base/jump/Jump",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "跳转设置"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 155,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "head",
+            "name": "base_head",
+            "title": "默认头像",
+            "component": "base/head/Head",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "默认头像"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 156,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "language",
+            "name": "base_language",
+            "title": "多语言管理",
+            "component": "base/language/Language",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "多语言管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 157,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "config",
+            "name": "base_config",
+            "title": "配置管理(超管)",
+            "component": "base/config/Config",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "配置管理(超管)"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 176,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "testConfig",
+            "name": "base_testConfig",
+            "title": "配置管理",
+            "component": "base/testConfig/TestConfig",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "配置管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 158,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "area",
+            "name": "base_area",
+            "title": "地区管理",
+            "component": "base/area/Area",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "地区管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 199,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "version",
+            "name": "base_version",
+            "title": "版本配置",
+            "component": "base/version/Version",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "版本配置"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 202,
+            "parent": 153,
+            "show": 1,
+            "children": [],
+            "path": "fusing",
+            "name": "base_fusing",
+            "title": "模块&功能管理",
+            "component": "base/fusing/Fusing",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "模块&功能管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/base",
+        "name": "base",
+        "title": "基础设置",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-tools",
+        "props": false,
+        "meta": {
+          "title": "基础设置"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 159,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 160,
+            "parent": 159,
+            "show": 1,
+            "children": [],
+            "path": "user",
+            "name": "user_info",
+            "title": "用户管理",
+            "component": "user/user/Info",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "用户管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/user",
+        "name": "user",
+        "title": "用户管理",
+        "component": "layout/Layout",
+        "icon": "el-icon-user-solid",
+        "props": false,
+        "meta": {
+          "title": "用户管理"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 161,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 162,
+            "parent": 161,
+            "show": 1,
+            "children": [],
+            "path": "purse",
+            "name": "finance_purse",
+            "title": "用户钱包",
+            "component": "finance/purse/Purse",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "用户钱包"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 163,
+            "parent": 161,
+            "show": 1,
+            "children": [],
+            "path": "pay",
+            "name": "finance_pay",
+            "title": "订单管理",
+            "component": "finance/pay/Pay",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "订单管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 197,
+            "parent": 161,
+            "show": 1,
+            "children": [],
+            "path": "tradeRecord",
+            "name": "finance_tradeRecord",
+            "title": "内购记录",
+            "component": "finance/trade/TradeRecord",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "内购记录"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/finance",
+        "name": "finance",
+        "title": "财务中心",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-finance",
+        "props": false,
+        "meta": {
+          "title": "财务中心"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 164,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 165,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "companion",
+            "name": "help_companion",
+            "title": "使用指南",
+            "component": "help/companion/Companion",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "使用指南"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 184,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "functionType",
+            "name": "help_functionType",
+            "title": "功能说明分类",
+            "component": "help/functionType/FunctionType",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "功能说明分类"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 183,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "function",
+            "name": "help_function",
+            "title": "功能说明",
+            "component": "help/function/Function",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "功能说明"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 169,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "questionType",
+            "name": "help_questionType",
+            "title": "问题类型管理",
+            "component": "help/type/QuestionType",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "问题类型管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 168,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "question",
+            "name": "help_question",
+            "title": "问题管理",
+            "component": "help/question/Question",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "问题管理"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 167,
+            "parent": 164,
+            "show": 1,
+            "children": [],
+            "path": "account",
+            "name": "help_account",
+            "title": "联系账号",
+            "component": "help/account/Account",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "联系账号"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/help",
+        "name": "help",
+        "title": "帮助中心",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-help",
+        "props": false,
+        "meta": {
+          "title": "帮助中心"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 170,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 171,
+            "parent": 170,
+            "show": 1,
+            "children": [],
+            "path": "activityCharge",
+            "name": "activity_charge",
+            "title": "充值页活动",
+            "component": "activity/activityCharge/ActivityCharge",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "充值页活动"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/activity",
+        "name": "activity",
+        "title": "活动中心",
+        "component": "layout/Layout",
+        "icon": "el-icon-present",
+        "props": false,
+        "meta": {
+          "title": "活动中心"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 187,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 188,
+            "parent": 187,
+            "show": 1,
+            "children": [],
+            "path": "condition",
+            "name": "device_condition",
+            "title": "限制条件",
+            "component": "device/condition/Condition",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "限制条件"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 189,
+            "parent": 187,
+            "show": 0,
+            "children": [],
+            "path": "description",
+            "name": "device_description",
+            "title": "预警文案",
+            "component": "device/description/Description",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "预警文案"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          },
+          {
+            "id": 190,
+            "parent": 187,
+            "show": 1,
+            "children": [],
+            "path": "imei",
+            "name": "device_imei",
+            "title": "用户设备清单",
+            "component": "device/imei/Imei",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "用户设备清单"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/device",
+        "name": "device",
+        "title": "设备管理",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-cooperation",
+        "props": false,
+        "meta": {
+          "title": "设备管理"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      },
+      {
+        "id": 200,
+        "parent": 0,
+        "show": 1,
+        "children": [
+          {
+            "id": 201,
+            "parent": 200,
+            "show": 1,
+            "children": [],
+            "path": "banner",
+            "name": "ad_banner",
+            "title": "栏目广告",
+            "component": "ad/banner/Banner",
+            "icon": "el-icon-arrow-right",
+            "props": false,
+            "meta": {
+              "cache": 1,
+              "title": "栏目广告"
+            },
+            "badgeShow": 0,
+            "cache": 1,
+            "access": 1
+          }
+        ],
+        "path": "/ad",
+        "name": "ad",
+        "title": "广告中心",
+        "component": "layout/Layout",
+        "icon": "el-icon-s-flag",
+        "props": false,
+        "meta": {
+          "title": "广告中心"
+        },
+        "badgeShow": 0,
+        "cache": 0,
+        "access": 1
+      }
+    ],
+    "state": true
+  }

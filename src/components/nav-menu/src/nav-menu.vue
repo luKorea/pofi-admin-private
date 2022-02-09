@@ -14,30 +14,30 @@
     >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 二级菜单 -->
-        <template v-if="item.type === 1">
+        <template v-if="item.children.length > 0">
           <!-- 二级菜单的可以展开的标题 -->
           <el-submenu :index="item.id + ''">
             <template #title>
               <i v-if="item.icon" :class="item.icon"></i>
-              <span>{{ item.name }}</span>
+              <span>{{ item.title }}</span>
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
               <el-menu-item
                 :index="subitem.id + ''"
-                @click="handleMenuItemClick(subitem)"
+                @click="handleMenuItemClick(item)"
               >
                 <i v-if="subitem.icon" :class="subitem.icon"></i>
-                <span>{{ subitem.name }}</span>
+                <span>{{ subitem.title }}</span>
               </el-menu-item>
             </template>
           </el-submenu>
         </template>
         <!-- 一级菜单 -->
-        <template v-else-if="item.type === 2">
+        <template v-else-if="item.children.length === 0">
           <el-menu-item :index="item.id + ''">
             <i v-if="item.icon" :class="item.icon"></i>
-            <span>{{ item.name }}</span>
+            <span>{{ item.title }}</span>
           </el-menu-item>
         </template>
       </template>
@@ -72,13 +72,15 @@ export default defineComponent({
     const currentPath = route.path
 
     // data
-    const menu = pathMapToMenu(userMenus.value, currentPath)
-    const defaultValue = ref(menu.id + '')
-
+    const menu = userMenus
+    console.log(userMenus.value, 'user')
+    // const defaultValue = ref(menu.id + '')
+    const defaultValue = ref(0 + '')
     // event handle
     const handleMenuItemClick = (item: any) => {
+      console.log(item, 'item')
       router.push({
-        path: item.url ?? '/not-found'
+        path: item.path ?? '/not-found'
       })
     }
     return {

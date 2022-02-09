@@ -1,3 +1,11 @@
+/*
+ * @Author: korealu
+ * @Date: 2022-02-09 09:56:39
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-09 14:12:45
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/store/login/login.ts
+ */
 import { Module } from 'vuex'
 
 import {
@@ -33,14 +41,12 @@ const loginModule: Module<any, any> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
-
-      console.log('注册动态路由')
-
+      console.log('注册动态路由', userMenus)
       // userMenus => routes
       const routes = mapMenusToRoutes(userMenus)
-
       // 将routes => router.main.children
       routes.forEach((route) => {
+        console.log(route, 'route')
         router.addRoute('main', route)
       })
 
@@ -73,7 +79,6 @@ const loginModule: Module<any, any> = {
       const userMenus = userMenusResult.result
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
-
       // 4.跳到首页
       router.push('/main')
     },

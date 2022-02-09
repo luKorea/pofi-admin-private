@@ -20,20 +20,32 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   // type === 2 -> url -> route
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
-      if (menu.type === 2) {
-        const route = allRoutes.find((route) => route.path === menu.url)
-        if (route) routes.push(route)
+      if (menu.children && menu.children.length > 0) {
+        _recurseGetRoute(menu.children)
+      } else {
+        routes.push(menu)
+        // const route = allRoutes.find((route) => route.path === menu.url)
+        // console.log(route, 'route')
+        // if (route) routes.push(route)
         if (!firstMenu) {
           firstMenu = menu
         }
-      } else {
-        _recurseGetRoute(menu.children)
       }
+      // if (menu.children.length === 0) {
+      //   console.log(menu, '一级路由')
+      //   const route = allRoutes.find((route) => route.path === menu.url)
+      //   if (route) routes.push(route)
+      //   if (!firstMenu) {
+      //     firstMenu = menu
+      //   }
+      // } else {
+      //   _recurseGetRoute(menu.children)
+      // }
     }
+    console.log(routes, 'eo')
   }
 
   _recurseGetRoute(userMenus)
-
   return routes
 }
 
@@ -50,14 +62,14 @@ export function pathMapToMenu(
   breadcrumbs?: IBreadcrumb[]
 ): any {
   for (const menu of userMenus) {
-    if (menu.type === 1) {
+    if (menu.length === 0) {
       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
       if (findMenu) {
         breadcrumbs?.push({ name: menu.name })
         breadcrumbs?.push({ name: findMenu.name })
         return findMenu
       }
-    } else if (menu.type === 2 && menu.url === currentPath) {
+    } else {
       return menu
     }
   }
