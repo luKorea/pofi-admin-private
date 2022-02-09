@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 18:27:52
+ * @LastEditTime: 2022-02-09 09:58:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -28,14 +28,33 @@ const store = createStore<IRootState>({
     }
   },
   mutations: {
-    saveTagsListToLocal(_, list) {
-      cache.setCache('tagsList', list)
+    delTagsItem(state, data) {
+      state.tagsList.splice(data.index, 1)
     },
-    addTagsListToStore(state, list) {
-      state.tagsList.push(list)
+    setTagsItem(state, data) {
+      state.tagsList.push(data)
     },
-    removeTagsListToStore(state, list) {
-      state.tagsList = list
+    clearTags(state) {
+      state.tagsList = []
+    },
+    closeTagsOther(state, data) {
+      state.tagsList = data
+    },
+    closeCurrentTag(state, data) {
+      for (let i = 0, len = state.tagsList.length; i < len; i++) {
+        const item = state.tagsList[i]
+        if (item.path === data.$route.fullPath) {
+          if (i < len - 1) {
+            data.$router.push(state.tagsList[i + 1].path)
+          } else if (i > 0) {
+            data.$router.push(state.tagsList[i - 1].path)
+          } else {
+            data.$router.push('/')
+          }
+          state.tagsList.splice(i, 1)
+          break
+        }
+      }
     },
     changeEntireDepartment(state, list) {
       state.entireDepartment = list

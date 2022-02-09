@@ -4,6 +4,7 @@ import type { HYRequestInterceptors, HYRequestConfig } from './type'
 
 import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
+import qs from 'qs'
 
 const DEAFULT_LOADING = true
 
@@ -113,6 +114,7 @@ class HYRequest {
   }
 
   post<T = any>(config: HYRequestConfig<T>): Promise<T> {
+    config.data = qs.stringify(config.data)
     return this.request<T>({ ...config, method: 'POST' })
   }
 

@@ -16,7 +16,9 @@
     "dayjs": "^1.10.6",
     "echarts": "^5.1.2",
     "element-plus": "^1.0.2-beta.62",
+    "md5": "^2.3.0",
     "normalize.css": "^8.0.1",
+    "qs": "^6.10.3",
     "sortablejs": "^1.14.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.10",
@@ -25,6 +27,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@types/md5": "^2.3.2",
     "@types/sortablejs": "^1.10.7",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",

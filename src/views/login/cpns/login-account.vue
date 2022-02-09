@@ -1,11 +1,19 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:55
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-09 10:34:12
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/views/login/cpns/login-account.vue
+-->
 <template>
   <div class="login-account">
     <el-form label-width="60px" :rules="rules" :model="account" ref="formRef">
-      <el-form-item label="账号" prop="name">
-        <el-input v-model="account.name" />
+      <el-form-item label="账号" prop="email">
+        <el-input v-model="account.email" />
       </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="account.password" show-password />
+      <el-form-item label="密码" prop="pwd">
+        <el-input v-model="account.pwd" show-password />
       </el-form-item>
     </el-form>
   </div>
@@ -24,8 +32,8 @@ export default defineComponent({
     const store = useStore()
 
     const account = reactive({
-      name: localCache.getCache('name') ?? '',
-      password: localCache.getCache('password') ?? ''
+      email: localCache.getCache('email') ?? '',
+      pwd: localCache.getCache('pwd') ?? ''
     })
 
     const formRef = ref<InstanceType<typeof ElForm>>()
@@ -36,11 +44,11 @@ export default defineComponent({
           // 1.判断是否需要记住密码
           if (isKeepPassword) {
             // 本地缓存
-            localCache.setCache('name', account.name)
-            localCache.setCache('password', account.password)
+            localCache.setCache('email', account.email)
+            localCache.setCache('pwd', account.pwd)
           } else {
-            localCache.deleteCache('name')
-            localCache.deleteCache('password')
+            localCache.deleteCache('email')
+            localCache.deleteCache('pwd')
           }
 
           // 2.开始进行登录验证

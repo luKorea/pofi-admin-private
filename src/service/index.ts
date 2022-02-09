@@ -1,3 +1,11 @@
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:34
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-09 10:23:34
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/service/index.ts
+ */
 // service统一出口
 import HYRequest from './request'
 import { BASE_URL, TIME_OUT } from './request/config'
@@ -9,6 +17,8 @@ const hyRequest = new HYRequest({
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptor: (config) => {
+      config.headers['Content-Type'] =
+        'application/x-www-form-urlencoded;charset=UTF-8'
       // 携带token的拦截
       const token = localCache.getCache('token')
       if (token) {

@@ -1,3 +1,11 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:55
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-09 10:19:58
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/views/login/cpns/login-panel.vue
+-->
 <template>
   <div class="login-panel">
     <h1 class="title">后台管理系统</h1>
@@ -8,17 +16,17 @@
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane name="phone">
+      <!-- <el-tab-pane name="phone">
         <template #label>
           <span><i class="el-icon-mobile-phone"></i> 手机登录</span>
         </template>
         <login-phone ref="phoneRef" />
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
 
     <div class="account-control">
       <el-checkbox v-model="isKeepPassword">记住密码</el-checkbox>
-      <el-link type="primary">忘记密码</el-link>
+      <!-- <el-link type="primary">忘记密码</el-link> -->
     </div>
 
     <el-button type="primary" class="login-btn" @click="handleLoginClick"
@@ -30,18 +38,18 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import LoginAccount from './login-account.vue'
-import LoginPhone from './login-phone.vue'
+// import LoginPhone from './login-phone.vue'
 
 export default defineComponent({
   components: {
-    LoginAccount,
-    LoginPhone
+    LoginAccount
+    // LoginPhone
   },
   setup() {
     // 1.定义属性
     const isKeepPassword = ref(true)
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
-    const phoneRef = ref<InstanceType<typeof LoginPhone>>()
+    // const phoneRef = ref<InstanceType<typeof LoginPhone>>()
     const currentTab = ref('account')
 
     // 2.定义方法
@@ -56,7 +64,7 @@ export default defineComponent({
     return {
       isKeepPassword,
       accountRef,
-      phoneRef,
+      // phoneRef,
       currentTab,
       handleLoginClick
     }

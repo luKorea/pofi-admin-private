@@ -13,7 +13,7 @@ import { IAccount } from '@/service/login/type'
 import { ILoginState } from './types'
 import { IRootState } from '../types'
 
-const loginModule: Module<ILoginState, IRootState> = {
+const loginModule: Module<any, any> = {
   namespaced: true,
   state() {
     return {
@@ -53,7 +53,9 @@ const loginModule: Module<ILoginState, IRootState> = {
     async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
-      const { id, token } = loginResult.data
+      // const { id, token } = loginResult.data
+      console.log(loginResult)
+      const { token } = loginResult
       commit('changeToken', token)
       localCache.setCache('token', token)
 
@@ -61,14 +63,14 @@ const loginModule: Module<ILoginState, IRootState> = {
       dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息
-      const userInfoResult = await requestUserInfoById(id)
-      const userInfo = userInfoResult.data
-      commit('changeUserInfo', userInfo)
-      localCache.setCache('userInfo', userInfo)
+      // const userInfoResult = await requestUserInfoById(id)
+      // const userInfo = userInfoResult.data
+      // commit('changeUserInfo', userInfo)
+      // localCache.setCache('userInfo', userInfo)
 
       // 3.请求用户菜单
-      const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      const userMenus = userMenusResult.data
+      const userMenusResult = await requestUserMenusByRoleId()
+      const userMenus = userMenusResult.result
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
 
