@@ -1,4 +1,12 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+/*
+ * @Author: korealu
+ * @Date: 2022-02-09 09:56:39
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-09 18:13:31
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/router/index.ts
+ */
+import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import localCache from '@/utils/cache'
@@ -17,8 +25,21 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     name: 'main',
-    component: () => import('@/views/main/main.vue')
-    // children: [] -> 根据userMenus来决定 -> children
+    component: () => import('@/views/main/main.vue'),
+    children: [
+      {
+        path: '/oa/user',
+        name: 'user',
+        component: () => import('@/views/oa/user/user.vue')
+        // children: [] -> 根据userMenus来决定 -> children
+      },
+      {
+        path: '/oa/role',
+        name: 'role',
+        component: () => import('@/views/oa/role/role.vue')
+        // children: [] -> 根据userMenus来决定 -> children
+      }
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
@@ -29,7 +50,7 @@ const routes: RouteRecordRaw[] = [
 
 const router = createRouter({
   routes,
-  history: createWebHashHistory()
+  history: createWebHistory()
 })
 
 // 导航守卫
@@ -44,10 +65,10 @@ router.beforeEach((to) => {
   // console.log(router.getRoutes())
   // console.log(to) // route对象
 
-  if (to.path === '/main') {
-    console.log(firstMenu, 'frs')
-    return firstMenu.url
-  }
+  // if (to.path === '/main') {
+  //   console.log(firstMenu, 'frs')
+  //   return firstMenu.path
+  // }
 })
 
 export default router

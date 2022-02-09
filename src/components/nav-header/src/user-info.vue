@@ -43,7 +43,7 @@ export default defineComponent({
     const router = useRouter()
     const handleExitClick = () => {
       localCache.deleteCache('token')
-      router.push('/main')
+      router.push('/login')
     }
 
     return {

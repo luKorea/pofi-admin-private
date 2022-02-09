@@ -25,7 +25,7 @@
             <template v-for="subitem in item.children" :key="subitem.id">
               <el-menu-item
                 :index="subitem.id + ''"
-                @click="handleMenuItemClick(item)"
+                @click="handleMenuItemClick(item, subitem)"
               >
                 <i v-if="subitem.icon" :class="subitem.icon"></i>
                 <span>{{ subitem.title }}</span>
@@ -77,10 +77,10 @@ export default defineComponent({
     // const defaultValue = ref(menu.id + '')
     const defaultValue = ref(0 + '')
     // event handle
-    const handleMenuItemClick = (item: any) => {
-      console.log(item, 'item')
+    const handleMenuItemClick = (item: any, subItem: any) => {
+      console.log(item, 'item', subItem)
       router.push({
-        path: item.path ?? '/not-found'
+        path: `${item.path}/${subItem.path}` ?? '/not-found'
       })
     }
     return {

@@ -112,10 +112,14 @@ export default defineComponent({
     }
 
     // 0.获取操作的权限
-    const isCreate = usePermission(props.pageName, 'create')
-    const isUpdate = usePermission(props.pageName, 'update')
-    const isDelete = usePermission(props.pageName, 'delete')
-    const isQuery = usePermission(props.pageName, 'query')
+    const isCreate = true
+    const isUpdate = true
+    const isDelete = true
+    const isQuery = true
+    // const isCreate = usePermission(props.pageName, 'create')
+    // const isUpdate = usePermission(props.pageName, 'update')
+    // const isDelete = usePermission(props.pageName, 'delete')
+    // const isQuery = usePermission(props.pageName, 'query')
 
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })

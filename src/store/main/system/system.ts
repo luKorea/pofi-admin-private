@@ -65,7 +65,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       // 1.获取pageUrl
       const pageName = payload.pageName
-      const pageUrl = `/${pageName}/list`
+      const pageUrl = `/cms/${pageName}`
 
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)

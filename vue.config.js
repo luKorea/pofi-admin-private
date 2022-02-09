@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 10:40:27
+ * @LastEditTime: 2022-02-09 17:55:28
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -14,7 +14,7 @@ module.exports = {
   // publicPath: './',
   devServer: {
     proxy: {
-      '^/': {
+      '^/api': {
         // http://152.136.185.210:5000
         // http://tcms.pofiart.com
         target: 'http://tcms.pofiart.com',
