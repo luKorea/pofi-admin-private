@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 17:55:28
+ * @LastEditTime: 2022-02-09 18:20:02
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
