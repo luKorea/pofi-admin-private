@@ -23,25 +23,17 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
       if (menu.children && menu.children.length > 0) {
         _recurseGetRoute(menu.children)
       } else {
-        routes.push(menu)
-        console.log(menu.path, 'menu')
-        const route = allRoutes.find((route) => route.path === menu.path)
-        console.log(route, 'route--')
+        const route = allRoutes.find((route) => {
+          const component = menu.component.split('/')
+          menu['url'] = '/' + component[0] + '/' + component[1]
+          console.log(menu.url, '拼接后的链接', route.path, '路由链接')
+          return route.path === menu.url
+        })
         if (route) routes.push(route)
         if (!firstMenu) {
           firstMenu = menu
         }
       }
-      // if (menu.children.length === 0) {
-      //   console.log(menu, '一级路由')
-      //   const route = allRoutes.find((route) => route.path === menu.url)
-      //   if (route) routes.push(route)
-      //   if (!firstMenu) {
-      //     firstMenu = menu
-      //   }
-      // } else {
-      //   _recurseGetRoute(menu.children)
-      // }
     }
     console.log(routes, 'eo')
   }

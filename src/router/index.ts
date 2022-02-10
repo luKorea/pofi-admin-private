@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 18:25:59
+ * @LastEditTime: 2022-02-10 09:18:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/router/index.ts
  */
@@ -10,7 +10,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import localCache from '@/utils/cache'
-import { firstMenu } from '@/utils/map-menus'
+// import { firstMenu } from '@/utils/map-menus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -28,27 +28,27 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/main/main.vue'),
     meta: {
       title: '首页'
-    },
-    children: [
-      {
-        path: '/oa/user',
-        name: 'user',
-        component: () => import('@/views/oa/user/user.vue'),
-        meta: {
-          title: '用户管理'
-        }
-        // children: [] -> 根据userMenus来决定 -> children
-      },
-      {
-        path: '/oa/role',
-        name: 'role',
-        component: () => import('@/views/oa/role/role.vue'),
-        meta: {
-          title: '权限管理'
-        }
-        // children: [] -> 根据userMenus来决定 -> children
-      }
-    ]
+    }
+    // children: [
+    //   {
+    //     path: '/oa/user',
+    //     name: 'user',
+    //     component: () => import('@/views/oa/user/user.vue'),
+    //     meta: {
+    //       title: '用户管理'
+    //     }
+    //     // children: [] -> 根据userMenus来决定 -> children
+    //   },
+    //   {
+    //     path: '/oa/role',
+    //     name: 'role',
+    //     component: () => import('@/views/oa/role/role.vue'),
+    //     meta: {
+    //       title: '权限管理'
+    //     }
+    //     // children: [] -> 根据userMenus来决定 -> children
+    //   }
+    // ]
   },
   {
     path: '/:pathMatch(.*)*',
