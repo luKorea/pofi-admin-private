@@ -65,17 +65,23 @@ const systemModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       // 1.获取pageUrl
       const pageName = payload.pageName
-      const pageUrl = `/cms/${pageName}`
+      const apiList: any = {
+        users: '/cms/user/getUsers'
+      }
+      console.log(apiList[pageName], '用户路由')
+      const pageUrl = apiList[pageName]
 
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
 
       // 3.将数据存储到state中
-      const { list, totalCount } = pageResult.data
+      console.log(pageResult)
+      // const { list, totalCount } = pageResult.data
+      const { data, totalCount = 0 } = pageResult as any
 
       const changePageName =
         pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
-      commit(`change${changePageName}List`, list)
+      commit(`change${changePageName}List`, data)
       commit(`change${changePageName}Count`, totalCount)
     },
 

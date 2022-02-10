@@ -8,21 +8,26 @@
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
-      pageName="users/getUser"
+      pageName="users"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-    ></page-content>
+      :permission="permission"
+    >
+      <template #other>
+        <span>分配</span>
+      </template>
+    </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="users/getUser"
+      pageName="users"
       :modalConfig="modalConfigRef"
     ></page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
 
 import PageSearch from '@/components/page-search'
@@ -45,7 +50,12 @@ export default defineComponent({
   },
   setup() {
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-
+    const permission = ref({
+      add: true,
+      edit: false,
+      delete: true,
+      other: true
+    })
     // pageModal相关的hook逻辑
     // 1.处理密码的逻辑
     const newCallback = () => {
@@ -64,18 +74,18 @@ export default defineComponent({
     // 2.动态添加部门和角色列表
     const store = useStore()
     const modalConfigRef = computed(() => {
-      const departmentItem = modalConfig.formItems.find(
-        (item) => item.field === 'departmentId'
-      )
-      departmentItem!.options = store.state.entireDepartment.map((item) => {
-        return { title: item.name, value: item.id }
-      })
-      const roleItem = modalConfig.formItems.find(
-        (item) => item.field === 'roleId'
-      )
-      roleItem!.options = store.state.entireRole.map((item) => {
-        return { title: item.name, value: item.id }
-      })
+      // const departmentItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'departmentId'
+      // )
+      // departmentItem!.options = store.state.entireDepartment.map((item) => {
+      //   return { title: item.name, value: item.id }
+      // })
+      // const roleItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'roleId'
+      // )
+      // roleItem!.options = store.state.entireRole.map((item) => {
+      //   return { title: item.name, value: item.id }
+      // })
       return modalConfig
     })
 
@@ -84,6 +94,7 @@ export default defineComponent({
       usePageModal(newCallback, editCallback)
 
     return {
+      permission,
       searchFormConfig,
       contentTableConfig,
       pageContentRef,

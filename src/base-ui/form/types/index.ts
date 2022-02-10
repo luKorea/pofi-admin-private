@@ -1,4 +1,12 @@
-type IFormType = 'input' | 'password' | 'select' | 'datepicker'
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:44
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-10 15:12:20
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/base-ui/form/types/index.ts
+ */
+type IFormType = 'input' | 'password' | 'select' | 'datepicker' | 'radio'
 
 export interface IFormItem {
   field: string

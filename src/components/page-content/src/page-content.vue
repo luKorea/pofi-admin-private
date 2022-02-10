@@ -37,6 +37,7 @@
       </template>
       <template #handler="scope">
         <div class="handle-btns">
+          <slot name="other" v-if="isOther"></slot>
           <el-button
             v-if="isUpdate"
             icon="el-icon-edit"
@@ -51,6 +52,7 @@
             icon="el-icon-delete"
             size="mini"
             type="text"
+            style="color: #f56c6c"
             @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
@@ -83,6 +85,10 @@ export default defineComponent({
     HyTable
   },
   props: {
+    permission: {
+      type: Object,
+      default: () => ({})
+    },
     contentTableConfig: {
       type: Object,
       require: true
@@ -112,10 +118,11 @@ export default defineComponent({
     }
 
     // 0.获取操作的权限
-    const isCreate = true
-    const isUpdate = true
-    const isDelete = true
-    const isQuery = true
+    const isCreate = props.permission?.add as any
+    const isUpdate = props.permission?.update as any
+    const isDelete = props.permission?.delete as any
+    const isQuery = props.permission?.query as any
+    const isOther = props.permission?.other as any
     // const isCreate = usePermission(props.pageName, 'create')
     // const isUpdate = usePermission(props.pageName, 'update')
     // const isDelete = usePermission(props.pageName, 'delete')
@@ -183,6 +190,7 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
+      isOther,
       handleDeleteClick,
       handleNewClick,
       handleEditClick
