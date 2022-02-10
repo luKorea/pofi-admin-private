@@ -1,5 +1,6 @@
 <template>
   <div class="user">
+    <div class="text-sm">测试文字大小</div>
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"

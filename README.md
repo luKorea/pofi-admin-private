@@ -61,3 +61,5 @@
 # 功能需求
   1. 表格排序
   2. 富文本编辑器
+# 插件
+  1. npm install @headlessui/vue @heroicons/vue css样式使用
