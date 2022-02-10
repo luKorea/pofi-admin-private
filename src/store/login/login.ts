@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 14:12:45
+ * @LastEditTime: 2022-02-10 11:06:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -45,10 +45,7 @@ const loginModule: Module<any, any> = {
       // userMenus => routes
       const routes = mapMenusToRoutes(userMenus)
       // 将routes => router.main.children
-      routes.forEach((route) => {
-        console.log(route, 'route')
-        router.addRoute('main', route)
-      })
+      routes.forEach((route) => router.addRoute('main', route))
 
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(userMenus)

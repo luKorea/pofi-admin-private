@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 09:17:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 09:41:02
+ * @LastEditTime: 2022-02-10 11:20:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/router/main/oa/role/role.ts
  */
@@ -13,6 +13,6 @@ export default {
   component: role,
   children: [],
   meta: {
-    title: '角色管理'
+    title: '角色列表'
   }
 }

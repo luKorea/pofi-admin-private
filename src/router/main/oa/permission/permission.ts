@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 09:17:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 09:40:50
+ * @LastEditTime: 2022-02-10 11:20:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/router/main/oa/permission/permission.ts
  */
@@ -13,6 +13,6 @@ export default {
   component: permission,
   children: [],
   meta: {
-    title: '权限管理'
+    title: '权限列表'
   }
 }

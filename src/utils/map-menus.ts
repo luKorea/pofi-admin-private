@@ -25,8 +25,11 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
       } else {
         const route = allRoutes.find((route) => {
           const component = menu.component.split('/')
-          menu['url'] = '/' + component[0] + '/' + component[1]
-          console.log(menu.url, '拼接后的链接', route.path, '路由链接')
+          if (menu.name === 'resource_index') {
+            menu['url'] = '/' + 'resource' + '/' + component[0]
+          } else {
+            menu['url'] = '/' + component[0] + '/' + menu.path
+          }
           return route.path === menu.url
         })
         if (route) routes.push(route)
@@ -35,7 +38,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         }
       }
     }
-    console.log(routes, 'eo')
   }
 
   _recurseGetRoute(userMenus)
