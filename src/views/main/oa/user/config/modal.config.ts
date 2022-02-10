@@ -2,9 +2,9 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 17:48:54
+ * @LastEditTime: 2022-02-10 14:13:52
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/oa/user/config/modal.config.ts
+ * @FilePath: /pofi-admin/src/views/main/oa/user/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 

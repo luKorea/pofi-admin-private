@@ -1,34 +1,20 @@
 <template>
-  <div class="tags" v-if="showTags">
-    <ul>
-      <li
-        class="tags-li"
-        v-for="(item, index) in tagsList"
-        :class="{ active: isActive(item.path) }"
-        :key="index"
+  <div v-if="showTags" class="tag_content">
+    <div style="margin: 4px">
+      <el-tag
+        closable
+        size="medium"
+        v-for="(tag, index) in tagsList"
+        :key="tag.title"
+        :disable-transitions="true"
+        :effect="isActive(tag.path) ? 'dark' : 'plain'"
+        @close="closeTags(index)"
+        @click="handleClick(tag)"
+        style="margin-right: 6px; cursor: pointer"
       >
-        <router-link :to="item.path" class="tags-li-title">{{
-          item.title
-        }}</router-link>
-        <span class="tags-li-icon" @click="closeTags(index)">
-          <i class="el-icon-close"></i>
-        </span>
-      </li>
-    </ul>
-    <!-- <div class="tags-close-box">
-      <el-dropdown @command="handleTags">
-        <el-button size="mini" type="primary">
-          标签选项
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
-        <template #dropdown>
-          <el-dropdown-menu size="small">
-            <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-            <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </div> -->
+        {{ tag.title }}
+      </el-tag>
+    </div>
   </div>
 </template>
 
@@ -36,6 +22,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 export default {
   setup() {
     const route = useRoute()
@@ -48,6 +35,15 @@ export default {
     const showTags = computed(() => tagsList.value.length > 0)
     // 关闭单个标签
     const closeTags = (index) => {
+      //删除标签
+      if (tagsList.value.length <= 1) {
+        //最后一个标签不能删
+        ElMessage.warning({
+          message: '最后一个标签了哦！',
+          type: 'warning'
+        })
+        return false
+      }
       const delItem = tagsList.value[index]
       store.commit('delTagsItem', { index })
       const item = tagsList.value[index]
@@ -59,15 +55,21 @@ export default {
         router.push('/')
       }
     }
+    // 跳转到对应路由
+    const handleClick = (route) => {
+      router.push({
+        path: route.path
+      })
+    }
     // 设置标签
     const setTags = (route) => {
       const isExist = tagsList.value.some((item) => {
         return item.path === route.fullPath
       })
       if (!isExist) {
-        if (tagsList.value.length >= 8) {
-          store.commit('delTagsItem', { index: 0 })
-        }
+        // if (tagsList.value.length >= 8) {
+        //   store.commit('delTagsItem', { index: 0 })
+        // }
         store.commit('setTagsItem', {
           name: route.name,
           title: route.meta.title,
@@ -104,77 +106,59 @@ export default {
       tagsList,
       showTags,
       closeTags,
-      handleTags
+      handleTags,
+      handleClick
     }
   }
 }
 </script>
 
-<style>
-.tags-li.active {
-  color: #fff;
-}
-.tags-li.active {
-  border: 1px solid #409eff;
-  background-color: #409eff;
-}
-.tags {
-  position: relative;
-  height: 34px;
-  line-height: 34px;
-  overflow: hidden;
-  background: #fff;
-  padding-right: 120px;
-  box-shadow: 0 5px 10px #ddd;
-  display: flex;
-  align-items: center;
-}
-.tags ul {
+<style lang="less" scoped>
+.tag_content {
+  padding: 6px 0px;
+  margin: 0px 12px;
   box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-}
-.tags-li {
-  float: left;
-  margin: 3px 5px 2px 3px;
-  border-radius: 3px;
-  font-size: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  height: 23px;
-  line-height: 23px;
-  border: 1px solid #e9eaec;
-  background: #fff;
-  padding: 0 5px 0 12px;
-  vertical-align: middle;
-  color: #666;
-  -webkit-transition: all 0.3s ease-in;
-  -moz-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
-}
-.tags-li:not(.active):hover {
-  background: #f8f8f8;
-}
-.tags-li.active {
-  color: #fff;
-}
-.tags-li-title {
-  float: left;
-  max-width: 80px;
-  overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-right: 5px;
-  color: #666;
-}
-.tags-li.active .tags-li-title {
-  color: #fff;
-}
-.tags-close-box {
-  box-sizing: border-box;
-  text-align: center;
-  width: 110px;
-  /* height: 30px; */
-  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  overflow-x: auto;
+  .tags {
+    width: calc(100vw - 310px);
+    overflow: auto;
+  }
+  .el-tag {
+    cursor: pointer;
+    margin-right: 8px;
+    //height: 30px;
+    //padding: 0px 13px 0 9px;
+    //line-height: 28px;
+    //border-radius: 0;
+  }
+  ::v-deep(.el-tag .el-icon-close) {
+    color: rgb(97, 97, 97) !important;
+  }
+  ::v-deep(.el-tag .el-icon-close:hover) {
+    background: none;
+  }
+  .tag_check {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: rgb(255, 255, 255) !important;
+    color: #409eff !important;
+  }
+  .tag_nocheck {
+    background-color: rgb(255, 255, 255) !important;
+    border-color: rgb(255, 255, 255) !important;
+    color: rgb(97, 97, 97) !important;
+  }
+  .el-dropdown-link {
+    text-align: center;
+    height: 26px;
+    display: block;
+    width: 70px;
+    background: #fff;
+    line-height: 26px;
+  }
 }
 </style>

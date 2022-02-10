@@ -78,7 +78,7 @@ export default defineComponent({
     const defaultValue = ref(0 + '')
     // event handle
     const handleMenuItemClick = (subItem: any) => {
-      console.log(subItem.url, '路由参数')
+      console.log(subItem, '路由参数')
       router.push({
         path: subItem.url ?? '/not-found'
       })

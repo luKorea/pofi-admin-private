@@ -15,9 +15,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   })
 
   // 2.根据菜单获取需要添加的routes
-  // userMenus:
-  // type === 1 -> children -> type === 1
-  // type === 2 -> url -> route
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
       if (menu.children && menu.children.length > 0) {
@@ -26,10 +23,13 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         const route = allRoutes.find((route) => {
           const component = menu.component.split('/')
           if (menu.name === 'resource_index') {
+            // 特殊路由处理，后续前端命名
             menu['url'] = '/' + 'resource' + '/' + component[0]
           } else {
             menu['url'] = '/' + component[0] + '/' + menu.path
           }
+          // TODO 判断路由是否相等，相等的动态设置路由meta参数，用于后面缓存操作
+          if (route.path === menu.url) route.meta = menu.meta
           return route.path === menu.url
         })
         if (route) routes.push(route)
