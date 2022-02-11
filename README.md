@@ -62,4 +62,11 @@
   1. 表格排序
   2. 富文本编辑器
 # 插件
-  1. npm install @headlessui/vue @heroicons/vue css样式使用
+  1. tailwindcss插件
+
+     ```shell
+     1. npm install -D tailwindcss@latest postcss@latest autoprefixer@latest (安装 Tailwind 以及其它依赖项)
+     2. npx tailwindcss init -p (生成 tailwind.config.js 和 postcss.config.js 文件)
+     ```
+
+     

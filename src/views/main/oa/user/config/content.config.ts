@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 14:52:52
+ * @LastEditTime: 2022-02-11 10:35:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -29,5 +29,5 @@ export const contentTableConfig = {
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
-  showSelectColumn: true
+  showSelectColumn: false
 }

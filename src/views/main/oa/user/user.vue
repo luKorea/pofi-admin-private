@@ -1,6 +1,5 @@
 <template>
   <div class="user">
-    <div class="text-sm">测试文字大小</div>
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
@@ -14,9 +13,6 @@
       @editBtnClick="handleEditData"
       :permission="permission"
     >
-      <template #other>
-        <span>分配</span>
-      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -55,7 +51,8 @@ export default defineComponent({
       add: true,
       edit: false,
       delete: true,
-      other: true
+      other: true,
+      drawTable: false
     })
     // pageModal相关的hook逻辑
     // 1.处理密码的逻辑

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 16:52:16
+ * @LastEditTime: 2022-02-11 11:27:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -69,7 +69,8 @@ export default defineComponent({
       require: true
     }
   },
-  setup(props) {
+  emits: ['editClick', 'addClick'],
+  setup(props, { emit }) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
 
@@ -88,19 +89,21 @@ export default defineComponent({
       dialogVisible.value = false
       if (Object.keys(props.defaultInfo).length) {
         // 编辑
+        emit('editClick', { ...formData.value, ...props.otherInfo })
         console.log('编辑用户')
-        store.dispatch('system/editPageDataAction', {
-          pageName: props.pageName,
-          editData: { ...formData.value, ...props.otherInfo },
-          id: props.defaultInfo.id
-        })
+        // store.dispatch('system/editPageDataAction', {
+        //   pageName: props.pageName,
+        //   editData: { ...formData.value, ...props.otherInfo },
+        //   id: props.defaultInfo.id
+        // })
       } else {
         // 新建
         console.log('新建用户')
-        store.dispatch('system/createPageDataAction', {
-          pageName: props.pageName,
-          newData: { ...formData.value, ...props.otherInfo }
-        })
+        emit('addClick', { ...formData.value, ...props.otherInfo })
+        // store.dispatch('system/createPageDataAction', {
+        //   pageName: props.pageName,
+        //   newData: { ...formData.value, ...props.otherInfo }
+        // })
       }
     }
 

@@ -1,7 +1,16 @@
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:31
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-11 09:42:51
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/main.ts
+ */
 import { createApp } from 'vue'
 import { globalRegister } from './global'
 import 'normalize.css'
 import './assets/css/index.less'
+import './index.css'
 
 import App from './App.vue'
 

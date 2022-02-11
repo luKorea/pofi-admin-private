@@ -1,9 +1,9 @@
 <template>
   <div class="nav-menu">
-    <div class="logo">
+    <!-- <div class="logo">
       <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
       <span v-if="!collapse" class="title">Pofi管理系统</span>
-    </div>
+    </div> -->
     <el-menu
       :default-active="defaultValue"
       class="el-menu-vertical"

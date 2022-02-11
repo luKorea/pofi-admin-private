@@ -89,7 +89,7 @@ export default defineComponent({
     },
     page: {
       type: Object,
-      default: () => ({ currentPage: 0, pageSize: 10 })
+      default: () => ({ currentPage: 1, pageSize: 10 })
     },
     childrenProps: {
       type: Object,
@@ -100,15 +100,15 @@ export default defineComponent({
       default: true
     },
     // 控制表格是否可以拖动
-    drawTable: {
+    handleDraw: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
     onMounted(() => {
-      if (props.drawTable) {
+      if (props.handleDraw) {
         handleSortTable()
       }
     })
@@ -155,7 +155,7 @@ export default defineComponent({
   align-items: center;
 
   .title {
-    font-size: 20px;
+    // font-size: 20px;
     font-weight: 700;
   }
 

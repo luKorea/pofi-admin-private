@@ -6,6 +6,7 @@
       v-bind="contentTableConfig"
       v-model:page="pageInfo"
       @drawTable="drawTable"
+      :handleDraw="permission?.drawTable"
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
@@ -76,7 +77,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
-import { usePermission } from '@/hooks/use-permission'
+// import { usePermission } from '@/hooks/use-permission'
 
 import HyTable from '@/base-ui/table'
 
@@ -121,7 +122,7 @@ export default defineComponent({
     const isCreate = props.permission?.add as any
     const isUpdate = props.permission?.update as any
     const isDelete = props.permission?.delete as any
-    const isQuery = props.permission?.query as any
+    const isQuery = true
     const isOther = props.permission?.other as any
     // const isCreate = usePermission(props.pageName, 'create')
     // const isUpdate = usePermission(props.pageName, 'update')
@@ -138,8 +139,9 @@ export default defineComponent({
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
-          size: pageInfo.value.pageSize,
+          currentPage:
+            (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+          pageSize: pageInfo.value.pageSize,
           ...queryInfo
         }
       })
