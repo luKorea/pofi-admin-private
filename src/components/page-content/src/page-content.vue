@@ -163,6 +163,8 @@ export default defineComponent({
         if (item.slotName === 'createAt') return false
         if (item.slotName === 'updateAt') return false
         if (item.slotName === 'handler') return false
+        if (item.slotName === 'image') return false
+        if (item.slotName === 'video') return false
         return true
       }
     )
