@@ -37,7 +37,7 @@ export default defineComponent({
   props: {
     searchFormConfig: {
       type: Object,
-      reuqired: true
+      required: true
     }
   },
   components: {
