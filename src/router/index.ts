@@ -10,7 +10,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 import localCache from '@/utils/cache'
-// import { firstMenu } from '@/utils/map-menus'
+import { firstMenu } from '@/utils/map-menus'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -65,19 +65,17 @@ const router = createRouter({
 // 导航守卫
 router.beforeEach((to) => {
   if (to.path !== '/login') {
+    // 当前系统是否登录，目前不适用
     const token = localCache.getCache('token')
     if (!token) {
       return '/login'
     }
   }
-
-  // console.log(router.getRoutes())
-  // console.log(to) // route对象
-
-  // if (to.path === '/main') {
-  //   console.log(firstMenu, 'frs')
-  //   return firstMenu.path
-  // }
+  // 重定向页面
+  if (to.path === '/main') {
+    console.log(firstMenu, 'frs')
+    return firstMenu.url
+  }
 })
 
 export default router

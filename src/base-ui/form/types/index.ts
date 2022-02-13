@@ -6,7 +6,18 @@
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/form/types/index.ts
  */
-type IFormType = 'input' | 'password' | 'select' | 'datepicker' | 'radio'
+type IFormType =
+  | 'input'
+  | 'password'
+  | 'select'
+  | 'datepicker'
+  | 'radio'
+  | 'cascader'
+  | 'checkbox'
+  | 'inputNumber'
+  | 'switch'
+  | 'upload'
+  | 'timeSelect'
 
 export interface IFormItem {
   field: string

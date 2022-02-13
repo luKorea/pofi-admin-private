@@ -1,8 +1,10 @@
 import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
 
+// 存储 侧边栏第一个菜单，登录后默认打开
 let firstMenu: any = null
 
+// 将用户拥有的权限路由进行映射
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
 
@@ -35,6 +37,7 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         if (route) routes.push(route)
         if (!firstMenu) {
           firstMenu = menu
+          console.log(firstMenu, 'firstMenu')
         }
       }
     }
@@ -44,65 +47,32 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   return routes
 }
 
+// 面包屑
 export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
   const breadcrumbs: IBreadcrumb[] = []
   pathMapToMenu(userMenus, currentPath, breadcrumbs)
   return breadcrumbs
 }
 
-// /main/system/role  -> type === 2 对应menu
+// 处理用户刷新页面后侧边栏菜单选中，以及面包屑
 export function pathMapToMenu(
   userMenus: any[],
   currentPath: string,
   breadcrumbs?: IBreadcrumb[]
 ): any {
   for (const menu of userMenus) {
-    if (menu.length === 0) {
-      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+    if (menu.children && menu.children.length > 0) {
+      const findMenu = pathMapToMenu(menu.children, currentPath)
       if (findMenu) {
-        breadcrumbs?.push({ name: menu.name })
-        breadcrumbs?.push({ name: findMenu.name })
+        breadcrumbs?.push({ name: menu.title })
+        breadcrumbs?.push({ name: findMenu.title })
         return findMenu
       }
-    } else {
+    } else if (menu.url === currentPath) {
       return menu
     }
   }
 }
-
-// export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
-//   const breadcrumbs: IBreadcrumb[] = []
-
-//   for (const menu of userMenus) {
-//     if (menu.type === 1) {
-//       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
-//       if (findMenu) {
-//         breadcrumbs.push({ name: menu.name, path: menu.url })
-//         breadcrumbs.push({ name: findMenu.name, path: findMenu.url })
-//         return findMenu
-//       }
-//     } else if (menu.type === 2 && menu.url === currentPath) {
-//       return menu
-//     }
-//   }
-
-//   return breadcrumbs
-// }
-
-// // /main/system/role  -> type === 2 对应menu
-// export function pathMapToMenu(userMenus: any[], currentPath: string): any {
-//   for (const menu of userMenus) {
-//     if (menu.type === 1) {
-//       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
-//       if (findMenu) {
-//         return findMenu
-//       }
-//     } else if (menu.type === 2 && menu.url === currentPath) {
-//       return menu
-//     }
-//   }
-// }
-
 export function mapMenusToPermissions(userMenus: any[]) {
   const permissions: string[] = []
 

@@ -14,7 +14,7 @@ import md5 from 'md5'
 
 enum LoginAPI {
   AccountLogin = '/cms/user/login',
-  LoginUserInfo = '/users/', // 用法: /users/1
+  LoginUserInfo = '/cms/user/getHome', // 用法: /users/1
   UserMenus = '/cms/router/getRouter' // 用法: role/1/menu
 }
 
@@ -28,9 +28,9 @@ export function accountLoginRequest(account: IAccount) {
   })
 }
 
-export function requestUserInfoById(id: number) {
+export function requestUserInfo() {
   return hyRequest.get<IDataType>({
-    url: LoginAPI.LoginUserInfo + id,
+    url: LoginAPI.LoginUserInfo,
     showLoading: false
   })
 }

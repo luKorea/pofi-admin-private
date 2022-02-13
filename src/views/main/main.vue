@@ -11,7 +11,11 @@
         <nav-tags></nav-tags>
         <el-main class="page-content">
           <div class="page-info">
-            <router-view></router-view>
+            <router-view v-slot="{ Component }">
+              <transition name="fade-transform">
+                <component :is="Component"></component>
+              </transition>
+            </router-view>
           </div>
         </el-main>
       </el-container>
@@ -46,6 +50,21 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
 .main {
   position: fixed;
   top: 0;

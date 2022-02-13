@@ -45,7 +45,9 @@ import {
   ElImage,
   ElDialog,
   ElTree,
-  ElDrawer
+  ElDrawer,
+  ElInputNumber,
+  ElCheckboxButton
 } from 'element-plus'
 
 const components = [
@@ -85,7 +87,10 @@ const components = [
   ElImage,
   ElDialog,
   ElTree,
-  ElDrawer
+  ElDrawer,
+  ElInputNumber,
+  ElCheckbox,
+  ElCheckboxButton
 ]
 
 export default function (app: App): void {

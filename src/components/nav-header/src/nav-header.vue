@@ -14,8 +14,8 @@
       @click="handleFoldClick"
     ></i>
     <div class="content">
-      <div>Pofi Create 后台管理系统 · 生产</div>
-      <!-- <hy-breadcrumb :breadcrumbs="breadcrumbs" /> -->
+      <div>{{ envName }}</div>
+      <!--      <hy-breadcrumb :breadcrumbs="breadcrumbs" />-->
       <user-info />
     </div>
   </div>
@@ -45,6 +45,7 @@ export default defineComponent({
 
     // 面包屑的数据: [{name: , path: }]
     const store = useStore()
+    const envName = store.state.login.userInfo.title
     const breadcrumbs = computed(() => {
       const userMenus = store.state.login.userMenus
       const route = useRoute()
@@ -55,7 +56,8 @@ export default defineComponent({
     return {
       isFold,
       handleFoldClick,
-      breadcrumbs
+      breadcrumbs,
+      envName
     }
   }
 })
@@ -64,6 +66,7 @@ export default defineComponent({
 <style scoped lang="less">
 .nav-header {
   display: flex;
+  align-items: center;
   width: 100%;
 
   .fold-menu {

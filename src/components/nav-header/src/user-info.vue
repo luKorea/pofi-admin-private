@@ -38,7 +38,7 @@ import localCache from '@/utils/cache'
 export default defineComponent({
   setup() {
     const store = useStore()
-    const name = computed(() => store.state.login.userInfo.name)
+    const name = computed(() => store.state.login.userInfo.user.nickname)
 
     const router = useRouter()
     const handleExitClick = () => {
@@ -57,6 +57,10 @@ export default defineComponent({
 <style scoped>
 .el-dropdown-link {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.user-info {
   display: flex;
   align-items: center;
 }

@@ -10,7 +10,7 @@ import { Module } from 'vuex'
 
 import {
   accountLoginRequest,
-  requestUserInfoById,
+  requestUserInfo,
   requestUserMenusByRoleId
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
@@ -63,13 +63,13 @@ const loginModule: Module<any, any> = {
       localCache.setCache('token', token)
 
       // 发送初始化的请求(完整的role/department)
-      dispatch('getInitialDataAction', null, { root: true })
+      // dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息
-      // const userInfoResult = await requestUserInfoById(id)
-      // const userInfo = userInfoResult.data
-      // commit('changeUserInfo', userInfo)
-      // localCache.setCache('userInfo', userInfo)
+      const userInfoResult = await requestUserInfo()
+      const userInfo = userInfoResult.data
+      commit('changeUserInfo', userInfo)
+      localCache.setCache('userInfo', userInfo)
 
       // 3.请求用户菜单
       const userMenusResult = await requestUserMenusByRoleId()
@@ -84,7 +84,7 @@ const loginModule: Module<any, any> = {
       if (token) {
         commit('changeToken', token)
         // 发送初始化的请求(完整的role/department)
-        dispatch('getInitialDataAction', null, { root: true })
+        // dispatch('getInitialDataAction', null, { root: true })
       }
       const userInfo = localCache.getCache('userInfo')
       if (userInfo) {

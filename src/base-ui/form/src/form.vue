@@ -24,6 +24,15 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
+              <template v-if="item.type === 'inputNumber'">
+                <el-input-number
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  :model-value="modelValue[`${item.field}`]"
+                  style="width: 100%"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                />
+              </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
                   :placeholder="item.placeholder"

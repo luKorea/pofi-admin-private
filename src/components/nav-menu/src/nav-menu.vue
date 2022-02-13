@@ -1,9 +1,9 @@
 <template>
   <div class="nav-menu">
-    <!-- <div class="logo">
-      <img class="img" src="~@/assets/img/logo.svg" alt="logo" />
-      <span v-if="!collapse" class="title">Pofi管理系统</span>
-    </div> -->
+    <!--    <div class="logo">-->
+    <!--      <img class="img" src="~@/assets/img/logo.svg" alt="logo" />-->
+    <!--      <span v-if="!collapse" class="title">Pofi管理系统</span>-->
+    <!--    </div>-->
     <el-menu
       :default-active="defaultValue"
       class="el-menu-vertical"
@@ -72,10 +72,8 @@ export default defineComponent({
     const currentPath = route.path
 
     // data
-    const menu = userMenus
-    console.log(userMenus.value, 'user')
-    // const defaultValue = ref(menu.id + '')
-    const defaultValue = ref(0 + '')
+    const menu = pathMapToMenu(userMenus.value, currentPath)
+    const defaultValue = ref(menu.id + '')
     // event handle
     const handleMenuItemClick = (subItem: any) => {
       console.log(subItem, '路由参数')
@@ -148,6 +146,6 @@ export default defineComponent({
 
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 100%;
-  height: calc(100% - 48px);
+  //height: calc(100% - 48px);
 }
 </style>

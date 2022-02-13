@@ -25,9 +25,12 @@ export const modalConfig: IForm = {
     },
     {
       field: 'limitNum',
-      type: 'input',
+      type: 'inputNumber',
       label: '设备限制',
       placeholder: '请输入设备限制',
+      otherOptions: {
+        min: 0
+      },
       rules: [
         {
           required: true,
