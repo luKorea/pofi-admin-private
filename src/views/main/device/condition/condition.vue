@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 14:31:33
+ * @LastEditTime: 2022-02-14 14:46:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -33,7 +33,7 @@
           >
         </template>
         <template #handler="scope">
-          <div class="handle-btns">
+          <div class="hg-flex hg-justify-center">
             <el-button
               icon="el-icon-edit"
               size="mini"

@@ -37,8 +37,9 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
+      <!-- 操作插槽 -->
       <template #handler="scope">
-        <div class="handle-btns">
+        <div class="hg-flex hg-justify-center">
           <slot name="other" v-if="isOther"></slot>
           <el-button
             v-if="isUpdate"
@@ -211,7 +212,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .page-content {
   padding: 20px;
   border-top: 20px solid #f0f2f5;
