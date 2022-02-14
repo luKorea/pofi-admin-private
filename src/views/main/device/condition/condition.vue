@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 11:49:32
+ * @LastEditTime: 2022-02-14 14:00:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -33,12 +33,8 @@
             >{{ scope.row.state ? '启用' : '禁用' }}</span
           >
         </template>
-        <template #createAt="scope">
-          <span>{{ $filters.formatTime(scope.row.createTime) }}</span>
-        </template>
         <template #handler="scope">
           <div class="handle-btns">
-            <slot name="other" v-if="isOther"></slot>
             <el-button
               icon="el-icon-edit"
               size="mini"

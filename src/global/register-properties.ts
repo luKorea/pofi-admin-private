@@ -1,14 +1,22 @@
-import { App } from 'vue'
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:29:12
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-14 13:56:55
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/global/register-properties.ts
+ */
+import type { App } from 'vue'
 
 import { formatUtcString } from '@/utils/date-format'
 
 export default function registerProperties(app: App) {
-  app.config.globalProperties.$filters = {
-    foo() {
-      console.log('foo')
-    },
+  const APP = app.config.globalProperties
+  APP.$filters = {
+    // 日期时间过滤器
     formatTime(value: string) {
       return formatUtcString(value)
     }
   }
+  console.log(APP, 'Vue全局配置')
 }

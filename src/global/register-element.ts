@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:49:59
+ * @LastEditTime: 2022-02-14 14:08:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -48,7 +48,8 @@ import {
   ElDrawer,
   ElInputNumber,
   ElCheckboxButton,
-  ElPopconfirm
+  ElPopconfirm,
+  ElUpload
 } from 'element-plus'
 
 const components = [
@@ -92,7 +93,8 @@ const components = [
   ElInputNumber,
   ElCheckbox,
   ElCheckboxButton,
-  ElPopconfirm
+  ElPopconfirm,
+  ElUpload
 ]
 
 export default function (app: App): void {
