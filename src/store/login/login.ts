@@ -2,11 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 11:06:40
+ * @LastEditTime: 2022-02-14 09:50:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
 import { Module } from 'vuex'
+import { errorTip, successTip } from '@/utils/tip-info'
 
 import {
   accountLoginRequest,
@@ -18,8 +19,8 @@ import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/map-menus'
 import router from '@/router'
 
 import { IAccount } from '@/service/login/type'
-import { ILoginState } from './types'
-import { IRootState } from '../types'
+// import { ILoginState } from './types'
+// import { IRootState } from '../types'
 
 const loginModule: Module<any, any> = {
   namespaced: true,
@@ -57,27 +58,31 @@ const loginModule: Module<any, any> = {
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       // const { id, token } = loginResult.data
-      console.log(loginResult)
-      const { token } = loginResult
-      commit('changeToken', token)
-      localCache.setCache('token', token)
+      if (loginResult.state) {
+        console.log(loginResult)
+        const { token } = loginResult
+        commit('changeToken', token)
+        localCache.setCache('token', token)
+        successTip('登录成功')
+        // 发送初始化的请求(完整的role/department)
+        // dispatch('getInitialDataAction', null, { root: true })
 
-      // 发送初始化的请求(完整的role/department)
-      // dispatch('getInitialDataAction', null, { root: true })
+        // 2.请求用户信息
+        const userInfoResult = await requestUserInfo()
+        const userInfo = userInfoResult.data
+        commit('changeUserInfo', userInfo)
+        localCache.setCache('userInfo', userInfo)
 
-      // 2.请求用户信息
-      const userInfoResult = await requestUserInfo()
-      const userInfo = userInfoResult.data
-      commit('changeUserInfo', userInfo)
-      localCache.setCache('userInfo', userInfo)
-
-      // 3.请求用户菜单
-      const userMenusResult = await requestUserMenusByRoleId()
-      const userMenus = userMenusResult.result
-      commit('changeUserMenus', userMenus)
-      localCache.setCache('userMenus', userMenus)
-      // 4.跳到首页
-      router.push('/main')
+        // 3.请求用户菜单
+        const userMenusResult = await requestUserMenusByRoleId()
+        const userMenus = userMenusResult.result
+        commit('changeUserMenus', userMenus)
+        localCache.setCache('userMenus', userMenus)
+        // 4.跳到首页
+        router.push('/main')
+      } else {
+        errorTip(loginResult.msg)
+      }
     },
     loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache('token')

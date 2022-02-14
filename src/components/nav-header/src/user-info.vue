@@ -42,7 +42,10 @@ export default defineComponent({
 
     const router = useRouter()
     const handleExitClick = () => {
+      // 移除本地缓存
       localCache.deleteCache('token')
+      localCache.deleteCache('userInfo')
+      localCache.deleteCache('userMenus')
       router.push('/login')
     }
 
