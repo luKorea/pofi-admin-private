@@ -124,7 +124,7 @@ export default defineComponent({
     const handleSortTable = () => {
       const tableSort: HTMLElement = document.getElementsByTagName('tbody')[0]
       new SortTable(tableSort, {
-        animation: 150,
+        animation: 500,
         onEnd(evt: any) {
           emit('drawTable', {
             oldIndex: evt.oldIndex,
@@ -134,19 +134,12 @@ export default defineComponent({
       })
     }
     // 多选操作
-    const handleSelectionChange = (value: any) => {
-      emit('selectionChange', value)
-    }
-
+    const handleSelectionChange = (value: any) => emit('selectionChange', value)
     // 分页操作
-    const handleCurrentChange = (currentPage: number) => {
+    const handleCurrentChange = (currentPage: number) =>
       emit('update:page', { ...props.page, currentPage })
-    }
-
-    const handleSizeChange = (pageSize: number) => {
+    const handleSizeChange = (pageSize: number) =>
       emit('update:page', { ...props.page, pageSize })
-    }
-
     return {
       handleSelectionChange,
       handleCurrentChange,
