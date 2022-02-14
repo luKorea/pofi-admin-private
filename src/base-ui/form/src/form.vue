@@ -47,7 +47,8 @@
                     :key="option.value"
                     :value="option.value"
                     :label="option.title"
-                  ></el-option>
+                    >{{ option.title }}</el-option
+                  >
                 </el-select>
               </template>
               <template v-else-if="item.type === 'datepicker'">

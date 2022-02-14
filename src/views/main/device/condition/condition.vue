@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:42:31
+ * @LastEditTime: 2022-02-14 11:49:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -63,7 +63,7 @@
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="users"
-      :modalConfig="modalConfig"
+      :modalConfig="modalConfigRef"
       drawerTitle="限制条件"
       @addClick="saveData"
       @editClick="updateData"
@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
 import HyTable from '@/base-ui/table'
 import PageModal from '@/components/page-modal'
 import { contentTableConfig } from './config/content.config'
@@ -86,10 +86,29 @@ export default defineComponent({
     PageModal
   },
   setup() {
-    const [dataList, dataCount, pageInfo, saveData, updateData, deleteData] =
-      useGetConditionList()
+    const [
+      dataList,
+      dataCount,
+      countryList,
+      pageInfo,
+      saveData,
+      updateData,
+      deleteData
+    ] = useGetConditionList()
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
+
+    // 获取地区下拉数据并动态设置到表单中
+    const modalConfigRef = computed(() => {
+      const country = modalConfig.formItems.find(
+        (item: any) => item.field === 'regionName'
+      )
+      country!.options = countryList.value.map((item: any) => ({
+        title: item.name,
+        value: item.id
+      }))
+      return modalConfig
+    })
     return {
       contentTableConfig,
       dataList,
@@ -98,7 +117,7 @@ export default defineComponent({
       saveData,
       updateData,
       deleteData,
-      modalConfig,
+      modalConfigRef,
       pageModalRef,
       defaultInfo,
       handleNewData,

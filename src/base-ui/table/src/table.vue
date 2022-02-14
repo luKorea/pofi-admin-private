@@ -2,7 +2,7 @@
   <div class="hy-table">
     <div class="header">
       <slot name="header">
-        <div class="title">{{ title }}</div>
+        <div class="hg-text-black">{{ title }}</div>
         <div class="handler">
           <slot name="headerHandler"></slot>
         </div>
@@ -10,7 +10,6 @@
     </div>
     <el-table
       :data="listData"
-      stripe
       style="width: 100%"
       @selection-change="handleSelectionChange"
       v-bind="childrenProps"
@@ -33,6 +32,7 @@
       <template v-for="propItem in propList" :key="propItem.prop">
         <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
+            <!-- 动态插槽，动态作用于插槽 -->
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
             </slot>
@@ -47,7 +47,7 @@
           @current-change="handleCurrentChange"
           :current-page="page.currentPage"
           :page-size="page.pageSize"
-          :page-sizes="[10, 20, 30]"
+          :page-sizes="[10, 20, 40, 60, 80, 100]"
           layout="total, sizes, prev, pager, next, jumper"
           :total="listCount"
         >
@@ -79,14 +79,17 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    // 是否显示序号
     showIndexColumn: {
       type: Boolean,
       default: false
     },
+    // 是否显示多选
     showSelectColumn: {
       type: Boolean,
       default: false
     },
+    // 分页数据
     page: {
       type: Object,
       default: () => ({ currentPage: 1, pageSize: 10 })
@@ -95,6 +98,7 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
+    // 展示底部分页器
     showFooter: {
       type: Boolean,
       default: true

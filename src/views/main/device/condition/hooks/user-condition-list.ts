@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 11:16:04
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:51:20
+ * @LastEditTime: 2022-02-14 11:48:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/hooks/user-condition-list.ts
  */
@@ -13,6 +13,7 @@ import {
   editCondition,
   removeCondition
 } from '@/service/device/condition'
+import { getCountrySelectList } from '@/service/common'
 import { errorTip, infoTipBox } from '@/utils/tip-info'
 export function useGetConditionList() {
   // 1.双向绑定pageInfo
@@ -20,6 +21,7 @@ export function useGetConditionList() {
   watch(pageInfo, () => getPageData())
   const dataList = ref([])
   const dataCount = ref(0)
+  const countryList: any = ref([])
   // 2.发送网络请求
   const getPageData = (queryInfo: any = {}) => {
     getConditionList({
@@ -31,7 +33,7 @@ export function useGetConditionList() {
         const { rows, total } = res.data
         dataList.value = rows
         dataCount.value = total
-      }
+      } else errorTip(res.msg)
     })
   }
   getPageData()
@@ -74,9 +76,21 @@ export function useGetConditionList() {
     })
   }
 
+  // 获取国家下拉列表
+  const getCountryList = () => {
+    getCountrySelectList().then((res: any) => {
+      if (res.state) {
+        const { rows } = res.data
+        countryList.value = rows
+      } else errorTip(res.msg)
+    })
+  }
+  getCountryList()
+
   return [
     dataList,
     dataCount,
+    countryList,
     pageInfo,
     saveData,
     updateData,

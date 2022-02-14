@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-11 11:58:02
+ * @LastEditTime: 2022-02-14 11:46:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/modal.config.ts
  */
@@ -44,7 +44,10 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '地区',
       placeholder: '不选默认全部',
-      options: []
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
     },
     {
       field: 'state',

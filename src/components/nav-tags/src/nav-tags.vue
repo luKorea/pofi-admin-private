@@ -40,7 +40,8 @@ export default {
         //最后一个标签不能删
         ElMessage.warning({
           message: '最后一个标签了哦！',
-          type: 'warning'
+          type: 'warning',
+          duration: 1000
         })
         return false
       }

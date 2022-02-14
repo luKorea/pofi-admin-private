@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-11 10:38:11
+ * @LastEditTime: 2022-02-14 11:34:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -14,6 +14,7 @@ enum commonAPI {
 // 获取所有地区数据
 export function getCountrySelectList() {
   return hyRequest.post<any>({
-    url: commonAPI.country
+    url: commonAPI.country,
+    showLoading: false
   })
 }
