@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-11 11:58:15
+ * @LastEditTime: 2022-02-14 10:21:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -55,7 +55,7 @@
               size="mini"
               type="text"
               style="color: #f56c6c"
-              @click="handleDeleteClick(scope.row)"
+              @click="deleteData(scope.row)"
               >删除</el-button
             >
           </div>
@@ -80,10 +80,8 @@ import HyTable from '@/base-ui/table'
 import PageModal from '@/components/page-modal'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
-import { useGetConditionList } from './hooks/user-get-condition-list'
+import { useGetConditionList } from './hooks/user-condition-list'
 import { usePageModal } from '@/hooks/use-page-modal'
-import { addCondition } from '@/service/device/condition'
-
 export default defineComponent({
   name: 'condition',
   components: {
@@ -91,35 +89,23 @@ export default defineComponent({
     PageModal
   },
   setup() {
-    const [dataList, dataCount, pageInfo] = useGetConditionList()
-
-    const saveData = (data: any) => {
-      addCondition(data).then((res) => {
-        console.log(res)
-      })
-    }
-    const updateData = (data: any) => {
-      console.log(data)
-    }
-
-    const handleDeleteClick = (data: any) => {
-      console.log(data)
-    }
+    const [dataList, dataCount, pageInfo, saveData, updateData, deleteData] =
+      useGetConditionList()
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
       contentTableConfig,
       dataList,
       dataCount,
-      modalConfig,
       pageInfo,
+      saveData,
+      updateData,
+      deleteData,
+      modalConfig,
       pageModalRef,
       defaultInfo,
       handleNewData,
-      handleEditData,
-      saveData,
-      updateData,
-      handleDeleteClick
+      handleEditData
     }
   }
 })
