@@ -135,6 +135,15 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
+    },
+    // 公共化处理，传入不同的action名字，请求不用页面数据
+    storeTypeInfo: {
+      type: Object,
+      default: () => ({
+        actionName: 'system/getPageListAction',
+        actionListName: 'system/pageListData',
+        actionCountName: 'system/pageListCount'
+      })
     }
   },
   emits: [
@@ -175,7 +184,7 @@ export default defineComponent({
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
       if (!permissionList.value.isQuery) return
-      store.dispatch('system/getPageListAction', {
+      store.dispatch(props.storeTypeInfo?.actionName, {
         pageName: props.pageName,
         queryInfo: {
           currentPage:
@@ -188,12 +197,14 @@ export default defineComponent({
     getPageData()
 
     // 3.从vuex中获取数据
-    const dataList = computed(() =>
-      store.getters[`system/pageListData`](props.pageName)
-    )
-    const dataCount = computed(() =>
-      store.getters[`system/pageListCount`](props.pageName)
-    )
+    const dataList = computed(() => {
+      return store.getters[props?.storeTypeInfo?.actionListName](props.pageName)
+    })
+    const dataCount = computed(() => {
+      return store.getters[props?.storeTypeInfo?.actionCountName](
+        props.pageName
+      )
+    })
 
     // 4.获取其他的动态插槽名称
     const otherPropSlots = props.contentTableConfig?.propList.filter(

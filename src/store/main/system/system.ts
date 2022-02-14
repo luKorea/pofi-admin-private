@@ -79,11 +79,15 @@ const systemModule: Module<ISystemState, IRootState> = {
       console.log(pageResult)
       // const { list, totalCount } = pageResult.data
       const { data, totalCount = 0 } = pageResult as any
-
       const changePageName =
         pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
       commit(`change${changePageName}List`, data)
-      commit(`change${changePageName}Count`, totalCount)
+      // 处理oa下没有返回totalCount
+      if (pageName === 'users') {
+        commit(`change${changePageName}Count`, data.length)
+      } else {
+        commit(`change${changePageName}Count`, totalCount)
+      }
     },
 
     async deletePageDataAction({ dispatch }, payload: any) {
