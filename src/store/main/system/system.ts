@@ -67,7 +67,9 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageName = payload.pageName
       const apiList: any = {
         users: '/cms/user/getUsers',
-        role: '/cms/role/getRole'
+        role: '/cms/role/getRole',
+        permission: '/cms/permission/getPermission',
+        router: '/cms/router/getRouter'
       }
       console.log(apiList[pageName], '用户路由')
       const pageUrl = apiList[pageName]
