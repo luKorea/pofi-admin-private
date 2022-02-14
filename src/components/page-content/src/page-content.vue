@@ -40,7 +40,24 @@
       <!-- 操作插槽 -->
       <template #handler="scope">
         <div class="hg-flex hg-justify-center">
-          <slot name="other" v-if="isOther"></slot>
+          <el-button
+            v-if="isDistribution"
+            icon="el-icon-edit"
+            size="mini"
+            type="text"
+            @click="handleDistributionClick(scope.row)"
+          >
+            分配
+          </el-button>
+          <el-button
+            v-if="isOperation"
+            icon="el-icon-edit"
+            size="mini"
+            type="text"
+            @click="handleOperationClick(scope.row)"
+          >
+            操作日志
+          </el-button>
           <el-button
             v-if="isUpdate"
             icon="el-icon-edit"
@@ -55,7 +72,7 @@
             icon="el-icon-delete"
             size="mini"
             type="text"
-            style="color: #f56c6c"
+            class="hg-text-red-400"
             @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
@@ -90,7 +107,14 @@ export default defineComponent({
   props: {
     permission: {
       type: Object,
-      default: () => ({})
+      default: () => ({
+        isCreate: true,
+        isDelete: true,
+        isUpdate: false,
+        isQuery: true,
+        isOperation: false,
+        isDistribution: true
+      })
     },
     contentTableConfig: {
       type: Object,
@@ -106,7 +130,9 @@ export default defineComponent({
     'newBtnClick',
     'editBtnClick',
     'removeBtnClick',
-    'selectBtnClick'
+    'selectBtnClick',
+    'distributionBtnClick',
+    'operationBtnClick'
   ],
   setup(props, { emit }) {
     const store = useStore()
@@ -133,7 +159,8 @@ export default defineComponent({
     const isUpdate = props.permission?.update as any
     const isDelete = props.permission?.delete as any
     const isQuery = true
-    const isOther = props.permission?.other as any
+    const isOperation = props.permission?.other as any // 操作日志
+    const isDistribution = props.permission?.isDistribution as any // 分配按钮
     // const isCreate = usePermission(props.pageName, 'create')
     // const isUpdate = usePermission(props.pageName, 'update')
     // const isDelete = usePermission(props.pageName, 'delete')
@@ -179,7 +206,7 @@ export default defineComponent({
       }
     )
 
-    // 5.删除/编辑/新建/多选操作
+    // 5.删除/编辑/新建/多选/分配/操作日志按钮
     // const handleDeleteClick = (item: any) => {
     //   // console.log(item)
     //   // store.dispatch('system/deletePageDataAction', {
@@ -192,6 +219,9 @@ export default defineComponent({
     const handleNewClick = () => emit('newBtnClick')
     const handleEditClick = (item: any) => emit('editBtnClick', item)
     const handleSelectionChange = (data: any) => emit('selectBtnClick', data)
+    const handleDistributionClick = (item: any) =>
+      emit('distributionBtnClick', item)
+    const handleOperationClick = (item: any) => emit('operationBtnClick', item)
     return {
       drawTable,
       dataList,
@@ -202,11 +232,14 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
-      isOther,
+      isOperation,
+      isDistribution,
       handleDeleteClick,
       handleNewClick,
       handleEditClick,
-      handleSelectionChange
+      handleSelectionChange,
+      handleDistributionClick,
+      handleOperationClick
     }
   }
 })

@@ -16,7 +16,7 @@
              4. 商品中心/资源商品 3
         5. 资料库
              1. 资料库/资源数据统计 1
-             2. 资料库/资源管理中心 3
+             2. 资料库/资源管理中心 3 (使用Hytable定制化)
              3. 资料库/专题管理 3
              4. 资料库/首页管理 3
              5. 资料库/系列管理 2
@@ -68,5 +68,12 @@
      1. npm install -D tailwindcss@latest postcss@latest autoprefixer@latest (安装 Tailwind 以及其它依赖项)
      2. npx tailwindcss init -p (生成 tailwind.config.js 和 postcss.config.js 文件)
      ```
-
+# 该系统大致按钮权限划分
+  1. 新增
+  2. 编辑
+  3. 查询
+  4. 删除
+  5. 分配（权限角色分配）
+  6. 个性化按钮 (根据HyTable编写，不走page-content)
+  7. 操作日志
      
