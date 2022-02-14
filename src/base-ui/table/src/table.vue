@@ -106,7 +106,7 @@ export default defineComponent({
     // 控制表格是否可以拖动
     handleDraw: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
@@ -118,7 +118,7 @@ export default defineComponent({
     })
     // TODO 表格拖动
     const handleSortTable = () => {
-      const tableSort = document.getElementsByTagName('tbody')[0] as HTMLElement
+      const tableSort: HTMLElement = document.getElementsByTagName('tbody')[0]
       new SortTable(tableSort, {
         animation: 150,
         onEnd(evt: any) {
@@ -129,10 +129,12 @@ export default defineComponent({
         }
       })
     }
+    // 多选操作
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }
 
+    // 分页操作
     const handleCurrentChange = (currentPage: number) => {
       emit('update:page', { ...props.page, currentPage })
     }

@@ -6,6 +6,7 @@
       v-bind="contentTableConfig"
       v-model:page="pageInfo"
       @drawTable="drawTable"
+      @selectionChange="handleSelectionChange"
       :handleDraw="permission?.drawTable"
     >
       <!-- 1.header中的插槽 -->
@@ -99,7 +100,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['newBtnClick', 'editBtnClick'],
+  emits: ['newBtnClick', 'editBtnClick', 'removeBtnClick', 'selectBtnClick'],
   setup(props, { emit }) {
     const store = useStore()
     // TODO 处理用户拖动表格后更新数据
@@ -169,21 +170,19 @@ export default defineComponent({
       }
     )
 
-    // 5.删除/编辑/新建操作
-    const handleDeleteClick = (item: any) => {
-      console.log(item)
-      store.dispatch('system/deletePageDataAction', {
-        pageName: props.pageName,
-        id: item.id
-      })
-    }
-    const handleNewClick = () => {
-      emit('newBtnClick')
-    }
-    const handleEditClick = (item: any) => {
-      emit('editBtnClick', item)
-    }
-
+    // 5.删除/编辑/新建/多选操作
+    // const handleDeleteClick = (item: any) => {
+    //   // console.log(item)
+    //   // store.dispatch('system/deletePageDataAction', {
+    //   //   pageName: props.pageName,
+    //   //   id: item.id
+    //   // })
+    //   emit('removeBtnClick', item)
+    // }
+    const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
+    const handleNewClick = () => emit('newBtnClick')
+    const handleEditClick = (item: any) => emit('editBtnClick', item)
+    const handleSelectionChange = (data: any) => emit('selectBtnClick', data)
     return {
       drawTable,
       dataList,
@@ -197,7 +196,8 @@ export default defineComponent({
       isOther,
       handleDeleteClick,
       handleNewClick,
-      handleEditClick
+      handleEditClick,
+      handleSelectionChange
     }
   }
 })

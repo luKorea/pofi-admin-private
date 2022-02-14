@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 14:00:27
+ * @LastEditTime: 2022-02-14 14:27:56
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
 export const contentTableConfig = {
-  title: '用户列表',
+  title: '限制条件列表',
   propList: [
     { prop: 'id', label: '序号', sortable: true },
     { prop: 'name', label: '方案名称' },

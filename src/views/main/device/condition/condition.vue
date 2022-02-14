@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 14:00:02
+ * @LastEditTime: 2022-02-14 14:31:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -14,7 +14,6 @@
         :listCount="dataCount"
         v-bind="contentTableConfig"
         v-model:page="pageInfo"
-        title="限制条件列表"
       >
         <!-- 1.header中的插槽 -->
         <template #headerHandler>
