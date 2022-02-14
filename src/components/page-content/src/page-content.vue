@@ -100,11 +100,19 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['newBtnClick', 'editBtnClick', 'removeBtnClick', 'selectBtnClick'],
+  emits: [
+    'drawBtnClick',
+    'newBtnClick',
+    'editBtnClick',
+    'removeBtnClick',
+    'selectBtnClick'
+  ],
   setup(props, { emit }) {
     const store = useStore()
     // TODO 处理用户拖动表格后更新数据
     const drawTable = (propsIndex: any) => {
+      emit('drawBtnClick', propsIndex)
+      // 以下事件交到外界处理，暂时不移动
       console.log(propsIndex)
       const cloneTableData = JSON.stringify(dataList.value)
       const data = JSON.parse(cloneTableData)
