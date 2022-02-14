@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 09:58:36
+ * @LastEditTime: 2022-02-14 10:57:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -10,7 +10,7 @@ import { createStore, Store, useStore as useVuexStore } from 'vuex'
 
 import login from './login/login'
 import system from './main/system/system'
-import cache from '@/utils/cache'
+// import cache from '@/utils/cache'
 
 import { getPageListData } from '@/service/main/system/system'
 

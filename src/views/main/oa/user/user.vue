@@ -71,6 +71,7 @@ export default defineComponent({
 
     // 2.动态添加部门和角色列表
     const store = useStore()
+    console.log(store)
     const modalConfigRef = computed(() => {
       // const departmentItem = modalConfig.formItems.find(
       //   (item) => item.field === 'departmentId'

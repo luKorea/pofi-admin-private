@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 09:50:54
+ * @LastEditTime: 2022-02-14 10:57:13
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -54,7 +54,7 @@ const loginModule: Module<any, any> = {
     }
   },
   actions: {
-    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
+    async accountLoginAction({ commit }, payload: IAccount) {
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       // const { id, token } = loginResult.data
@@ -84,7 +84,7 @@ const loginModule: Module<any, any> = {
         errorTip(loginResult.msg)
       }
     },
-    loadLocalLogin({ commit, dispatch }) {
+    loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')
       if (token) {
         commit('changeToken', token)

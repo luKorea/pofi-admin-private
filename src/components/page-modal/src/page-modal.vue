@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-11 11:27:58
+ * @LastEditTime: 2022-02-14 10:57:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -85,6 +85,7 @@ export default defineComponent({
 
     // 点击确定按钮的逻辑
     const store = useStore()
+    console.log(store)
     const handleConfirmClick = () => {
       dialogVisible.value = false
       if (Object.keys(props.defaultInfo).length) {
