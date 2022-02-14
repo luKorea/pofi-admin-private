@@ -20,6 +20,15 @@
           批量操作
         </el-button>
         <el-button
+          v-if="permissionList.isExport"
+          icon="el-icon-edit"
+          size="mini"
+          type="text"
+          @click="handleExportClick"
+        >
+          导出
+        </el-button>
+        <el-button
           v-if="permissionList.isCreate"
           type="primary"
           size="medium"
@@ -130,7 +139,8 @@ export default defineComponent({
     'removeBtnClick',
     'selectAllBtnClick',
     'distributionBtnClick',
-    'operationBtnClick'
+    'operationBtnClick',
+    'exportBtnClick'
   ],
   setup(props, { emit }) {
     const store = useStore()
@@ -193,7 +203,7 @@ export default defineComponent({
       }
     )
 
-    // 5.删除/编辑/新建/多选/分配/操作日志/拖拽/批量操作按钮
+    // 5.删除/编辑/新建/多选/分配/操作日志/拖拽/批量操作/导出按钮
     // const handleDeleteClick = (item: any) => {
     //   // console.log(item)
     //   // store.dispatch('system/deletePageDataAction', {
@@ -219,6 +229,7 @@ export default defineComponent({
         '当前行移动到的位置'
       )
     }
+    const handleExportClick = () => emit('exportBtnClick')
     const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)
     const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
     const handleNewClick = () => emit('newBtnClick')
@@ -243,7 +254,8 @@ export default defineComponent({
       handleSelectionChange,
       handleDistributionClick,
       handleOperationClick,
-      handleSelectAllClick
+      handleSelectAllClick,
+      handleExportClick
     }
   }
 })
