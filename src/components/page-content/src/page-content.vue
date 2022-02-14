@@ -107,6 +107,7 @@ import { useStore } from '@/store'
 // import { usePermission } from '@/hooks/use-permission'
 
 import HyTable from '@/base-ui/table'
+import { PermissionType } from '@/types/permission'
 
 export default defineComponent({
   components: {
@@ -135,7 +136,7 @@ export default defineComponent({
     const store = useStore()
     const userSelectData = ref([])
     // 0.获取操作的权限
-    const permission = props.contentTableConfig?.permission as any
+    const permission = props.contentTableConfig?.permission as PermissionType
     const permissionList = ref({
       isCreate: permission.add ?? false,
       isUpdate: permission.update ?? false,
