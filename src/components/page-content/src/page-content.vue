@@ -36,6 +36,11 @@
         >
           新建用户
         </el-button>
+        <el-button
+          size="medium"
+          icon="el-icon-refresh"
+          @click="getPageData"
+        ></el-button>
       </template>
 
       <!-- 2.列中的插槽 -->
