@@ -106,7 +106,7 @@ export default defineComponent({
     // 控制表格是否可以拖动
     handleDraw: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
