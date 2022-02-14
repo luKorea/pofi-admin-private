@@ -11,11 +11,12 @@
         <nav-tags></nav-tags>
         <el-main class="page-content">
           <div class="page-info">
-            <router-view v-slot="{ Component }">
+            <router-view></router-view>
+            <!-- <router-view v-slot="{ Component }">
               <transition name="fade-transform">
                 <component :is="Component"></component>
               </transition>
-            </router-view>
+            </router-view> -->
           </div>
         </el-main>
       </el-container>

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:25:57
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:21:50
+ * @LastEditTime: 2022-02-14 10:42:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -28,13 +28,10 @@
           <span>所有设备满{{ scope.row.limitNum }}台</span>
         </template>
         <template #status="scope">
-          <el-button
-            plain
-            size="mini"
-            :type="scope.row.state ? 'success' : 'danger'"
+          <span
+            :class="scope.row.state ? 'hg-text-blue-400' : 'hg-text-red-400'"
+            >{{ scope.row.state ? '启用' : '禁用' }}</span
           >
-            {{ scope.row.state ? '启用' : '禁用' }}
-          </el-button>
         </template>
         <template #createAt="scope">
           <span>{{ $filters.formatTime(scope.row.createTime) }}</span>
