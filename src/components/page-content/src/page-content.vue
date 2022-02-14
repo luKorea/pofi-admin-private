@@ -7,12 +7,20 @@
       v-model:page="pageInfo"
       @drawTable="drawTable"
       @selectionChange="handleSelectionChange"
-      :handleDraw="permission?.drawTable"
+      :handleDraw="permissionList.isDrawTable"
     >
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
         <el-button
-          v-if="isCreate"
+          v-if="permissionList.isSelectAll"
+          type="primary"
+          size="medium"
+          @click="handleSelectAllClick"
+        >
+          批量操作
+        </el-button>
+        <el-button
+          v-if="permissionList.isCreate"
           type="primary"
           size="medium"
           @click="handleNewClick"
@@ -41,7 +49,7 @@
       <template #handler="scope">
         <div class="hg-flex hg-justify-center">
           <el-button
-            v-if="isDistribution"
+            v-if="permissionList.isDistribution"
             icon="el-icon-edit"
             size="mini"
             type="text"
@@ -50,7 +58,7 @@
             分配
           </el-button>
           <el-button
-            v-if="isOperation"
+            v-if="permissionList.isOperation"
             icon="el-icon-edit"
             size="mini"
             type="text"
@@ -59,7 +67,7 @@
             操作日志
           </el-button>
           <el-button
-            v-if="isUpdate"
+            v-if="permissionList.isUpdate"
             icon="el-icon-edit"
             size="mini"
             type="text"
@@ -68,11 +76,11 @@
             编辑
           </el-button>
           <el-button
-            v-if="isDelete"
+            v-if="permissionList.isDelete"
             icon="el-icon-delete"
             size="mini"
             type="text"
-            class="hg-text-red-400"
+            style="color: #f56c6c"
             @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
@@ -105,17 +113,6 @@ export default defineComponent({
     HyTable
   },
   props: {
-    permission: {
-      type: Object,
-      default: () => ({
-        isCreate: true,
-        isDelete: true,
-        isUpdate: false,
-        isQuery: true,
-        isOperation: false,
-        isDistribution: true
-      })
-    },
     contentTableConfig: {
       type: Object,
       require: true
@@ -130,37 +127,26 @@ export default defineComponent({
     'newBtnClick',
     'editBtnClick',
     'removeBtnClick',
-    'selectBtnClick',
+    'selectAllBtnClick',
     'distributionBtnClick',
     'operationBtnClick'
   ],
   setup(props, { emit }) {
     const store = useStore()
-    // TODO 处理用户拖动表格后更新数据
-    const drawTable = (propsIndex: any) => {
-      emit('drawBtnClick', propsIndex)
-      // 以下事件交到外界处理，暂时不移动
-      console.log(propsIndex)
-      const cloneTableData = JSON.stringify(dataList.value)
-      const data = JSON.parse(cloneTableData)
-      const currentRow = data.splice(propsIndex.oldIndex, 1)[0]
-      data.splice(propsIndex.newIndex, 0, currentRow) // 新数组重新排序, 改变值无需用到
-      currentRow['sortIndex'] = propsIndex.newIndex + 1 // 根据用户拖动到的下标改变该行的位置并发送给后台
-      console.log(
-        currentRow,
-        '当前行',
-        propsIndex.newIndex,
-        '当前行移动到的位置'
-      )
-    }
-
+    const userSelectData = ref([])
     // 0.获取操作的权限
-    const isCreate = props.permission?.add as any
-    const isUpdate = props.permission?.update as any
-    const isDelete = props.permission?.delete as any
-    const isQuery = true
-    const isOperation = props.permission?.other as any // 操作日志
-    const isDistribution = props.permission?.isDistribution as any // 分配按钮
+    const permission = props.contentTableConfig?.permission as any
+    const permissionList = ref({
+      isCreate: permission.add ?? false,
+      isUpdate: permission.update ?? false,
+      isDelete: permission.delete ?? false,
+      isQuery: permission.query ?? true,
+      isOperation: permission.operation ?? false,
+      isDistribution: permission.distribution ?? false,
+      isExport: permission.export ?? false,
+      isSelectAll: permission.selectAll ?? false,
+      isDrawTable: permission.drawTable ?? false
+    })
     // const isCreate = usePermission(props.pageName, 'create')
     // const isUpdate = usePermission(props.pageName, 'update')
     // const isDelete = usePermission(props.pageName, 'delete')
@@ -172,7 +158,7 @@ export default defineComponent({
 
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
-      if (!isQuery) return
+      if (!permissionList.value.isQuery) return
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
@@ -206,7 +192,7 @@ export default defineComponent({
       }
     )
 
-    // 5.删除/编辑/新建/多选/分配/操作日志按钮
+    // 5.删除/编辑/新建/多选/分配/操作日志/拖拽/批量操作按钮
     // const handleDeleteClick = (item: any) => {
     //   // console.log(item)
     //   // store.dispatch('system/deletePageDataAction', {
@@ -215,31 +201,48 @@ export default defineComponent({
     //   // })
     //   emit('removeBtnClick', item)
     // }
+    // TODO 处理用户拖动表格后更新数据
+    const drawTable = (propsIndex: any) => {
+      emit('drawBtnClick', propsIndex)
+      // 以下事件交到外界处理，暂时不移动
+      console.log(propsIndex)
+      const cloneTableData = JSON.stringify(dataList.value)
+      const data = JSON.parse(cloneTableData)
+      const currentRow = data.splice(propsIndex.oldIndex, 1)[0]
+      data.splice(propsIndex.newIndex, 0, currentRow) // 新数组重新排序, 改变值无需用到
+      currentRow['sortIndex'] = propsIndex.newIndex + 1 // 根据用户拖动到的下标改变该行的位置并发送给后台
+      console.log(
+        currentRow,
+        '当前行',
+        propsIndex.newIndex,
+        '当前行移动到的位置'
+      )
+    }
+    const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)
     const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
     const handleNewClick = () => emit('newBtnClick')
     const handleEditClick = (item: any) => emit('editBtnClick', item)
-    const handleSelectionChange = (data: any) => emit('selectBtnClick', data)
+    // 这里只需要将用户选中的值传递出去就行
+    const handleSelectionChange = (item: any) => (userSelectData.value = item)
     const handleDistributionClick = (item: any) =>
       emit('distributionBtnClick', item)
     const handleOperationClick = (item: any) => emit('operationBtnClick', item)
     return {
-      drawTable,
       dataList,
-      getPageData,
       dataCount,
       pageInfo,
       otherPropSlots,
-      isCreate,
-      isUpdate,
-      isDelete,
-      isOperation,
-      isDistribution,
+      permissionList,
+      userSelectData,
+      getPageData,
+      drawTable,
       handleDeleteClick,
       handleNewClick,
       handleEditClick,
       handleSelectionChange,
       handleDistributionClick,
-      handleOperationClick
+      handleOperationClick,
+      handleSelectAllClick
     }
   }
 })

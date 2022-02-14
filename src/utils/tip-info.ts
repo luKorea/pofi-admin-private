@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 09:33:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:31:19
+ * @LastEditTime: 2022-02-14 15:43:43
  * @Description: 封装公用文字提示
  * @FilePath: /pofi-admin/src/utils/tip-info.ts
  */
@@ -12,6 +12,14 @@ export const errorTip = (message = '操作失败') => {
   ElMessage({
     message: message,
     type: 'error',
+    duration: 1000
+  })
+}
+
+export const warnTip = (message = '操作失败') => {
+  ElMessage({
+    message: message,
+    type: 'warning',
     duration: 1000
   })
 }
