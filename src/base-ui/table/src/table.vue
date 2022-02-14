@@ -67,6 +67,10 @@ export default defineComponent({
       type: String,
       default: ''
     },
+    height: {
+      type: String,
+      default: '600px'
+    },
     listData: {
       type: Array,
       required: true
