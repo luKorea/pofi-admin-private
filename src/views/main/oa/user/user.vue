@@ -46,14 +46,14 @@ export default defineComponent({
     PageContent,
     PageModal
   },
-  setup(props) {
+  setup() {
     const [pageContentRef, handleResetClick, , handleQueryFrontClick] =
       usePageSearch()
     // TODO 前端搜索后续再改
-    const handleQueryClick = () => {
+    const handleQueryClick = (queryInfo: any) => {
       const data = handleQueryFrontClick(
         pageContentRef.value?.dataList,
-        searchFormConfig.formItems[0].field,
+        queryInfo,
         'id'
       )
       console.log(data, '查询后的数据')

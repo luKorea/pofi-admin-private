@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:10
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 14:58:23
+ * @LastEditTime: 2022-02-15 15:10:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-page-search.ts
  */
@@ -15,10 +15,16 @@ export function usePageSearch() {
   const handleQueryClick = (queryInfo: any) =>
     pageContentRef.value?.getPageData(queryInfo)
   // 前端搜索
-  const handleQueryFrontClick = (tableData: any, search: any, type: string) => {
-    return tableData.filter((data: any) => {
-      console.log(search.value)
-      !search || data[type].toLowerCase().includes(search.toLowerCase())
+  const handleQueryFrontClick = (
+    tableData: any,
+    queryInfo: any,
+    type: string
+  ) => {
+    return computed(() => {
+      return tableData.filter((data: any) => {
+        !queryInfo.search ||
+          data.id.toLowerCase().includes(queryInfo.search.toLowerCase())
+      })
     })
   }
   return [
