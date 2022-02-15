@@ -2,39 +2,33 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 16:03:05
+ * @LastEditTime: 2022-02-15 11:33:26
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
+ * @FilePath: /pofi-admin/src/views/main/oa/role/config/content.config.ts
  */
 export const contentTableConfig = {
-  title: '用户列表',
+  title: '角色列表',
   propList: [
     { prop: 'id', label: 'ID' },
-    { prop: 'username', label: '登录名' },
-    { prop: 'nickname', label: '用户名' },
-    { prop: 'email', label: '邮箱' },
-    { prop: 'phone', label: '手机号码' },
+    { prop: 'type', label: '角色标识' },
+    { prop: 'name', label: '角色名称' },
+    { prop: 'modUser', label: '修改人' },
     {
-      prop: 'createAt',
-      label: '创建时间',
-      slotName: 'createAt'
-    },
-    {
-      prop: 'onlineTime',
-      label: '在线时间',
+      prop: 'modTime',
+      label: '修改时间',
       slotName: 'updateAt'
     },
-    { prop: 'modUser', label: '修改人' },
-    { prop: 'valid', label: '状态', slotName: 'status' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
+  showFooter: false,
   permission: {
     add: true,
     update: true,
     delete: true,
     query: true,
-    drawTable: true
+    drawTable: false,
+    distribution: true
   }
 }

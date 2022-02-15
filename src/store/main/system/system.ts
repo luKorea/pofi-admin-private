@@ -26,10 +26,12 @@ const systemModule: Module<ISystemState, IRootState> = {
     return {
       usersList: [],
       usersCount: 0,
-      roleList: [],
-      roleCount: 0,
-      goodsList: [],
-      goodsCount: 0,
+      rolesList: [],
+      rolesCount: 0,
+      permissionsList: [],
+      permissionsCount: 0,
+      routerList: [],
+      routerCount: 0,
       menuList: [],
       menuCount: 0
     }
@@ -41,17 +43,23 @@ const systemModule: Module<ISystemState, IRootState> = {
     changeUsersCount(state, userCount: number) {
       state.usersCount = userCount
     },
-    changeRoleList(state, list: any[]) {
-      state.roleList = list
+    changeRolesList(state, list: any[]) {
+      state.rolesList = list
     },
-    changeRoleCount(state, count: number) {
-      state.roleCount = count
+    changeRolesCount(state, count: number) {
+      state.rolesCount = count
     },
-    changeGoodsList(state, list: any[]) {
-      state.goodsList = list
+    changePermissionsList(state, list: any[]) {
+      state.permissionsList = list
     },
-    changeGoodsCount(state, count: number) {
-      state.goodsCount = count
+    changePermissionsCount(state, count: number) {
+      state.permissionsCount = count
+    },
+    changeRouterList(state, list: any[]) {
+      state.routerList = list
+    },
+    changeRouterCount(state, count: number) {
+      state.routerCount = count
     },
     changeMenuList(state, list: any[]) {
       state.menuList = list
