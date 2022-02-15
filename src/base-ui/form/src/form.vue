@@ -17,6 +17,7 @@
                 v-if="item.type === 'input' || item.type === 'password'"
               >
                 <el-input
+                  clearable
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"

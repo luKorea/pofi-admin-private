@@ -46,8 +46,18 @@ export default defineComponent({
     PageContent,
     PageModal
   },
-  setup() {
-    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+  setup(props) {
+    const [pageContentRef, handleResetClick, , handleQueryFrontClick] =
+      usePageSearch()
+    // TODO 前端搜索后续再改
+    const handleQueryClick = () => {
+      const data = handleQueryFrontClick(
+        pageContentRef.value?.dataList,
+        searchFormConfig.formItems[0].field,
+        'id'
+      )
+      console.log(data, '查询后的数据')
+    }
     // pageModal相关的hook逻辑
     // 1.处理密码的逻辑
     const newCallback = () => {

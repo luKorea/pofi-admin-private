@@ -102,7 +102,6 @@ const systemModule: Module<ISystemState, IRootState> = {
       const { data, totalCount = 0 } = pageResult as any
       const changePageName = firstToUpperCase(pageName)
       commit(`change${changePageName}List`, data)
-      commit(`change${changePageName}Count`, totalCount)
       // 处理oa下没有返回totalCount
       if (pageName === 'users' || pageName === 'router') {
         commit(`change${changePageName}Count`, data.length)
