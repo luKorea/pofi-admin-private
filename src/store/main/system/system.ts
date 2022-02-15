@@ -12,8 +12,8 @@ import {
 
 const apiList: any = {
   users: '/cms/user/',
-  role: '/cms/role/',
-  permission: '/cms/permission/',
+  roles: '/cms/role/',
+  permissions: '/cms/permission/',
   router: '/cms/router/'
 }
 const queryInfo: any = {

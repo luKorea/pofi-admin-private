@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 10:39:12
+ * @LastEditTime: 2022-02-15 11:03:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -27,23 +27,17 @@ export const firstToUpperCase = (name: string) => {
 
 /**
  * @method cultureDifferentType
+ * @description 这里做一层判断，（只是接口有点lol,正常接口不会）不是get请求的。剔除pageName后面的s
  * @param type
  * @param name
- * @returns
+ * @returns url
  */
-export const cultureDifferentType = (type: string, name: string) => {
-  switch (type) {
-    case 'get':
-      return `${type}${firstToUpperCase(name)}`
-      break
-    case 'add':
-      return `${type}${firstToUpperCase(name)}`
-      break
-    case 'update':
-      return `${type}${firstToUpperCase(name)}`
-      break
-    case 'del':
-      return `${type}${firstToUpperCase(name)}`
-      break
+export const cultureDifferentType = (type: string, name: string): string => {
+  let url = ''
+  if (type === 'get') url = `${type}${firstToUpperCase(name)}`
+  else {
+    name = name.slice(0, name.length - 1)
+    url = `${type}${firstToUpperCase(name)}`
   }
+  return url
 }

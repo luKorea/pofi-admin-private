@@ -2,46 +2,79 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-09 17:48:54
+ * @LastEditTime: 2022-02-10 15:20:24
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/oa/user/config/modal.config.ts
+ * @FilePath: /pofi-admin/src/views/main/oa/user/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
   formItems: [
     {
-      field: 'name',
+      field: 'username',
       type: 'input',
-      label: '用户名',
-      placeholder: '请输入用户名'
+      label: '登录名',
+      placeholder: '请输入登录名',
+      rules: [
+        {
+          required: true,
+          message: '请输入登录名',
+          trigger: 'blur'
+        }
+      ]
     },
     {
-      field: 'password',
-      type: 'password',
-      label: '用户密码',
-      placeholder: '请输入密码',
-      isHidden: false
+      field: 'nickname',
+      type: 'input',
+      label: '昵称',
+      placeholder: '请输入昵称',
+      rules: [
+        {
+          required: true,
+          message: '请输入昵称',
+          trigger: 'blur'
+        }
+      ]
     },
     {
-      field: 'cellphone',
+      field: 'email',
+      type: 'input',
+      label: '邮箱',
+      placeholder: '请输入邮箱',
+      rules: [
+        {
+          required: true,
+          message: '请输入邮箱',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'phone',
       type: 'input',
       label: '电话号码',
-      placeholder: '请输入电话号码'
+      placeholder: '请输入电话号码',
+      rules: [
+        {
+          required: true,
+          message: '请输入电话号码',
+          trigger: 'blur'
+        }
+      ]
     },
     {
-      field: 'departmentId',
-      type: 'select',
-      label: '选择部门',
-      placeholder: '请选择部门',
-      options: []
-    },
-    {
-      field: 'roleId',
-      type: 'select',
-      label: '选择角色',
-      placeholder: '请选择角色',
-      options: []
+      field: 'pwd',
+      type: 'password',
+      label: '密码',
+      placeholder: '请输入密码',
+      isHidden: false,
+      rules: [
+        {
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        }
+      ]
     }
   ],
   colLayout: {

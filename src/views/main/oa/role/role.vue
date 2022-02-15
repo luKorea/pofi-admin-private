@@ -1,5 +1,5 @@
 <template>
-  <div class="user">
+  <div class="role">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
@@ -8,14 +8,16 @@
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
-      pageName="users/getUser"
+      pageName="roles"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-    ></page-content>
+      @selectAllBtnClick="test"
+    >
+    </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="users/getUser"
+      pageName="roles"
       :modalConfig="modalConfigRef"
     ></page-modal>
   </div>
@@ -35,9 +37,10 @@ import { modalConfig } from './config/modal.config'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
+import { warnTip } from '@/utils/tip-info'
 
 export default defineComponent({
-  name: 'users',
+  name: 'role',
   components: {
     PageSearch,
     PageContent,
@@ -45,7 +48,6 @@ export default defineComponent({
   },
   setup() {
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-
     // pageModal相关的hook逻辑
     // 1.处理密码的逻辑
     const newCallback = () => {
@@ -63,25 +65,30 @@ export default defineComponent({
 
     // 2.动态添加部门和角色列表
     const store = useStore()
+    console.log(store)
     const modalConfigRef = computed(() => {
-      const departmentItem = modalConfig.formItems.find(
-        (item) => item.field === 'departmentId'
-      )
-      departmentItem!.options = store.state.entireDepartment.map((item) => {
-        return { title: item.name, value: item.id }
-      })
-      const roleItem = modalConfig.formItems.find(
-        (item) => item.field === 'roleId'
-      )
-      roleItem!.options = store.state.entireRole.map((item) => {
-        return { title: item.name, value: item.id }
-      })
+      // const departmentItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'departmentId'
+      // )
+      // departmentItem!.options = store.state.entireDepartment.map((item) => {
+      //   return { title: item.name, value: item.id }
+      // })
+      // const roleItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'roleId'
+      // )
+      // roleItem!.options = store.state.entireRole.map((item) => {
+      //   return { title: item.name, value: item.id }
+      // })
       return modalConfig
     })
 
     // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newCallback, editCallback)
+
+    const test = (data: any) => {
+      if (data.value.length === 0) warnTip('至少选中一条数据')
+    }
 
     return {
       searchFormConfig,
@@ -93,7 +100,8 @@ export default defineComponent({
       handleNewData,
       handleEditData,
       pageModalRef,
-      defaultInfo
+      defaultInfo,
+      test
     }
   }
 })
