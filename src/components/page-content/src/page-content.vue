@@ -187,8 +187,8 @@ export default defineComponent({
       store.dispatch(props.storeTypeInfo?.actionName, {
         pageName: props.pageName,
         queryInfo: {
-          currentPage:
-            (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+          // currentPage: pageInfo.value.currentPage * pageInfo.value.pageSize, //使用偏移量
+          currentPage: pageInfo.value.currentPage,
           pageSize: pageInfo.value.pageSize,
           ...queryInfo
         }

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 11:25:14
+ * @LastEditTime: 2022-02-15 17:33:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -30,7 +30,7 @@ export const contentTableConfig = {
   ],
   showIndexColumn: false,
   showSelectColumn: false,
-  showFooter: false,
+  showFooter: true,
   permission: {
     add: true,
     update: true,

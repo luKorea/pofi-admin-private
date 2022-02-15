@@ -17,7 +17,7 @@ const apiList: any = {
   router: '/cms/router/'
 }
 const queryInfo: any = {
-  currentPage: 0,
+  currentPage: 1,
   pageSize: 10
 }
 const systemModule: Module<ISystemState, IRootState> = {
