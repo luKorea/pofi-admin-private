@@ -81,12 +81,25 @@
   10. 表格拖拽
 # 数据请求规范
   1. 所有数据存储到store中，划分不同模块
-  2. 每个store大致格式如下
-    1. state: {存储当前页所需数据}
-    2. getter: {通过getter获取数据}
-    3. action: {
-      封装公用action, 根据用户传入不同的pageName，请求不用的api地址，所有API地址放到service/apiList.ts中，
-      action: add/remove/update/query 操作
-    }
-    4. mutations: {将获取到的数据设置到state中}
-     
+  2. 每个模块具体大致格式如下
+          1. state: {存储当前页所需数据}
+        2. getter: {通过getter获取数据}
+      1. action: {
+            封装公用action, 根据用户传入不同的pageName，请求不用的api地址，所有API地址放到service/apiList.ts中，
+          action: add/remove/update/query 操作}
+          4. mutations: {将获取到的数据设置到state中}
+
+# 页面划分
+  1. assets 静态资源文件
+  2. base-ui 多项目公用组件
+  3. components 当前项目组件
+  4. global 全局注册
+  5. hooks 公用hooks
+  6. router 路由
+  7. service 接口请求
+  8. types 公用类型
+  9. utils 工具函数
+  10. views 视图
+    11. store vuex
+          1. system/ system.ts type.ts
+
