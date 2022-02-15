@@ -2,76 +2,37 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 15:20:24
+ * @LastEditTime: 2022-02-15 14:18:22
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/oa/user/config/modal.config.ts
+ * @FilePath: /pofi-admin/src/views/main/oa/permission/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
+  title: '权限管理操作',
   formItems: [
     {
-      field: 'username',
+      field: 'name',
       type: 'input',
-      label: '登录名',
-      placeholder: '请输入登录名',
+      label: '权限名称',
+      placeholder: '请输入权限名称',
       rules: [
         {
           required: true,
-          message: '请输入登录名',
+          message: '请输入权限名称',
           trigger: 'blur'
         }
       ]
     },
     {
-      field: 'nickname',
+      field: 'url',
       type: 'input',
-      label: '昵称',
-      placeholder: '请输入昵称',
+      label: '权限路径',
+      placeholder: '请输入权限路径',
       rules: [
         {
           required: true,
-          message: '请输入昵称',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'email',
-      type: 'input',
-      label: '邮箱',
-      placeholder: '请输入邮箱',
-      rules: [
-        {
-          required: true,
-          message: '请输入邮箱',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'phone',
-      type: 'input',
-      label: '电话号码',
-      placeholder: '请输入电话号码',
-      rules: [
-        {
-          required: true,
-          message: '请输入电话号码',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'pwd',
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码',
-      isHidden: false,
-      rules: [
-        {
-          required: true,
-          message: '请输入密码',
+          message: '请输入权限路径',
           trigger: 'blur'
         }
       ]

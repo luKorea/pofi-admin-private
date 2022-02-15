@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:57:46
+ * @LastEditTime: 2022-02-15 14:17:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -18,7 +18,7 @@
     >
       <template #title>
         <div class="modal-title">
-          <span>{{ drawerTitle }}</span>
+          <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="handleConfirmClick">
@@ -48,10 +48,6 @@ export default defineComponent({
     HyForm
   },
   props: {
-    drawerTitle: {
-      type: String,
-      default: '新建'
-    },
     modalConfig: {
       type: Object,
       required: true

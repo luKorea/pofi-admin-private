@@ -13,6 +13,18 @@
       @editBtnClick="handleEditData"
       @selectAllBtnClick="test"
     >
+      <template #isRouter="scope">
+        <span>{{ scope.row.props ? '是' : '否' }}</span>
+      </template>
+      <template #isKeep="scope">
+        <span>{{ scope.row.cache ? '是' : '否' }}</span>
+      </template>
+      <template #isShow="scope">
+        <span>{{ scope.row.show ? '是' : '否' }}</span>
+      </template>
+      <template #isAuth="scope">
+        <span>{{ scope.row.access ? '是' : '否' }}</span>
+      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"

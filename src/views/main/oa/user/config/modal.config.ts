@@ -2,13 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-10 15:20:24
+ * @LastEditTime: 2022-02-15 14:18:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
+  title: '系统用户管理操作',
   formItems: [
     {
       field: 'username',

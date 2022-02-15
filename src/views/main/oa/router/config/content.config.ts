@@ -2,39 +2,29 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 16:03:05
+ * @LastEditTime: 2022-02-15 14:02:46
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
+ * @FilePath: /pofi-admin/src/views/main/oa/router/config/content.config.ts
  */
 export const contentTableConfig = {
   title: '用户列表',
   propList: [
     { prop: 'id', label: 'ID' },
-    { prop: 'username', label: '登录名' },
-    { prop: 'nickname', label: '用户名' },
-    { prop: 'email', label: '邮箱' },
-    { prop: 'phone', label: '手机号码' },
-    {
-      prop: 'createAt',
-      label: '创建时间',
-      slotName: 'createAt'
-    },
-    {
-      prop: 'onlineTime',
-      label: '在线时间',
-      slotName: 'updateAt'
-    },
-    { prop: 'modUser', label: '修改人' },
-    { prop: 'valid', label: '状态', slotName: 'status' },
-    { label: '操作', slotName: 'handler' }
+    { prop: 'path', label: '路径' },
+    { prop: 'title', label: '名称' },
+    { prop: 'component', label: '组件' },
+    { prop: 'props', label: '是否是动态路由', slotName: 'isRouter' },
+    { prop: 'show', label: '是否显示', slotName: 'isShow' },
+    { prop: 'cache', label: '是否缓存', slotName: 'isKeep' },
+    { prop: 'access', label: '是否授权', slotName: 'isAuth' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
   permission: {
     add: true,
-    update: true,
-    delete: true,
+    update: false,
+    delete: false,
     query: true,
-    drawTable: true
+    drawTable: false
   }
 }

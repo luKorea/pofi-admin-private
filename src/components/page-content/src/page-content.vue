@@ -34,7 +34,7 @@
           size="medium"
           @click="handleNewClick"
         >
-          新建用户
+          新建数据
         </el-button>
         <el-button
           size="medium"

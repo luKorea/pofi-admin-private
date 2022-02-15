@@ -32,6 +32,8 @@ const systemModule: Module<ISystemState, IRootState> = {
       permissionsCount: 0,
       routerList: [],
       routerCount: 0,
+      tableRouterList: [],
+      tableRoutersCount: 0,
       menuList: [],
       menuCount: 0
     }
@@ -61,6 +63,12 @@ const systemModule: Module<ISystemState, IRootState> = {
     changeRouterCount(state, count: number) {
       state.routerCount = count
     },
+    changeTableRouterList(state, list: any[]) {
+      state.tableRouterList = list
+    },
+    changeTableRouterCount(state, count: number) {
+      state.tableRoutersCount = count
+    },
     changeMenuList(state, list: any[]) {
       state.menuList = list
     },
@@ -82,18 +90,21 @@ const systemModule: Module<ISystemState, IRootState> = {
       //  传递过来的pageName无需做任何处理，例如: user，就按user返回就行，这里会做一层处理
       // 1.获取pageUrl
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
+      let pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
+      // 处理路由列表中多个列表的情况
+      if (pageName === 'router') {
+        pageUrl = apiList[pageName] + cultureDifferentType('get', 'PlainRouter')
+      }
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-
       // 3.将数据存储到state中
-      console.log(pageResult)
-      // const { list, totalCount } = pageResult.data
+      console.log(pageResult, '用户返回的数据')
       const { data, totalCount = 0 } = pageResult as any
       const changePageName = firstToUpperCase(pageName)
       commit(`change${changePageName}List`, data)
+      commit(`change${changePageName}Count`, totalCount)
       // 处理oa下没有返回totalCount
-      if (pageName === 'users') {
+      if (pageName === 'users' || pageName === 'router') {
         commit(`change${changePageName}Count`, data.length)
       } else {
         commit(`change${changePageName}Count`, totalCount)
