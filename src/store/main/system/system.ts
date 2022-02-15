@@ -1,3 +1,4 @@
+import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { ISystemState } from './types'
@@ -9,6 +10,16 @@ import {
   editPageData
 } from '@/service/main/system/system'
 
+const apiList: any = {
+  users: '/cms/user/',
+  role: '/cms/role/',
+  permission: '/cms/permission/',
+  router: '/cms/router/'
+}
+const queryInfo: any = {
+  currentPage: 0,
+  pageSize: 10
+}
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
@@ -51,29 +62,19 @@ const systemModule: Module<ISystemState, IRootState> = {
   },
   getters: {
     pageListData(state) {
-      return (pageName: string) => {
-        return (state as any)[`${pageName}List`]
-      }
+      return (pageName: string) => (state as any)[`${pageName}List`]
     },
     pageListCount(state) {
-      return (pageName: string) => {
-        return (state as any)[`${pageName}Count`]
-      }
+      return (pageName: string) => (state as any)[`${pageName}Count`]
     }
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      // TODO 这个action会在用户操作增删改后调用它，在这些操作中，
+      //  传递过来的pageName无需做任何处理，例如: user，就按user返回就行，这里会做一层处理
       // 1.获取pageUrl
       const pageName = payload.pageName
-      const apiList: any = {
-        users: '/cms/user/getUsers',
-        role: '/cms/role/getRole',
-        permission: '/cms/permission/getPermission',
-        router: '/cms/router/getRouter'
-      }
-      console.log(apiList[pageName], '用户路由')
-      const pageUrl = apiList[pageName]
-
+      const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
 
@@ -81,8 +82,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       console.log(pageResult)
       // const { list, totalCount } = pageResult.data
       const { data, totalCount = 0 } = pageResult as any
-      const changePageName =
-        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+      const changePageName = firstToUpperCase(pageName)
       commit(`change${changePageName}List`, data)
       // 处理oa下没有返回totalCount
       if (pageName === 'users') {
@@ -96,52 +96,43 @@ const systemModule: Module<ISystemState, IRootState> = {
       // 1.获取pageName和id
       // pageName -> /users
       // id -> /users/id
-      const { pageName, id } = payload
-      const pageUrl = `/${pageName}/${id}`
-
+      // const pageUrl = `/${pageName}/${id}`
+      const pageName = payload.pageName
+      const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
       // 2.调用删除网络请求
-      await deletePageData(pageUrl)
+      await deletePageData(pageUrl, payload.data)
 
       // 3.重新请求最新的数据
       dispatch('getPageListAction', {
-        pageName,
-        queryInfo: {
-          offset: 0,
-          size: 10
-        }
+        pageName, // 这里的pageName，无需处理，在getPageListAction会处理
+        queryInfo: queryInfo
       })
     },
 
     async createPageDataAction({ dispatch }, payload: any) {
       // 1.创建数据的请求
       const { pageName, newData } = payload
-      const pageUrl = `/${pageName}`
+      const pageUrl = apiList[pageName] + cultureDifferentType('add', pageName)
       await createPageData(pageUrl, newData)
 
       // 2.请求最新的数据
       dispatch('getPageListAction', {
         pageName,
-        queryInfo: {
-          offset: 0,
-          size: 10
-        }
+        queryInfo: queryInfo
       })
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
       // 1.编辑数据的请求
-      const { pageName, editData, id } = payload
-      console.log(editData)
-      const pageUrl = `/${pageName}/${id}`
+      const { pageName, editData } = payload
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('update', pageName)
       await editPageData(pageUrl, editData)
 
       // 2.请求最新的数据
       dispatch('getPageListAction', {
         pageName,
-        queryInfo: {
-          offset: 0,
-          size: 10
-        }
+        queryInfo: queryInfo
       })
     }
   }

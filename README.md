@@ -79,4 +79,14 @@
   8. 导出
   9. 批量操作
   10. 表格拖拽
+# 数据请求规范
+  1. 所有数据存储到store中，划分不同模块
+  2. 每个store大致格式如下
+    1. state: {存储当前页所需数据}
+    2. getter: {通过getter获取数据}
+    3. action: {
+      封装公用action, 根据用户传入不同的pageName，请求不用的api地址，所有API地址放到service/apiList.ts中，
+      action: add/remove/update/query 操作
+    }
+    4. mutations: {将获取到的数据设置到state中}
      
