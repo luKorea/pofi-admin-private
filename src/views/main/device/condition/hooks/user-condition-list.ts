@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 11:16:04
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 11:48:32
+ * @LastEditTime: 2022-02-15 17:52:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/hooks/user-condition-list.ts
  */
@@ -25,7 +25,7 @@ export function useGetConditionList() {
   // 2.发送网络请求
   const getPageData = (queryInfo: any = {}) => {
     getConditionList({
-      currentPage: 1,
+      currentPage: pageInfo.value.currentPage,
       pageSize: pageInfo.value.pageSize,
       ...queryInfo
     }).then((res) => {
