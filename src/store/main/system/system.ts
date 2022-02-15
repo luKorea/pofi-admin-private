@@ -8,7 +8,7 @@ import {
   deletePageData,
   createPageData,
   editPageData
-} from '@/service/main/system/system'
+} from '@/service/common-api'
 
 const apiList: any = {
   users: '/cms/user/',

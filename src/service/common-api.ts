@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 17:22:03
+ * @LastEditTime: 2022-02-15 17:24:18
  * @Description: file content
- * @FilePath: /pofi-admin/src/service/main/system/system.ts
+ * @FilePath: /pofi-admin/src/service/common-api.ts
  */
-import hyRequest from '../../index'
+import hyRequest from '@/service/index'
 
 export function getPageListData(url: string, queryInfo: any) {
   return hyRequest.post<any>({
