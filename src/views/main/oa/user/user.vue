@@ -1,5 +1,7 @@
 <template>
   <div class="user">
+    <!-- 测试 style module的使用 -->
+    <!-- <span :class="$style.red">测试style样式</span> -->
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
@@ -59,23 +61,6 @@ export default defineComponent({
       console.log(data, '查询后的数据')
     }
     // pageModal相关的hook逻辑
-    // 1.处理密码的逻辑
-    const newCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = false
-    }
-    const editCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = true
-    }
-
-    // 2.动态添加部门和角色列表
-    const store = useStore()
-    console.log(store)
     const modalConfigRef = computed(() => {
       // const departmentItem = modalConfig.formItems.find(
       //   (item) => item.field === 'departmentId'
@@ -91,6 +76,23 @@ export default defineComponent({
       // })
       return modalConfig
     })
+    // 1.处理密码的逻辑
+    const newCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'pwd'
+      )
+      passwordItem!.isHidden = false
+    }
+    const editCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'pwd'
+      )
+      passwordItem!.isHidden = true
+    }
+
+    // 2.动态添加部门和角色列表
+    const store = useStore()
+    console.log(store)
 
     // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -117,4 +119,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped module>
+.red {
+  color: red;
+}
+</style>

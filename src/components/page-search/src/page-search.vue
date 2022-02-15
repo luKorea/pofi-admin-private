@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 16:54:22
+ * @LastEditTime: 2022-02-15 16:16:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -57,6 +57,7 @@ export default defineComponent({
     // 2.优化二: 当用户点击重置
     const handleResetClick = () => {
       // for (const key in formOriginData) {
+      // 修改对象里面的属性
       //   formData.value[`${key}`] = formOriginData[key]
       // }
       formData.value = formOriginData
