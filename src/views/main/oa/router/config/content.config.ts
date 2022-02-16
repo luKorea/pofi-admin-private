@@ -4,16 +4,16 @@ import { TableConfig } from '@/types/table-config'
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 14:58:15
+ * @LastEditTime: 2022-02-16 15:06:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/content.config.ts
  */
 export const contentTableConfig: TableConfig = {
   title: '路由列表',
   propList: [
-    { prop: 'id', label: 'ID', minWidth: '30' },
+    // { prop: 'id', label: 'ID', minWidth: '50' },
+    { prop: 'title', label: '名称', minWidth: '80' },
     { prop: 'path', label: '路径' },
-    { prop: 'title', label: '名称' },
     { prop: 'component', label: '组件' },
     { prop: 'props', label: '是否是动态路由', slotName: 'isRouter' },
     { prop: 'show', label: '是否显示', slotName: 'isShow' },
@@ -23,6 +23,7 @@ export const contentTableConfig: TableConfig = {
   ],
   showIndexColumn: false,
   showSelectColumn: false,
+  showFooter: false,
   childrenProps: {
     rowKey: 'id'
   },

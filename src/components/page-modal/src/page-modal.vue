@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 14:23:40
+ * @LastEditTime: 2022-02-16 15:20:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -136,6 +136,14 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: #fff;
   }
+}
+</style>
+
+<style>
+.el-drawer__header {
+  background: linear-gradient(90deg, #a9c9ff, #ffbbec);
+  padding: 10px 20px;
 }
 </style>

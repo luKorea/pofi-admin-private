@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 14:58:33
+ * @LastEditTime: 2022-02-16 15:06:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -33,7 +33,7 @@ export const contentTableConfig: TableConfig = {
   ],
   showIndexColumn: false,
   showSelectColumn: false,
-  showFooter: true,
+  showFooter: false,
   childrenProps: {
     rowKey: 'id'
   },
@@ -42,6 +42,6 @@ export const contentTableConfig: TableConfig = {
     update: true,
     delete: true,
     query: true,
-    drawTable: true
+    drawTable: false
   }
 }
