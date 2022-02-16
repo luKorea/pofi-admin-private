@@ -68,6 +68,7 @@
      1. npm install -D tailwindcss@latest postcss@latest autoprefixer@latest (安装 Tailwind 以及其它依赖项)
      2. npx tailwindcss init -p (生成 tailwind.config.js 和 postcss.config.js 文件)
      ```
+  2. animate.css 动画库
 # 该系统大致按钮权限划分
   1. 新增
   2. 编辑

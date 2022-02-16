@@ -11,12 +11,17 @@
         <nav-tags></nav-tags>
         <el-main class="page-content">
           <div class="page-info">
-            <router-view></router-view>
-            <!-- <router-view v-slot="{ Component }">
-              <transition name="fade-transform">
-                <component :is="Component"></component>
+            <router-view v-slot="{ Component }">
+              <transition
+                appear
+                appear-active-class="animate__animated animate__pulse"
+                enter-active-class="animate__animated animate__fadeIn"
+                name="fade"
+              >
+                <!--进入 enter-active-class   移出 leave-active-class  初始 appear-active-class-->
+                <component :is="Component" v-if="Component"></component>
               </transition>
-            </router-view> -->
+            </router-view>
           </div>
         </el-main>
       </el-container>
