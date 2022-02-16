@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 18:24:00
+ * @LastEditTime: 2022-02-16 18:27:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -79,7 +79,6 @@ export default defineComponent({
     const formData = ref<any>({})
     // 获取表单组件，监听表单是否填写完整
     const pageForm = ref<InstanceType<typeof HyForm>>()
-    const formRef = pageForm.value?.formRef
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -93,7 +92,7 @@ export default defineComponent({
     const store = useStore()
     console.log(store)
     const handleConfirmClick = () => {
-      console.log(formRef?.validate)
+      const formRef = pageForm.value?.formRef
       formRef?.validate((valid: any) => {
         console.log(valid)
         if (valid) {
@@ -122,6 +121,7 @@ export default defineComponent({
     const handleCloseClick = () => {
       // TODO 有bug，晚上解决
       dialogVisible.value = false
+      const formRef = pageForm.value?.formRef
       formRef?.resetFields()
     }
     return {
