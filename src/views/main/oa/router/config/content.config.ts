@@ -4,7 +4,7 @@ import { TableConfig } from '@/types/table-config'
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 09:33:58
+ * @LastEditTime: 2022-02-16 14:35:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/content.config.ts
  */
@@ -18,15 +18,17 @@ export const contentTableConfig: TableConfig = {
     { prop: 'props', label: '是否是动态路由', slotName: 'isRouter' },
     { prop: 'show', label: '是否显示', slotName: 'isShow' },
     { prop: 'cache', label: '是否缓存', slotName: 'isKeep' },
-    { prop: 'access', label: '是否授权', slotName: 'isAuth' }
+    { prop: 'access', label: '是否授权', slotName: 'isAuth' },
+    { label: '操作', slotName: 'handler', minWidth: '80px' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
   permission: {
     add: true,
-    update: false,
-    delete: false,
+    update: true,
+    delete: true,
     query: true,
-    drawTable: false
+    drawTable: false,
+    rowAdd: true
   }
 }

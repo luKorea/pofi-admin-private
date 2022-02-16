@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 11:19:23
+ * @LastEditTime: 2022-02-16 14:33:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -29,7 +29,7 @@ export const contentTableConfig: TableConfig = {
     },
     { prop: 'modUser', label: '修改人' },
     { prop: 'valid', label: '状态', slotName: 'status' },
-    { label: '操作', slotName: 'handler' }
+    { label: '操作', slotName: 'handler', minWidth: '100px' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,

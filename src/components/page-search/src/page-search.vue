@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 10:11:32
+ * @LastEditTime: 2022-02-16 14:24:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -15,13 +15,13 @@
       <template #footer>
         <div class="handle-btns">
           <el-button
-            size="medium"
+            size="mini"
             icon="el-icon-refresh"
             @click="handleResetClick"
             >重置</el-button
           >
           <el-button
-            size="medium"
+            size="mini"
             type="primary"
             icon="el-icon-search"
             @click="handleQueryClick"

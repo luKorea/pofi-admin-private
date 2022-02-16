@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 10:47:21
+ * @LastEditTime: 2022-02-16 14:23:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -20,10 +20,10 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button size="medium" @click="dialogVisible = false"
+            <el-button size="mini" @click="dialogVisible = false"
               >取 消</el-button
             >
-            <el-button size="medium" type="primary" @click="handleConfirmClick">
+            <el-button size="mini" type="primary" @click="handleConfirmClick">
               确 定
             </el-button>
           </span>

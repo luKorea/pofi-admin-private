@@ -93,7 +93,7 @@ const systemModule: Module<ISystemState, IRootState> = {
       let pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
       // 处理路由列表中多个列表的情况
       if (pageName === 'router') {
-        pageUrl = apiList[pageName] + cultureDifferentType('get', 'PlainRouter')
+        pageUrl = apiList[pageName] + 'routers'
       }
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)

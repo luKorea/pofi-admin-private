@@ -14,7 +14,7 @@
         <el-button
           v-if="permissionList.isSelectAll"
           type="primary"
-          size="medium"
+          size="mini"
           @click="handleSelectAllClick"
         >
           批量操作
@@ -22,7 +22,7 @@
         <el-button
           v-if="permissionList.isExport"
           icon="el-icon-edit"
-          size="medium"
+          size="mini"
           type="warning"
           @click="handleExportClick"
         >
@@ -31,13 +31,13 @@
         <el-button
           v-if="permissionList.isCreate"
           type="primary"
-          size="medium"
+          size="mini"
           @click="handleNewClick"
         >
           新建数据
         </el-button>
         <el-button
-          size="medium"
+          size="mini"
           icon="el-icon-refresh"
           @click="getPageData"
         ></el-button>
@@ -61,44 +61,62 @@
       </template>
       <!-- 操作插槽 -->
       <template #handler="scope">
-        <div class="hg-flex hg-justify-center">
-          <el-button
-            v-if="permissionList.isDistribution"
-            icon="el-icon-edit"
-            size="mini"
-            type="text"
-            @click="handleDistributionClick(scope.row)"
-          >
-            分配
-          </el-button>
-          <el-button
-            v-if="permissionList.isOperation"
-            icon="el-icon-edit"
-            size="mini"
-            type="text"
-            @click="handleOperationClick(scope.row)"
-          >
-            操作日志
-          </el-button>
-          <el-button
-            v-if="permissionList.isUpdate"
-            icon="el-icon-edit"
-            size="mini"
-            type="text"
-            @click="handleEditClick(scope.row)"
-          >
-            编辑
-          </el-button>
-          <el-button
-            v-if="permissionList.isDelete"
-            icon="el-icon-delete"
-            size="mini"
-            type="text"
-            style="color: #f56c6c"
-            @click="handleDeleteClick(scope.row)"
-            >删除</el-button
-          >
-        </div>
+        <el-button
+          v-if="permissionList.isDistribution"
+          size="mini"
+          type="text"
+          @click="handleDistributionClick(scope.row)"
+        >
+          分配
+        </el-button>
+        <el-divider
+          direction="vertical"
+          v-if="permissionList.isDistribution"
+        ></el-divider>
+        <el-button
+          v-if="permissionList.isOperation"
+          size="mini"
+          type="text"
+          @click="handleOperationClick(scope.row)"
+        >
+          操作日志
+        </el-button>
+        <el-divider
+          direction="vertical"
+          v-if="permissionList.isOperation"
+        ></el-divider>
+        <el-button
+          v-if="permissionList.isRowAdd"
+          size="mini"
+          type="text"
+          @click="handleAddRowClick(scope.row)"
+        >
+          新增
+        </el-button>
+        <el-divider
+          direction="vertical"
+          v-if="permissionList.isRowAdd"
+        ></el-divider>
+        <el-button
+          v-if="permissionList.isUpdate"
+          size="mini"
+          type="text"
+          @click="handleEditClick(scope.row)"
+        >
+          编辑
+        </el-button>
+        <el-divider
+          direction="vertical"
+          v-if="permissionList.isUpdate"
+        ></el-divider>
+        <el-button
+          v-if="permissionList.isDelete"
+          size="mini"
+          type="text"
+          style="color: #f56c6c"
+          @click="handleDeleteClick(scope.row)"
+          >删除</el-button
+        >
       </template>
 
       <!-- 在page-content中动态插入剩余的插槽 -->
@@ -155,7 +173,8 @@ export default defineComponent({
     'selectAllBtnClick',
     'distributionBtnClick',
     'operationBtnClick',
-    'exportBtnClick'
+    'exportBtnClick',
+    'rowBtnClick'
   ],
   setup(props, { emit }) {
     const store = useStore()
@@ -171,7 +190,8 @@ export default defineComponent({
       isDistribution: permission.distribution ?? false,
       isExport: permission.export ?? false,
       isSelectAll: permission.selectAll ?? false,
-      isDrawTable: permission.drawTable ?? false
+      isDrawTable: permission.drawTable ?? false,
+      isRowAdd: permission.rowAdd ?? false
     })
     // const isCreate = usePermission(props.pageName, 'create')
     // const isUpdate = usePermission(props.pageName, 'update')
@@ -248,6 +268,7 @@ export default defineComponent({
     const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)
     const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
     const handleNewClick = () => emit('newBtnClick')
+    const handleAddRowClick = (item: any) => emit('rowBtnClick', item)
     const handleEditClick = (item: any) => emit('editBtnClick', item)
     // 这里只需要将用户选中的值传递出去就行
     const handleSelectionChange = (item: any) => (userSelectData.value = item)
@@ -270,7 +291,8 @@ export default defineComponent({
       handleDistributionClick,
       handleOperationClick,
       handleSelectAllClick,
-      handleExportClick
+      handleExportClick,
+      handleAddRowClick
     }
   }
 })

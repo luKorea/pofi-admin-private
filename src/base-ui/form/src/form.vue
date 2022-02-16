@@ -125,5 +125,6 @@ export default defineComponent({
 <style>
 .el-form--label-top .el-form-item__label {
   padding: 0 !important;
+  line-height: 30px !important;
 }
 </style>
