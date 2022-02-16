@@ -1,3 +1,11 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-08 09:43:09
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-16 10:05:09
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal copy.vue
+-->
 <template>
   <div class="page-modal">
     <el-dialog
@@ -28,6 +36,7 @@ import { useStore } from 'vuex'
 import HyForm from '@/base-ui/form'
 
 export default defineComponent({
+  name: 'PageModal',
   components: {
     HyForm
   },

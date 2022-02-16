@@ -27,10 +27,6 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
 
-import PageSearch from '@/components/page-search'
-import PageContent from '@/components/page-content'
-import PageModal from '@/components/page-modal'
-
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
@@ -41,11 +37,6 @@ import { warnTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'role',
-  components: {
-    PageSearch,
-    PageContent,
-    PageModal
-  },
   setup() {
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     // pageModal相关的hook逻辑

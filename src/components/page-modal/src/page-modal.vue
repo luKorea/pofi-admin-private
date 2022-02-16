@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 14:17:39
+ * @LastEditTime: 2022-02-16 10:12:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -20,8 +20,10 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handleConfirmClick">
+            <el-button size="medium" @click="dialogVisible = false"
+              >取 消</el-button
+            >
+            <el-button size="medium" type="primary" @click="handleConfirmClick">
               确 定
             </el-button>
           </span>
@@ -44,6 +46,7 @@ import { useStore } from 'vuex'
 import HyForm from '@/base-ui/form'
 
 export default defineComponent({
+  name: 'PageModal',
   components: {
     HyForm
   },

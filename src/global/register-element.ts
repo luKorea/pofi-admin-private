@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 14:08:22
+ * @LastEditTime: 2022-02-16 10:15:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -63,6 +63,7 @@ const components = [
   ElTabs,
   ElTabPane,
   ElCheckbox,
+  ElCheckboxButton,
   ElLink,
   ElContainer,
   ElHeader,

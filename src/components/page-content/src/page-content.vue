@@ -22,8 +22,8 @@
         <el-button
           v-if="permissionList.isExport"
           icon="el-icon-edit"
-          size="mini"
-          type="text"
+          size="medium"
+          type="warning"
           @click="handleExportClick"
         >
           导出
@@ -124,6 +124,7 @@ import HyTable from '@/base-ui/table'
 import { PermissionType } from '@/types/permission'
 
 export default defineComponent({
+  name: 'PageContent',
   components: {
     HyTable
   },

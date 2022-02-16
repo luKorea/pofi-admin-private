@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 16:16:17
+ * @LastEditTime: 2022-02-16 10:11:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -14,10 +14,14 @@
       </template> -->
       <template #footer>
         <div class="handle-btns">
-          <el-button icon="el-icon-refresh" @click="handleResetClick"
+          <el-button
+            size="medium"
+            icon="el-icon-refresh"
+            @click="handleResetClick"
             >重置</el-button
           >
           <el-button
+            size="medium"
             type="primary"
             icon="el-icon-search"
             @click="handleQueryClick"
@@ -34,6 +38,7 @@ import { defineComponent, ref } from 'vue'
 import HyForm from '@/base-ui/form'
 
 export default defineComponent({
+  name: 'PageSearch',
   props: {
     searchFormConfig: {
       type: Object,
