@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 15:20:53
+ * @LastEditTime: 2022-02-16 18:24:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -20,9 +20,7 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button size="mini" @click="dialogVisible = false"
-              >取 消</el-button
-            >
+            <el-button size="mini" @click="handleCloseClick">取 消</el-button>
             <el-button size="mini" type="primary" @click="handleConfirmClick">
               确 定
             </el-button>
@@ -32,7 +30,11 @@
       <template #default>
         <div style="padding: 0 20px">
           <template v-if="modalConfig">
-            <hy-form v-bind="modalConfig" v-model="formData"></hy-form>
+            <hy-form
+              ref="pageForm"
+              v-bind="modalConfig"
+              v-model="formData"
+            ></hy-form>
           </template>
           <slot></slot>
         </div>
@@ -46,6 +48,7 @@ import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 import HyForm from '@/base-ui/form'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'PageModal',
@@ -74,7 +77,9 @@ export default defineComponent({
   setup(props, { emit }) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
-
+    // 获取表单组件，监听表单是否填写完整
+    const pageForm = ref<InstanceType<typeof HyForm>>()
+    const formRef = pageForm.value?.formRef
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -88,31 +93,43 @@ export default defineComponent({
     const store = useStore()
     console.log(store)
     const handleConfirmClick = () => {
-      dialogVisible.value = false
-      if (Object.keys(props.defaultInfo).length) {
-        // 编辑
-        emit('editClick', { ...formData.value, ...props.otherInfo })
-        console.log('编辑用户')
-        // store.dispatch('system/editPageDataAction', {
-        //   pageName: props.pageName,
-        //   editData: { ...formData.value, ...props.otherInfo },
-        //   id: props.defaultInfo.id
-        // })
-      } else {
-        // 新建
-        console.log('新建用户')
-        emit('addClick', { ...formData.value, ...props.otherInfo })
-        // store.dispatch('system/createPageDataAction', {
-        //   pageName: props.pageName,
-        //   newData: { ...formData.value, ...props.otherInfo }
-        // })
-      }
+      console.log(formRef?.validate)
+      formRef?.validate((valid: any) => {
+        console.log(valid)
+        if (valid) {
+          dialogVisible.value = false
+          if (Object.keys(props.defaultInfo).length) {
+            // 编辑
+            emit('editClick', { ...formData.value, ...props.otherInfo })
+            console.log('编辑用户')
+            // store.dispatch('system/editPageDataAction', {
+            //   pageName: props.pageName,
+            //   editData: { ...formData.value, ...props.otherInfo },
+            //   id: props.defaultInfo.id
+            // })
+          } else {
+            // 新建
+            console.log('新建用户')
+            emit('addClick', { ...formData.value, ...props.otherInfo })
+            // store.dispatch('system/createPageDataAction', {
+            //   pageName: props.pageName,
+            //   newData: { ...formData.value, ...props.otherInfo }
+            // })
+          }
+        } else return false
+      })
     }
-
+    const handleCloseClick = () => {
+      // TODO 有bug，晚上解决
+      dialogVisible.value = false
+      formRef?.resetFields()
+    }
     return {
+      pageForm,
       dialogVisible,
       formData,
-      handleConfirmClick
+      handleConfirmClick,
+      handleCloseClick
     }
   }
 })
