@@ -4,7 +4,7 @@ import { TableConfig } from '@/types/table-config'
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 15:57:57
+ * @LastEditTime: 2022-02-16 16:23:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/content.config.ts
  */
@@ -28,11 +28,11 @@ export const contentTableConfig: TableConfig = {
     rowKey: 'id'
   },
   permission: {
-    add: false,
+    add: true,
     update: true,
     delete: true,
     query: true,
     drawTable: false,
-    rowAdd: true
+    rowAdd: false
   }
 }

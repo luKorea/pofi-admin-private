@@ -52,6 +52,27 @@
                   >
                 </el-select>
               </template>
+
+              <template v-else-if="item.type === 'treeSelect'">
+                <el-select
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  clearable
+                >
+                  <el-option style="height: auto">
+                    <el-tree
+                      :data="item.options"
+                      highlight-current
+                      check-on-click-node
+                      :props="{ label: 'title', children: 'children' }"
+                    />
+                  </el-option>
+                </el-select>
+              </template>
+
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
                   style="width: 100%"
