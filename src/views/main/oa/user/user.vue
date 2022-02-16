@@ -13,6 +13,7 @@
       pageName="users"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
+      @operationBtnClick="handleShowDialog"
       @selectAllBtnClick="test"
     >
     </page-content>
@@ -22,6 +23,14 @@
       pageName="users"
       :modalConfig="modalConfigRef"
     ></page-modal>
+    <page-dialog ref="pageDialogRef">
+      <page-content
+        ref="pageContentRef"
+        :contentTableConfig="contentTableConfig"
+        pageName="users"
+      >
+      </page-content>
+    </page-dialog>
   </div>
 </template>
 
@@ -35,6 +44,7 @@ import { modalConfig } from './config/modal.config'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
+import { usePageDialog } from '@/hooks/use-page-dialog'
 import { warnTip } from '@/utils/tip-info'
 
 export default defineComponent({
@@ -42,6 +52,7 @@ export default defineComponent({
   setup() {
     const [pageContentRef, handleResetClick, , handleQueryFrontClick] =
       usePageSearch()
+    const [pageDialogRef, handleShowDialog] = usePageDialog()
     // TODO 前端搜索后续再改
     const handleQueryClick = (queryInfo: any) => {
       const data = handleQueryFrontClick(
@@ -104,7 +115,9 @@ export default defineComponent({
       handleEditData,
       pageModalRef,
       defaultInfo,
-      test
+      test,
+      pageDialogRef,
+      handleShowDialog
     }
   }
 })

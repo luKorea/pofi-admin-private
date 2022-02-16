@@ -214,8 +214,6 @@ export default defineComponent({
         if (item.slotName === 'createAt') return false
         if (item.slotName === 'updateAt') return false
         if (item.slotName === 'handler') return false
-        if (item.slotName === 'image') return false
-        if (item.slotName === 'video') return false
         return true
       }
     )
@@ -281,6 +279,6 @@ export default defineComponent({
 <style scoped lang="less">
 .page-content {
   padding: 20px;
-  border-top: 20px solid #f0f2f5;
+  // border-top: 20px solid #f0f2f5;
 }
 </style>

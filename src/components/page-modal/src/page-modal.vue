@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 10:12:11
+ * @LastEditTime: 2022-02-16 10:47:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -31,7 +31,9 @@
       </template>
       <template #default>
         <div style="padding: 0 20px">
-          <hy-form v-bind="modalConfig" v-model="formData"></hy-form>
+          <template v-if="modalConfig">
+            <hy-form v-bind="modalConfig" v-model="formData"></hy-form>
+          </template>
           <slot></slot>
         </div>
       </template>
@@ -53,7 +55,7 @@ export default defineComponent({
   props: {
     modalConfig: {
       type: Object,
-      required: true
+      default: () => ({})
     },
     defaultInfo: {
       type: Object,
