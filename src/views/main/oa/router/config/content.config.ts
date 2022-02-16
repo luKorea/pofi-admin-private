@@ -4,14 +4,14 @@ import { TableConfig } from '@/types/table-config'
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 14:35:43
+ * @LastEditTime: 2022-02-16 14:58:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/content.config.ts
  */
 export const contentTableConfig: TableConfig = {
-  title: '用户列表',
+  title: '路由列表',
   propList: [
-    { prop: 'id', label: 'ID' },
+    { prop: 'id', label: 'ID', minWidth: '30' },
     { prop: 'path', label: '路径' },
     { prop: 'title', label: '名称' },
     { prop: 'component', label: '组件' },
@@ -23,6 +23,9 @@ export const contentTableConfig: TableConfig = {
   ],
   showIndexColumn: false,
   showSelectColumn: false,
+  childrenProps: {
+    rowKey: 'id'
+  },
   permission: {
     add: true,
     update: true,
