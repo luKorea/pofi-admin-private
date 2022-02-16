@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 15:29:17
+ * @LastEditTime: 2022-02-16 16:03:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/modal.config.ts
  */
@@ -19,57 +19,34 @@ export const modalConfig: IForm = {
       options: []
     },
     {
-      field: 'nickname',
+      field: 'name',
       type: 'input',
-      label: '昵称',
-      placeholder: '请输入昵称',
-      rules: [
-        {
-          required: true,
-          message: '请输入昵称',
-          trigger: 'blur'
-        }
-      ]
+      label: '路由名称',
+      placeholder: '请输入路由名称'
     },
     {
-      field: 'email',
+      field: 'name',
       type: 'input',
-      label: '邮箱',
-      placeholder: '请输入邮箱',
-      rules: [
-        {
-          required: true,
-          message: '请输入邮箱',
-          trigger: 'blur'
-        }
-      ]
+      label: '路由标题',
+      placeholder: '请输入路由标题'
     },
     {
-      field: 'phone',
+      field: 'path',
       type: 'input',
-      label: '电话号码',
-      placeholder: '请输入电话号码',
-      rules: [
-        {
-          required: true,
-          message: '请输入电话号码',
-          trigger: 'blur'
-        }
-      ]
+      label: '路由路径',
+      placeholder: '请输入路由路径'
     },
     {
-      field: 'pwd',
-      type: 'password',
-      label: '密码',
-      placeholder: '请输入密码',
-      isHidden: false,
-      rules: [
-        {
-          required: true,
-          message: '请输入密码',
-          trigger: 'blur'
-        }
-      ]
+      field: 'component',
+      type: 'input',
+      label: '路由组件地址',
+      placeholder: '请输入路由组件地址'
+    },
+    {
+      field: 'icon',
+      type: 'input',
+      label: '路由图标',
+      placeholder: '请输入路由图标'
     }
   ],
   colLayout: {
