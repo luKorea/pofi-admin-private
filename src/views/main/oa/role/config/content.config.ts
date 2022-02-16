@@ -1,12 +1,14 @@
+import { TableConfig } from '@/types/table-config'
+
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 11:31:10
+ * @LastEditTime: 2022-02-16 09:34:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/role/config/content.config.ts
  */
-export const contentTableConfig = {
+export const contentTableConfig: TableConfig = {
   title: '角色列表',
   propList: [
     { prop: 'id', label: 'ID' },

@@ -2,11 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 18:05:52
+ * @LastEditTime: 2022-02-16 09:31:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
-export const contentTableConfig = {
+
+import { TableConfig } from '@/types/table-config'
+
+export const contentTableConfig: TableConfig = {
   title: '用户列表',
   propList: [
     { prop: 'id', label: 'ID' },
