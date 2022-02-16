@@ -2,11 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 14:27:56
+ * @LastEditTime: 2022-02-16 17:10:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
-export const contentTableConfig = {
+
+import { TableConfig } from '@/types/table-config'
+export const contentTableConfig: TableConfig = {
   title: '限制条件列表',
   propList: [
     { prop: 'id', label: '序号', sortable: true },
@@ -18,5 +20,10 @@ export const contentTableConfig = {
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
-  showSelectColumn: false
+  showSelectColumn: false,
+  permission: {
+    add: true,
+    update: true,
+    delete: true
+  }
 }
