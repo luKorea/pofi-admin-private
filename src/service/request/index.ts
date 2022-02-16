@@ -5,6 +5,8 @@ import type { HYRequestInterceptors, HYRequestConfig } from './type'
 import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import qs from 'qs'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const DEAFULT_LOADING = true
 
@@ -12,7 +14,7 @@ class HYRequest {
   instance: AxiosInstance
   interceptors?: HYRequestInterceptors
   showLoading: boolean
-  loading?: ILoadingInstance
+  loading?: any
 
   constructor(config: HYRequestConfig) {
     // 创建axios实例
@@ -37,11 +39,7 @@ class HYRequest {
     this.instance.interceptors.request.use(
       (config) => {
         if (this.showLoading) {
-          this.loading = ElLoading.service({
-            lock: true,
-            text: '正在请求数据....',
-            background: 'rgba(0, 0, 0, 0.5)'
-          })
+          this.loading = NProgress.start()
         }
         return config
       },
@@ -53,8 +51,8 @@ class HYRequest {
     this.instance.interceptors.response.use(
       (res) => {
         // 将loading移除
-        this.loading?.close()
-
+        // this.loading?.close()
+        NProgress.done()
         const data = res.data
         return data
         // if (data.returnCode === '-1001') {
@@ -65,8 +63,8 @@ class HYRequest {
       },
       (err) => {
         // 将loading移除
-        this.loading?.close()
-
+        // this.loading?.close()
+        NProgress.done()
         // 例子: 判断不同的HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
           console.log('404的错误~')
