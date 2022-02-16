@@ -268,7 +268,7 @@ export default defineComponent({
     const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)
     const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
     const handleNewClick = () => emit('newBtnClick')
-    const handleAddRowClick = (item: any) => emit('rowBtnClick', item)
+    const handleAddRowClick = (item: any) => emit('newBtnClick', item)
     const handleEditClick = (item: any) => emit('editBtnClick', item)
     // 这里只需要将用户选中的值传递出去就行
     const handleSelectionChange = (item: any) => (userSelectData.value = item)

@@ -54,28 +54,28 @@ export default defineComponent({
     // pageModal相关的hook逻辑
     // 1.处理密码的逻辑
     const newCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = false
+      // const passwordItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'password'
+      // )
+      // passwordItem!.isHidden = false
     }
     const editCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = true
+      // const passwordItem = modalConfig.formItems.find(
+      //   (item) => item.field === 'password'
+      // )
+      // passwordItem!.isHidden = true
     }
 
     // 2.动态添加部门和角色列表
     const store = useStore()
     console.log(store)
     const modalConfigRef = computed(() => {
-      // const departmentItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'departmentId'
-      // )
-      // departmentItem!.options = store.state.entireDepartment.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
+      const routerItem = modalConfig.formItems.find(
+        (item) => item.field === 'id'
+      )
+      routerItem!.options = store.state.login.routerList.map((item: any) => {
+        return { title: item.title, value: item.id }
+      })
       // const roleItem = modalConfig.formItems.find(
       //   (item) => item.field === 'roleId'
       // )

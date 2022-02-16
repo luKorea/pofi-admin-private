@@ -1,8 +1,9 @@
+import { getRouterSelectList } from '@/service/common'
 /*
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:57:13
+ * @LastEditTime: 2022-02-16 15:44:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -29,11 +30,15 @@ const loginModule: Module<any, any> = {
       token: '',
       userInfo: {},
       userMenus: [],
-      permissions: []
+      permissions: [],
+      routerList: []
     }
   },
   getters: {},
   mutations: {
+    changeRouterList(state, data) {
+      state.routerList = data
+    },
     changeToken(state, token: string) {
       state.token = token
     },
@@ -78,6 +83,10 @@ const loginModule: Module<any, any> = {
         const userMenus = userMenusResult.result
         commit('changeUserMenus', userMenus)
         localCache.setCache('userMenus', userMenus)
+        // 4. 获取菜单列表
+        const { data } = await getRouterSelectList()
+        commit('changeRouterList', data)
+        localCache.setCache('routerList', data)
         // 4.跳到首页
         router.push('/main')
       } else {
@@ -98,6 +107,10 @@ const loginModule: Module<any, any> = {
       const userMenus = localCache.getCache('userMenus')
       if (userMenus) {
         commit('changeUserMenus', userMenus)
+      }
+      const routerList = localCache.getCache('routerList')
+      if (routerList) {
+        commit('changeRouterList', routerList)
       }
     }
   }

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 14:18:45
+ * @LastEditTime: 2022-02-16 15:29:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/modal.config.ts
  */
@@ -12,17 +12,11 @@ export const modalConfig: IForm = {
   title: '路由管理操作',
   formItems: [
     {
-      field: 'username',
-      type: 'input',
-      label: '登录名',
-      placeholder: '请输入登录名',
-      rules: [
-        {
-          required: true,
-          message: '请输入登录名',
-          trigger: 'blur'
-        }
-      ]
+      field: 'id',
+      type: 'select',
+      label: '上级路由',
+      placeholder: '请选择上级路由',
+      options: []
     },
     {
       field: 'nickname',

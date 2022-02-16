@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:10
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 16:46:24
+ * @LastEditTime: 2022-02-16 15:57:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-page-modal.ts
  */
@@ -14,12 +14,14 @@ type CallbackFn = (item?: any) => void
 export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
   const pageModalRef = ref<InstanceType<typeof PageModal>>()
   const defaultInfo = ref({})
-  const handleNewData = () => {
-    defaultInfo.value = {}
+  const handleNewData = (item: any) => {
+    if (item) {
+      defaultInfo.value = { ...item }
+    } else defaultInfo.value = {}
     if (pageModalRef.value) {
       pageModalRef.value.dialogVisible = true
     }
-    newCb && newCb()
+    newCb && newCb(item)
   }
   const handleEditData = (item: any) => {
     defaultInfo.value = { ...item }

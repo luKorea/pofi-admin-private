@@ -73,6 +73,8 @@ export function pathMapToMenu(
     }
   }
 }
+
+// 获取用户按钮权限
 export function mapMenusToPermissions(userMenus: any[]) {
   const permissions: string[] = []
 

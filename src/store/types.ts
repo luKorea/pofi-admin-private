@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 18:04:43
+ * @LastEditTime: 2022-02-16 15:50:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
