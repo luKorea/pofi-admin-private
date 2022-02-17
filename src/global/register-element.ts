@@ -2,13 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 13:48:25
+ * @LastEditTime: 2022-02-17 12:16:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
 import { App } from 'vue'
 import 'element-plus/lib/theme-chalk/base.css'
 import {
+  ElCard,
   ElDivider,
   ElScrollbar,
   ElTag,
@@ -54,6 +55,7 @@ import {
 } from 'element-plus'
 
 const components = [
+  ElCard,
   ElDivider,
   ElScrollbar,
   ElTag,

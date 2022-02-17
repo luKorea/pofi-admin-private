@@ -54,7 +54,6 @@ class HYRequest {
         // this.loading?.close()
         NProgress.done()
         const data = res.data
-        console.log(data, 'shuju')
         return data
         // if (data.returnCode === '-1001') {
         //   console.log('请求失败~, 错误信息')
@@ -66,10 +65,10 @@ class HYRequest {
         // 将loading移除
         // this.loading?.close()
         NProgress.done()
-        console.log(err.response.data)
         // 例子: 判断不同的HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
-          ElMessage.error('请求地址不存在')
+          // ElMessage.error('请求地址不存在')
+          console.log(`.......请求地址不存在`)
         }
         return err
       }

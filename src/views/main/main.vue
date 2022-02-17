@@ -10,7 +10,7 @@
         </el-header>
         <nav-tags></nav-tags>
         <el-main class="page-content">
-          <div class="page-info">
+          <el-card>
             <router-view v-slot="{ Component }">
               <transition
                 appear
@@ -22,7 +22,7 @@
                 <component :is="Component" v-if="Component"></component>
               </transition>
             </router-view>
-          </div>
+          </el-card>
         </el-main>
       </el-container>
     </el-container>
@@ -85,7 +85,7 @@ export default defineComponent({
 }
 
 .page-content {
-  height: calc(100% - 48px);
+  height: calc(100% - 96px);
   .page-info {
     background-color: #fff;
     border-radius: 5px;

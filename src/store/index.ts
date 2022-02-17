@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 16:56:46
+ * @LastEditTime: 2022-02-17 14:26:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -11,6 +11,7 @@ import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import login from './login/login'
 import system from './main/system/system'
 import deviceCondition from './main/device/condition/condition'
+import baseConfigModule from './main/base/config/config'
 // import cache from '@/utils/cache'
 
 import { getPageListData } from '@/service/main/system/system'
@@ -106,7 +107,8 @@ const store = createStore<IRootState>({
   modules: {
     login,
     system,
-    deviceCondition
+    deviceCondition,
+    baseConfigModule
   }
 })
 

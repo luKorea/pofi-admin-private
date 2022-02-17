@@ -307,7 +307,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .page-content {
-  padding: 20px;
+  // padding: 20px;
   // border-top: 20px solid #f0f2f5;
 }
 </style>
