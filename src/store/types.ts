@@ -25,6 +25,7 @@ export interface IRootWithModule {
   system: ISystemState
   deviceCondition: IConditionType
   baseConfigModule: IBaseConfigType
+  companionModule: IConditionType
 }
 
 export type IStoreType = IRootState & IRootWithModule

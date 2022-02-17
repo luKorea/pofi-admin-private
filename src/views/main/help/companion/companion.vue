@@ -1,18 +1,146 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-10 10:17:58
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-17 16:54:07
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
+-->
 <template>
-  <div class="companion">
-    <h2>companion</h2>
+  <div>
+    <page-search
+      :searchFormConfig="searchFormConfig"
+      @resetBtnClick="handleResetClick"
+      @queryBtnClick="handleQueryClick"
+    />
+    <page-content
+      ref="pageContentRef"
+      :contentTableConfig="contentTableConfig"
+      :storeTypeInfo="storeTypeInfo"
+      pageName="records"
+      @newBtnClick="handleNewData"
+      @editBtnClick="handleEditData"
+    >
+      <template #image="scope">
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="点击查看大图"
+          placement="top-start"
+        >
+          <el-image
+            :src="scope.row.bgUrl"
+            style="width: 40px; height: 40px"
+            fit="cover"
+            :preview-src-list="[scope.row.bgUrl]"
+          >
+            <template #error>
+              <div class="image-slot">
+                <el-icon><icon-picture /></el-icon>
+              </div>
+            </template>
+          </el-image>
+        </el-tooltip>
+      </template>
+      <template #video="scope">
+        <el-button
+          size="mini"
+          plain
+          @click="handleShowVideoClick(scope.row.fileUrl, scope.row.title)"
+          >预览</el-button
+        >
+      </template>
+    </page-content>
+    <page-modal
+      :defaultInfo="defaultInfo"
+      ref="pageModalRef"
+      pageName="records"
+      :modalConfig="modalConfigRef"
+      :operationName="operationName"
+    ></page-modal>
+    <hy-video
+      :videoUrl="videoUrl"
+      :isShowVideo="isShowVideo"
+      :title="videoTitle"
+      @close="isShowVideo = false"
+    ></hy-video>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
+
+import { usePageList } from './hooks/use-page-list'
+import { usePageSearch } from '@/hooks/use-page-search'
+import { usePageModal } from '@/hooks/use-page-modal'
+
+import { searchFormConfig } from './page-config/search.config'
+import { contentTableConfig } from './page-config/content.config'
+import { modalConfig } from './page-config/modal.config'
+
+import HyVideo from '@/base-ui/video'
 
 export default defineComponent({
   name: 'companion',
+  components: {
+    HyVideo
+  },
   setup() {
-    return {}
+    const isShowVideo = ref<boolean>(false)
+    const videoUrl = ref<string>('')
+    const videoTitle = ref<string>('')
+
+    // 点击按钮播放视频
+    const handleShowVideoClick = (src: string, title: string) => {
+      isShowVideo.value = !isShowVideo.value
+      videoUrl.value = src
+      videoTitle.value = title
+    }
+
+    const storeTypeInfo = ref({
+      actionName: 'companionModule/getPageListAction',
+      actionListName: 'companionModule/pageListData',
+      actionCountName: 'companionModule/pageListCount'
+    })
+    const operationName = ref({
+      editName: 'companionModule/editPageDataAction',
+      createName: 'companionModule/createPageDataAction'
+    })
+    const [countryList, groupList] = usePageList()
+    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
+      usePageModal()
+    // 表单
+    const modalConfigRef = computed(() => {
+      const countryItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'areaIds'
+      )
+      countryItem!.options = countryList.value.map((item: any) => ({
+        title: item.name,
+        value: item.id
+      }))
+      return modalConfig
+    })
+    return {
+      isShowVideo,
+      videoUrl,
+      videoTitle,
+      handleShowVideoClick,
+      storeTypeInfo,
+      countryList,
+      groupList,
+      searchFormConfig,
+      pageContentRef,
+      handleResetClick,
+      handleQueryClick,
+      contentTableConfig,
+      pageModalRef,
+      defaultInfo,
+      handleNewData,
+      handleEditData,
+      modalConfigRef,
+      operationName
+    }
   }
 })
 </script>
-
-<style scoped></style>

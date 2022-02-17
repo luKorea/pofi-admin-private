@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:26:00
+ * @LastEditTime: 2022-02-17 15:28:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -12,6 +12,7 @@ import login from './login/login'
 import system from './main/system/system'
 import deviceCondition from './main/device/condition/condition'
 import baseConfigModule from './main/base/config/config'
+import companionModule from './main/help/companion/companion'
 // import cache from '@/utils/cache'
 
 import { getPageListData } from '@/service/main/system/system'
@@ -108,7 +109,8 @@ const store = createStore<IRootState>({
     login,
     system,
     deviceCondition,
-    baseConfigModule
+    baseConfigModule,
+    companionModule
   }
 })
 
