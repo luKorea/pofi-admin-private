@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { HYRequestInterceptors, HYRequestConfig } from './type'
 
-import { ElLoading } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import qs from 'qs'
 import NProgress from 'nprogress'
@@ -54,6 +54,7 @@ class HYRequest {
         // this.loading?.close()
         NProgress.done()
         const data = res.data
+        console.log(data, 'shuju')
         return data
         // if (data.returnCode === '-1001') {
         //   console.log('请求失败~, 错误信息')
@@ -65,9 +66,10 @@ class HYRequest {
         // 将loading移除
         // this.loading?.close()
         NProgress.done()
+        console.log(err.response.data)
         // 例子: 判断不同的HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
-          console.log('404的错误~')
+          ElMessage.error('请求地址不存在')
         }
         return err
       }

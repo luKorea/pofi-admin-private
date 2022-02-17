@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 15:06:30
+ * @LastEditTime: 2022-02-17 11:27:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -39,7 +39,7 @@ export const contentTableConfig: TableConfig = {
   },
   permission: {
     add: true,
-    update: true,
+    update: false,
     delete: true,
     query: true,
     drawTable: false

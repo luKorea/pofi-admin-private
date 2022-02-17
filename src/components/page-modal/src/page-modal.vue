@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 18:27:04
+ * @LastEditTime: 2022-02-17 11:21:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -15,12 +15,15 @@
       :show-close="false"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      destroy-on-close
     >
       <template #title>
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button size="mini" @click="handleCloseClick">取 消</el-button>
+            <el-button size="mini" @click="dialogVisible = false"
+              >取 消</el-button
+            >
             <el-button size="mini" type="primary" @click="handleConfirmClick">
               确 定
             </el-button>
@@ -29,13 +32,11 @@
       </template>
       <template #default>
         <div style="padding: 0 20px">
-          <template v-if="modalConfig">
-            <hy-form
-              ref="pageForm"
-              v-bind="modalConfig"
-              v-model="formData"
-            ></hy-form>
-          </template>
+          <hy-form
+            ref="pageFormRef"
+            v-bind="modalConfig"
+            v-model="formData"
+          ></hy-form>
           <slot></slot>
         </div>
       </template>
@@ -48,8 +49,7 @@ import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 import HyForm from '@/base-ui/form'
-import { errorTip } from '@/utils/tip-info'
-
+import { errorTip, successTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'PageModal',
   components: {
@@ -71,6 +71,14 @@ export default defineComponent({
     pageName: {
       type: String,
       require: true
+    },
+    // 公共化处理，传入不同的action名字，请求不用页面数据
+    operationName: {
+      type: Object,
+      default: () => ({
+        editName: 'system/editPageDataAction',
+        createName: 'system/createPageDataAction'
+      })
     }
   },
   emits: ['editClick', 'addClick'],
@@ -78,7 +86,7 @@ export default defineComponent({
     const dialogVisible = ref(false)
     const formData = ref<any>({})
     // 获取表单组件，监听表单是否填写完整
-    const pageForm = ref<InstanceType<typeof HyForm>>()
+    const pageFormRef = ref<InstanceType<typeof HyForm>>()
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -92,44 +100,54 @@ export default defineComponent({
     const store = useStore()
     console.log(store)
     const handleConfirmClick = () => {
-      const formRef = pageForm.value?.formRef
+      const formRef = pageFormRef.value?.formRef
+      console.log(formRef)
       formRef?.validate((valid: any) => {
-        console.log(valid)
         if (valid) {
-          dialogVisible.value = false
           if (Object.keys(props.defaultInfo).length) {
             // 编辑
-            emit('editClick', { ...formData.value, ...props.otherInfo })
-            console.log('编辑用户')
-            // store.dispatch('system/editPageDataAction', {
-            //   pageName: props.pageName,
-            //   editData: { ...formData.value, ...props.otherInfo },
-            //   id: props.defaultInfo.id
-            // })
+            store
+              .dispatch(props.operationName.editName, {
+                pageName: props.pageName,
+                editData: {
+                  ...props.defaultInfo,
+                  ...formData.value,
+                  ...props.otherInfo
+                }
+              })
+              .then((res) => {
+                successTip(res)
+                dialogVisible.value = false
+              })
+              .catch((err) => {
+                dialogVisible.value = true
+                errorTip(err)
+              })
           } else {
             // 新建
             console.log('新建用户')
-            emit('addClick', { ...formData.value, ...props.otherInfo })
-            // store.dispatch('system/createPageDataAction', {
-            //   pageName: props.pageName,
-            //   newData: { ...formData.value, ...props.otherInfo }
-            // })
+            store
+              .dispatch(props.operationName.createName, {
+                pageName: props.pageName,
+                newData: { ...formData.value, ...props.otherInfo }
+              })
+              .then((res) => {
+                successTip(res)
+                dialogVisible.value = false
+              })
+              .catch((err) => {
+                dialogVisible.value = true
+                errorTip(err)
+              })
           }
         } else return false
       })
     }
-    const handleCloseClick = () => {
-      // TODO 有bug，晚上解决
-      dialogVisible.value = false
-      const formRef = pageForm.value?.formRef
-      formRef?.resetFields()
-    }
     return {
-      pageForm,
+      pageFormRef,
       dialogVisible,
       formData,
-      handleConfirmClick,
-      handleCloseClick
+      handleConfirmClick
     }
   }
 })

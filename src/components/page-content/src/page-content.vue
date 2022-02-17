@@ -140,6 +140,7 @@ import { useStore } from '@/store'
 
 import HyTable from '@/base-ui/table'
 import { PermissionType } from '@/types/permission'
+import { infoTipBox } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'PageContent',
@@ -240,11 +241,17 @@ export default defineComponent({
 
     // 5.删除/编辑/新建/多选/分配/操作日志/拖拽/批量操作/导出按钮
     // const handleDeleteClick = (item: any) => {
-    //   // console.log(item)
+    //   infoTipBox({
+    //     message: '您确定删除吗',
+    //     title: '删除数据'
+    //   })
+    //   .then(() => {
+    //     / console.log(item)
     //   // store.dispatch('system/deletePageDataAction', {
     //   //   pageName: props.pageName,
     //   //   id: item.id
     //   // })
+    //   })
     //   emit('removeBtnClick', item)
     // }
     // TODO 处理用户拖动表格后更新数据

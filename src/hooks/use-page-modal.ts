@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:10
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 16:14:40
+ * @LastEditTime: 2022-02-17 10:48:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-page-modal.ts
  */
@@ -31,6 +31,7 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
   }
   const handleEditData = (item: any) => {
     defaultInfo.value = { ...item }
+    console.log(defaultInfo.value, '编辑传递的值')
     if (pageModalRef.value) {
       pageModalRef.value.dialogVisible = true
     }

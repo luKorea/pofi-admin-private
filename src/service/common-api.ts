@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 17:24:18
+ * @LastEditTime: 2022-02-17 10:44:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -17,7 +17,7 @@ export function getPageListData(url: string, queryInfo: any) {
 
 // url: /users/id
 export function deletePageData(url: string, data: any) {
-  return hyRequest.delete<any>({
+  return hyRequest.post<any>({
     url: url,
     data: data
   })
@@ -31,7 +31,7 @@ export function createPageData(url: string, newData: any) {
 }
 
 export function editPageData(url: string, editData: any) {
-  return hyRequest.patch<any>({
+  return hyRequest.post<any>({
     url: url,
     data: editData
   })

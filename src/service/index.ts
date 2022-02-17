@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:34
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 09:28:37
+ * @LastEditTime: 2022-02-17 11:20:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/index.ts
  */
@@ -25,16 +25,17 @@ const hyRequest = new HYRequest({
       //   config.headers.Authorization = `Bearer ${token}`
       // }
       return config
-    },
-    requestInterceptorCatch: (err) => {
-      return err
-    },
-    responseInterceptor: (res) => {
-      return res
-    },
-    responseInterceptorCatch: (err) => {
-      return err
     }
+    // requestInterceptorCatch: (err) => {
+    //   return err
+    // },
+    // responseInterceptor: (res) => {
+    //   return res
+    // },
+    // responseInterceptorCatch: (err) => {
+    //   console.log(err, '返回错误')
+    //   return err
+    // }
   }
 })
 

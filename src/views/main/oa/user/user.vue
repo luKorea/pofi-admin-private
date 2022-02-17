@@ -13,6 +13,7 @@
       pageName="users"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
+      @removeBtnClick="handleRemoveData"
       @operationBtnClick="handleShowDialog"
       @selectAllBtnClick="test"
     >
@@ -23,14 +24,6 @@
       pageName="users"
       :modalConfig="modalConfigRef"
     ></page-modal>
-    <page-dialog ref="pageDialogRef">
-      <page-content
-        ref="pageContentRef"
-        :contentTableConfig="contentTableConfig"
-        pageName="users"
-      >
-      </page-content>
-    </page-dialog>
   </div>
 </template>
 
@@ -45,7 +38,7 @@ import { modalConfig } from './config/modal.config'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { usePageDialog } from '@/hooks/use-page-dialog'
-import { warnTip } from '@/utils/tip-info'
+import { infoTipBox, warnTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'users',
@@ -96,6 +89,19 @@ export default defineComponent({
     const store = useStore()
     console.log(store)
 
+    const handleRemoveData = (item: any) => {
+      infoTipBox({
+        message: '您确定删除吗',
+        title: '删除数据'
+      }).then(() => {
+        console.log(item)
+        store.dispatch('system/deletePageDataAction', {
+          pageName: 'users',
+          id: item.id
+        })
+      })
+    }
+
     // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newCallback, editCallback)
@@ -113,6 +119,7 @@ export default defineComponent({
       modalConfigRef,
       handleNewData,
       handleEditData,
+      handleRemoveData,
       pageModalRef,
       defaultInfo,
       test,

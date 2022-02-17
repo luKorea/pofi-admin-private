@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 09:33:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 15:43:43
+ * @LastEditTime: 2022-02-17 11:32:49
  * @Description: 封装公用文字提示
  * @FilePath: /pofi-admin/src/utils/tip-info.ts
  */
@@ -35,17 +35,17 @@ export const successTip = (message = '操作成功') => {
 interface MessageInfo {
   message: string
   title: string
-  confirmButtonText: string
-  cancelButtonText: string
-  iconType: MessageType
+  confirmButtonText?: string
+  cancelButtonText?: string
+  iconType?: MessageType
 }
 
 export const infoTipBox = (info: MessageInfo) => {
   return new Promise<void>((resolve, reject) => {
     ElMessageBox.confirm(info.message, info.title, {
-      confirmButtonText: info.confirmButtonText,
-      cancelButtonText: info.cancelButtonText,
-      type: info.iconType,
+      confirmButtonText: info.confirmButtonText ?? '确定',
+      cancelButtonText: info.cancelButtonText ?? '取消',
+      type: info.iconType ?? 'warning',
       closeOnClickModal: false,
       closeOnPressEscape: false
     })

@@ -5,9 +5,9 @@
     </div>
     <el-form
       ref="formRef"
-      :model="formItems"
       :label-width="labelWidth"
       label-position="top"
+      :model="modelValue"
     >
       <el-row :gutter="12">
         <template v-for="item in formItems" :key="item.label">
@@ -102,7 +102,6 @@
 import { defineComponent, PropType, ref } from 'vue'
 import { IFormItem } from '../types'
 import type { ElForm } from 'element-plus'
-
 export default defineComponent({
   props: {
     modelValue: {
@@ -134,8 +133,10 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
-    const formRef = ref<InstanceType<typeof ElForm>>()
+    type FormInstance = InstanceType<typeof ElForm>
+    const formRef = ref<FormInstance>()
     const handleValueChange = (value: any, field: string) => {
+      console.log(value, field)
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
 

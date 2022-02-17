@@ -1,3 +1,4 @@
+import { errorTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
@@ -99,26 +100,25 @@ const systemModule: Module<ISystemState, IRootState> = {
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       // 3.将数据存储到state中
       console.log(pageResult, '用户返回的数据')
-      const { data, totalCount = 0 } = pageResult as any
-      const changePageName = firstToUpperCase(pageName)
-      commit(`change${changePageName}List`, data)
-      // 处理oa下没有返回totalCount
-      if (pageName === 'users' || pageName === 'router') {
-        commit(`change${changePageName}Count`, data.length)
-      } else {
-        commit(`change${changePageName}Count`, totalCount)
-      }
+      const { data, totalCount = 0, state, msg } = pageResult as any
+      if (state) {
+        const changePageName = firstToUpperCase(pageName)
+        commit(`change${changePageName}List`, data)
+        // 处理oa下没有返回totalCount
+        if (pageName === 'users' || pageName === 'router') {
+          commit(`change${changePageName}Count`, data.length)
+        } else {
+          commit(`change${changePageName}Count`, totalCount)
+        }
+      } else errorTip(msg)
     },
 
     async deletePageDataAction({ dispatch }, payload: any) {
-      // 1.获取pageName和id
-      // pageName -> /users
-      // id -> /users/id
-      // const pageUrl = `/${pageName}/${id}`
       const pageName = payload.pageName
+      const id = payload.id
       const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
       // 2.调用删除网络请求
-      await deletePageData(pageUrl, payload.data)
+      await deletePageData(pageUrl, { id: id })
 
       // 3.重新请求最新的数据
       dispatch('getPageListAction', {
@@ -127,30 +127,41 @@ const systemModule: Module<ISystemState, IRootState> = {
       })
     },
 
-    async createPageDataAction({ dispatch }, payload: any) {
-      // 1.创建数据的请求
-      const { pageName, newData } = payload
-      const pageUrl = apiList[pageName] + cultureDifferentType('add', pageName)
-      await createPageData(pageUrl, newData)
-
-      // 2.请求最新的数据
-      dispatch('getPageListAction', {
-        pageName,
-        queryInfo: queryInfo
+    createPageDataAction({ dispatch }, payload: any) {
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise<any>(async (resolve, reject) => {
+        // 1.创建数据的请求
+        const { pageName, newData } = payload
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('add', pageName)
+        const data = await createPageData(pageUrl, newData)
+        if (data.state) {
+          // 2.请求最新的数据
+          dispatch('getPageListAction', {
+            pageName,
+            queryInfo: queryInfo
+          })
+          resolve(data.msg)
+        } else reject(data.msg)
       })
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
-      // 1.编辑数据的请求
-      const { pageName, editData } = payload
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('update', pageName)
-      await editPageData(pageUrl, editData)
-
-      // 2.请求最新的数据
-      dispatch('getPageListAction', {
-        pageName,
-        queryInfo: queryInfo
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise<any>(async (resolve, reject) => {
+        // 1.编辑数据的请求
+        const { pageName, editData } = payload
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('update', pageName)
+        const data = await editPageData(pageUrl, editData)
+        if (data.state) {
+          // 2.请求最新的数据
+          dispatch('getPageListAction', {
+            pageName,
+            queryInfo: queryInfo
+          })
+          resolve(data.msg)
+        } else reject(data.msg)
       })
     }
   }
