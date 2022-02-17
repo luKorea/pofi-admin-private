@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 11:15:29
+ * @LastEditTime: 2022-02-17 18:13:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -101,45 +101,56 @@ export default defineComponent({
     console.log(store)
     const handleConfirmClick = () => {
       const formRef = pageFormRef.value?.formRef
-      console.log(formRef)
       formRef?.validate((valid: any) => {
         if (valid) {
-          if (Object.keys(props.defaultInfo).length) {
-            // 编辑
-            store
-              .dispatch(props.operationName.editName, {
-                pageName: props.pageName,
-                editData: {
-                  ...props.defaultInfo,
-                  ...formData.value,
-                  ...props.otherInfo
-                }
-              })
-              .then((res) => {
-                successTip(res)
-                dialogVisible.value = false
-              })
-              .catch((err) => {
-                dialogVisible.value = true
-                errorTip(err)
-              })
-          } else {
-            // 新建
-            console.log('新建用户')
-            store
-              .dispatch(props.operationName.createName, {
-                pageName: props.pageName,
-                newData: { ...formData.value, ...props.otherInfo }
-              })
-              .then((res) => {
-                successTip(res)
-                dialogVisible.value = false
-              })
-              .catch((err) => {
-                dialogVisible.value = true
-                errorTip(err)
-              })
+          // 针对多选国家特殊数据进行处理
+          if (formData.value.regionName) {
+            const region = formData.value.regionName.toString()
+            const areaIds = formData.value.regionName.toString()
+            formData.value = {
+              ...formData.value,
+              region,
+              areaIds
+            }
+            console.log(formData.value, '用户数据')
           }
+          // if (Object.keys(props.defaultInfo).length) {
+          //   console.log(formData.value, '这是树木')
+          //   // 编辑
+          //   store
+          //     .dispatch(props.operationName.editName, {
+          //       pageName: props.pageName,
+          //       editData: {
+          //         ...props.defaultInfo,
+          //         ...formData.value,
+          //         ...props.otherInfo
+          //       }
+          //     })
+          //     .then((res) => {
+          //       successTip(res)
+          //       dialogVisible.value = false
+          //     })
+          //     .catch((err) => {
+          //       dialogVisible.value = true
+          //       errorTip(err)
+          //     })
+          // } else {
+          //   // 新建
+          //   console.log('新建用户')
+          //   store
+          //     .dispatch(props.operationName.createName, {
+          //       pageName: props.pageName,
+          //       newData: { ...formData.value, ...props.otherInfo }
+          //     })
+          //     .then((res) => {
+          //       successTip(res)
+          //       dialogVisible.value = false
+          //     })
+          //     .catch((err) => {
+          //       dialogVisible.value = true
+          //       errorTip(err)
+          //     })
+          // }
         } else return false
       })
     }

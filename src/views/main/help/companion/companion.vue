@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 16:54:07
+ * @LastEditTime: 2022-02-17 17:37:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -43,12 +43,19 @@
         </el-tooltip>
       </template>
       <template #video="scope">
-        <el-button
-          size="mini"
-          plain
-          @click="handleShowVideoClick(scope.row.fileUrl, scope.row.title)"
-          >预览</el-button
+        <el-tooltip
+          class="box-item"
+          effect="dark"
+          content="点击预览视频"
+          placement="top-start"
         >
+          <el-button
+            size="mini"
+            plain
+            @click="handleShowVideoClick(scope.row.fileUrl, scope.row.title)"
+            >预览</el-button
+          >
+        </el-tooltip>
       </template>
     </page-content>
     <page-modal

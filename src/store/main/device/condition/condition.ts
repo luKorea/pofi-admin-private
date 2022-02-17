@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:20:40
+ * @LastEditTime: 2022-02-17 17:54:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/condition/condition.ts
  */
@@ -62,7 +62,7 @@ const conditionModule: Module<IConditionType, IRootState> = {
 
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
+      const pageUrl = apiList[pageName] + `del${firstToUpperCase(pageName)}`
       await deletePageData(pageUrl, payload.data)
       dispatch('getPageListAction', {
         pageName, // 这里的pageName，无需处理，在getPageListAction会处理
@@ -72,7 +72,7 @@ const conditionModule: Module<IConditionType, IRootState> = {
 
     async createPageDataAction({ dispatch }, payload: any) {
       const { pageName, newData } = payload
-      const pageUrl = apiList[pageName] + cultureDifferentType('add', pageName)
+      const pageUrl = apiList[pageName] + `add${firstToUpperCase(pageName)}`
       await createPageData(pageUrl, newData)
       dispatch('getPageListAction', {
         pageName,
@@ -82,8 +82,7 @@ const conditionModule: Module<IConditionType, IRootState> = {
 
     async editPageDataAction({ dispatch }, payload: any) {
       const { pageName, editData } = payload
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('update', pageName)
+      const pageUrl = apiList[pageName] + `update${firstToUpperCase(pageName)}`
       await editPageData(pageUrl, editData)
       dispatch('getPageListAction', {
         pageName,

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:43:09
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 17:24:16
+ * @LastEditTime: 2022-02-17 17:40:20
  * @Description:
  * @FilePath: /pofi-admin/src/components/page-dialog/src/page-dialog.vue
 -->
@@ -12,15 +12,13 @@
       v-model="dialogVisible"
       width="40%"
       top="8vh"
-      center
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       destroy-on-close
       @close="closeDialog"
     >
-      <template #title v-if="showTitle">
+      <template #title>
         <div style="color: #409eff">{{ title }}</div>
-        <el-divider></el-divider>
       </template>
       <slot></slot>
     </el-dialog>

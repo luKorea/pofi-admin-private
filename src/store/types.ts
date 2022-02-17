@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:25:56
+ * @LastEditTime: 2022-02-17 17:49:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -23,7 +23,7 @@ export interface IRootState {
 export interface IRootWithModule {
   login: ILoginState
   system: ISystemState
-  deviceCondition: IConditionType
+  conditionModule: IConditionType
   baseConfigModule: IBaseConfigType
   companionModule: IConditionType
 }
