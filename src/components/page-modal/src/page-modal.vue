@@ -47,6 +47,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import { successTip, errorTip } from '@/utils/tip-info'
 
 import HyForm from '@/base-ui/form'
 export default defineComponent({
@@ -59,6 +60,7 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
+    // 默认点击当前项取到的值
     defaultInfo: {
       type: Object,
       default: () => ({})
@@ -86,6 +88,7 @@ export default defineComponent({
     const formData = ref<any>({})
     // 获取表单组件，监听表单是否填写完整
     const pageFormRef = ref<InstanceType<typeof HyForm>>()
+    // 监听defaultInfo值得变化，动态修改表单字段得值
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -114,43 +117,43 @@ export default defineComponent({
             }
             console.log(formData.value, '用户数据')
           }
-          // if (Object.keys(props.defaultInfo).length) {
-          //   console.log(formData.value, '这是树木')
-          //   // 编辑
-          //   store
-          //     .dispatch(props.operationName.editName, {
-          //       pageName: props.pageName,
-          //       editData: {
-          //         ...props.defaultInfo,
-          //         ...formData.value,
-          //         ...props.otherInfo
-          //       }
-          //     })
-          //     .then((res) => {
-          //       successTip(res)
-          //       dialogVisible.value = false
-          //     })
-          //     .catch((err) => {
-          //       dialogVisible.value = true
-          //       errorTip(err)
-          //     })
-          // } else {
-          //   // 新建
-          //   console.log('新建用户')
-          //   store
-          //     .dispatch(props.operationName.createName, {
-          //       pageName: props.pageName,
-          //       newData: { ...formData.value, ...props.otherInfo }
-          //     })
-          //     .then((res) => {
-          //       successTip(res)
-          //       dialogVisible.value = false
-          //     })
-          //     .catch((err) => {
-          //       dialogVisible.value = true
-          //       errorTip(err)
-          //     })
-          // }
+          if (Object.keys(props.defaultInfo).length) {
+            console.log(formData.value, '这是树木')
+            // 编辑
+            store
+              .dispatch(props.operationName.editName, {
+                pageName: props.pageName,
+                editData: {
+                  ...props.defaultInfo,
+                  ...formData.value,
+                  ...props.otherInfo
+                }
+              })
+              .then((res) => {
+                successTip(res)
+                dialogVisible.value = false
+              })
+              .catch((err) => {
+                dialogVisible.value = true
+                errorTip(err)
+              })
+          } else {
+            // 新建
+            console.log('新建用户')
+            store
+              .dispatch(props.operationName.createName, {
+                pageName: props.pageName,
+                newData: { ...formData.value, ...props.otherInfo }
+              })
+              .then((res) => {
+                successTip(res)
+                dialogVisible.value = false
+              })
+              .catch((err) => {
+                dialogVisible.value = true
+                errorTip(err)
+              })
+          }
         } else return false
       })
     }
