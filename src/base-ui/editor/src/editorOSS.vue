@@ -21,7 +21,6 @@ export interface EditorInfo {
   html: string
   text: string
 }
-import { OSSURL } from '@/service/request/config'
 
 import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
@@ -53,10 +52,6 @@ export default defineComponent({
     focus: {
       type: Boolean,
       default: false
-    },
-    imgUploadUrl: {
-      type: String,
-      default: OSSURL
     },
     // 图片文件名设置,根据不用模块设置不用的名字
     fileTypeName: {
