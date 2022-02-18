@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:13:40
+ * @LastEditTime: 2022-02-18 11:17:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { getCountrySelectList, getBaseConfigGroupList } from '@/service/common'
 
 export function usePageList() {
@@ -36,4 +36,33 @@ export function usePageList() {
   getCountryList()
   getGroupList()
   return [countryList, groupList]
+}
+
+export function useStoreName() {
+  const storeTypeInfo = ref({
+    actionName: 'baseConfigModule/getPageListAction',
+    actionListName: 'baseConfigModule/pageListData',
+    actionCountName: 'baseConfigModule/pageListCount'
+  })
+  const operationName = ref({
+    editName: 'baseConfigModule/editPageDataAction',
+    createName: 'baseConfigModule/createPageDataAction'
+  })
+
+  return [storeTypeInfo, operationName]
+}
+
+export function useOther() {
+  const countryID = ref(-999)
+  const editorValue = ref('')
+  const otherInfo = ref({})
+  watch(
+    () => editorValue.value,
+    () => {
+      otherInfo.value = {
+        value: editorValue.value
+      }
+    }
+  )
+  return [countryID, editorValue, otherInfo]
 }

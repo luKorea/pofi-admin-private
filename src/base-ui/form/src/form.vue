@@ -87,6 +87,14 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 ></el-date-picker>
               </template>
+              <template v-else-if="item.type === 'editor'">
+                <el-col :span="24">
+                  <hy-editor
+                    :model-value="modelValue[`${item.field}`]"
+                    @update:modelValue="handleValueChange($event, item.field)"
+                  />
+                </el-col>
+              </template>
             </el-form-item>
           </el-col>
         </template>
@@ -102,7 +110,13 @@
 import { defineComponent, PropType, ref } from 'vue'
 import { IFormItem } from '../types'
 import type { ElForm } from 'element-plus'
+
+import HyEditor from '@/base-ui/editor'
+
 export default defineComponent({
+  components: {
+    HyEditor
+  },
   props: {
     modelValue: {
       type: Object,

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 18:13:35
+ * @LastEditTime: 2022-02-18 11:15:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -49,7 +49,6 @@ import { defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
 import HyForm from '@/base-ui/form'
-import { errorTip, successTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'PageModal',
   components: {
@@ -103,6 +102,7 @@ export default defineComponent({
       const formRef = pageFormRef.value?.formRef
       formRef?.validate((valid: any) => {
         if (valid) {
+          console.log(formData.value, props.otherInfo)
           // 针对多选国家特殊数据进行处理
           if (formData.value.regionName) {
             const region = formData.value.regionName.toString()
@@ -181,7 +181,7 @@ export default defineComponent({
   .modal-title {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    // align-items: center;
     color: #fff;
   }
 }

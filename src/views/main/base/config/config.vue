@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 15:00:06
+ * @LastEditTime: 2022-02-18 11:31:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -40,16 +40,21 @@
       pageName="records"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
-    ></page-modal>
+      :otherInfo="otherInfo"
+    >
+      <hy-editor v-model:value="editorValue"></hy-editor>
+    </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 
 import PageCountry from '@/components/page-country'
+import HyEditor from '@/base-ui/editor'
 
-import { usePageList } from './hooks/use-page-list'
+import { usePageList, useStoreName, useOther } from './hooks/use-page-list'
+
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
@@ -60,24 +65,25 @@ import { modalConfig } from './page-config/modal.config'
 export default defineComponent({
   name: 'config',
   components: {
-    PageCountry
+    PageCountry,
+    HyEditor
   },
   setup() {
-    const storeTypeInfo = ref({
-      actionName: 'baseConfigModule/getPageListAction',
-      actionListName: 'baseConfigModule/pageListData',
-      actionCountName: 'baseConfigModule/pageListCount'
-    })
-    const operationName = ref({
-      editName: 'baseConfigModule/editPageDataAction',
-      createName: 'baseConfigModule/createPageDataAction'
-    })
-    const countryID = ref(-999)
+    const [countryID, editorValue, otherInfo] = useOther()
+    const [storeTypeInfo, operationName] = useStoreName()
     const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
 
+    const newClick = () => {
+      editorValue.value = ''
+    }
+    const editClick = (item: any) => {
+      editorValue.value = item.value
+      console.log(editorValue.value)
+    }
+
+    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
+      usePageModal(newClick, editClick)
     // 搜索处理
     const searchConfigReset = computed(() => {
       const groupItem = searchFormConfig.formItems.find(
@@ -128,7 +134,9 @@ export default defineComponent({
       handleNewData,
       handleEditData,
       modalConfigRef,
-      operationName
+      operationName,
+      editorValue,
+      otherInfo
     }
   }
 })

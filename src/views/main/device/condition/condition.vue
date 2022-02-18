@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 18:19:07
+ * @LastEditTime: 2022-02-18 09:40:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -23,7 +23,8 @@
       pageName="limit"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
-    ></page-modal>
+    >
+    </page-modal>
   </div>
 </template>
 

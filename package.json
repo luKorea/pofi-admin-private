@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.17",
+    "ali-oss": "^6.17.1",
     "animate.css": "^4.1.1",
     "autoprefixer": "^9.8.8",
     "axios": "^0.21.1",
@@ -30,11 +31,13 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2",
+    "wangeditor": "^4.7.11",
     "xgplayer": "^2.31.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@types/ali-oss": "^6.16.2",
     "@types/dplayer": "^1.25.2",
     "@types/md5": "^2.3.2",
     "@types/nprogress": "^0.2.0",

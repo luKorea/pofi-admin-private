@@ -1,3 +1,11 @@
+/*
+ * @Author: korealu
+ * @Date: 2022-02-08 09:30:49
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-18 10:07:33
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/service/request/config.ts
+ */
 // 1.方式一: 手动的切换不同的环境(不推荐)
 // const BASE_URL = 'http://coderwhy.org/dev'
 // const BASE_NAME = 'coderwhy'
@@ -15,6 +23,8 @@
 
 let BASE_URL = ''
 const TIME_OUT = 10000
+const QINIU = 'http://up.qiniu.com'
+const OSSURL = 'http://f3.pofiart.com' // 图片视频上传地址
 
 if (process.env.NODE_ENV === 'development') {
   BASE_URL = '/api'
@@ -24,4 +34,4 @@ if (process.env.NODE_ENV === 'development') {
   BASE_URL = '/api'
 }
 
-export { BASE_URL, TIME_OUT }
+export { BASE_URL, TIME_OUT, QINIU, OSSURL }

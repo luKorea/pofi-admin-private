@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:44
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:48:46
+ * @LastEditTime: 2022-02-18 10:36:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/form/types/index.ts
  */
@@ -19,6 +19,7 @@ type IFormType =
   | 'upload'
   | 'timeSelect'
   | 'treeSelect'
+  | 'editor'
 
 export interface IFormItem {
   field: string
