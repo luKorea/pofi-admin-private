@@ -29,7 +29,7 @@ export function accountLoginRequest(account: IAccount) {
 }
 
 export function requestUserInfo() {
-  return hyRequest.get<IDataType>({
+  return hyRequest.get<any>({
     url: LoginAPI.LoginUserInfo,
     showLoading: false
   })

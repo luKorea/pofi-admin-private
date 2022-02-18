@@ -16,7 +16,7 @@ module.exports = {
       '^/api': {
         // http://152.136.185.210:5000
         // http://tcms.pofiart.com
-        target: 'http://tcms.pofiart.com',
+        target: 'https://pe-cms.pofiart.com',
         changeOrigin: true
       }
     }

@@ -75,20 +75,22 @@ const loginModule: Module<any, any> = {
         // 2.请求用户信息
         const userInfoResult = await requestUserInfo()
         const userInfo = userInfoResult.data
-        commit('changeUserInfo', userInfo)
-        localCache.setCache('userInfo', userInfo)
+        if (userInfoResult.data) {
+          commit('changeUserInfo', userInfo)
+          localCache.setCache('userInfo', userInfo)
 
-        // 3.请求用户菜单
-        const userMenusResult = await requestUserMenusByRoleId()
-        const userMenus = userMenusResult.result
-        commit('changeUserMenus', userMenus)
-        localCache.setCache('userMenus', userMenus)
-        // 4. 获取菜单列表
-        const { data } = await getRouterSelectList()
-        commit('changeRouterList', data)
-        localCache.setCache('routerList', data)
-        // 4.跳到首页
-        router.push('/main')
+          // 3.请求用户菜单
+          const userMenusResult = await requestUserMenusByRoleId()
+          const userMenus = userMenusResult.result
+          commit('changeUserMenus', userMenus)
+          localCache.setCache('userMenus', userMenus)
+          // 4. 获取菜单列表
+          const { data } = await getRouterSelectList()
+          commit('changeRouterList', data)
+          localCache.setCache('routerList', data)
+          // 4.跳到首页
+          router.push('/main')
+        } else errorTip(userInfoResult.msg)
       } else {
         errorTip(loginResult.msg)
       }
@@ -101,7 +103,7 @@ const loginModule: Module<any, any> = {
         // dispatch('getInitialDataAction', null, { root: true })
       }
       const userInfo = localCache.getCache('userInfo')
-      if (userInfo) {
+      if (userInfo && userInfo !== undefined) {
         commit('changeUserInfo', userInfo)
       }
       const userMenus = localCache.getCache('userMenus')
