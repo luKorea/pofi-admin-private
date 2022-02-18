@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 17:37:15
+ * @LastEditTime: 2022-02-18 14:03:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -21,6 +21,9 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
     >
+      <template #state="scope">
+        <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
+      </template>
       <template #image="scope">
         <el-tooltip
           class="box-item"
@@ -64,7 +67,9 @@
       pageName="records"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
-    ></page-modal>
+    >
+      <hy-upload></hy-upload>
+    </page-modal>
     <hy-video
       :videoUrl="videoUrl"
       :isShowVideo="isShowVideo"
@@ -77,7 +82,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 
-import { usePageList } from './hooks/use-page-list'
+import { usePageList, useStoreName } from './hooks/use-page-list'
+
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
@@ -86,11 +92,13 @@ import { contentTableConfig } from './page-config/content.config'
 import { modalConfig } from './page-config/modal.config'
 
 import HyVideo from '@/base-ui/video'
+import HyUpload from '@/base-ui/upload'
 
 export default defineComponent({
   name: 'companion',
   components: {
-    HyVideo
+    HyVideo,
+    HyUpload
   },
   setup() {
     const isShowVideo = ref<boolean>(false)
@@ -104,15 +112,7 @@ export default defineComponent({
       videoTitle.value = title
     }
 
-    const storeTypeInfo = ref({
-      actionName: 'companionModule/getPageListAction',
-      actionListName: 'companionModule/pageListData',
-      actionCountName: 'companionModule/pageListCount'
-    })
-    const operationName = ref({
-      editName: 'companionModule/editPageDataAction',
-      createName: 'companionModule/createPageDataAction'
-    })
+    const [storeTypeInfo, operationName] = useStoreName()
     const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

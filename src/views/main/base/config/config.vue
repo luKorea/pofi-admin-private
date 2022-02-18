@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 13:06:52
+ * @LastEditTime: 2022-02-18 13:41:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 
 import PageCountry from '@/components/page-country'
 import HyEditor from '@/base-ui/editor'
@@ -69,6 +69,13 @@ export default defineComponent({
     HyEditor
   },
   setup() {
+    const editorRules = ref([
+      {
+        require: true,
+        message: '请输入内容',
+        trigger: 'blur'
+      }
+    ])
     const [countryID, editorValue, otherInfo] = useOther()
     const [storeTypeInfo, operationName] = useStoreName()
     const [countryList, groupList] = usePageList()
@@ -119,6 +126,7 @@ export default defineComponent({
       return modalConfig
     })
     return {
+      editorRules,
       storeTypeInfo,
       countryList,
       groupList,

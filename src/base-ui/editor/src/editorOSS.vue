@@ -65,8 +65,10 @@ export default defineComponent({
     let client: any = null
     useOSSConfig().then((res: any) => {
       client = new OSS({
-        ...res,
-        bucket: res.bucketName
+        region: 'oss-cn-hongkong',
+        stsToken: res.securityToken,
+        bucket: res.bucketName,
+        ...res
       })
     })
     const editorRef = ref<HTMLDivElement | null>(null)
@@ -97,8 +99,8 @@ export default defineComponent({
     const createWangEditor = () => {
       instance.value = new WangEditor(editorRef.value)
       setEditorConfig()
-      initEditorContent(props.value)
       instance.value.create()
+      initEditorContent(props.value)
       // create 之后才能初始化
       // initEditorContent(props.defaultHtmlStr)
     }
@@ -116,7 +118,7 @@ export default defineComponent({
       const editor: Editor = instance.value as Editor
       editor.config.uploadFileName = props.fileTypeName
       // 一次最多上传图片的数量
-      editor.config.uploadImgMaxLength = 1
+      // editor.config.uploadImgMaxLength = 1
       console.log(editor.config, 'editor.config')
       editor.config.customUploadImg = function (
         resultFiles: any,
@@ -132,7 +134,10 @@ export default defineComponent({
         )
           .then((res: any) => {
             console.log(res)
-            insertImgFn(res.url)
+            const url = res.res.requestUrls[0].split('?')[0]
+            console.log(res.res.requestUrls[0].split('?')[0], '图片')
+            // 后续再改
+            insertImgFn(url)
           })
           .catch((err: any) => {
             console.log(err)
@@ -152,7 +157,7 @@ export default defineComponent({
       // 设计z-index
       editor.config.zIndex = props.zIndex
       // 取消自动 focus
-      editor.config.focus = props.focus
+      // editor.config.focus = props.focus
       // 配置 onchange 回调函数
       editor.config.onchange = function (newHtml: string) {
         content.html = newHtml

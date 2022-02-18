@@ -2,9 +2,9 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:13:40
+ * @LastEditTime: 2022-02-18 13:48:39
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
+ * @FilePath: /pofi-admin/src/views/main/help/companion/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
 import { ref } from 'vue'
@@ -36,4 +36,18 @@ export function usePageList() {
   getCountryList()
   getGroupList()
   return [countryList, groupList]
+}
+
+export function useStoreName() {
+  const storeTypeInfo = ref({
+    actionName: 'companionModule/getPageListAction',
+    actionListName: 'companionModule/pageListData',
+    actionCountName: 'companionModule/pageListCount'
+  })
+  const operationName = ref({
+    editName: 'companionModule/editPageDataAction',
+    createName: 'companionModule/createPageDataAction'
+  })
+
+  return [storeTypeInfo, operationName]
 }
