@@ -68,7 +68,7 @@ const loginModule: Module<any, any> = {
         const { token } = loginResult
         commit('changeToken', token)
         localCache.setCache('token', token)
-        successTip('登录成功')
+        // successTip('登录成功')
         // 发送初始化的请求(完整的role/department)
         // dispatch('getInitialDataAction', null, { root: true })
 
