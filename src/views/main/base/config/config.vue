@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 13:41:02
+ * @LastEditTime: 2022-02-18 18:17:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -42,7 +42,10 @@
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
-      <hy-editor v-model:value="editorValue" fileTypeName="base/"></hy-editor>
+      <div class="item-flex">
+        <span class="item-title">内容</span>
+        <hy-editor v-model:value="editorValue" fileTypeName="base/"></hy-editor>
+      </div>
     </page-modal>
   </div>
 </template>

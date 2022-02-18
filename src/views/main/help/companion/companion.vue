@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 17:32:39
+ * @LastEditTime: 2022-02-18 18:21:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -68,20 +68,28 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
     >
-      <el-row>
-        <el-col :span="12">
-          <hy-upload
-            :limit="1"
-            fileTypeName="help/"
-            v-model:value="fileList"
-          ></hy-upload>
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">图片上传</span>
+            <hy-upload
+              :limit="imgLimit"
+              fileTypeName="help/"
+              v-model:value="imgList"
+            ></hy-upload>
+          </div>
+        </el-col>
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">视频上传</span>
+            <hy-upload
+              :limit="videoLimit"
+              fileTypeName="help/"
+              v-model:value="videoList"
+            ></hy-upload>
+          </div>
         </el-col>
       </el-row>
-      <!-- <hy-upload
-        :limit="3"
-        fileTypeName="help/"
-        v-model:value="fileList"
-      ></hy-upload> -->
     </page-modal>
     <hy-video
       :videoUrl="videoUrl"
@@ -98,7 +106,8 @@ import { computed, defineComponent, ref } from 'vue'
 import {
   usePageList,
   useStoreName,
-  useImageUpload
+  useImageUpload,
+  useVideoUpload
 } from './hooks/use-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
@@ -130,7 +139,8 @@ export default defineComponent({
     }
 
     const [storeTypeInfo, operationName] = useStoreName()
-    const [limit, fileList] = useImageUpload()
+    const [imgLimit, imgList] = useImageUpload()
+    const [videoLimit, videoList] = useVideoUpload()
     const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -147,8 +157,10 @@ export default defineComponent({
       return modalConfig
     })
     return {
-      limit,
-      fileList,
+      imgLimit,
+      imgList,
+      videoLimit,
+      videoList,
       isShowVideo,
       videoUrl,
       videoTitle,
@@ -171,11 +183,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style>
-.item-title {
-  font-size: 14px;
-  color: #606266;
-  margin-right: 10px;
-}
-</style>

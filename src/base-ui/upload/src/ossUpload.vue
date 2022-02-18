@@ -5,8 +5,10 @@
     :on-success="onSuccess"
     :on-remove="onRemove"
     :before-remove="beforeRemove"
-    :on-preview="handlePictureCardPreview"
-    :on-exceed="masterFileMax"
+    :on-preview="onPreview"
+    :on-exceed="onExceed"
+    :before-upload="onChange"
+    :on-progress="onProgress"
     list-type="picture-card"
   >
     <el-icon><plus /></el-icon>
@@ -20,7 +22,7 @@
 import { defineComponent, ref } from 'vue'
 import OSS from 'ali-oss'
 import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
-import { errorTip, successTip } from '@/utils/tip-info'
+import { errorTip, successTip, warnTip } from '@/utils/tip-info'
 
 import { Plus } from '@element-plus/icons-vue'
 export default defineComponent({
@@ -63,12 +65,24 @@ export default defineComponent({
       emit('update:value', newValue)
     }
     // 限制上传个数
-    const masterFileMax = () => {
+    const onExceed = () => {
       errorTip(`最多只能上传${props.limit}个`)
     }
-    const handlePictureCardPreview = (file: any) => {
+    const onPreview = (file: any) => {
       dialogImageUrl.value = file.url!
       dialogVisible.value = true
+    }
+    const onChange = () => {
+      debugger
+      if (props.value.length === props.limit) {
+        debugger
+        warnTip('当前上传文件数量已经达到限制啦，请删除后重新上传')
+        return
+      }
+    }
+    // 进度条
+    const onProgress = () => {
+      console.log(2)
     }
     // beforeRemove
     const httpRequest = (options: any) => {
@@ -93,11 +107,13 @@ export default defineComponent({
     return {
       dialogImageUrl,
       dialogVisible,
-      handlePictureCardPreview,
       httpRequest,
+      onPreview,
       onSuccess,
-      masterFileMax,
-      onRemove
+      onExceed,
+      onRemove,
+      onChange,
+      onProgress
     }
   }
 })
