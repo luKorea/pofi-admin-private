@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 13:48:39
+ * @LastEditTime: 2022-02-18 16:49:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { getCountrySelectList, getBaseConfigGroupList } from '@/service/common'
 
 export function usePageList() {
@@ -50,4 +50,11 @@ export function useStoreName() {
   })
 
   return [storeTypeInfo, operationName]
+}
+
+export function useImageUpload() {
+  // 上传操作
+  const limit = ref(1)
+  const fileList = ref([])
+  return [limit, fileList]
 }

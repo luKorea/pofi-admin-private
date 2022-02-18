@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 14:03:54
+ * @LastEditTime: 2022-02-18 17:32:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -68,7 +68,20 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
     >
-      <hy-upload></hy-upload>
+      <el-row>
+        <el-col :span="12">
+          <hy-upload
+            :limit="1"
+            fileTypeName="help/"
+            v-model:value="fileList"
+          ></hy-upload>
+        </el-col>
+      </el-row>
+      <!-- <hy-upload
+        :limit="3"
+        fileTypeName="help/"
+        v-model:value="fileList"
+      ></hy-upload> -->
     </page-modal>
     <hy-video
       :videoUrl="videoUrl"
@@ -82,7 +95,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 
-import { usePageList, useStoreName } from './hooks/use-page-list'
+import {
+  usePageList,
+  useStoreName,
+  useImageUpload
+} from './hooks/use-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
@@ -113,6 +130,7 @@ export default defineComponent({
     }
 
     const [storeTypeInfo, operationName] = useStoreName()
+    const [limit, fileList] = useImageUpload()
     const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -129,6 +147,8 @@ export default defineComponent({
       return modalConfig
     })
     return {
+      limit,
+      fileList,
       isShowVideo,
       videoUrl,
       videoTitle,
@@ -151,3 +171,11 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.item-title {
+  font-size: 14px;
+  color: #606266;
+  margin-right: 10px;
+}
+</style>

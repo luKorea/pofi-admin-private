@@ -31,7 +31,7 @@
       <template v-for="propItem in propList" :key="propItem.prop">
         <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
-            <!-- 动态插槽，动态作用于插槽 -->
+            <!-- 动态插槽，动态作用域插槽 -->
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
             </slot>

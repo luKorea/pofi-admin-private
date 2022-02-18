@@ -1,51 +1,33 @@
-<!--
- * @Author: korealu
- * @Date: 2022-02-18 10:14:26
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 14:12:52
- * @Description: file content
- * @FilePath: /pofi-admin/src/base-ui/upload/src/ossUpload.vue
--->
 <template>
-  <div class="upload-container">
-    <el-upload
-      ref="uploadRef"
-      name="file"
-      :limit="limit"
-      :accept="accept"
-      :multiple="true"
-      :file-list="defaultFileList"
-      :on-remove="handleRemove"
-      :on-success="handleSuccess"
-      :before-upload="beforeUpload"
-      :on-exceed="handleExceed"
-      :on-change="handleChange"
-      class="editor-slide-upload"
-      action="#"
-    >
-      <el-button size="small" type="primary"> 点击上传 </el-button>
-      <template #tip>
-        <div class="el-upload__tip">{{ tips }}</div>
-      </template>
-    </el-upload>
-  </div>
+  <el-upload
+    :limit="limit"
+    :http-request="httpRequest"
+    :on-success="onSuccess"
+    :on-remove="onRemove"
+    :before-remove="beforeRemove"
+    :on-preview="handlePictureCardPreview"
+    :on-exceed="masterFileMax"
+    list-type="picture-card"
+  >
+    <el-icon><plus /></el-icon>
+  </el-upload>
+  <!-- <el-dialog v-model="dialogVisible">
+    <img width="400px" :src="dialogImageUrl" alt="" />
+  </el-dialog> -->
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import OSS from 'ali-oss'
 import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
+import { errorTip, successTip } from '@/utils/tip-info'
+
+import { Plus } from '@element-plus/icons-vue'
 export default defineComponent({
-  name: 'Upload',
+  components: {
+    Plus
+  },
   props: {
-    tips: {
-      type: String,
-      default: ''
-    },
-    action: {
-      type: String,
-      default: ''
-    },
     limit: {
       type: Number,
       default: 5
@@ -53,19 +35,95 @@ export default defineComponent({
     fileTypeName: {
       type: String,
       default: 'help/'
+    },
+    value: {
+      type: Array,
+      default: () => []
     }
   },
-  emits: ['success-callback', 'remove-callback', 'change-callback'],
-  setup() {
+  emits: ['successClick', 'removeClick', 'update:value'],
+  setup(props, { emit }) {
     let client: any = null
-    useOSSConfig().then((res: any) => {
+    useOSSConfig().then((res) => {
       client = new OSS({
-        ...res,
-        bucket: res.bucketName
+        region: 'oss-cn-hongkong',
+        stsToken: res.securityToken,
+        bucket: res.bucketName,
+        ...res
       })
-      console.log(client)
     })
-    return {}
+    const dialogImageUrl = ref('')
+    const dialogVisible = ref(false)
+    const onSuccess = () => successTip('上传成功')
+    const onRemove = (file: any) => {
+      const newValue = props.value.filter(
+        (item: any) => item.name !== file.name
+      )
+      // console.log(newData)
+      emit('update:value', newValue)
+    }
+    // 限制上传个数
+    const masterFileMax = () => {
+      errorTip(`最多只能上传${props.limit}个`)
+    }
+    const handlePictureCardPreview = (file: any) => {
+      dialogImageUrl.value = file.url!
+      dialogVisible.value = true
+    }
+    // beforeRemove
+    const httpRequest = (options: any) => {
+      const file = options.file
+      clientSendFile(client, props.fileTypeName, client.options.fileName, file)
+        .then((res: any) => {
+          console.log(res.res)
+          const url = res.res.requestUrls[0].split('?')[0]
+          emit('update:value', [
+            ...props.value,
+            {
+              url: url,
+              name: res.name
+            }
+          ])
+          // onSuccess()
+        })
+        .catch((err) => {
+          console.log(err, 'err')
+        })
+    }
+    return {
+      dialogImageUrl,
+      dialogVisible,
+      handlePictureCardPreview,
+      httpRequest,
+      onSuccess,
+      masterFileMax,
+      onRemove
+    }
   }
 })
 </script>
+
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 09:45:43
+ * @LastEditTime: 2022-02-18 17:14:14
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -41,6 +41,9 @@ module.exports = {
         minChunks: 3,
         name: 'vendor'
       })
+  },
+  chainWebpack: (config) => {
+    config.module.rule('javascript/auto').test(/\.mjs$/)
   }
   // 3.配置方式三:
   // chainWebpack: (config) => {
