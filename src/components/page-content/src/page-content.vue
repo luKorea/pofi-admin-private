@@ -134,7 +134,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watchEffect } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
 // import { usePermission } from '@/hooks/use-permission'
 
@@ -201,7 +201,7 @@ export default defineComponent({
 
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
-    // watch(pageInfo, () => getPageData())
+    watch(pageInfo, () => getPageData())
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
       if (!permissionList.value.isQuery) return
@@ -215,8 +215,8 @@ export default defineComponent({
         }
       })
     }
-    watchEffect(() => getPageData())
-    // getPageData()
+    // watchEffect(() => getPageData())
+    getPageData()
 
     // 3.从vuex中获取数据
     const dataList = computed(() => {
