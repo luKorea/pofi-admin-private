@@ -9,16 +9,18 @@
 <template>
   <div class="page-country">
     <template v-if="countryList && countryList.length > 0">
-      <el-card style="height: 100%">
+      <el-card style="height: 600px; overflow: hidden; overflow-y: scroll">
         <div class="wrap">
           <template v-for="(item, index) in countryList" :key="item.id">
-            <div
-              class="item"
-              :class="index === currentIndex && 'active'"
-              @click="selectItem(item, index)"
-            >
-              {{ item.name }}
-            </div>
+            <el-tooltip :content="item.name" placement="right-start ">
+              <div
+                class="item"
+                :class="index === currentIndex && 'active'"
+                @click="selectItem(item, index)"
+              >
+                {{ item.name }}
+              </div>
+            </el-tooltip>
           </template>
         </div>
       </el-card>

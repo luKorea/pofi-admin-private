@@ -92,6 +92,7 @@ export function mapMenusToPermissions(userMenus: any[]) {
   return permissions
 }
 
+// 获取菜单叶子节点
 export function menuMapLeafKeys(menuList: any[]) {
   const leftKeys: number[] = []
 
