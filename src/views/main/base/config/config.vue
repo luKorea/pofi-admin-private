@@ -9,13 +9,14 @@
 <template>
   <div class="hg-flex">
     <page-country
+      ref="countryRef"
       :countryList="countryList"
       @selectCountryItem="selectCountryClick"
     ></page-country>
     <div style="width: 100%">
       <page-search
         :searchFormConfig="searchConfigReset"
-        @resetBtnClick="handleResetClick"
+        @resetBtnClick="handleResetBtnClick"
         @queryBtnClick="handleQueryBtnClick"
       />
       <page-content
@@ -66,7 +67,7 @@ import { contentTableConfig } from './page-config/content.config'
 import { modalConfig } from './page-config/modal.config'
 
 export default defineComponent({
-  name: 'config',
+  name: 'baseConfig',
   components: {
     PageCountry,
     HyEditor
@@ -79,6 +80,7 @@ export default defineComponent({
         trigger: 'blur'
       }
     ])
+    const countryRef = ref()
     const [countryID, editorValue, otherInfo] = useOther()
     const [storeTypeInfo, operationName] = useStoreName()
     const [countryList, groupList] = usePageList()
@@ -105,17 +107,26 @@ export default defineComponent({
       }))
       return searchFormConfig
     })
+    const copyQueryInfo = ref()
     const selectCountryClick = (item: any) => {
       countryID.value = item.id
       handleQueryClick({
-        rid: item.id
+        ...copyQueryInfo.value,
+        rid: countryID.value
       })
     }
     const handleQueryBtnClick = (queryInfo: any) => {
+      copyQueryInfo.value = queryInfo
       handleQueryClick({
         ...queryInfo,
         rid: countryID.value
       })
+    }
+    // 刷新时重新选择第一条数据
+    const handleResetBtnClick = () => {
+      countryRef.value.currentIndex = 0
+      countryID.value = '-999'
+      handleResetClick()
     }
     // 表单
     const modalConfigRef = computed(() => {
@@ -129,6 +140,7 @@ export default defineComponent({
       return modalConfig
     })
     return {
+      countryRef,
       editorRules,
       storeTypeInfo,
       countryList,
@@ -137,6 +149,7 @@ export default defineComponent({
       pageContentRef,
       searchConfigReset,
       handleResetClick,
+      handleResetBtnClick,
       handleQueryBtnClick,
       handleQueryClick,
       contentTableConfig,
