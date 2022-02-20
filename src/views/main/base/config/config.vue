@@ -107,7 +107,7 @@ export default defineComponent({
       }))
       return searchFormConfig
     })
-    const copyQueryInfo = ref()
+    const copyQueryInfo = ref({})
     const selectCountryClick = (item: any) => {
       countryID.value = item.id
       handleQueryClick({
@@ -150,8 +150,8 @@ export default defineComponent({
       searchConfigReset,
       handleResetClick,
       handleResetBtnClick,
-      handleQueryBtnClick,
       handleQueryClick,
+      handleQueryBtnClick,
       contentTableConfig,
       pageModalRef,
       defaultInfo,

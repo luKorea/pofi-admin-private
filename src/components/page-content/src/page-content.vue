@@ -39,7 +39,7 @@
         <el-button
           size="mini"
           icon="el-icon-refresh"
-          @click="getPageData"
+          @click="handlerefreshClick"
         ></el-button>
       </template>
 
@@ -201,9 +201,18 @@ export default defineComponent({
 
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
-    watch(pageInfo, () => getPageData())
+    const backQueryInfo = ref({})
+    watch(pageInfo, () => {
+      console.log(1)
+      getPageData(backQueryInfo.value)
+    })
+    const handlerefreshClick = () => {
+      // pageInfo.value = { currentPage: 1, pageSize: 10 }
+      getPageData(backQueryInfo.value)
+    }
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
+      backQueryInfo.value = queryInfo
       if (!permissionList.value.isQuery) return
       store.dispatch(props.storeTypeInfo?.actionName, {
         pageName: props.pageName,
@@ -294,6 +303,7 @@ export default defineComponent({
       handleDeleteClick,
       handleNewClick,
       handleEditClick,
+      handlerefreshClick,
       handleSelectionChange,
       handleDistributionClick,
       handleOperationClick,
