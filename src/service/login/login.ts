@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:56:17
+ * @LastEditTime: 2022-02-21 09:45:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
@@ -29,14 +29,14 @@ export function accountLoginRequest(account: IAccount) {
 }
 
 export function requestUserInfo() {
-  return hyRequest.get<any>({
+  return hyRequest.post<any>({
     url: LoginAPI.LoginUserInfo,
     showLoading: false
   })
 }
 
 export function requestUserMenusByRoleId() {
-  return hyRequest.get<any>({
+  return hyRequest.post<any>({
     url: LoginAPI.UserMenus,
     showLoading: false
   })
