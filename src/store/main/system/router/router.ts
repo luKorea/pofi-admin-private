@@ -1,4 +1,4 @@
-import { errorTip } from '@/utils/tip-info'
+import { errorTip, successTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
@@ -76,13 +76,15 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
       const id = payload.queryInfo.id
       const pageUrl = apiList[pageName] + 'del'
       // 2.调用删除网络请求
-      await deletePageData(pageUrl, id)
-
-      // 3.重新请求最新的数据
-      dispatch('getPageListAction', {
-        pageName, // 这里的pageName，无需处理，在getPageListAction会处理
-        queryInfo: queryInfo
-      })
+      const data = await deletePageData(pageUrl, id)
+      if (data.result === 0) {
+        // 3.重新请求最新的数据
+        dispatch('getPageListAction', {
+          pageName, // 这里的pageName，无需处理，在getPageListAction会处理
+          queryInfo: queryInfo
+        })
+        successTip(data.msg)
+      } else errorTip(data.msg)
     },
 
     createPageDataAction({ dispatch }, payload: any) {

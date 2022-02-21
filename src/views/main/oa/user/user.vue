@@ -1,3 +1,11 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-09 17:34:25
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-21 17:43:16
+ * @Description: file content
+ * @FilePath: /pofi-admin/src/views/main/oa/user/user.vue
+-->
 <template>
   <div class="user">
     <!-- 测试 style module的使用 -->
@@ -13,9 +21,6 @@
       pageName="users"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-      @removeBtnClick="handleRemoveData"
-      @operationBtnClick="handleShowDialog"
-      @selectAllBtnClick="test"
       :storeTypeInfo="storeTypeInfo"
     >
       <template #createTime="scope">
@@ -25,24 +30,26 @@
         <span>{{ $filters.formatTime(scope.row.onlineTime) }}</span>
       </template>
       <template #state="scope">
-        <el-button size="mini" :type="scope.row.valid ? 'success' : 'danger'">{{
-          scope.row.valid ? '有效' : '无效'
-        }}</el-button>
+        <el-button
+          @click="handleChangeValid(scope.row.id, scope.row.valid)"
+          size="mini"
+          :type="scope.row.valid ? 'success' : 'danger'"
+          >{{ scope.row.valid ? '有效' : '无效' }}</el-button
+        >
       </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="users"
-      :modalConfig="modalConfigRef"
+      :modalConfig="modalConfig"
       :operationName="operationName"
     ></page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -51,80 +58,34 @@ import { modalConfig } from './config/modal.config'
 import { useStoreName } from './hook/user-page-list'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
-import { usePageDialog } from '@/hooks/use-page-dialog'
-import { infoTipBox, warnTip } from '@/utils/tip-info'
+
+import { updateUserValid } from '@/service/main/user'
+import { errorTip, infoTipBox, successTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'users',
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
-    const [pageContentRef, handleResetClick, , handleQueryFrontClick] =
-      usePageSearch()
-    const [pageDialogRef, handleShowDialog] = usePageDialog()
-    // TODO 前端搜索后续再改
-    const handleQueryClick = (queryInfo: any) => {
-      const data = handleQueryFrontClick(
-        pageContentRef.value?.dataList,
-        queryInfo,
-        'id'
-      )
-      console.log(data, '查询后的数据')
-    }
-    // pageModal相关的hook逻辑
-    const modalConfigRef = computed(() => {
-      // const departmentItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'departmentId'
-      // )
-      // departmentItem!.options = store.state.entireDepartment.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      // const roleItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'roleId'
-      // )
-      // roleItem!.options = store.state.entireRole.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      return modalConfig
-    })
-    // 1.处理密码的逻辑
-    const newCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'pwd'
-      )
-      passwordItem!.isHidden = false
-    }
-    const editCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'pwd'
-      )
-      passwordItem!.isHidden = true
-    }
-
-    // 2.动态添加部门和角色列表
-    const store = useStore()
-    console.log(store)
-
-    const handleRemoveData = (item: any) => {
+    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
+      usePageModal()
+    // 修改用户状态
+    const handleChangeValid = (id: any, valid: any) => {
       infoTipBox({
-        message: '您确定删除吗',
-        title: '删除数据'
+        title: '设置用户账号状态',
+        message: `确定将该用户状态设置成${valid ? '无效' : '有效'}吗？`
       }).then(() => {
-        console.log(item)
-        store.dispatch('system/deletePageDataAction', {
-          pageName: 'users',
-          id: item.id
+        updateUserValid({
+          id: id,
+          valid: valid ? 0 : 1
+        }).then((res: any) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            handleResetClick()
+          } else errorTip(res.msg)
         })
       })
     }
-
-    // 3.调用hook获取公共变量和函数
-    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newCallback, editCallback)
-
-    const test = (data: any) => {
-      if (data.value.length === 0) warnTip('至少选中一条数据')
-    }
-
     return {
       storeTypeInfo,
       operationName,
@@ -133,15 +94,12 @@ export default defineComponent({
       pageContentRef,
       handleResetClick,
       handleQueryClick,
-      modalConfigRef,
+      modalConfig,
       handleNewData,
       handleEditData,
-      handleRemoveData,
       pageModalRef,
       defaultInfo,
-      test,
-      pageDialogRef,
-      handleShowDialog
+      handleChangeValid
     }
   }
 })
