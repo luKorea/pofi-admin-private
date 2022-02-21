@@ -11,17 +11,22 @@
         <nav-tags></nav-tags>
         <el-main class="page-content">
           <el-card>
-            <router-view v-slot="{ Component }">
-              <transition
-                appear
-                appear-active-class="animate__animated animate__pulse"
-                enter-active-class="animate__animated animate__fadeIn"
-                name="fade"
-              >
-                <!--进入 enter-active-class   移出 leave-active-class  初始 appear-active-class-->
-                <component :is="Component" v-if="Component"></component>
-              </transition>
-            </router-view>
+            <transition
+              appear
+              appear-active-class="animate__animated animate__pulse"
+              enter-active-class="animate__animated animate__fadeIn"
+              name="fade"
+            >
+              <router-view v-slot="{ Component }">
+                <keep-alive>
+                  <component :is="Component"></component>
+                </keep-alive>
+                <component
+                  :is="Component"
+                  v-if="$route.meta.cache == 0"
+                ></component>
+              </router-view>
+            </transition>
           </el-card>
         </el-main>
       </el-container>
