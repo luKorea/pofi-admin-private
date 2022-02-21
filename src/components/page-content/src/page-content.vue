@@ -39,7 +39,7 @@
         <el-button
           size="mini"
           icon="el-icon-refresh"
-          @click="handlerefreshClick"
+          @click="handleRefreshClick"
         ></el-button>
       </template>
 
@@ -57,7 +57,7 @@
         <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
       </template>
       <template #updateAt="scope">
-        <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
+        <span>{{ $filters.formatTime(scope.row.modTime) }}</span>
       </template>
       <!-- 操作插槽 -->
       <template #handler="scope">
@@ -162,7 +162,8 @@ export default defineComponent({
       default: () => ({
         actionName: 'system/getPageListAction',
         actionListName: 'system/pageListData',
-        actionCountName: 'system/pageListCount'
+        actionCountName: 'system/pageListCount',
+        deleteAction: 'oaUserModule/deletePageDataAction'
       })
     }
   },
@@ -206,7 +207,7 @@ export default defineComponent({
       console.log(1)
       getPageData(backQueryInfo.value)
     })
-    const handlerefreshClick = () => {
+    const handleRefreshClick = () => {
       // pageInfo.value = { currentPage: 1, pageSize: 10 }
       getPageData(backQueryInfo.value)
     }
@@ -249,20 +250,19 @@ export default defineComponent({
     )
 
     // 5.删除/编辑/新建/多选/分配/操作日志/拖拽/批量操作/导出按钮
-    // const handleDeleteClick = (item: any) => {
-    //   infoTipBox({
-    //     message: '您确定删除吗',
-    //     title: '删除数据'
-    //   })
-    //   .then(() => {
-    //     / console.log(item)
-    //   // store.dispatch('system/deletePageDataAction', {
-    //   //   pageName: props.pageName,
-    //   //   id: item.id
-    //   // })
-    //   })
-    //   emit('removeBtnClick', item)
-    // }
+    const handleDeleteClick = (item: any) => {
+      infoTipBox({
+        message: '您确定删除吗',
+        title: '删除数据'
+      }).then(() => {
+        console.log(item)
+        store.dispatch(props.storeTypeInfo.deleteAction, {
+          pageName: props.pageName,
+          queryInfo: item
+        })
+      })
+      // emit('removeBtnClick', item)
+    }
     // TODO 处理用户拖动表格后更新数据
     const drawTable = (propsIndex: any) => {
       emit('drawBtnClick', propsIndex)
@@ -282,7 +282,7 @@ export default defineComponent({
     }
     const handleExportClick = () => emit('exportBtnClick')
     const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)
-    const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
+    // const handleDeleteClick = (item: any) => emit('removeBtnClick', item)
     const handleNewClick = () => emit('newBtnClick')
     const handleAddRowClick = (item: any) => emit('newBtnClick', item)
     const handleEditClick = (item: any) => emit('editBtnClick', item)
@@ -303,7 +303,7 @@ export default defineComponent({
       handleDeleteClick,
       handleNewClick,
       handleEditClick,
-      handlerefreshClick,
+      handleRefreshClick,
       handleSelectionChange,
       handleDistributionClick,
       handleOperationClick,

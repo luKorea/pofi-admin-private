@@ -1,4 +1,5 @@
 <template>
+  <!-- 新增，删除完成 -->
   <div class="oa-router">
     <page-search
       :searchFormConfig="searchFormConfig"
@@ -12,6 +13,7 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
       @selectAllBtnClick="test"
+      :storeTypeInfo="storeTypeInfo"
     >
       <template #isRouter="scope">
         <span>{{ scope.row.props ? '是' : '否' }}</span>
@@ -31,6 +33,7 @@
       ref="pageModalRef"
       pageName="router"
       :modalConfig="modalConfigRef"
+      :operationName="operationName"
     ></page-modal>
   </div>
 </template>
@@ -43,6 +46,7 @@ import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
+import { useStoreName } from './hook/user-page-list'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { warnTip } from '@/utils/tip-info'
@@ -50,16 +54,17 @@ import { warnTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'oaRouter',
   setup() {
+    const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     // pageModal相关的hook逻辑
     const newCallback = (item: any) => {
       console.log(item)
     }
-    const editCallback = () => {
-      // const passwordItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'password'
-      // )
-      // passwordItem!.isHidden = true
+    const editCallback = (item: any) => {
+      // console.log(item, '编辑的数据')
+      // if (item.parent === 0) {
+      //   item.parent = item.id
+      // }
     }
 
     // 2.动态添加部门和角色列表
@@ -67,7 +72,7 @@ export default defineComponent({
     console.log(store)
     const modalConfigRef = computed(() => {
       const routerItem = modalConfig.formItems.find(
-        (item) => item.field === 'id'
+        (item) => item.field === 'parent'
       )
       routerItem!.options = store.state.login.routerList.map((item: any) => {
         return { title: item.title, value: item.id }
@@ -90,6 +95,8 @@ export default defineComponent({
     }
 
     return {
+      storeTypeInfo,
+      operationName,
       searchFormConfig,
       contentTableConfig,
       pageContentRef,

@@ -40,6 +40,26 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
+
+              <template v-else-if="item.type === 'radio'">
+                <el-radio-group
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  clearable
+                >
+                  <el-radio
+                    v-for="option in item.options"
+                    :label="option.value"
+                    :key="option.value"
+                  >
+                    {{ option.label }}
+                  </el-radio>
+                </el-radio-group>
+              </template>
+
               <template v-else-if="item.type === 'select'">
                 <el-select
                   :placeholder="item.placeholder"

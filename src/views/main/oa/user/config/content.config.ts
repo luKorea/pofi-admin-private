@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 11:27:01
+ * @LastEditTime: 2022-02-21 13:49:56
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -20,15 +20,15 @@ export const contentTableConfig: TableConfig = {
     {
       prop: 'createAt',
       label: '创建时间',
-      slotName: 'createAt'
+      slotName: 'createTime'
     },
     {
       prop: 'onlineTime',
       label: '在线时间',
-      slotName: 'updateAt'
+      slotName: 'lineTime'
     },
     { prop: 'modUser', label: '修改人' },
-    { prop: 'valid', label: '状态', slotName: 'status' },
+    { prop: 'valid', label: '状态', slotName: 'state' },
     { label: '操作', slotName: 'handler', minWidth: '100px' }
   ],
   showIndexColumn: false,

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 14:18:22
+ * @LastEditTime: 2022-02-21 12:09:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/permission/config/modal.config.ts
  */
@@ -36,6 +36,12 @@ export const modalConfig: IForm = {
           trigger: 'blur'
         }
       ]
+    },
+    {
+      field: 'id',
+      type: 'input',
+      label: '权限名称',
+      isHidden: true
     }
   ],
   colLayout: {

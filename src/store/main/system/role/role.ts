@@ -1,37 +1,37 @@
-import { errorTip } from '@/utils/tip-info'
+import { errorTip, successTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IRouterState } from './types'
+import { IRoleState } from './types'
 
 import {
   getPageListData,
-  deletePageData,
   createPageData,
-  editPageData
+  editPageData,
+  deletePageToQueryData
 } from '@/service/common-api'
 
 const apiList: any = {
-  router: '/cms/router/'
+  roles: '/cms/role/'
 }
 const queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const oaRouterModule: Module<IRouterState, IRootState> = {
+const oaRoleModule: Module<IRoleState, IRootState> = {
   namespaced: true,
   state() {
     return {
-      routerList: [],
-      routerCount: 0
+      rolesList: [],
+      rolesCount: 0
     }
   },
   mutations: {
-    changeRouterList(state, list: any[]) {
-      state.routerList = list
+    changeRolesList(state, list: any[]) {
+      state.rolesList = list
     },
-    changeRouterCount(state, count: number) {
-      state.routerCount = count
+    changeRolesCount(state, count: number) {
+      state.rolesCount = count
     }
   },
   getters: {
@@ -71,18 +71,19 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
     },
 
     async deletePageDataAction({ dispatch }, payload: any) {
-      console.log(payload, 'payload')
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + 'del'
-      // 2.调用删除网络请求
-      await deletePageData(pageUrl, id)
-
-      // 3.重新请求最新的数据
-      dispatch('getPageListAction', {
-        pageName, // 这里的pageName，无需处理，在getPageListAction会处理
-        queryInfo: queryInfo
-      })
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('delete', pageName)
+      const data = await deletePageToQueryData(pageUrl, { id: id })
+      if (data.result === 0) {
+        // 3.重新请求最新的数据
+        dispatch('getPageListAction', {
+          pageName, // 这里的pageName，无需处理，在getPageListAction会处理
+          queryInfo: queryInfo
+        })
+        successTip(data.msg)
+      } else errorTip(data.msg)
     },
 
     createPageDataAction({ dispatch }, payload: any) {
@@ -90,9 +91,10 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'add'
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('add', pageName)
         const data = await createPageData(pageUrl, newData)
-        if (data.state) {
+        if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
@@ -108,10 +110,9 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
+        const pageUrl = apiList[pageName] + 'updatePids'
         const data = await editPageData(pageUrl, editData)
-        if (data.state) {
+        if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
@@ -124,4 +125,4 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
   }
 }
 
-export default oaRouterModule
+export default oaRoleModule

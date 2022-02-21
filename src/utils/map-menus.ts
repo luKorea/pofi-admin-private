@@ -92,22 +92,53 @@ export function mapMenusToPermissions(userMenus: any[]) {
   return permissions
 }
 
-// 获取菜单叶子节点
-export function menuMapLeafKeys(menuList: any[]) {
-  const leftKeys: number[] = []
-
-  const _recurseGetLeaf = (menuList: any[]) => {
-    for (const menu of menuList) {
-      if (menu.children) {
-        _recurseGetLeaf(menu.children)
-      } else {
-        leftKeys.push(menu.id)
-      }
+// 获取菜单所有ID
+const ids: any[] = []
+export function getMenuAllID(menuList: any): any {
+  for (const menu of menuList) {
+    if (menu.children && menu.children.length > 0) {
+      getMenuAllID(menu.children)
+    } else {
+      ids.push(menu.id)
     }
   }
-  _recurseGetLeaf(menuList)
+}
+
+// 获取菜单叶子节点
+export function menuMapLeafKeys(menus: any) {
+  const leftKeys: number[] = []
+  const userHasMenu = JSON.parse(menus)
+  // getMenuAllID(menuList)
+  for (const menu of userHasMenu) {
+    leftKeys.push(menu)
+  }
+  // const _recurseGetLeaf = (menuList: any[]) => {
+  //   for (const menu of menuList) {
+  //     if (menu.children) {
+  //       _recurseGetLeaf(menu.children)
+  //     } else {
+  //       leftKeys.push(menu.id)
+  //     }
+  //   }
+  // }
+  // _recurseGetLeaf(menuList)
 
   return leftKeys
 }
 
+// 获取菜单叶子节点
+// export function menuMapLeafKeys(menuList: any[]) {
+//   const leftKeys: number[] = []
+//   const _recurseGetLeaf = (menuList: any[]) => {
+//     for (const menu of menuList) {
+//       if (menu.children) {
+//         _recurseGetLeaf(menu.children)
+//       } else {
+//         leftKeys.push(menu.id)
+//       }
+//     }
+//   }
+//   _recurseGetLeaf(menuList)
+//   return leftKeys
+// }
 export { firstMenu }

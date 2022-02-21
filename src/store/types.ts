@@ -1,16 +1,18 @@
+import { IRoleState } from './main/system/role/types'
+import { IPermissionState } from './main/system/permission/types'
+import { IUserState } from './main/system/user/types'
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 17:49:15
+ * @LastEditTime: 2022-02-21 10:43:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
 import { ILoginState } from './login/types'
 import { IConditionType } from './main/device/condition/types'
-import { ISystemState } from './main/system/types'
 import { IBaseConfigType } from './main/base/config/types'
-
+import { IRouterState } from './main/system/router/types'
 export interface IRootState {
   name: string
   age: number
@@ -22,10 +24,12 @@ export interface IRootState {
 
 export interface IRootWithModule {
   login: ILoginState
-  system: ISystemState
-  conditionModule: IConditionType
   baseConfigModule: IBaseConfigType
   companionModule: IConditionType
+  oaRouterModule: IRouterState
+  oaUserModule: IUserState
+  oaPermissionModule: IPermissionState
+  oaRoleModule: IRoleState
 }
 
 export type IStoreType = IRootState & IRootWithModule

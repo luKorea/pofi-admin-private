@@ -2,7 +2,7 @@ import { errorTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { ISystemState } from './types'
+import { IUserState } from './types'
 
 import {
   getPageListData,
@@ -12,31 +12,18 @@ import {
 } from '@/service/common-api'
 
 const apiList: any = {
-  users: '/cms/user/',
-  roles: '/cms/role/',
-  permissions: '/cms/permission/',
-  router: '/cms/router/'
+  users: '/cms/user/'
 }
 const queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const systemModule: Module<ISystemState, IRootState> = {
+const oaUserModule: Module<IUserState, IRootState> = {
   namespaced: true,
   state() {
     return {
       usersList: [],
-      usersCount: 0,
-      rolesList: [],
-      rolesCount: 0,
-      permissionsList: [],
-      permissionsCount: 0,
-      routerList: [],
-      routerCount: 0,
-      tableRouterList: [],
-      tableRoutersCount: 0,
-      menuList: [],
-      menuCount: 0
+      usersCount: 0
     }
   },
   mutations: {
@@ -45,36 +32,6 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeUsersCount(state, userCount: number) {
       state.usersCount = userCount
-    },
-    changeRolesList(state, list: any[]) {
-      state.rolesList = list
-    },
-    changeRolesCount(state, count: number) {
-      state.rolesCount = count
-    },
-    changePermissionsList(state, list: any[]) {
-      state.permissionsList = list
-    },
-    changePermissionsCount(state, count: number) {
-      state.permissionsCount = count
-    },
-    changeRouterList(state, list: any[]) {
-      state.routerList = list
-    },
-    changeRouterCount(state, count: number) {
-      state.routerCount = count
-    },
-    changeTableRouterList(state, list: any[]) {
-      state.tableRouterList = list
-    },
-    changeTableRouterCount(state, count: number) {
-      state.tableRoutersCount = count
-    },
-    changeMenuList(state, list: any[]) {
-      state.menuList = list
-    },
-    changeMenuCount(state, count: number) {
-      state.menuCount = count
     }
   },
   getters: {
@@ -167,4 +124,4 @@ const systemModule: Module<ISystemState, IRootState> = {
   }
 }
 
-export default systemModule
+export default oaUserModule

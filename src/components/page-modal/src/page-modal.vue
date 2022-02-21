@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 11:15:10
+ * @LastEditTime: 2022-02-21 14:27:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -31,7 +31,7 @@
         </div>
       </template>
       <template #default>
-        <div style="padding: 0 20px">
+        <div style="padding: 0 20px; margin-bottom: 40px">
           <hy-form
             ref="pageFormRef"
             v-bind="modalConfig"
@@ -124,7 +124,7 @@ export default defineComponent({
               .dispatch(props.operationName.editName, {
                 pageName: props.pageName,
                 editData: {
-                  ...props.defaultInfo,
+                  // ...props.defaultInfo,
                   ...formData.value,
                   ...props.otherInfo
                 }

@@ -4,7 +4,7 @@ import { TableConfig } from '@/types/table-config'
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 09:34:15
+ * @LastEditTime: 2022-02-21 11:06:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/role/config/content.config.ts
  */
@@ -31,6 +31,6 @@ export const contentTableConfig: TableConfig = {
     delete: true,
     query: true,
     drawTable: false,
-    distribution: true
+    distribution: false
   }
 }

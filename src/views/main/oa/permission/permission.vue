@@ -1,10 +1,18 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-09 17:34:25
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-21 13:42:28
+ * @Description: 功能完成
+ * @FilePath: /pofi-admin/src/views/main/oa/permission/permission.vue
+-->
 <template>
   <div class="oa-permission">
-    <page-search
+    <!-- <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryClick"
-    />
+    /> -->
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
@@ -12,87 +20,50 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
       @selectAllBtnClick="test"
+      :storeTypeInfo="storeTypeInfo"
     >
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="permissions"
-      :modalConfig="modalConfigRef"
+      :modalConfig="modalConfig"
+      :operationName="operationName"
     ></page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
+import { useStoreName } from './hook/user-page-list'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
-import { warnTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'permission',
   setup() {
+    const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    // pageModal相关的hook逻辑
-    // 1.处理密码的逻辑
-    const newCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = false
-    }
-    const editCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = true
-    }
-
-    // 2.动态添加部门和角色列表
-    const store = useStore()
-    console.log(store)
-    const modalConfigRef = computed(() => {
-      // const departmentItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'departmentId'
-      // )
-      // departmentItem!.options = store.state.entireDepartment.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      // const roleItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'roleId'
-      // )
-      // roleItem!.options = store.state.entireRole.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      return modalConfig
-    })
-
-    // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newCallback, editCallback)
-
-    const test = (data: any) => {
-      if (data.value.length === 0) warnTip('至少选中一条数据')
-    }
-
+      usePageModal()
     return {
+      storeTypeInfo,
+      operationName,
       searchFormConfig,
       contentTableConfig,
       pageContentRef,
       handleResetClick,
       handleQueryClick,
-      modalConfigRef,
       handleNewData,
       handleEditData,
       pageModalRef,
       defaultInfo,
-      test
+      modalConfig
     }
   }
 })

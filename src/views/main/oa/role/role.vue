@@ -1,98 +1,162 @@
+<!--
+ * @Author: korealu
+ * @Date: 2022-02-09 17:34:25
+ * @LastEditors: korealu
+ * @LastEditTime: 2022-02-21 17:28:18
+ * @Description: 完成
+ * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
+-->
 <template>
   <div class="role">
-    <page-search
+    <!-- <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryClick"
-    />
+    /> -->
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
       pageName="roles"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-      @selectAllBtnClick="test"
+      :storeTypeInfo="storeTypeInfo"
     >
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="roles"
-      :modalConfig="modalConfigRef"
-    ></page-modal>
+      :modalConfig="modalConfig"
+      :operationName="operationName"
+      :otherInfo="otherInfo"
+    >
+      <el-row v-if="editShowTree">
+        <el-col :span="24">
+          <div class="item-flex">
+            <span class="item-title">权限分配</span>
+            <el-tree
+              style="width: 100%"
+              ref="elTreeRef"
+              :data="treeData"
+              show-checkbox
+              node-key="id"
+              :props="{ children: 'children', label: 'title', isLeaf: 'leaf' }"
+              @check="handleCheckChange"
+            >
+            </el-tree>
+          </div>
+        </el-col>
+        <!-- <el-col v-bind="modalConfig.colLayout">
+          <div class="item-flex">
+            <span class="item-title">其他权限分配</span>
+            <el-tree
+              style="width: 100%"
+              v-if="editShowTree"
+              ref="otherTreeRef"
+              :data="selectPermissionList"
+              show-checkbox
+              node-key="id"
+              :props="{ children: 'children', label: 'name', isLeaf: 'leaf' }"
+              @check="handleCheckChange"
+            >
+            </el-tree>
+          </div>
+        </el-col> -->
+      </el-row>
+    </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, ref, nextTick, computed } from 'vue'
+import { ElTree } from 'element-plus'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
+import { usePermissionTree, useStoreName } from './hook/user-page-list'
+
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
-import { warnTip } from '@/utils/tip-info'
+import { menuMapLeafKeys } from '@/utils/map-menus'
 
 export default defineComponent({
   name: 'role',
   setup() {
+    const { selectPermissionList, selectRouterList } = usePermissionTree()
+    const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    // pageModal相关的hook逻辑
-    // 1.处理密码的逻辑
-    const newCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = false
-    }
-    const editCallback = () => {
-      const passwordItem = modalConfig.formItems.find(
-        (item) => item.field === 'password'
-      )
-      passwordItem!.isHidden = true
-    }
-
-    // 2.动态添加部门和角色列表
-    const store = useStore()
-    console.log(store)
-    const modalConfigRef = computed(() => {
-      // const departmentItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'departmentId'
-      // )
-      // departmentItem!.options = store.state.entireDepartment.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      // const roleItem = modalConfig.formItems.find(
-      //   (item) => item.field === 'roleId'
-      // )
-      // roleItem!.options = store.state.entireRole.map((item) => {
-      //   return { title: item.name, value: item.id }
-      // })
-      return modalConfig
+    const treeData = computed(() => {
+      const data = selectPermissionList.value.map((item: any) => {
+        return { title: item.name, id: item.id }
+      })
+      return [...selectRouterList.value, ...data]
     })
-
-    // 3.调用hook获取公共变量和函数
-    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newCallback, editCallback)
-
-    const test = (data: any) => {
-      if (data.value.length === 0) warnTip('至少选中一条数据')
+    // 处理当前页面也有逻辑
+    const otherInfo = ref<any>({
+      pids: ''
+    })
+    const editShowTree = ref<boolean>(false)
+    const elTreeRef = ref<InstanceType<typeof ElTree>>()
+    const otherTreeRef = ref<InstanceType<typeof ElTree>>()
+    const newData = () => (editShowTree.value = false)
+    const editData = (item: any) => {
+      otherInfo.value = {
+        id: item.id
+      }
+      console.log(typeof otherInfo.value.pids, 'daya')
+      editShowTree.value = true
+      const leafKeys = menuMapLeafKeys(item.pids)
+      nextTick(() => {
+        elTreeRef.value?.setCheckedKeys(leafKeys, false)
+        // otherTreeRef.value?.setCheckedKeys(leafKeys, false)
+      })
     }
-
+    // 获取用户选中的权限
+    const handleCheckChange = (data1: any, data2: any) => {
+      const checkedKeys = data2.checkedKeys
+      const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
+      const menuList = [...checkedKeys]
+      console.log(otherInfo.value, '用户选择的权限')
+      otherInfo.value = {
+        ...otherInfo.value,
+        pids: JSON.stringify(menuList)
+      }
+    }
+    // const handleCheckOtherChange = (data1: any, data2: any) => {
+    //   const checkedKeys = data2.checkedKeys
+    //   const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
+    //   const menuList = [...checkedKeys]
+    //   otherInfo.value = {
+    //     ...otherInfo.value,
+    //     pids: JSON.stringify(menuList)
+    //   }
+    // }
+    const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
+      usePageModal(newData, editData)
     return {
+      storeTypeInfo,
+      operationName,
       searchFormConfig,
       contentTableConfig,
       pageContentRef,
       handleResetClick,
       handleQueryClick,
-      modalConfigRef,
       handleNewData,
       handleEditData,
       pageModalRef,
       defaultInfo,
-      test
+      modalConfig,
+      otherInfo,
+      editShowTree,
+      elTreeRef,
+      otherTreeRef,
+      treeData,
+      selectPermissionList,
+      selectRouterList,
+      handleCheckChange
+      // handleCheckOtherChange
     }
   }
 })
