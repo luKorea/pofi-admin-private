@@ -2,10 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 17:54:57
+ * @LastEditTime: 2022-02-21 17:55:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/condition/condition.ts
  */
+import { errorTip, successTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
@@ -63,11 +64,14 @@ const conditionModule: Module<IConditionType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + `del${firstToUpperCase(pageName)}`
-      await deletePageData(pageUrl, payload.data)
-      dispatch('getPageListAction', {
-        pageName, // 这里的pageName，无需处理，在getPageListAction会处理
-        queryInfo: queryInfo
-      })
+      const data = await deletePageData(pageUrl, payload.data)
+      if (data.result === 0) {
+        successTip(data.msg)
+        dispatch('getPageListAction', {
+          pageName, // 这里的pageName，无需处理，在getPageListAction会处理
+          queryInfo: queryInfo
+        })
+      } else errorTip(data.msg)
     },
 
     async createPageDataAction({ dispatch }, payload: any) {

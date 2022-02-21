@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 09:40:57
+ * @LastEditTime: 2022-02-21 17:59:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -57,7 +57,7 @@ export default defineComponent({
     // pageModal相关的hook逻辑
     const modalConfigRef = computed(() => {
       const countryItem = modalConfig.formItems.find(
-        (item: any) => item.field === 'regionName'
+        (item: any) => item.field === 'region'
       )
       countryItem!.options = countryList.value.map((item: any) => ({
         title: item.name,
@@ -68,14 +68,6 @@ export default defineComponent({
     const add = (item: any) => {
       console.log(item, 'item')
     }
-    // const edit = (item: any) => {
-    //   const result = {
-    //     ...item,
-    //     ...store.state.login.userInfo
-    //   }
-    //   console.log(result, 'result')
-    //   return result
-    // }
     // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(add)
