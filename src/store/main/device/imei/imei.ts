@@ -2,15 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 11:56:10
+ * @LastEditTime: 2022-02-22 12:13:36
  * @Description: file content
- * @FilePath: /pofi-admin/src/store/main/device/condition/condition.ts
+ * @FilePath: /pofi-admin/src/store/main/device/imei/imei.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
+import { firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IConditionType } from './types'
+import { IUserImeiType } from './types'
 
 import {
   getPageListData,
@@ -20,26 +20,26 @@ import {
 } from '@/service/common-api'
 
 const apiList: any = {
-  limit: '/cms/userImei/'
+  imei: '/cms/userImei/'
 }
 const queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const conditionModule: Module<IConditionType, IRootState> = {
+const userImeiModule: Module<IUserImeiType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      limitCount: 0,
-      limitList: []
+      imeiCount: 0,
+      imeiList: []
     }
   },
   mutations: {
-    changeLimitList(state, limitList: any[]) {
-      state.limitList = limitList
+    changeImeiList(state, imeiList: any[]) {
+      state.imeiList = imeiList
     },
-    changeLimitCount(state, limitCount: number) {
-      state.limitCount = limitCount
+    changeImeiCount(state, imeiCount: number) {
+      state.imeiCount = imeiCount
     }
   },
   getters: {
@@ -53,7 +53,7 @@ const conditionModule: Module<IConditionType, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
+      const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       const { rows, total } = pageResult.data as any
       if (pageResult.result === 0) {
@@ -100,7 +100,7 @@ const conditionModule: Module<IConditionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'updateLimit'
+        const pageUrl = apiList[pageName] + 'update'
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据
@@ -115,4 +115,4 @@ const conditionModule: Module<IConditionType, IRootState> = {
   }
 }
 
-export default conditionModule
+export default userImeiModule

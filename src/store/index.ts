@@ -2,20 +2,26 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 10:24:21
+ * @LastEditTime: 2022-02-22 12:05:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
 
 import login from './login/login'
+// 系统管理
 import oaPermissionModule from './main/system/permission/permission'
 import oaRoleModule from './main/system/role/role'
 import oaUserModule from './main/system/user/user'
 import oaRouterModule from './main/system/router/router'
 
+// 设备管理
 import conditionModule from './main/device/condition/condition'
+import userImeiModule from './main/device/imei/imei'
+
+// 配置管理
 import baseConfigModule from './main/base/config/config'
+// 帮助中心
 import companionModule from './main/help/companion/companion'
 // import cache from '@/utils/cache'
 
@@ -115,8 +121,12 @@ const store = createStore<IRootState>({
     oaRoleModule,
     oaUserModule,
     oaRouterModule,
+    // 设备管理
     conditionModule,
+    userImeiModule,
+    // 配置管理
     baseConfigModule,
+    // 帮助中心
     companionModule
   }
 })

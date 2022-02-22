@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 17:59:19
+ * @LastEditTime: 2022-02-22 11:57:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -23,6 +23,7 @@
       pageName="limit"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
+      :otherInfo="otherInfo"
     >
     </page-modal>
   </div>
@@ -45,7 +46,8 @@ export default defineComponent({
     const storeTypeInfo = ref({
       actionName: 'conditionModule/getPageListAction',
       actionListName: 'conditionModule/pageListData',
-      actionCountName: 'conditionModule/pageListCount'
+      actionCountName: 'conditionModule/pageListCount',
+      deleteAction: 'conditionModule/deletePageDataAction'
     })
     const operationName = ref({
       editName: 'conditionModule/editPageDataAction',
@@ -53,7 +55,6 @@ export default defineComponent({
     })
     const [pageContentRef] = usePageSearch()
     const [countryList] = usePageList()
-    const store = useStore()
     // pageModal相关的hook逻辑
     const modalConfigRef = computed(() => {
       const countryItem = modalConfig.formItems.find(
@@ -65,12 +66,14 @@ export default defineComponent({
       }))
       return modalConfig
     })
-    const add = (item: any) => {
-      console.log(item, 'item')
+    const otherInfo = ref()
+    const editData = (item: any) => {
+      otherInfo.value = {
+        id: item.id
+      }
     }
-    // 3.调用hook获取公共变量和函数
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(add)
+      usePageModal(undefined, editData)
     return {
       storeTypeInfo,
       contentTableConfig,
@@ -80,7 +83,8 @@ export default defineComponent({
       handleEditData,
       pageModalRef,
       defaultInfo,
-      operationName
+      operationName,
+      otherInfo
     }
   }
 })

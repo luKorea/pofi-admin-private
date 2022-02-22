@@ -1,3 +1,4 @@
+/* eslint-disable vue/valid-v-slot */
 <template>
   <div class="page-content">
     <hy-table
@@ -9,25 +10,12 @@
       @selectionChange="handleSelectionChange"
       :handleDraw="permissionList.isDrawTable"
     >
+      <!-- 用户其他操作 -->
+      <template #otherHandler>
+        <slot name="otherHandler"></slot>
+      </template>
       <!-- 1.header中的插槽 -->
       <template #headerHandler>
-        <el-button
-          v-if="permissionList.isSelectAll"
-          type="primary"
-          size="mini"
-          @click="handleSelectAllClick"
-        >
-          批量操作
-        </el-button>
-        <el-button
-          v-if="permissionList.isExport"
-          icon="el-icon-edit"
-          size="mini"
-          type="warning"
-          @click="handleExportClick"
-        >
-          导出
-        </el-button>
         <el-button
           v-if="permissionList.isCreate"
           type="primary"
@@ -71,7 +59,7 @@
         </el-button>
         <el-divider
           direction="vertical"
-          v-if="permissionList.isDistribution"
+          v-if="permissionList.isOperation"
         ></el-divider>
         <el-button
           v-if="permissionList.isOperation"
@@ -83,9 +71,9 @@
         </el-button>
         <el-divider
           direction="vertical"
-          v-if="permissionList.isOperation"
+          v-if="permissionList.isRowAdd"
         ></el-divider>
-        <el-button
+        <!-- <el-button
           v-if="permissionList.isRowAdd"
           size="mini"
           type="text"
@@ -95,8 +83,8 @@
         </el-button>
         <el-divider
           direction="vertical"
-          v-if="permissionList.isRowAdd"
-        ></el-divider>
+          v-if="permissionList.isUpdate"
+        ></el-divider> -->
         <el-button
           v-if="permissionList.isUpdate"
           size="mini"
@@ -107,7 +95,7 @@
         </el-button>
         <el-divider
           direction="vertical"
-          v-if="permissionList.isUpdate"
+          v-if="permissionList.isDelete"
         ></el-divider>
         <el-button
           v-if="permissionList.isDelete"
@@ -287,7 +275,7 @@ export default defineComponent({
     const handleAddRowClick = (item: any) => emit('newBtnClick', item)
     const handleEditClick = (item: any) => emit('editBtnClick', item)
     // 这里只需要将用户选中的值传递出去就行
-    const handleSelectionChange = (item: any) => (userSelectData.value = item)
+    const handleSelectionChange = (item: any) => emit('selectAllBtnClick', item)
     const handleDistributionClick = (item: any) =>
       emit('distributionBtnClick', item)
     const handleOperationClick = (item: any) => emit('operationBtnClick', item)

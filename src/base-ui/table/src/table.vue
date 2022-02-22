@@ -4,6 +4,7 @@
       <slot name="header">
         <div class="hg-text-black">{{ title }}</div>
         <div class="handler">
+          <slot name="otherHandler"></slot>
           <slot name="headerHandler"></slot>
         </div>
       </slot>
