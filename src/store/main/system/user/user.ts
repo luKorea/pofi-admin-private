@@ -56,9 +56,8 @@ const oaUserModule: Module<IUserState, IRootState> = {
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       // 3.将数据存储到state中
-      console.log(pageResult, '用户返回的数据')
-      const { data, totalCount = 0, state, msg } = pageResult as any
-      if (state) {
+      const { data, totalCount = 0, result, msg } = pageResult as any
+      if (result === 0) {
         const changePageName = firstToUpperCase(pageName)
         commit(`change${changePageName}List`, data)
         // 处理oa下没有返回totalCount
@@ -94,7 +93,7 @@ const oaUserModule: Module<IUserState, IRootState> = {
         const pageUrl =
           apiList[pageName] + cultureDifferentType('add', pageName)
         const data = await createPageData(pageUrl, newData)
-        if (data.state) {
+        if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
@@ -110,10 +109,9 @@ const oaUserModule: Module<IUserState, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
+        const pageUrl = apiList[pageName] + 'updateRids'
         const data = await editPageData(pageUrl, editData)
-        if (data.state) {
+        if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,

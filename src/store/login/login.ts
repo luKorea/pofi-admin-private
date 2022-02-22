@@ -3,7 +3,7 @@ import { getRouterSelectList } from '@/service/common'
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 15:44:52
+ * @LastEditTime: 2022-02-22 10:24:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -47,7 +47,6 @@ const loginModule: Module<any, any> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
-      console.log('注册动态路由', userMenus)
       // userMenus => routes
       const routes = mapMenusToRoutes(userMenus)
       // 将routes => router.main.children
@@ -64,7 +63,6 @@ const loginModule: Module<any, any> = {
       const loginResult = await accountLoginRequest(payload)
       // const { id, token } = loginResult.data
       if (loginResult.state) {
-        console.log(loginResult)
         const { token } = loginResult
         commit('changeToken', token)
         localCache.setCache('token', token)

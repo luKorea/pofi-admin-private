@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 11:17:53
+ * @LastEditTime: 2022-02-22 10:24:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
@@ -21,7 +21,6 @@ export function usePageList() {
   const getCountryList = () => {
     getCountrySelectList().then((res) => {
       if (res.state) {
-        console.log(res.data.rows)
         countryList.value.push(...res.data.rows)
       } else errorTip(res.msg)
     })

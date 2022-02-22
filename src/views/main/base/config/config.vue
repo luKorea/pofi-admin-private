@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 18:17:09
+ * @LastEditTime: 2022-02-22 10:24:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -91,7 +91,6 @@ export default defineComponent({
     }
     const editClick = (item: any) => {
       editorValue.value = item.value
-      console.log(editorValue.value)
     }
 
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

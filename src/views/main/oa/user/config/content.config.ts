@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 13:49:56
+ * @LastEditTime: 2022-02-22 09:53:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/content.config.ts
  */
@@ -42,6 +42,7 @@ export const contentTableConfig: TableConfig = {
     update: false,
     delete: true,
     query: true,
-    drawTable: false
+    drawTable: false,
+    distribution: true
   }
 }

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 11:16:54
+ * @LastEditTime: 2022-02-22 09:50:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -54,10 +54,13 @@ import {
   ElCheckboxButton,
   ElPopconfirm,
   ElUpload,
-  ElRadioGroup
+  ElRadioGroup,
+  ElCheckboxGroup
 } from 'element-plus'
 
 const components = [
+  ElCheckbox,
+  ElCheckboxGroup,
   ElIcon,
   ElTooltip,
   ElCard,

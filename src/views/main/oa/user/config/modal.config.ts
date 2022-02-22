@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:50:13
+ * @LastEditTime: 2022-02-22 09:52:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/modal.config.ts
  */
@@ -22,7 +22,10 @@ export const modalConfig: IForm = {
           message: '请输入登录名',
           trigger: 'blur'
         }
-      ]
+      ],
+      otherOptions: {
+        disabled: false
+      }
     },
     {
       field: 'nickname',
@@ -35,7 +38,10 @@ export const modalConfig: IForm = {
           message: '请输入昵称',
           trigger: 'blur'
         }
-      ]
+      ],
+      otherOptions: {
+        disabled: false
+      }
     },
     {
       field: 'email',
@@ -48,7 +54,10 @@ export const modalConfig: IForm = {
           message: '请输入邮箱',
           trigger: 'blur'
         }
-      ]
+      ],
+      otherOptions: {
+        disabled: false
+      }
     },
     {
       field: 'phone',
@@ -61,7 +70,10 @@ export const modalConfig: IForm = {
           message: '请输入电话号码',
           trigger: 'blur'
         }
-      ]
+      ],
+      otherOptions: {
+        disabled: false
+      }
     },
     {
       field: 'pwd',
@@ -75,7 +87,10 @@ export const modalConfig: IForm = {
           message: '请输入密码',
           trigger: 'blur'
         }
-      ]
+      ],
+      otherOptions: {
+        disabled: false
+      }
     }
   ],
   colLayout: {

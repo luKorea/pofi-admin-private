@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 17:28:18
+ * @LastEditTime: 2022-02-22 10:24:59
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
 -->
@@ -105,7 +105,6 @@ export default defineComponent({
       otherInfo.value = {
         id: item.id
       }
-      console.log(typeof otherInfo.value.pids, 'daya')
       editShowTree.value = true
       const leafKeys = menuMapLeafKeys(item.pids)
       nextTick(() => {
@@ -118,7 +117,6 @@ export default defineComponent({
       const checkedKeys = data2.checkedKeys
       const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
       const menuList = [...checkedKeys]
-      console.log(otherInfo.value, '用户选择的权限')
       otherInfo.value = {
         ...otherInfo.value,
         pids: JSON.stringify(menuList)

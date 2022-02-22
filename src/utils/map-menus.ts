@@ -37,7 +37,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         if (route) routes.push(route)
         if (!firstMenu) {
           firstMenu = menu
-          console.log(firstMenu, 'firstMenu')
         }
       }
     }

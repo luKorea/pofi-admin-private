@@ -2,8 +2,8 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 17:43:16
- * @Description: file content
+ * @LastEditTime: 2022-02-22 11:12:36
+ * @Description: 增删改功能完成，缺少分页搜索功能
  * @FilePath: /pofi-admin/src/views/main/oa/user/user.vue
 -->
 <template>
@@ -20,7 +20,7 @@
       :contentTableConfig="contentTableConfig"
       pageName="users"
       @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
+      @distributionBtnClick="handleEditData"
       :storeTypeInfo="storeTypeInfo"
     >
       <template #createTime="scope">
@@ -44,18 +44,53 @@
       pageName="users"
       :modalConfig="modalConfig"
       :operationName="operationName"
-    ></page-modal>
+      :otherInfo="otherInfo"
+    >
+      <template v-if="isShowPermissionCheck">
+        <el-row>
+          <el-col :span="24">
+            <div class="item-flex">
+              <span class="item-title">权限分配</span>
+              <el-checkbox
+                border
+                style="margin-bottom: 10px"
+                v-model="checkAll"
+                :indeterminate="isIndeterminate"
+                @change="handleCheckAllChange"
+                >全部</el-checkbox
+              >
+              <el-checkbox-group
+                v-model="checkList"
+                @change="handleCheckedRolesChange"
+              >
+                <el-checkbox
+                  border
+                  v-for="role in roleList"
+                  :key="role"
+                  :label="role.id"
+                >
+                  {{ role.name }}
+                  <span style="font-size: 8px; color: #ccc"
+                    >({{ role.type }})</span
+                  >
+                </el-checkbox>
+              </el-checkbox-group>
+            </div>
+          </el-col>
+        </el-row>
+      </template>
+    </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
-import { useStoreName } from './hook/user-page-list'
+import { useStoreName, useRoleList } from './hook/user-page-list'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
@@ -67,8 +102,60 @@ export default defineComponent({
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const changeFormItemStatus = (flag: boolean) => {
+      const pwdItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'pwd'
+      )
+      pwdItem!.isHidden = flag
+      modalConfig.formItems.forEach(
+        (item: any) => (item.otherOptions.disabled = flag)
+      )
+    }
+    const addData = () => {
+      isShowPermissionCheck.value = false
+      changeFormItemStatus(false)
+    }
+    // 分配用户权限
+    const isShowPermissionCheck = ref<boolean>(false)
+    // 多选框部分
+    const isIndeterminate = ref<boolean>(true)
+    const otherInfo = ref<any>({})
+    const checkAll = ref()
+    const checkList = ref()
+    const [roleList] = useRoleList()
+    const roleId = computed(() => {
+      return roleList.value.map((item: any) => {
+        return item.id
+      })
+    })
+    const handleCheckAllChange = (val: boolean) => {
+      checkList.value = val ? roleId.value : []
+      isIndeterminate.value = false
+    }
+    const handleCheckedRolesChange = (value: string[]) => {
+      const checkedCount = value.length
+      checkAll.value = checkedCount === roleId.value.length
+      isIndeterminate.value =
+        checkedCount > 0 && checkedCount < roleId.value.length
+      otherInfo.value = {
+        ...otherInfo.value,
+        rids: JSON.stringify(checkList.value)
+      }
+    }
+    console.log(roleList, 'roleList')
+    const editData = (item: any) => {
+      changeFormItemStatus(true)
+      otherInfo.value = {
+        ...item,
+        modTime: undefined,
+        createTime: undefined,
+        onlineTime: undefined
+      }
+      checkList.value = JSON.parse(item.rids)
+      isShowPermissionCheck.value = true
+    }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(addData, editData)
     // 修改用户状态
     const handleChangeValid = (id: any, valid: any) => {
       infoTipBox({
@@ -99,7 +186,16 @@ export default defineComponent({
       handleEditData,
       pageModalRef,
       defaultInfo,
-      handleChangeValid
+      handleChangeValid,
+      isShowPermissionCheck,
+      isIndeterminate,
+      handleCheckAllChange,
+      handleCheckedRolesChange,
+      checkAll,
+      checkList,
+      roleList,
+      roleId,
+      otherInfo
     }
   }
 })

@@ -56,9 +56,8 @@ const oaRoleModule: Module<IRoleState, IRootState> = {
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       // 3.将数据存储到state中
-      console.log(pageResult, '用户返回的数据')
-      const { data, totalCount = 0, state, msg } = pageResult as any
-      if (state) {
+      const { data, totalCount = 0, result, msg } = pageResult as any
+      if (result === 0) {
         const changePageName = firstToUpperCase(pageName)
         commit(`change${changePageName}List`, data)
         // 处理oa下没有返回totalCount

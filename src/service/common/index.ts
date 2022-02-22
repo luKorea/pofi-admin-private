@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 14:32:31
+ * @LastEditTime: 2022-02-22 10:22:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -11,7 +11,8 @@ enum commonAPI {
   country = '/cms/area/getRecordsAll',
   router = '/cms/router/getPlainRouter',
   group = '/cms/config/getGroup',
-  routers = '/cms/router/routers'
+  routers = '/cms/router/routers',
+  role = '/cms/role/getRoles' // 获取系统角色列表
 }
 
 // 获取所有地区数据
@@ -41,6 +42,14 @@ export function getRouterSelectList() {
 export function getRouterTreeList() {
   return hyRequest.post<any>({
     url: commonAPI.routers,
+    showLoading: false
+  })
+}
+
+// 获取系统角色列表
+export function getRolesList() {
+  return hyRequest.post<any>({
+    url: commonAPI.role,
     showLoading: false
   })
 }
