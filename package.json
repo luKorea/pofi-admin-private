@@ -23,6 +23,7 @@
     "dplayer": "^1.26.0",
     "echarts": "^5.3.0",
     "element-plus": "^1.0.2-beta.71",
+    "file-saver": "^2.0.5",
     "md5": "^2.3.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
@@ -34,7 +35,8 @@
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2",
     "wangeditor": "^4.7.11",
-    "xgplayer": "^2.31.4"
+    "xgplayer": "^2.31.4",
+    "xlsx": "^0.18.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",

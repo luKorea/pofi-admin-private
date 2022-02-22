@@ -9,6 +9,7 @@
       @drawTable="drawTable"
       @selectionChange="handleSelectionChange"
       :handleDraw="permissionList.isDrawTable"
+      ref="tableRef"
     >
       <!-- 用户其他操作 -->
       <template #otherHandler>
@@ -169,6 +170,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore()
     const userSelectData = ref([])
+    const tableRef = ref()
     // 0.获取操作的权限
     const permission = props.contentTableConfig?.permission as PermissionType
     const permissionList = ref({
@@ -280,6 +282,7 @@ export default defineComponent({
       emit('distributionBtnClick', item)
     const handleOperationClick = (item: any) => emit('operationBtnClick', item)
     return {
+      tableRef,
       dataList,
       dataCount,
       pageInfo,

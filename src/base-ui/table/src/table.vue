@@ -15,6 +15,7 @@
       @selection-change="handleSelectionChange"
       v-bind="childrenProps"
       empty-text="暂时没有其他数据"
+      ref="tableRef"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -58,8 +59,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import SortTable from 'sortablejs'
+import { ElTable } from 'element-plus'
 
 export default defineComponent({
   props: {
@@ -115,6 +117,7 @@ export default defineComponent({
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
+    const tableRef = ref<InstanceType<typeof ElTable>>()
     onMounted(() => {
       if (props.handleDraw) {
         handleSortTable()
@@ -143,7 +146,8 @@ export default defineComponent({
     return {
       handleSelectionChange,
       handleCurrentChange,
-      handleSizeChange
+      handleSizeChange,
+      tableRef
     }
   }
 })

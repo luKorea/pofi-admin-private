@@ -39,6 +39,6 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-  ],
+, "src/utils/exoprt.js"  ],
   "exclude": ["node_modules"]
 }
