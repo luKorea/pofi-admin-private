@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 11:57:57
+ * @LastEditTime: 2022-02-22 15:54:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -71,6 +71,9 @@ export default defineComponent({
       otherInfo.value = {
         id: item.id
       }
+      item.region =
+        item.region && item.region.split(',').map((item: any) => +item)
+      console.log(item, '111')
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(undefined, editData)
