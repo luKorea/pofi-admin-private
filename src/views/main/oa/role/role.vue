@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 10:24:59
+ * @LastEditTime: 2022-02-22 11:40:20
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
 -->
@@ -34,6 +34,11 @@
         <el-col :span="24">
           <div class="item-flex">
             <span class="item-title">权限分配</span>
+            <el-input
+              v-model="filterTree"
+              style="margin-bottom: 6px"
+              placeholder="请输入名称进行搜索"
+            />
             <el-tree
               style="width: 100%"
               ref="elTreeRef"
@@ -42,40 +47,28 @@
               node-key="id"
               :props="{ children: 'children', label: 'title', isLeaf: 'leaf' }"
               @check="handleCheckChange"
+              :filter-node-method="handleFilterNode"
             >
             </el-tree>
           </div>
         </el-col>
-        <!-- <el-col v-bind="modalConfig.colLayout">
-          <div class="item-flex">
-            <span class="item-title">其他权限分配</span>
-            <el-tree
-              style="width: 100%"
-              v-if="editShowTree"
-              ref="otherTreeRef"
-              :data="selectPermissionList"
-              show-checkbox
-              node-key="id"
-              :props="{ children: 'children', label: 'name', isLeaf: 'leaf' }"
-              @check="handleCheckChange"
-            >
-            </el-tree>
-          </div>
-        </el-col> -->
       </el-row>
     </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick, computed } from 'vue'
-import { ElTree } from 'element-plus'
+import { defineComponent, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
-import { usePermissionTree, useStoreName } from './hook/user-page-list'
+import {
+  usePermissionTree,
+  useStoreName,
+  useTreeOptions
+} from './hook/user-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
@@ -87,19 +80,15 @@ export default defineComponent({
     const { selectPermissionList, selectRouterList } = usePermissionTree()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    const treeData = computed(() => {
-      const data = selectPermissionList.value.map((item: any) => {
-        return { title: item.name, id: item.id }
-      })
-      return [...selectRouterList.value, ...data]
-    })
-    // 处理当前页面也有逻辑
-    const otherInfo = ref<any>({
-      pids: ''
-    })
-    const editShowTree = ref<boolean>(false)
-    const elTreeRef = ref<InstanceType<typeof ElTree>>()
-    const otherTreeRef = ref<InstanceType<typeof ElTree>>()
+    const {
+      treeData,
+      filterTree,
+      editShowTree,
+      elTreeRef,
+      handleFilterNode,
+      handleCheckChange,
+      otherInfo
+    } = useTreeOptions()
     const newData = () => (editShowTree.value = false)
     const editData = (item: any) => {
       otherInfo.value = {
@@ -109,28 +98,8 @@ export default defineComponent({
       const leafKeys = menuMapLeafKeys(item.pids)
       nextTick(() => {
         elTreeRef.value?.setCheckedKeys(leafKeys, false)
-        // otherTreeRef.value?.setCheckedKeys(leafKeys, false)
       })
     }
-    // 获取用户选中的权限
-    const handleCheckChange = (data1: any, data2: any) => {
-      const checkedKeys = data2.checkedKeys
-      const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
-      const menuList = [...checkedKeys]
-      otherInfo.value = {
-        ...otherInfo.value,
-        pids: JSON.stringify(menuList)
-      }
-    }
-    // const handleCheckOtherChange = (data1: any, data2: any) => {
-    //   const checkedKeys = data2.checkedKeys
-    //   const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
-    //   const menuList = [...checkedKeys]
-    //   otherInfo.value = {
-    //     ...otherInfo.value,
-    //     pids: JSON.stringify(menuList)
-    //   }
-    // }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
     return {
@@ -149,12 +118,12 @@ export default defineComponent({
       otherInfo,
       editShowTree,
       elTreeRef,
-      otherTreeRef,
       treeData,
       selectPermissionList,
       selectRouterList,
-      handleCheckChange
-      // handleCheckOtherChange
+      handleCheckChange,
+      handleFilterNode,
+      filterTree
     }
   }
 })

@@ -2,13 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-21 10:48:12
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 14:35:19
+ * @LastEditTime: 2022-02-22 11:39:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/role/hook/user-page-list.ts
  */
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { getPermissionTreeData } from '@/service/main/role'
 import { getRouterTreeList } from '@/service/common'
+import { ElTree } from 'element-plus'
 
 export function usePermissionTree() {
   const selectPermissionList = ref<any>([])
@@ -26,6 +27,48 @@ export function usePermissionTree() {
   return {
     selectPermissionList,
     selectRouterList
+  }
+}
+// 对树形结构进行处理
+export function useTreeOptions() {
+  const { selectPermissionList, selectRouterList } = usePermissionTree()
+  const treeData = computed(() => {
+    const data = selectPermissionList.value.map((item: any) => {
+      return { title: item.name, id: item.id }
+    })
+    return [...selectRouterList.value, ...data]
+  })
+  // 过滤树形结构
+  const filterTree = ref('')
+  watch(filterTree, (val) => elTreeRef.value!.filter(val))
+  const handleFilterNode = (value: string, data: any) => {
+    if (!value) return true
+    return data.title.indexOf(value) !== -1
+  }
+  const editShowTree = ref<boolean>(false)
+  const elTreeRef = ref<InstanceType<typeof ElTree>>()
+  const otherInfo = ref<any>({
+    pids: ''
+  })
+  // 获取用户选中的权限
+  const handleCheckChange = (data1: any, data2: any) => {
+    const checkedKeys = data2.checkedKeys
+    const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
+    const menuList = [...checkedKeys]
+    otherInfo.value = {
+      ...otherInfo.value,
+      pids: JSON.stringify(menuList)
+    }
+  }
+
+  return {
+    treeData,
+    handleFilterNode,
+    editShowTree,
+    elTreeRef,
+    filterTree,
+    otherInfo,
+    handleCheckChange
   }
 }
 
