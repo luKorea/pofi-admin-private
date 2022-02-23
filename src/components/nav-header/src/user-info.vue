@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 09:47:56
+ * @LastEditTime: 2022-02-23 09:52:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
