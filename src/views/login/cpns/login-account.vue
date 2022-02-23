@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:55
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 11:34:28
+ * @LastEditTime: 2022-02-23 13:49:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/login/cpns/login-account.vue
 -->
 <template>
   <div class="login-panel">
-    <el-card class="login-account">
+    <el-card class="login-account" shadow="always">
       <template #header>
         <div class="hg-text-blue-500">
           <span>POFI 后台管理系统</span>
