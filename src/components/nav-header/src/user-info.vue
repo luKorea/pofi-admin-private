@@ -2,12 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-08 17:21:47
+ * @LastEditTime: 2022-02-23 09:47:56
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
 <template>
   <div class="user-info">
+    <span v-if="localTime" class="hg-text-sm hg-mr-10"
+      >当前系统时间：{{ localTime }}</span
+    >
     <el-dropdown>
       <span class="el-dropdown-link">
         <el-avatar
@@ -30,16 +33,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store'
 import { useRouter } from 'vue-router'
 import localCache from '@/utils/cache'
+import { timeNow } from '@/utils'
 
 export default defineComponent({
   setup() {
     const store = useStore()
     const name = computed(() => store.state.login.userInfo.user.nickname)
-
+    // 设置动态系统时间
+    const localTime = ref()
+    const instanceInterval = ref()
+    instanceInterval.value = setInterval(() => {
+      localTime.value = timeNow()
+    }, 1000)
+    onBeforeUnmount(() => {
+      clearInterval(instanceInterval.value)
+    })
     const router = useRouter()
     const handleExitClick = () => {
       // 移除本地缓存
@@ -51,6 +63,7 @@ export default defineComponent({
 
     return {
       name,
+      localTime,
       handleExitClick
     }
   }
