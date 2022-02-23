@@ -9,7 +9,7 @@
       label-position="top"
       :model="modelValue"
     >
-      <el-row :gutter="12">
+      <el-row :gutter="16">
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
             <el-form-item
