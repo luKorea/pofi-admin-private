@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:55
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 11:30:43
+ * @LastEditTime: 2022-02-23 11:34:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/login/cpns/login-account.vue
 -->
@@ -106,7 +106,7 @@ export default defineComponent({
 </style>
 <style scoped lang="less">
 .login-panel {
-  width: 30%;
+  width: 500px;
   // height: 100%;
   // background-color: #fff;
   border-radius: 4px;

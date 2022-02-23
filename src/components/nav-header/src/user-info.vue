@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 09:52:01
+ * @LastEditTime: 2022-02-23 11:36:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
@@ -38,6 +38,7 @@ import { useStore } from '@/store'
 import { useRouter } from 'vue-router'
 import localCache from '@/utils/cache'
 import { timeNow } from '@/utils'
+import { infoTipBox } from '@/utils/tip-info'
 
 export default defineComponent({
   setup() {
@@ -54,11 +55,16 @@ export default defineComponent({
     })
     const router = useRouter()
     const handleExitClick = () => {
-      // 移除本地缓存
-      localCache.deleteCache('token')
-      localCache.deleteCache('userInfo')
-      localCache.deleteCache('userMenus')
-      router.push('/login')
+      infoTipBox({
+        title: '退出登录',
+        message: '您确定退出登录吗'
+      }).then(() => {
+        // 移除本地缓存
+        localCache.deleteCache('token')
+        localCache.deleteCache('userInfo')
+        localCache.deleteCache('userMenus')
+        router.push('/login')
+      })
     }
 
     return {
