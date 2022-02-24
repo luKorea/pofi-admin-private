@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 15:37:34
+ * @LastEditTime: 2022-02-24 14:28:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/modal.config.ts
  */
@@ -47,7 +47,8 @@ export const modalConfig: IForm = {
       placeholder: '不选默认全部',
       options: [],
       otherOptions: {
-        multiple: true
+        multiple: true,
+        collapseTags: true
       }
     },
     {

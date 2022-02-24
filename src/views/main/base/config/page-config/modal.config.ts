@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 10:44:57
+ * @LastEditTime: 2022-02-24 14:26:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/page-config/modal.config.ts
  */
@@ -31,7 +31,8 @@ export const modalConfig: IForm = {
       placeholder: '请选择国家或者地区',
       options: [],
       otherOptions: {
-        multiple: true
+        multiple: true,
+        collapseTags: true
       }
     },
     {
