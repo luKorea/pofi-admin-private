@@ -104,3 +104,7 @@
     11. store vuex
           1. system/ system.ts type.ts
 
+# 项目上线打包优化
+  1. npm install uglifyjs-webpack-plugin --save-dev （去除打印以及注释）
+
+

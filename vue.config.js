@@ -2,11 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 09:45:52
+ * @LastEditTime: 2022-02-24 10:37:51
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
 const path = require('path')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const isProduction = process.env.NODE_ENV === 'production'
+
 module.exports = {
   // 1.配置方式一: CLI提供的属性
   outputDir: './build',
@@ -34,11 +37,30 @@ module.exports = {
   //去除生产环境的 productionSourceMap
   productionSourceMap: false,
   configureWebpack: (config) => {
+    const plugins = [] // 打包优化
+    if (isProduction) {
+      plugins.push(
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            output: {
+              comments: false // 去掉注释
+            },
+            warnings: false,
+            compress: {
+              drop_console: true,
+              drop_debugger: false,
+              pure_funcs: ['console.log'] //移除 console
+            }
+          }
+        })
+      )
+    }
     ;(config.resolve.alias = {
       '@': path.resolve(__dirname, 'src'),
       components: '@/components'
     }),
       (config.optimization.splitChunks = {
+        // 打包优化
         minChunks: 3,
         name: 'vendor'
       })
