@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 12:05:36
+ * @LastEditTime: 2022-02-24 16:59:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -86,7 +86,7 @@ const store = createStore<IRootState>({
       commit('saveTagsListToLocal', payload)
     },
     // 点击侧边栏将路由添加到tagsList
-    addTags({ commit, state }, payload) {
+    addTags({ commit }, payload) {
       commit('addTagsListToStore', payload)
     },
     // 移除tagsList

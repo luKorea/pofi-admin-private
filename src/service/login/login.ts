@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 09:45:22
+ * @LastEditTime: 2022-02-24 16:59:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
 import hyRequest from '../index'
 
 import { IAccount } from './type'
-import { IDataType } from '../types'
+// import { IDataType } from '../types'
 import md5 from 'md5'
 
 enum LoginAPI {

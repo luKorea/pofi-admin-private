@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 13:42:22
+ * @LastEditTime: 2022-02-24 16:59:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -83,7 +83,7 @@ export default defineComponent({
     }
   },
   emits: ['editClick', 'addClick'],
-  setup(props, { emit }) {
+  setup(props) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
     // 获取表单组件，监听表单是否填写完整

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 15:54:51
+ * @LastEditTime: 2022-02-24 16:58:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -38,7 +38,7 @@ import { modalConfig } from './config/modal.config'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { usePageList } from './hooks/use-page-list'
-import { useStore } from '@/store'
+// import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'deviceCondition',

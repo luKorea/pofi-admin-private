@@ -61,6 +61,7 @@ export default defineComponent({
       console.log(item)
     }
     const editCallback = (item: any) => {
+      console.log(item)
       // console.log(item, '编辑的数据')
       // if (item.parent === 0) {
       //   item.parent = item.id

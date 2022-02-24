@@ -2,15 +2,16 @@
  * @Author: korealu
  * @Date: 2022-02-22 14:38:21
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 14:50:34
+ * @LastEditTime: 2022-02-24 16:58:46
  * @Description: file content
- * @FilePath: /pofi-admin/src/utils/export.ts
+ * @FilePath: /pofi-admin/src/utils/exportExcel.ts
  */
 // exportToExcel.ts
 import * as XLSX from 'xlsx'
 const EXCEL_TYPE =
   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 const EXCEL_EXTENSION = '.xlsx'
+console.log(EXCEL_EXTENSION, EXCEL_TYPE)
 export class ExcelService {
   static toExportFileName(excelFileName: string): string {
     return `${excelFileName}-${new Date().getTime()}.xlsx`

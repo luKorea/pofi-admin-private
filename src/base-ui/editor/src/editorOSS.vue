@@ -106,6 +106,7 @@ export default defineComponent({
     }
 
     const initEditorContent = (htmlStr: string, isFocus = false) => {
+      console.log(isFocus)
       if (!instance.value) return
       const editor: Editor = instance.value as Editor
       if (!htmlStr) return
