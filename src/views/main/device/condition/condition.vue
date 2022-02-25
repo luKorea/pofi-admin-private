@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 10:48:02
+ * @LastEditTime: 2022-02-25 10:53:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -103,6 +103,7 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       otherInfo.value = {
+        region: item.region, // 用户如果没有修改这个选项。使用默认值
         id: item.id
       }
       areaIds.value = item.region.split(',').map((item: any) => +item)
