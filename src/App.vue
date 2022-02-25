@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 11:58:44
+ * @LastEditTime: 2022-02-25 11:29:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/App.vue
 -->
@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-// import { useRouter } from 'vue-router'
+import { defineComponent, watchEffect } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
-// import NProgress from 'nprogress'
-// import 'nprogress/nprogress.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 export default defineComponent({
   name: 'App',
   components: {
@@ -32,18 +32,18 @@ export default defineComponent({
     }
   },
   setup() {
-    // const router = useRouter()
-    // watchEffect(() => {
-    //   router.beforeEach((to, from, next) => {
-    //     // 开启进度条
-    //     NProgress.start()
-    //     next()
-    //   })
-    //   router.afterEach(() => {
-    //     // 关闭进度条
-    //     NProgress.done()
-    //   })
-    // })
+    const router = useRouter()
+    watchEffect(() => {
+      router.beforeEach((to, from, next) => {
+        // 开启进度条
+        NProgress.start()
+        next()
+      })
+      router.afterEach(() => {
+        // 关闭进度条
+        NProgress.done()
+      })
+    })
     return {
       zhCn
     }

@@ -2,26 +2,24 @@ import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { HYRequestInterceptors, HYRequestConfig } from './type'
 
-// import { ElMessage } from 'element-plus'
-// import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
+import { ElLoading } from 'element-plus'
+import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import qs from 'qs'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 
-const DEAFULT_LOADING = true
+const DEFAULT_LOADING = true
 
 class HYRequest {
   instance: AxiosInstance
   interceptors?: HYRequestInterceptors
   showLoading: boolean
-  loading?: any
+  loading?: ILoadingInstance
 
   constructor(config: HYRequestConfig) {
     // 创建axios实例
     this.instance = axios.create(config)
 
     // 保存基本信息
-    this.showLoading = config.showLoading ?? DEAFULT_LOADING
+    this.showLoading = config.showLoading ?? DEFAULT_LOADING
     this.interceptors = config.interceptors
 
     // 使用拦截器
@@ -39,7 +37,12 @@ class HYRequest {
     this.instance.interceptors.request.use(
       (config) => {
         if (this.showLoading) {
-          this.loading = NProgress.start()
+          this.loading = ElLoading.service({
+            lock: true,
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(250, 250, 250, 1)'
+          })
         }
         return config
       },
@@ -51,8 +54,7 @@ class HYRequest {
     this.instance.interceptors.response.use(
       (res) => {
         // 将loading移除
-        // this.loading?.close()
-        NProgress.done()
+        this.loading?.close()
         const data = res.data
         return data
         // if (data.returnCode === '-1001') {
@@ -63,8 +65,7 @@ class HYRequest {
       },
       (err) => {
         // 将loading移除
-        // this.loading?.close()
-        NProgress.done()
+        this.loading?.close()
         // 例子: 判断不同的HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
           // ElMessage.error('请求地址不存在')
@@ -95,14 +96,14 @@ class HYRequest {
             res = config.interceptors.responseInterceptor(res)
           }
           // 2.将showLoading设置true, 这样不会影响下一个请求
-          this.showLoading = DEAFULT_LOADING
+          this.showLoading = DEFAULT_LOADING
 
           // 3.将结果resolve返回出去
           resolve(res)
         })
         .catch((err) => {
           // 将showLoading设置true, 这样不会影响下一个请求
-          this.showLoading = DEAFULT_LOADING
+          this.showLoading = DEFAULT_LOADING
           reject(err)
           return err
         })
