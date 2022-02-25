@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d23034e"],{eafb:function(n,e,c){"use strict";c.r(e);var t=c("7a23");function o(n,e,c,o,r,u){return Object(t["openBlock"])(),Object(t["createBlock"])("div",null,"这是用户反馈页面")}var r={setup:function(){return{}}},u=c("d959"),a=c.n(u);const d=a()(r,[["render",o]]);e["default"]=d}}]);
