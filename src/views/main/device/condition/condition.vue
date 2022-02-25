@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 16:58:11
+ * @LastEditTime: 2022-02-25 10:48:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -21,16 +21,40 @@
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="limit"
-      :modalConfig="modalConfigRef"
+      :modalConfig="modalConfig"
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
+      <el-row>
+        <el-col v-bind="modalConfig.colLayout">
+          <div class="item-flex">
+            <span class="item-title">地区</span>
+            <el-select
+              placeholder="请选择国家地区，不选默认全部"
+              style="width: 100%"
+              clearable
+              v-model="areaIds"
+              multiple
+              collapse-tags
+              @change="handleChangeCountry($event)"
+            >
+              <el-option
+                v-for="option in countryList"
+                :key="option.id"
+                :value="option.id"
+                :label="option.name"
+                >{{ option.name }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+      </el-row>
     </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
@@ -55,39 +79,50 @@ export default defineComponent({
     })
     const [pageContentRef] = usePageSearch()
     const [countryList] = usePageList()
-    // pageModal相关的hook逻辑
-    const modalConfigRef = computed(() => {
-      const countryItem = modalConfig.formItems.find(
-        (item: any) => item.field === 'region'
-      )
-      countryItem!.options = countryList.value.map((item: any) => ({
-        title: item.name,
-        value: item.id
-      }))
-      return modalConfig
+    const otherInfo = ref<any>({})
+    const areaIds = ref<any>([])
+    // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
+    watchEffect(() => {
+      if (areaIds.value.length === 0) {
+        const region: any[] = []
+        countryList.value.forEach((item: any) => {
+          region.push(item.id)
+        })
+        otherInfo.value = {
+          region: region.toString()
+        }
+      }
     })
-    const otherInfo = ref()
+    const handleChangeCountry = (item: any) => {
+      otherInfo.value = {
+        region: item.toString()
+      }
+    }
+    const newData = () => {
+      areaIds.value = []
+    }
     const editData = (item: any) => {
       otherInfo.value = {
         id: item.id
       }
-      item.region =
-        item.region && item.region.split(',').map((item: any) => +item)
-      console.log(item, '111')
+      areaIds.value = item.region.split(',').map((item: any) => +item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(undefined, editData)
+      usePageModal(newData, editData)
     return {
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,
-      modalConfigRef,
+      modalConfig,
       handleNewData,
       handleEditData,
       pageModalRef,
       defaultInfo,
       operationName,
-      otherInfo
+      otherInfo,
+      countryList,
+      areaIds,
+      handleChangeCountry
     }
   }
 })

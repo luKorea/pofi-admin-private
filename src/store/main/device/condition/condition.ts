@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 11:56:10
+ * @LastEditTime: 2022-02-25 10:11:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/condition/condition.ts
  */
@@ -55,8 +55,9 @@ const conditionModule: Module<IConditionType, IRootState> = {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      const { rows, total } = pageResult.data as any
+      console.log(pageResult, 're')
       if (pageResult.result === 0) {
+        const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)
         commit(`change${changePageName}List`, rows)
         commit(`change${changePageName}Count`, total)

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 16:59:59
+ * @LastEditTime: 2022-02-25 09:45:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -105,20 +105,13 @@ export default defineComponent({
       const formRef = pageFormRef.value?.formRef
       formRef?.validate((valid: any) => {
         if (valid) {
-          console.log(formData.value, props.otherInfo)
-          // 针对多选国家特殊数据进行处理
-          if (formData.value.regionName) {
-            const region = formData.value.regionName.toString()
-            const areaIds = formData.value.regionName.toString()
-            formData.value = {
-              ...formData.value,
-              region,
-              areaIds
-            }
-            console.log(formData.value, '用户数据')
-          }
           if (Object.keys(props.defaultInfo).length) {
-            console.log(formData.value, '这是树木')
+            console.log(
+              formData.value,
+              '表单中的数据',
+              props.otherInfo,
+              '其他数据'
+            )
             // 编辑
             store
               .dispatch(props.operationName.editName, {

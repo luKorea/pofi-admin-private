@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 15:28:38
+ * @LastEditTime: 2022-02-25 10:15:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/help/companion/companion.ts
  */
@@ -10,6 +10,7 @@ import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { ICompanionType } from './types'
+import { errorTip } from '@/utils/tip-info'
 
 import {
   getPageListData,
@@ -54,10 +55,12 @@ const companionModule: Module<ICompanionType, IRootState> = {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      const { rows, total } = pageResult.data as any
-      const changePageName = firstToUpperCase(pageName)
-      commit(`change${changePageName}List`, rows)
-      commit(`change${changePageName}Count`, total)
+      if (pageResult.result === 0) {
+        const { rows, total } = pageResult.data as any
+        const changePageName = firstToUpperCase(pageName)
+        commit(`change${changePageName}List`, rows)
+        commit(`change${changePageName}Count`, total)
+      } else errorTip(pageResult.msg)
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName

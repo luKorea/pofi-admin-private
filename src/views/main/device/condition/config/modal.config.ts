@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 14:28:14
+ * @LastEditTime: 2022-02-25 09:57:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/modal.config.ts
  */
@@ -11,6 +11,15 @@ import { IForm } from '@/base-ui/form'
 export const modalConfig: IForm = {
   title: '限制条件管理操作',
   formItems: [
+    {
+      field: 'id',
+      type: 'input',
+      label: 'ID',
+      placeholder: '唯一ID',
+      otherOptions: {
+        disabled: true
+      }
+    },
     {
       field: 'name',
       type: 'input',
@@ -40,17 +49,17 @@ export const modalConfig: IForm = {
         }
       ]
     },
-    {
-      field: 'region',
-      type: 'select',
-      label: '地区',
-      placeholder: '不选默认全部',
-      options: [],
-      otherOptions: {
-        multiple: true,
-        collapseTags: true
-      }
-    },
+    // {
+    //   field: 'region',
+    //   type: 'select',
+    //   label: '地区',
+    //   placeholder: '不选默认全部',
+    //   options: [],
+    //   otherOptions: {
+    //     multiple: true,
+    //     collapseTags: true
+    //   }
+    // },
     {
       field: 'state',
       type: 'select',

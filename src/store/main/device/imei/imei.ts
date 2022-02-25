@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 12:13:36
+ * @LastEditTime: 2022-02-25 10:14:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/imei/imei.ts
  */
@@ -55,8 +55,8 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
-      const { rows, total } = pageResult.data as any
       if (pageResult.result === 0) {
+        const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)
         commit(`change${changePageName}List`, rows)
         commit(`change${changePageName}Count`, total)

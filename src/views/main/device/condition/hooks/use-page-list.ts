@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 10:24:54
+ * @LastEditTime: 2022-02-25 10:29:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/hooks/use-page-list.ts
  */
@@ -11,12 +11,7 @@ import { ref } from 'vue'
 import { getCountrySelectList, getBaseConfigGroupList } from '@/service/common'
 
 export function usePageList() {
-  const countryList = ref<any>([
-    {
-      name: '全部',
-      id: -999
-    }
-  ])
+  const countryList = ref<any>([])
   const groupList = ref<any>([])
   const getCountryList = () => {
     getCountrySelectList().then((res) => {

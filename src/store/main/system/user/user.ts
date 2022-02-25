@@ -56,8 +56,8 @@ const oaUserModule: Module<IUserState, IRootState> = {
       // 2.对页面发送请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       // 3.将数据存储到state中
-      const { data, totalCount = 0, result, msg } = pageResult as any
-      if (result === 0) {
+      if (pageResult.result === 0) {
+        const { data, totalCount = 0 } = pageResult as any
         const changePageName = firstToUpperCase(pageName)
         commit(`change${changePageName}List`, data)
         // 处理oa下没有返回totalCount
@@ -66,7 +66,7 @@ const oaUserModule: Module<IUserState, IRootState> = {
         } else {
           commit(`change${changePageName}Count`, totalCount)
         }
-      } else errorTip(msg)
+      } else errorTip(pageResult.msg)
     },
 
     async deletePageDataAction({ dispatch }, payload: any) {
