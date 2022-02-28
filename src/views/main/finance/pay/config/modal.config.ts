@@ -2,66 +2,74 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 12:12:39
+ * @LastEditTime: 2022-02-28 14:43:35
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
+ * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '用户设备清单',
+  title: '订单管理',
   formItems: [
     {
-      field: 'name',
+      field: 'nickName',
       type: 'input',
-      label: '方案名称',
-      placeholder: '请输入方案名称',
-      rules: [
-        {
-          required: true,
-          message: '请输入方案名称',
-          trigger: 'blur'
-        }
-      ]
+      label: '用户昵称'
     },
     {
-      field: 'limitNum',
-      type: 'inputNumber',
-      label: '设备限制',
-      placeholder: '请输入设备限制',
-      otherOptions: {
-        min: 0
-      },
-      rules: [
-        {
-          required: true,
-          message: '请输入设备限制',
-          trigger: 'blur'
-        }
-      ]
+      field: 'onId',
+      type: 'input',
+      label: '订单号'
     },
     {
-      field: 'region',
-      type: 'select',
-      label: '地区',
-      placeholder: '不选默认全部',
-      options: [],
-      otherOptions: {
-        multiple: true
-      }
+      field: 'code',
+      type: 'input',
+      label: '商品ID'
+    },
+    {
+      field: 'wayCopy',
+      type: 'input',
+      label: '充值方式'
+    },
+    {
+      field: 'costCopy',
+      type: 'input',
+      label: '金额'
+    },
+    {
+      field: 'create',
+      type: 'input',
+      label: '创建时间'
     },
     {
       field: 'state',
       type: 'select',
-      label: '状态',
+      label: '订单状态',
+      placeholder: '请选择订单状态',
       options: [
         {
-          title: '启用',
+          title: '等待支付',
+          value: 0
+        },
+        {
+          title: '完成支付',
           value: 1
         },
         {
-          title: '禁用',
-          value: 0
+          title: '取消支付',
+          value: 2
+        }
+      ]
+    },
+    {
+      label: '备注',
+      type: 'input',
+      field: 'remark',
+      rules: [
+        {
+          required: true,
+          message: '请输入备注',
+          trigger: 'blur'
         }
       ]
     }

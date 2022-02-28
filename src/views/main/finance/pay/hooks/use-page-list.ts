@@ -2,11 +2,90 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 11:44:14
+ * @LastEditTime: 2022-02-28 16:48:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/hooks/use-page-list.ts
  */
-import { ref } from 'vue'
+import { ref, watch, computed } from 'vue'
+import PageContent from '@/components/page-content'
+
+import { usePageDialog } from '@/hooks/use-page-dialog'
+import { useStore } from '@/store'
+
+export function useOperationData() {
+  // 模态框区域
+  const selectList = ref<any>([
+    {
+      label: '全部',
+      value: -999
+    },
+    {
+      label: '系统',
+      value: 1
+    },
+    {
+      label: '管理人员',
+      value: 2
+    },
+    {
+      label: '用户',
+      value: 3
+    }
+  ])
+  const pageInfo = ref({ currentPage: 1, pageSize: 10 })
+  const optType = ref<any>(-999)
+  const POFIID = ref<any>()
+  const Uid = ref<any>()
+  const pageOperationRef = ref<InstanceType<typeof PageContent>>()
+  const [pageDialogRef, handleShowDialog] = usePageDialog()
+  const handleOperationClick = (item: any) => {
+    POFIID.value = item.nickId
+    Uid.value = item.uid
+    optType.value = -999
+    handleShowDialog()
+    getData({
+      uid: item.uid,
+      optType: optType.value
+    })
+  }
+  watch(
+    () => optType.value,
+    () => {
+      getData({
+        uid: Uid.value,
+        optType: optType.value
+      })
+    }
+  )
+  const store = useStore()
+  const getData = (queryInfo: any) => {
+    store.dispatch('payModule/getPageListAction', {
+      pageName: 'log',
+      queryInfo: {
+        currentPage: pageInfo.value.currentPage,
+        pageSize: pageInfo.value.pageSize,
+        ...queryInfo
+      }
+    })
+  }
+  const dataList = computed(() => {
+    return store.getters['payModule/pageListData']('log')
+  })
+  const dataCount = computed(() => {
+    return store.getters['payModule/pageListCount']('log')
+  })
+  return [
+    pageDialogRef,
+    pageOperationRef,
+    handleOperationClick,
+    selectList,
+    optType,
+    POFIID,
+    pageInfo,
+    dataList,
+    dataCount
+  ]
+}
 
 export function useComputedPayType(state: number | string) {
   switch (state) {

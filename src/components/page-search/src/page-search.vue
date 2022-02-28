@@ -2,17 +2,30 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 11:26:53
+ * @LastEditTime: 2022-02-28 13:50:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
 <template>
   <div class="page-search">
-    <hy-form v-bind="searchFormConfig" v-model="formData">
+    <div class="header" @click="changeFormVisible = !changeFormVisible">
+      <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
+      <el-icon>
+        <template v-if="changeFormVisible">
+          <arrow-up />
+        </template>
+        <template v-else>
+          <arrow-down />
+        </template>
+      </el-icon>
+    </div>
+    <hy-form
+      v-if="changeFormVisible"
+      v-bind="searchFormConfig"
+      v-model="formData"
+    >
       <!-- <template #header>
-        <div class="header" @click="changeFormVisible = !changeFormVisible">
-          <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
-        </div>
+        <span class="hg-flex">条件筛选</span>
       </template> -->
       <template #footer>
         <div class="handle-btns">
@@ -37,6 +50,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
+import { ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 import HyForm from '@/base-ui/form'
 
 export default defineComponent({
@@ -48,10 +62,13 @@ export default defineComponent({
     }
   },
   components: {
-    HyForm
+    HyForm,
+    ArrowUp,
+    ArrowDown
   },
   emits: ['resetBtnClick', 'queryBtnClick'],
   setup(props, { emit }) {
+    const changeFormVisible = ref<any>(true)
     // 双向绑定的属性应该是由配置文件的field来决定
     // 1.优化一: formData中的属性应该动态来决定
     const formItems = props.searchFormConfig?.formItems ?? []
@@ -77,6 +94,7 @@ export default defineComponent({
     }
 
     return {
+      changeFormVisible,
       formData,
       handleResetClick,
       handleQueryClick
@@ -92,7 +110,8 @@ export default defineComponent({
 }
 .header {
   display: flex;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  align-items: center;
   cursor: pointer;
 }
 .handle-btns {

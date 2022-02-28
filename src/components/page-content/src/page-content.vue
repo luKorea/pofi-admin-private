@@ -10,6 +10,7 @@
       @selectionChange="handleSelectionChange"
       :handleDraw="permissionList.isDrawTable"
       ref="tableRef"
+      :showHeader="showHeader"
     >
       <!-- 用户其他操作 -->
       <template #otherHandler>
@@ -68,6 +69,7 @@
           v-if="permissionList.isOperation"
           size="mini"
           type="text"
+          style="color: rgb(180, 141, 222)"
           @click="handleOperationClick(scope.row)"
         >
           操作日志
@@ -139,6 +141,10 @@ export default defineComponent({
     HyTable
   },
   props: {
+    showHeader: {
+      type: Boolean,
+      default: true
+    },
     contentTableConfig: {
       type: Object,
       require: true
@@ -196,7 +202,6 @@ export default defineComponent({
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     const backQueryInfo = ref({})
     watch(pageInfo, () => {
-      console.log(1)
       getPageData(backQueryInfo.value)
     })
     const handleRefreshClick = () => {
@@ -205,6 +210,7 @@ export default defineComponent({
     }
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
+      console.log(queryInfo, '用户传递的参数')
       backQueryInfo.value = queryInfo
       if (!permissionList.value.isQuery) return
       store.dispatch(props.storeTypeInfo?.actionName, {
@@ -213,7 +219,7 @@ export default defineComponent({
           // currentPage: pageInfo.value.currentPage * pageInfo.value.pageSize, //使用偏移量
           currentPage: pageInfo.value.currentPage,
           pageSize: pageInfo.value.pageSize,
-          ...queryInfo
+          ...backQueryInfo.value
         }
       })
     }
@@ -291,6 +297,7 @@ export default defineComponent({
       otherPropSlots,
       permissionList,
       userSelectData,
+      backQueryInfo,
       getPageData,
       drawTable,
       handleDeleteClick,

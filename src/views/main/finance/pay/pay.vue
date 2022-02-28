@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 12:00:06
+ * @LastEditTime: 2022-02-28 16:59:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -20,7 +20,7 @@
       pageName="pay"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-      @selectAllBtnClick="handleSelectData"
+      @operationBtnClick="handleOperationClick"
     >
       <template #otherHandler>
         <el-button size="mini" @click="exportData">导出Excel</el-button>
@@ -31,6 +31,9 @@
       <template #payWay="scope">
         <span>{{ useComputedPayWay(scope.row.way) }}</span>
       </template>
+      <template #payMoney="scope">
+        <span>{{ scope.row.cost ? scope.row.cost / 100 : 0 }}P币</span>
+      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -38,44 +41,76 @@
       pageName="pay"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
+      :otherInfo="otherInfo"
     >
     </page-modal>
+
+    <page-dialog ref="pageDialogRef" :title="`操作日志 (Pofi ID: ${POFIID})`">
+      <div class="hg-flex hg-items-center" style="margin-bottom: 10px">
+        <template v-if="selectList && selectList.length > 0">
+          <span class="item-title" style="margin-right: 10px">操作人</span>
+          <el-select v-model="optType" placeholder="">
+            <el-option
+              v-for="(item, index) in selectList"
+              :key="index"
+              :value="item.value"
+              :label="item.label"
+            >
+              {{ item.label }}
+            </el-option>
+          </el-select>
+        </template>
+      </div>
+      <hy-table
+        :listData="dataList"
+        :listCount="dataCount"
+        v-bind="operationTableConfig"
+        v-model:page="pageInfo"
+        ref="tableRef"
+        :showHeader="false"
+      ></hy-table>
+    </page-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 // import { Money } from '@element-plus/icons-vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
+import { operationTableConfig } from './config/operation.config'
 import { modalConfig } from './config/modal.config'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
-
 import {
+  useOperationData,
   useStoreName,
   useComputedPayType,
   useComputedPayWay
 } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
+import { getItemData } from '@/service/main/finance/pay'
+
+import HyTable from '@/base-ui/table'
 
 export default defineComponent({
-  name: 'tradeRecord',
+  name: 'pay',
   components: {
     // Money
+    HyTable
   },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const begin = data.dateTime[0] ?? ''
-      const end = data.dateTime[1] ?? ''
+      const beginDate = data.dateTime[0] ?? undefined
+      const endDate = data.dateTime[1] ?? undefined
       handleQueryClick({
         ...data,
-        begin,
-        end
+        beginDate,
+        endDate
       })
     }
     const exportData = () => {
@@ -83,22 +118,66 @@ export default defineComponent({
       const dataList = pageContentRef.value?.dataList
       dataList.forEach((data: any) => {
         result.value.push({
-          内购ID: data.id,
+          订单号: data.onId,
+          商品ID: data.code,
           pofiID: data.nickId,
-          昵称: data.nickName,
-          支付方式: data.costType === 'COST_PB' ? 'P币支付' : '',
-          支出金额: data.cost,
-          目标商品: data.pname,
-          来源平台: data.uid,
-          备注: data.remark,
-          操作时间: data.time
+          用户昵称: data.nickName,
+          支付状态: useComputedPayType(data.state),
+          充值方式: useComputedPayWay(data.way),
+          金额: `${data.cost ? data.cost / 100 : 0}P币`,
+          附件: data.attachment,
+          创建时间: data.createTime
         })
       })
       const ExportExcel = new ExcelService()
-      ExportExcel.exportAsExcelFile(result.value, '内购记录')
+      ExportExcel.exportAsExcelFile(result.value, '用户钱包数据导出')
     }
+    const otherInfo = ref<any>({})
+    const getItem = (item: any) => {
+      getItemData(item).then((res: any) => {
+        if (res.result === 0) {
+          otherInfo.value = {
+            id: res.data.id,
+            nickId: res.data.nickId
+          }
+        }
+      })
+    }
+    const edit = (item: any) => {
+      getItem({
+        nickId: item.nickId,
+        onId: item.onId
+      })
+      item.wayCopy = useComputedPayWay(item.way)
+      item.costCopy = `${item.cost ? item.cost / 100 : 0}P币`
+      item.create = item.createTime
+    }
+
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(undefined, edit)
+
+    const modalConfigRef = computed(() => {
+      modalConfig.formItems.map((item: any) => {
+        item.otherOptions = {}
+        item.otherOptions['disabled'] = false
+        if (item.field === 'remark' || item.field === 'state') {
+          item.otherOptions['disabled'] = false
+        } else item.otherOptions['disabled'] = true
+      })
+      return modalConfig
+    })
+    // 模态框区域
+    const [
+      pageDialogRef,
+      pageOperationRef,
+      handleOperationClick,
+      selectList,
+      optType,
+      POFIID,
+      pageInfo,
+      dataList,
+      dataCount
+    ] = useOperationData()
     return {
       searchFormConfig,
       handleResetClick,
@@ -108,13 +187,24 @@ export default defineComponent({
       useComputedPayWay,
       contentTableConfig,
       pageContentRef,
-      modalConfig,
+      modalConfigRef,
       handleNewData,
       handleEditData,
       pageModalRef,
       defaultInfo,
+      otherInfo,
       operationName,
-      exportData
+      exportData,
+      handleOperationClick,
+      pageDialogRef,
+      pageOperationRef,
+      operationTableConfig,
+      selectList,
+      optType,
+      POFIID,
+      pageInfo,
+      dataList,
+      dataCount
     }
   }
 })

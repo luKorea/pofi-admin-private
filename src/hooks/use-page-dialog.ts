@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:10
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 11:36:32
+ * @LastEditTime: 2022-02-28 15:03:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-page-dialog.ts
  */
@@ -39,5 +39,5 @@ export function usePageDialog(newCb?: CallbackFn, editCb?: CallbackFn) {
     defaultInfo,
     handleNewData,
     handleEditData
-  ]
+  ] as const
 }

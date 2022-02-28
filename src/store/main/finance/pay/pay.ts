@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 11:31:13
+ * @LastEditTime: 2022-02-28 14:52:06
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/pay/pay.ts
  */
@@ -20,7 +20,8 @@ import {
 } from '@/service/common-api'
 
 const apiList: any = {
-  pay: '/cms/userPay/'
+  pay: '/cms/userPay/',
+  log: '/cms/userPay/'
 }
 const queryInfo: any = {
   currentPage: 1,
@@ -31,7 +32,9 @@ const payModule: Module<IPayType, IRootState> = {
   state() {
     return {
       payCount: 0,
-      payList: []
+      payList: [],
+      logCount: 0,
+      logList: []
     }
   },
   mutations: {
@@ -40,6 +43,12 @@ const payModule: Module<IPayType, IRootState> = {
     },
     changePayCount(state, payCount: number) {
       state.payCount = payCount
+    },
+    changeLogList(state, logList: any[]) {
+      state.logList = logList
+    },
+    changeLogCount(state, logCount: number) {
+      state.logCount = logCount
     }
   },
   getters: {
@@ -53,7 +62,8 @@ const payModule: Module<IPayType, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + 'getRecords'
+      const pageUrl =
+        apiList[pageName] + (pageName === 'pay' ? 'getRecords' : 'log')
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

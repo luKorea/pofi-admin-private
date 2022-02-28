@@ -1,6 +1,6 @@
 <template>
-  <div class="hy-table">
-    <div class="header">
+  <div class="hy-table" ref="HyTableRef">
+    <div class="header" v-if="showHeader">
       <slot name="header">
         <div class="hg-text-black">{{ title }}</div>
         <div class="handler">
@@ -65,6 +65,10 @@ import { ElTable } from 'element-plus'
 
 export default defineComponent({
   props: {
+    showHeader: {
+      type: Boolean,
+      default: true
+    },
     title: {
       type: String,
       default: ''
@@ -117,6 +121,7 @@ export default defineComponent({
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
+    const HyTableRef = ref()
     const tableRef = ref<InstanceType<typeof ElTable>>()
     onMounted(() => {
       if (props.handleDraw) {
@@ -144,6 +149,7 @@ export default defineComponent({
     const handleSizeChange = (pageSize: number) =>
       emit('update:page', { ...props.page, pageSize })
     return {
+      HyTableRef,
       handleSelectionChange,
       handleCurrentChange,
       handleSizeChange,
