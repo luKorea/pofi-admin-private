@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 14:24:02
+ * @LastEditTime: 2022-02-28 11:26:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -10,7 +10,9 @@
   <div class="page-search">
     <hy-form v-bind="searchFormConfig" v-model="formData">
       <!-- <template #header>
-        <h1 class="header">高级检索</h1>
+        <div class="header" @click="changeFormVisible = !changeFormVisible">
+          <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
+        </div>
       </template> -->
       <template #footer>
         <div class="handle-btns">
@@ -89,7 +91,9 @@ export default defineComponent({
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
 }
 .header {
-  color: red;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
 }
 .handle-btns {
   display: flex;

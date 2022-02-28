@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 09:50:22
+ * @LastEditTime: 2022-02-28 11:32:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -21,6 +21,7 @@ import userImeiModule from './main/device/imei/imei'
 
 // 财务中心
 import tradeRecordModule from './main/finance/tradeRecord/tradeRecord'
+import payModule from './main/finance/pay/pay'
 
 // 配置管理
 import baseConfigModule from './main/base/config/config'
@@ -129,6 +130,7 @@ const store = createStore<IRootState>({
     userImeiModule,
     // 财务中心
     tradeRecordModule,
+    payModule,
     // 配置管理
     baseConfigModule,
     // 帮助中心

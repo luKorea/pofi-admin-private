@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 10:56:09
+ * @LastEditTime: 2022-02-28 11:08:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -11,7 +11,7 @@
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
-      @queryBtnClick="handleQueryClick"
+      @queryBtnClick="handleQueryBtnClick"
     />
     <page-content
       ref="pageContentRef"
@@ -69,7 +69,15 @@ export default defineComponent({
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-
+    const handleQueryBtnClick = (data: any) => {
+      const begin = data.dateTime[0] ?? ''
+      const end = data.dateTime[1] ?? ''
+      handleQueryClick({
+        ...data,
+        begin,
+        end
+      })
+    }
     const exportData = () => {
       const result = ref<any>([])
       const dataList = pageContentRef.value?.dataList
@@ -94,7 +102,7 @@ export default defineComponent({
     return {
       searchFormConfig,
       handleResetClick,
-      handleQueryClick,
+      handleQueryBtnClick,
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,

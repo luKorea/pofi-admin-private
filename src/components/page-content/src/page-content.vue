@@ -50,6 +50,8 @@
       </template>
       <!-- 操作插槽 -->
       <template #handler="scope">
+        <!-- 扩展其他操作 -->
+        <slot name="otherTableHandler" :row="scope"></slot>
         <el-button
           v-if="permissionList.isDistribution"
           size="mini"
@@ -58,10 +60,10 @@
         >
           分配
         </el-button>
-        <el-divider
+        <!-- <el-divider
           direction="vertical"
           v-if="permissionList.isOperation"
-        ></el-divider>
+        ></el-divider> -->
         <el-button
           v-if="permissionList.isOperation"
           size="mini"
@@ -70,10 +72,10 @@
         >
           操作日志
         </el-button>
-        <el-divider
+        <!-- <el-divider
           direction="vertical"
           v-if="permissionList.isRowAdd"
-        ></el-divider>
+        ></el-divider> -->
         <!-- <el-button
           v-if="permissionList.isRowAdd"
           size="mini"
@@ -94,10 +96,10 @@
         >
           编辑
         </el-button>
-        <el-divider
+        <!-- <el-divider
           direction="vertical"
           v-if="permissionList.isDelete"
-        ></el-divider>
+        ></el-divider> -->
         <el-button
           v-if="permissionList.isDelete"
           size="mini"

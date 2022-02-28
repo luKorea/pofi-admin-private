@@ -1,3 +1,4 @@
+import { IPayType } from './main/finance/pay/types'
 import { ITradeTRecordType } from './main/finance/tradeRecord/types'
 import { IUserImeiType } from './main/device/imei/types'
 import { IRoleState } from './main/system/role/types'
@@ -7,7 +8,7 @@ import { IUserState } from './main/system/user/types'
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 09:51:49
+ * @LastEditTime: 2022-02-28 11:32:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -40,6 +41,7 @@ export interface IRootWithModule {
   oaRoleModule: IRoleState
   // 财务管理
   tradeRecordModule: ITradeTRecordType
+  payModule: IPayType
 }
 
 export type IStoreType = IRootState & IRootWithModule

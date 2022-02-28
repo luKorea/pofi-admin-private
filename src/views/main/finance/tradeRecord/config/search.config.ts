@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 10:18:19
+ * @LastEditTime: 2022-02-28 11:05:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -57,12 +57,13 @@ export const searchFormConfig: IForm = {
       ]
     },
     {
-      field: 'nickId',
+      field: 'dateTime',
       type: 'datetimerange',
       label: '操作时间',
       otherOptions: {
         startPlaceholder: '请输入开始时间',
-        endPlaceholder: '请输入结束时间'
+        endPlaceholder: '请输入结束时间',
+        valueFormat: 'YYYY-MM-DD HH:mm:ss'
       }
     }
   ]
