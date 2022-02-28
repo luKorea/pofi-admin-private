@@ -4,7 +4,7 @@
       <template #header v-if="showHeader">
         <div class="header">
           <slot name="header">
-            <div class="hg-text-black">{{ title }}</div>
+            <div class="title">{{ title }}</div>
             <div class="handler">
               <slot name="otherHandler"></slot>
               <slot name="headerHandler"></slot>
@@ -179,8 +179,9 @@ export default defineComponent({
   align-items: center;
 
   .title {
-    // font-size: 20px;
-    font-weight: 700;
+    font-size: 14px;
+    // font-weight: 700;
+    color: rgb(182, 176, 176);
   }
 
   .handler {

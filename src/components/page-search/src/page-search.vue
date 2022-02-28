@@ -2,22 +2,29 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 17:17:30
+ * @LastEditTime: 2022-02-28 17:37:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
 <template>
   <el-card>
-    <div class="header" @click="changeFormVisible = !changeFormVisible">
-      <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
-      <el-icon>
-        <template v-if="changeFormVisible">
-          <arrow-up />
-        </template>
-        <template v-else>
-          <arrow-down />
-        </template>
-      </el-icon>
+    <div class="search-title">
+      <div>高级检索</div>
+      <div
+        class="header"
+        style="cursor: pointer"
+        @click="changeFormVisible = !changeFormVisible"
+      >
+        <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
+        <el-icon>
+          <template v-if="changeFormVisible">
+            <arrow-up />
+          </template>
+          <template v-else>
+            <arrow-down />
+          </template>
+        </el-icon>
+      </div>
     </div>
     <hy-form
       v-if="changeFormVisible"
@@ -104,6 +111,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.search-title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: rgb(182, 176, 176);
+}
 .page-search {
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 12px 0px;
