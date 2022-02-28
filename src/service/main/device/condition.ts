@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 10:16:25
+ * @LastEditTime: 2022-02-28 09:54:01
  * @Description: file content
- * @FilePath: /pofi-admin/src/service/device/condition.ts
+ * @FilePath: /pofi-admin/src/service/main/device/condition.ts
  */
-import hyRequest from '../index'
+import hyRequest from '../../index'
 enum conditionAPI {
   base = '/cms/userImei',
   list = '/getLimit',

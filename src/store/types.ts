@@ -1,4 +1,5 @@
-import { IUserImeiType } from './main/device/imei/types';
+import { ITradeTRecordType } from './main/finance/tradeRecord/types'
+import { IUserImeiType } from './main/device/imei/types'
 import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
@@ -6,7 +7,7 @@ import { IUserState } from './main/system/user/types'
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 12:07:15
+ * @LastEditTime: 2022-02-28 09:51:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -25,13 +26,20 @@ export interface IRootState {
 
 export interface IRootWithModule {
   login: ILoginState
+  // 配置管理
   baseConfigModule: IBaseConfigType
+  // 帮助中心
   companionModule: IConditionType
+  // 设备管理
   userImeiModule: IUserImeiType
+  conditionModule: IConditionType
+  // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState
   oaPermissionModule: IPermissionState
   oaRoleModule: IRoleState
+  // 财务管理
+  tradeRecordModule: ITradeTRecordType
 }
 
 export type IStoreType = IRootState & IRootWithModule

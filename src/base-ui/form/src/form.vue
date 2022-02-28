@@ -99,9 +99,14 @@
                 </el-select>
               </template>
 
-              <template v-else-if="item.type === 'datepicker'">
+              <template
+                v-else-if="
+                  item.type === 'datepicker' || item.type === 'datetimerange'
+                "
+              >
                 <el-date-picker
                   style="width: 100%"
+                  :type="item.type"
                   v-bind="item.otherOptions"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"

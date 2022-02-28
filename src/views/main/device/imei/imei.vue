@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 10:02:28
+ * @LastEditTime: 2022-02-28 10:16:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/imei.vue
 -->
@@ -70,7 +70,7 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName } from './hooks/use-page-list'
 import { infoTipBox, warnTip, successTip, errorTip } from '@/utils/tip-info'
 import { useStore } from '@/store'
-import { selectImeiOperation } from '@/service/device/imei'
+import { selectImeiOperation } from '@/service/main/device/imei'
 import { ExcelService } from '@/utils/exportExcel'
 
 export default defineComponent({
@@ -127,7 +127,7 @@ export default defineComponent({
         title: `批量${state ? '冻结' : '解冻'}设备状态`,
         message: `您确定批量${state ? '冻结' : '解冻'}选中的设备状态吗`
       }).then(() => {
-        selectImeiOperation(data).then((res) => {
+        selectImeiOperation(data).then((res: any) => {
           if (res.result === 0) {
             handleResetClick()
             successTip(res.msg)

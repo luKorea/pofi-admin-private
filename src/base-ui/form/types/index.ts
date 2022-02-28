@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:44
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 10:36:51
+ * @LastEditTime: 2022-02-28 10:06:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/form/types/index.ts
  */
@@ -11,6 +11,7 @@ type IFormType =
   | 'password'
   | 'select'
   | 'datepicker'
+  | 'datetimerange'
   | 'radio'
   | 'cascader'
   | 'checkbox'

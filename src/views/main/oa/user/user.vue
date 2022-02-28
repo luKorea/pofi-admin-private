@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 11:17:28
+ * @LastEditTime: 2022-02-28 09:53:57
  * @Description: 增删改功能完成，缺少分页搜索功能
  * @FilePath: /pofi-admin/src/views/main/oa/user/user.vue
 -->
@@ -94,7 +94,7 @@ import { useStoreName, useRoleList } from './hook/user-page-list'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
-import { updateUserValid } from '@/service/main/user'
+import { updateUserValid } from '@/service/main/system/user'
 import { errorTip, infoTipBox, successTip } from '@/utils/tip-info'
 
 export default defineComponent({

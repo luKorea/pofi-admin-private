@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-21 10:48:12
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 16:57:55
+ * @LastEditTime: 2022-02-28 09:53:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/role/hook/user-page-list.ts
  */
 import { ref, computed, watch } from 'vue'
-import { getPermissionTreeData } from '@/service/main/role'
+import { getPermissionTreeData } from '@/service/main/system/role'
 import { getRouterTreeList } from '@/service/common'
 import { ElTree } from 'element-plus'
 
