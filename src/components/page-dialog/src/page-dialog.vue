@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:43:09
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 17:07:15
+ * @LastEditTime: 2022-02-28 17:22:48
  * @Description:
  * @FilePath: /pofi-admin/src/components/page-dialog/src/page-dialog.vue
 -->
@@ -17,17 +17,21 @@
       destroy-on-close
       @close="closeDialog"
     >
-      <!-- <template #title>
+      <template #title>
         <div style="color: rgb(180, 141, 222)">{{ title }}</div>
-      </template> -->
-      <el-card>
+      </template>
+      <!-- <div class="card-header">
+        <span style="color: rgb(180, 141, 222)">{{ title }}</span>
+      </div> -->
+      <slot></slot>
+      <!-- <el-card>
         <template #header>
           <div class="card-header">
             <span style="color: rgb(180, 141, 222)">{{ title }}</span>
           </div>
         </template>
         <slot></slot>
-      </el-card>
+      </el-card> -->
     </el-dialog>
   </div>
 </template>

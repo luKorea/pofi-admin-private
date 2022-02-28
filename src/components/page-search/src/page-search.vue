@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 13:50:57
+ * @LastEditTime: 2022-02-28 17:17:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
 <template>
-  <div class="page-search">
+  <el-card>
     <div class="header" @click="changeFormVisible = !changeFormVisible">
       <span>{{ changeFormVisible ? '收缩' : '展开' }}</span>
       <el-icon>
@@ -45,7 +45,7 @@
         </div>
       </template>
     </hy-form>
-  </div>
+  </el-card>
 </template>
 
 <script lang="ts">

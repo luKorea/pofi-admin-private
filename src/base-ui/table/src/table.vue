@@ -1,60 +1,68 @@
 <template>
   <div class="hy-table" ref="HyTableRef">
-    <div class="header" v-if="showHeader">
-      <slot name="header">
-        <div class="hg-text-black">{{ title }}</div>
-        <div class="handler">
-          <slot name="otherHandler"></slot>
-          <slot name="headerHandler"></slot>
+    <el-card>
+      <template #header v-if="showHeader">
+        <div class="header">
+          <slot name="header">
+            <div class="hg-text-black">{{ title }}</div>
+            <div class="handler">
+              <slot name="otherHandler"></slot>
+              <slot name="headerHandler"></slot>
+            </div>
+          </slot>
         </div>
-      </slot>
-    </div>
-    <el-table
-      :data="listData"
-      style="width: 100%"
-      @selection-change="handleSelectionChange"
-      v-bind="childrenProps"
-      empty-text="暂时没有其他数据"
-      ref="tableRef"
-    >
-      <el-table-column
-        v-if="showSelectColumn"
-        type="selection"
-        align="center"
-        width="60"
-      ></el-table-column>
-      <el-table-column
-        v-if="showIndexColumn"
-        type="index"
-        label="序号"
-        align="center"
-        width="80"
-      ></el-table-column>
-      <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
-          <template #default="scope">
-            <!-- 动态插槽，动态作用域插槽 -->
-            <slot :name="propItem.slotName" :row="scope.row">
-              {{ scope.row[propItem.prop] }}
-            </slot>
-          </template>
-        </el-table-column>
       </template>
-    </el-table>
-    <div class="footer" v-if="showFooter">
-      <slot name="footer">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="page.currentPage"
-          :page-size="page.pageSize"
-          :page-sizes="[10, 20, 40, 60, 80, 100]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="listCount"
-        >
-        </el-pagination>
-      </slot>
-    </div>
+      <el-table
+        :data="listData"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        v-bind="childrenProps"
+        empty-text="暂时没有其他数据"
+        ref="tableRef"
+      >
+        <el-table-column
+          v-if="showSelectColumn"
+          type="selection"
+          align="center"
+          width="60"
+        ></el-table-column>
+        <el-table-column
+          v-if="showIndexColumn"
+          type="index"
+          label="序号"
+          align="center"
+          width="80"
+        ></el-table-column>
+        <template v-for="propItem in propList" :key="propItem.prop">
+          <el-table-column
+            v-bind="propItem"
+            align="center"
+            show-overflow-tooltip
+          >
+            <template #default="scope">
+              <!-- 动态插槽，动态作用域插槽 -->
+              <slot :name="propItem.slotName" :row="scope.row">
+                {{ scope.row[propItem.prop] }}
+              </slot>
+            </template>
+          </el-table-column>
+        </template>
+      </el-table>
+      <div class="footer" v-if="showFooter">
+        <slot name="footer">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="page.currentPage"
+            :page-size="page.pageSize"
+            :page-sizes="[10, 20, 40, 60, 80, 100]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="listCount"
+          >
+          </el-pagination>
+        </slot>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -160,10 +168,13 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+.hy-table {
+  margin-top: 10px;
+}
 .header {
   display: flex;
-  height: 45px;
-  padding: 0 5px;
+  // height: 45px;
+  // padding: 0 5px;
   justify-content: space-between;
   align-items: center;
 
