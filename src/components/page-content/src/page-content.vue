@@ -260,15 +260,7 @@ export default defineComponent({
       // emit('removeBtnClick', item)
     }
     // TODO 处理用户拖动表格后更新数据
-    const drawTable = (propsIndex: any) => {
-      // 以下事件交到外界处理，暂时不移动
-      console.log(propsIndex)
-      const cloneTableData = JSON.stringify(dataList.value)
-      const data = JSON.parse(cloneTableData)
-      const currentRow = data.splice(propsIndex.oldIndex, 1)[0]
-      data.splice(propsIndex.newIndex, 0, currentRow) // 新数组重新排序, 改变值无需用到
-      currentRow['sortIndex'] = propsIndex.newIndex + 1 // 根据用户拖动到的下标改变该行的位置并发送给后台
-      console.log(dataList.value, data, 'array')
+    const drawTable = (data: any) => {
       emit('drawBtnClick', data)
     }
     const handleExportClick = () => emit('exportBtnClick')

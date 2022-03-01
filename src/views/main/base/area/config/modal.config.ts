@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:21:53
+ * @LastEditTime: 2022-03-01 14:53:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/area/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '默认头像操作',
+  title: '地区管理操作',
   formItems: [
     {
       field: 'name',

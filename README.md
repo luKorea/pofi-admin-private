@@ -108,3 +108,7 @@
   1. npm install uglifyjs-webpack-plugin --save-dev （去除打印以及注释）
 
 
+
+bug
+1. upload图片上传闪动
+2. oss获取token设定时间自动清除

@@ -142,10 +142,10 @@ export default defineComponent({
       new SortTable(tableSort, {
         animation: 500,
         onEnd(evt: any) {
-          emit('drawTable', {
-            oldIndex: evt.oldIndex,
-            newIndex: evt.newIndex
-          })
+          let data = [...props.listData]
+          data.splice(evt.newIndex, 0, data.splice(evt.oldIndex, 1)[0])
+          const newArray = data.slice(0)
+          emit('drawTable', newArray)
         }
       })
     }

@@ -2,8 +2,8 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:31:15
- * @Description: 排序功能未完成
+ * @LastEditTime: 2022-03-01 15:33:09
+ * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
 <template>
@@ -39,7 +39,7 @@
             :preview-src-list="[scope.row.url]"
           >
             <template #error>
-              <div class="image-slot">
+              <div class="image-slot" style="font-size: 50px">
                 <el-icon><icon-picture /></el-icon>
               </div>
             </template>
@@ -110,10 +110,13 @@ import { useStore } from '@/store'
 import hyUpload from '@/base-ui/upload'
 import { errorTip, successTip } from '@/utils/tip-info'
 
+import { Picture as IconPicture } from '@element-plus/icons-vue'
+
 export default defineComponent({
   name: 'baseHeader',
   components: {
-    hyUpload
+    hyUpload,
+    IconPicture
   },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
