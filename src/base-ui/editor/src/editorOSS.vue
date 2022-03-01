@@ -24,6 +24,8 @@ export interface EditorInfo {
 
 import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
+import localCache from '@/utils/cache'
+import { formatUtcString } from '@/utils/date-format'
 export default defineComponent({
   components: {},
   props: {
@@ -63,13 +65,42 @@ export default defineComponent({
 
   setup(props, { emit }) {
     let client: any = null
-    useOSSConfig().then((res: any) => {
-      client = new OSS({
-        region: 'oss-cn-hongkong',
-        stsToken: res.securityToken,
-        bucket: res.bucketName,
-        ...res
-      })
+    onMounted(() => {
+      if (localCache.getSessionCache('ossRes')) {
+        const res = localCache.getSessionCache('ossRes')
+        const expirationDate = formatUtcString(res.expiration)
+        const nowDate = formatUtcString(new Date().toString())
+        if (expirationDate === nowDate) {
+          console.log('OSS过期')
+          localCache.clearSessionCache()
+          useOSSConfig().then((res) => {
+            localCache.setSessionCache('ossRes', res)
+            client = new OSS({
+              region: 'oss-cn-hongkong',
+              stsToken: res.securityToken,
+              bucket: res.bucketName,
+              ...res
+            })
+          })
+        } else {
+          client = new OSS({
+            region: 'oss-cn-hongkong',
+            stsToken: res.securityToken,
+            bucket: res.bucketName,
+            ...res
+          })
+        }
+      } else {
+        useOSSConfig().then((res) => {
+          localCache.setSessionCache('ossRes', res)
+          client = new OSS({
+            region: 'oss-cn-hongkong',
+            stsToken: res.securityToken,
+            bucket: res.bucketName,
+            ...res
+          })
+        })
+      }
     })
     const editorRef = ref<HTMLDivElement | null>(null)
     const isInitContent = ref<boolean>(false)
