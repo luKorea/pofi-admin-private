@@ -73,7 +73,7 @@ export default defineComponent({
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
     const onSuccess = (res: any, file: any, fileList: any) => {
-      console.log(file, fileList, res)
+      console.log(1)
     }
     const onRemove = (file: any) => {
       const newValue = props.value.filter(
@@ -102,25 +102,34 @@ export default defineComponent({
     }
     // beforeRemove
     const httpRequest = (options: any) => {
-      const file = options.file
-      clientSendFile(client, props.fileTypeName, client.options.fileName, file)
-        .then((res: any) => {
-          console.log(res.res)
-          // const url = res.res.requestUrls[0].split('?')[0] // 地址一，后续可能会有改动
-          // TODO 图片上传地址
-          const url = `${IMG_URL}/${res.name}`
-          console.log(url, '图片上传后的地址')
-          emit('update:value', [
-            ...props.value,
-            {
-              url: url + '?' + Math.random(),
-              name: res.name
-            }
-          ])
-        })
-        .catch((err) => {
-          console.log(err, 'err')
-        })
+      return new Promise((resolve, reject) => {
+        const file = options.file
+        clientSendFile(
+          client,
+          props.fileTypeName,
+          client.options.fileName,
+          file
+        )
+          .then((res: any) => {
+            resolve(res)
+            console.log(res.res)
+            // const url = res.res.requestUrls[0].split('?')[0] // 地址一，后续可能会有改动
+            // TODO 图片上传地址
+            const url = `${IMG_URL}/${res.name}`
+            console.log(url, '图片上传后的地址')
+            emit('update:value', [
+              ...props.value,
+              {
+                url: url + '?' + Math.random(),
+                name: res.name
+              }
+            ])
+          })
+          .catch((err) => {
+            reject(err)
+            console.log(err, 'err')
+          })
+      })
     }
     return {
       dialogImageUrl,
@@ -137,6 +146,11 @@ export default defineComponent({
 })
 </script>
 
+<style>
+.el-upload-list__item.is-ready {
+  display: none;
+}
+</style>
 <style>
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
