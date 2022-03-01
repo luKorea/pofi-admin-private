@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 11:25:59
- * @Description: file content
+ * @LastEditTime: 2022-03-01 14:31:15
+ * @Description: 排序功能未完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
 <template>
-  <div class="condition">
+  <div class="base-head">
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
@@ -15,6 +15,7 @@
       pageName="heads"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
+      @drawBtnClick="handleDrawTable"
     >
       <template #slotState="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
@@ -105,8 +106,9 @@ import {
   useStoreName,
   useImageUpload
 } from './hooks/use-page-list'
-// import { useStore } from '@/store'
+import { useStore } from '@/store'
 import hyUpload from '@/base-ui/upload'
+import { errorTip, successTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'baseHeader',
@@ -151,13 +153,15 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       imgList.value = []
-      const imgName = item.url.split('/')
-      const img =
-        imgName[imgName.length - 2] + '/' + imgName[imgName.length - 1]
-      imgList.value.push({
-        name: img,
-        url: item.url
-      })
+      if (item.url && item.url !== '') {
+        const imgName = item.url.split('/')
+        const img =
+          imgName[imgName.length - 2] + '/' + imgName[imgName.length - 1]
+        imgList.value.push({
+          name: img,
+          url: item.url
+        })
+      }
       otherInfo.value = {
         areaIds: item.areaIds, // 用户如果没有修改这个选项。使用默认值
         id: item.id,
@@ -167,6 +171,21 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
+    const store = useStore()
+    const handleDrawTable = (data: any) => {
+      const idList = data.map((item: any) => item.id)
+      store
+        .dispatch('baseHeadModule/sortPageDataAction', {
+          pageName: 'heads',
+          sortData: {
+            idList: JSON.stringify(idList)
+          }
+        })
+        .then((res: any) => {
+          successTip(res)
+        })
+        .catch((err: any) => errorTip(err))
+    }
     return {
       storeTypeInfo,
       contentTableConfig,
@@ -182,7 +201,8 @@ export default defineComponent({
       areaIds,
       handleChangeCountry,
       imgLimit,
-      imgList
+      imgList,
+      handleDrawTable
     }
   }
 })

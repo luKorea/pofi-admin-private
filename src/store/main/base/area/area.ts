@@ -2,15 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 11:51:17
+ * @LastEditTime: 2022-03-01 14:34:37
  * @Description: file content
- * @FilePath: /pofi-admin/src/store/main/base/head/head.ts
+ * @FilePath: /pofi-admin/src/store/main/base/area/area.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IBaseHeadType } from './types'
+import { IBaseAreaType } from './types'
 
 import {
   getPageListData,
@@ -21,26 +21,26 @@ import {
 import { sortTableList } from '@/service/main/base/head'
 
 const apiList: any = {
-  heads: '/cms/head/'
+  areas: '/cms/area/'
 }
 const queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const baseHeadModule: Module<IBaseHeadType, IRootState> = {
+const baseAreaModule: Module<IBaseAreaType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      headsCount: 0,
-      headsList: []
+      areasCount: 0,
+      areasList: []
     }
   },
   mutations: {
-    changeHeadsList(state, headsList: any[]) {
-      state.headsList = headsList
+    changeAreasList(state, areasList: any[]) {
+      state.areasList = areasList
     },
-    changeHeadsCount(state, headsCount: number) {
-      state.headsCount = headsCount
+    changeAreasCount(state, areasCount: number) {
+      state.areasCount = areasCount
     }
   },
   getters: {
@@ -69,7 +69,11 @@ const baseHeadModule: Module<IBaseHeadType, IRootState> = {
       const id = payload.queryInfo.id
       const pageUrl =
         apiList[pageName] + cultureDifferentType('delete', pageName)
-      const data = await deletePageToQueryData(pageUrl, { id: id })
+      const data = await deletePageToQueryData(pageUrl, {
+        id: id,
+        name: payload.queryInfo.name,
+        iso: payload.queryInfo.iso
+      })
       if (data.result === 0) {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
@@ -135,4 +139,4 @@ const baseHeadModule: Module<IBaseHeadType, IRootState> = {
   }
 }
 
-export default baseHeadModule
+export default baseAreaModule

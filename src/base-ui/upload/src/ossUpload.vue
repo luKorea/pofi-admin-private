@@ -50,8 +50,8 @@ export default defineComponent({
   setup(props, { emit }) {
     let client: any = null
     onMounted(() => {
-      if (localCache.getCache('ossRes')) {
-        const res = localCache.getCache('ossRes')
+      if (localCache.getSessionCache('ossRes')) {
+        const res = localCache.getSessionCache('ossRes')
         client = new OSS({
           region: 'oss-cn-hongkong',
           stsToken: res.securityToken,
@@ -60,7 +60,7 @@ export default defineComponent({
         })
       } else {
         useOSSConfig().then((res) => {
-          localCache.setCache('ossRes', res)
+          localCache.setSessionCache('ossRes', res)
           client = new OSS({
             region: 'oss-cn-hongkong',
             stsToken: res.securityToken,
@@ -113,7 +113,7 @@ export default defineComponent({
           emit('update:value', [
             ...props.value,
             {
-              url: url,
+              url: url + '?' + Math.random(),
               name: res.name
             }
           ])

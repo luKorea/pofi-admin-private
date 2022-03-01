@@ -2,22 +2,23 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 11:40:41
+ * @LastEditTime: 2022-03-01 14:22:33
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/base/head/config/content.config.ts
+ * @FilePath: /pofi-admin/src/views/main/base/area/config/content.config.ts
  */
 
 import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
-  title: '默认头像',
+  title: '地区管理',
   propList: [
-    { prop: 'sort', label: '排序序号' },
     { prop: 'id', label: 'ID' },
-    { prop: 'url', label: '头像', slotName: 'slotImage' },
-    { prop: 'name', label: '昵称' },
-    { prop: 'url', label: '头像地址', slotName: 'slotUrl' },
+    { prop: 'name', label: '国家/地区' },
+    { prop: 'picture', label: '图片', slotName: 'slotImage' },
+    { prop: 'code', label: '标头' },
+    { prop: 'areaCode', label: '电话区号' },
+    { prop: 'iso', label: 'ISO标头' },
+    { prop: 'developed', label: '定价等级', slotName: 'slotLevel' },
     { prop: 'state', label: '状态', slotName: 'slotState' },
-    { prop: 'areaList', label: '地区' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
@@ -26,6 +27,6 @@ export const contentTableConfig: TableConfig = {
     add: true,
     update: true,
     delete: true,
-    drawTable: true
+    drawTable: false
   }
 }
