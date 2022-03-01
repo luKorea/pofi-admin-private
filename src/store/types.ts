@@ -1,14 +1,8 @@
-import { IPayType } from './main/finance/pay/types'
-import { ITradeTRecordType } from './main/finance/tradeRecord/types'
-import { IUserImeiType } from './main/device/imei/types'
-import { IRoleState } from './main/system/role/types'
-import { IPermissionState } from './main/system/permission/types'
-import { IUserState } from './main/system/user/types'
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 11:32:32
+ * @LastEditTime: 2022-03-01 09:41:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -16,6 +10,13 @@ import { ILoginState } from './login/types'
 import { IConditionType } from './main/device/condition/types'
 import { IBaseConfigType } from './main/base/config/types'
 import { IRouterState } from './main/system/router/types'
+import { IBaseHeadType } from './main/base/head/types'
+import { IPayType } from './main/finance/pay/types'
+import { ITradeTRecordType } from './main/finance/tradeRecord/types'
+import { IUserImeiType } from './main/device/imei/types'
+import { IRoleState } from './main/system/role/types'
+import { IPermissionState } from './main/system/permission/types'
+import { IUserState } from './main/system/user/types'
 export interface IRootState {
   name: string
   age: number
@@ -27,8 +28,9 @@ export interface IRootState {
 
 export interface IRootWithModule {
   login: ILoginState
-  // 配置管理
+  // 基础管理
   baseConfigModule: IBaseConfigType
+  baseHeadModule: IBaseHeadType
   // 帮助中心
   companionModule: IConditionType
   // 设备管理

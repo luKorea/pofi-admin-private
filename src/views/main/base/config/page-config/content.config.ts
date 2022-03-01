@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:37:21
+ * @LastEditTime: 2022-03-01 09:45:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/page-config/content.config.ts
  */

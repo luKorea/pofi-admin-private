@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 09:42:12
+ * @LastEditTime: 2022-03-01 10:20:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/request/config.ts
  */
@@ -25,6 +25,7 @@ let BASE_URL = ''
 const TIME_OUT = 10000
 const QINIU = 'http://up.qiniu.com'
 const OSSURL = 'http://f3.pofiart.com' // 图片视频上传地址
+const IMG_URL = 'https://f3.pofiart.com'
 
 if (process.env.NODE_ENV === 'development') {
   BASE_URL = '/api'
@@ -34,4 +35,4 @@ if (process.env.NODE_ENV === 'development') {
   BASE_URL = '/api'
 }
 
-export { BASE_URL, TIME_OUT, QINIU, OSSURL }
+export { BASE_URL, TIME_OUT, QINIU, OSSURL, IMG_URL }

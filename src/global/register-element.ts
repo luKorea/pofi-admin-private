@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 10:26:28
+ * @LastEditTime: 2022-03-01 10:09:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -62,6 +62,7 @@ import {
 } from 'element-plus'
 
 const components = [
+  ElLink,
   ElBadge,
   ElDescriptions,
   ElDescriptionsItem,

@@ -9,6 +9,7 @@
     :on-exceed="onExceed"
     :before-upload="onChange"
     :on-progress="onProgress"
+    :file-list="value"
     list-type="picture-card"
   >
     <el-icon><plus /></el-icon>
@@ -19,10 +20,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import OSS from 'ali-oss'
 import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
 import { errorTip, successTip, warnTip } from '@/utils/tip-info'
+import { IMG_URL } from '@/service/request/config'
+import localCache from '@/utils/cache'
 
 import { Plus } from '@element-plus/icons-vue'
 export default defineComponent({
@@ -46,17 +49,32 @@ export default defineComponent({
   emits: ['successClick', 'removeClick', 'update:value'],
   setup(props, { emit }) {
     let client: any = null
-    useOSSConfig().then((res) => {
-      client = new OSS({
-        region: 'oss-cn-hongkong',
-        stsToken: res.securityToken,
-        bucket: res.bucketName,
-        ...res
-      })
+    onMounted(() => {
+      if (localCache.getCache('ossRes')) {
+        const res = localCache.getCache('ossRes')
+        client = new OSS({
+          region: 'oss-cn-hongkong',
+          stsToken: res.securityToken,
+          bucket: res.bucketName,
+          ...res
+        })
+      } else {
+        useOSSConfig().then((res) => {
+          localCache.setCache('ossRes', res)
+          client = new OSS({
+            region: 'oss-cn-hongkong',
+            stsToken: res.securityToken,
+            bucket: res.bucketName,
+            ...res
+          })
+        })
+      }
     })
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
-    const onSuccess = () => successTip('上传成功')
+    const onSuccess = (res: any, file: any, fileList: any) => {
+      console.log(file, fileList, res)
+    }
     const onRemove = (file: any) => {
       const newValue = props.value.filter(
         (item: any) => item.name !== file.name
@@ -73,9 +91,7 @@ export default defineComponent({
       dialogVisible.value = true
     }
     const onChange = () => {
-      debugger
       if (props.value.length === props.limit) {
-        debugger
         warnTip('当前上传文件数量已经达到限制啦，请删除后重新上传')
         return
       }
@@ -90,7 +106,10 @@ export default defineComponent({
       clientSendFile(client, props.fileTypeName, client.options.fileName, file)
         .then((res: any) => {
           console.log(res.res)
-          const url = res.res.requestUrls[0].split('?')[0]
+          // const url = res.res.requestUrls[0].split('?')[0] // 地址一，后续可能会有改动
+          // TODO 图片上传地址
+          const url = `${IMG_URL}/${res.name}`
+          console.log(url, '图片上传后的地址')
           emit('update:value', [
             ...props.value,
             {
@@ -98,7 +117,6 @@ export default defineComponent({
               name: res.name
             }
           ])
-          // onSuccess()
         })
         .catch((err) => {
           console.log(err, 'err')

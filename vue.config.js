@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 10:37:51
+ * @LastEditTime: 2022-03-01 09:54:52
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -20,7 +20,7 @@ module.exports = {
         // http://152.136.185.210:5000
         // http://tcms.pofiart.com 测试服
         // https://pe-cms.pofiart.com 预发布服
-        target: 'https://tcms.pofiart.com',
+        target: 'https://pe-cms.pofiart.com',
         changeOrigin: true
       }
     }
