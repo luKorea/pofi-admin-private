@@ -1,8 +1,9 @@
+import { cultureDifferentType } from '@/utils/index'
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 14:52:06
+ * @LastEditTime: 2022-03-07 17:59:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/pay/pay.ts
  */
@@ -20,7 +21,7 @@ import {
 } from '@/service/common-api'
 
 const apiList: any = {
-  pay: '/cms/userPay/',
+  pays: '/cms/userPay/',
   log: '/cms/userPay/'
 }
 const queryInfo: any = {
@@ -31,18 +32,18 @@ const payModule: Module<IPayType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      payCount: 0,
-      payList: [],
+      paysCount: 0,
+      paysList: [],
       logCount: 0,
       logList: []
     }
   },
   mutations: {
-    changePayList(state, payList: any[]) {
-      state.payList = payList
+    changePaysList(state, paysList: any[]) {
+      state.paysList = paysList
     },
-    changePayCount(state, payCount: number) {
-      state.payCount = payCount
+    changePaysCount(state, paysCount: number) {
+      state.paysCount = paysCount
     },
     changeLogList(state, logList: any[]) {
       state.logList = logList
@@ -63,7 +64,7 @@ const payModule: Module<IPayType, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
       const pageUrl =
-        apiList[pageName] + (pageName === 'pay' ? 'getRecords' : 'log')
+        apiList[pageName] + (pageName === 'pays' ? 'getRecords' : 'log')
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
@@ -110,7 +111,8 @@ const payModule: Module<IPayType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'update'
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('update', pageName)
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据

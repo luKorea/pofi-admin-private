@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 09:53:57
+ * @LastEditTime: 2022-03-07 17:46:52
  * @Description: 增删改功能完成，缺少分页搜索功能
  * @FilePath: /pofi-admin/src/views/main/oa/user/user.vue
 -->
@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'

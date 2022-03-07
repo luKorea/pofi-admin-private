@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 09:45:02
+ * @LastEditTime: 2022-03-07 17:50:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -50,6 +50,7 @@ import { useStore } from 'vuex'
 import { successTip, errorTip } from '@/utils/tip-info'
 
 import HyForm from '@/base-ui/form'
+import md5 from 'md5'
 export default defineComponent({
   name: 'PageModal',
   components: {
@@ -105,6 +106,9 @@ export default defineComponent({
       const formRef = pageFormRef.value?.formRef
       formRef?.validate((valid: any) => {
         if (valid) {
+          if (formData.value.pwd) {
+            formData.value.pwd = md5(formData.value.pwd)
+          }
           if (Object.keys(props.defaultInfo).length) {
             console.log(
               formData.value,

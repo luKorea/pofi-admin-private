@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 16:59:19
+ * @LastEditTime: 2022-03-07 17:59:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -17,7 +17,7 @@
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
       :storeTypeInfo="storeTypeInfo"
-      pageName="pay"
+      pageName="pays"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
       @operationBtnClick="handleOperationClick"
@@ -38,7 +38,7 @@
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="pay"
+      pageName="pays"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"

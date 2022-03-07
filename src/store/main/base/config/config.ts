@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 15:04:04
+ * @LastEditTime: 2022-03-07 18:10:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/config/config.ts
  */
@@ -53,6 +53,7 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
+      payload.queryInfo.rid = payload.queryInfo.rid ? payload.queryInfo.rid : ''
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       const { rows, total } = pageResult.data as any
       const changePageName = firstToUpperCase(pageName)
