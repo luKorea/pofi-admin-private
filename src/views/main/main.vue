@@ -5,7 +5,10 @@
         <nav-menu :collapse="isCollapse" />
       </el-aside>
       <el-container class="page">
-        <el-header class="page-header">
+        <el-header
+          class="page-header"
+          :style="{ backgroundColor: navHeaderBgColor }"
+        >
           <nav-header @foldChange="handleFoldChange" />
         </el-header>
         <nav-tags></nav-tags>
@@ -35,10 +38,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import NavMenu from '@/components/nav-menu'
 import NavHeader from '@/components/nav-header'
 import NavTags from '@/components/nav-tags'
+import { handleChangeEnv } from '@/utils'
+import { useStore } from '@/store'
 
 export default defineComponent({
   components: {
@@ -51,10 +56,15 @@ export default defineComponent({
     const handleFoldChange = (isFold: boolean) => {
       isCollapse.value = isFold
     }
+    const store = useStore()
+    const navHeaderBgColor = computed(() => {
+      return handleChangeEnv(store.state.login.userInfo.env).color
+    })
 
     return {
       isCollapse,
-      handleFoldChange
+      handleFoldChange,
+      navHeaderBgColor
     }
   }
 })
@@ -107,7 +117,7 @@ export default defineComponent({
 
 .el-header {
   height: 48px !important;
-  background: linear-gradient(90deg, #a9c9ff, #ffbbec);
+  // background: linear-gradient(90deg, #a9c9ff, #ffbbec);
   color: #fff;
 }
 

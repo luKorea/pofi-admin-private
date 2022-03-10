@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 16:51:47
+ * @LastEditTime: 2022-03-10 17:26:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/nav-header.vue
 -->
@@ -29,7 +29,7 @@ import UserInfo from './user-info.vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router'
 import { pathMapBreadcrumbs } from '@/utils/map-menus'
-import { handleChangeEnvTitle } from '@/utils'
+import { handleChangeEnv } from '@/utils'
 
 export default defineComponent({
   components: {
@@ -47,7 +47,7 @@ export default defineComponent({
     // 面包屑的数据: [{name: , path: }]
     const store = useStore()
     const envName = computed(() => {
-      return handleChangeEnvTitle(store.state.login.userInfo.env)
+      return handleChangeEnv(store.state.login.userInfo.env).title
     })
     const breadcrumbs = computed(() => {
       const userMenus = store.state.login.userMenus

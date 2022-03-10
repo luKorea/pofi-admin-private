@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 16:50:19
+ * @LastEditTime: 2022-03-10 17:26:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -83,8 +83,9 @@ export function mapTimeToSearch(date: any) {
   }
 }
 // 处理当前系统环境
-export function handleChangeEnvTitle(env: number | string) {
+export function handleChangeEnv(env: number | string) {
   let title = 'Pofi Create 后台管理系统 · '
+  let color = '#F5D67D'
   //   2：dev 开发
   // 3：pe 预发布
   // 4：prod 正式
@@ -92,16 +93,23 @@ export function handleChangeEnvTitle(env: number | string) {
   switch (env) {
     case 2:
       title += '测试'
+      color = '#95A9F5'
       break
     case 3:
       title += '预发布'
+      color = '#F5D67D'
       break
     case 4:
       title += '正式'
+      color = '#F596AA'
       break
     case 5:
       title += '审核'
+      color = '#C0A2F5'
       break
   }
-  return title
+  return {
+    title: title,
+    color: color
+  }
 }
