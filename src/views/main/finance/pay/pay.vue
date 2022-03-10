@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-07 17:59:22
+ * @LastEditTime: 2022-03-10 14:06:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -94,6 +94,7 @@ import { ExcelService } from '@/utils/exportExcel'
 import { getItemData } from '@/service/main/finance/pay'
 
 import HyTable from '@/base-ui/table'
+import { mapTimeToSearch } from '@/utils'
 
 export default defineComponent({
   name: 'pay',
@@ -105,8 +106,8 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const beginDate = data.dateTime[0] ?? undefined
-      const endDate = data.dateTime[1] ?? undefined
+      const beginDate = mapTimeToSearch(data.dateTime).start
+      const endDate = mapTimeToSearch(data.dateTime).end
       handleQueryClick({
         ...data,
         beginDate,

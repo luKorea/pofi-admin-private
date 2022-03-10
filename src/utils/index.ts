@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 09:40:09
+ * @LastEditTime: 2022-03-10 14:04:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -73,4 +73,11 @@ export function timeNow() {
     '\t' +
     vWeek[vWeek_s]
   return time
+}
+
+export function mapTimeToSearch(date: any) {
+  return {
+    start: (date && date[0]) ?? undefined,
+    end: (date && date[1]) ?? undefined
+  }
 }

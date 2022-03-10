@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:04:57
+ * @LastEditTime: 2022-03-10 11:54:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/config/content.config.ts
  */
@@ -11,15 +11,21 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '资源数据统计',
   propList: [
-    { prop: 'onId', label: '订单号' },
-    { prop: 'nickId', label: 'POFI ID' },
-    { prop: 'code', label: '商品ID' },
-    { prop: 'nickName', label: '用户昵称' },
-    { prop: 'state', label: '支付状态', slotName: 'payState' },
-    { prop: 'way', label: '充值方式', slotName: 'payWay' },
-    { prop: 'cost', label: '金额', slotName: 'payMoney' },
-    { prop: 'attachment', label: '附件' },
-    { prop: 'createTime', label: '创建时间' },
+    { prop: 'id', label: 'ID' },
+    { prop: 'moId', label: '资源编号' },
+    { prop: 'nickId', label: '标准ID' },
+    { prop: 'moType', label: '资源类型', slotName: 'isMoType' },
+    { prop: 'pname', label: '模型名称' },
+    { prop: 'open', label: '使用条件', slotName: 'isOpen' },
+    { prop: 'state', label: '模型状态', slotName: 'isState' },
+    { prop: 'download', label: '下载量' },
+    { prop: 'comment', label: '评论' },
+    { prop: 'collect', label: '收藏' },
+    { prop: 'share', label: '分享' },
+    { prop: 'have', label: '拥有' },
+    { prop: 'buy', label: '购买' },
+    { prop: 'pv', label: '浏览量(PV)' },
+    { prop: 'uv', label: '访客数(UV)' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,

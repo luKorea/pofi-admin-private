@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:05:17
+ * @LastEditTime: 2022-03-10 14:05:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -42,7 +42,7 @@
     >
     </page-modal>
 
-    <page-dialog ref="pageDialogRef" :title="`操作日志 (Pofi ID: ${POFIID})`">
+    <page-dialog ref="pageDialogRef" title="下载量日志">
       <hy-table
         :listData="dataList"
         :listCount="dataCount"
@@ -57,8 +57,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-// import { Money } from '@element-plus/icons-vue'
-
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { operationTableConfig } from './config/operation.config'
@@ -72,10 +70,8 @@ import {
   useComputedPayType,
   useComputedPayWay
 } from './hooks/use-page-list'
-import { ExcelService } from '@/utils/exportExcel'
-import { getItemData } from '@/service/main/finance/pay'
-
 import HyTable from '@/base-ui/table'
+import { mapTimeToSearch } from '@/utils'
 
 export default defineComponent({
   name: 'resourceData',
@@ -87,65 +83,24 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const beginDate = data.dateTime[0] ?? undefined
-      const endDate = data.dateTime[1] ?? undefined
+      console.log(data, 'data')
+      const begin = mapTimeToSearch(data.dateTime).start
+      const end = mapTimeToSearch(data.dateTime).end
+      const onlineTimeBegin = mapTimeToSearch(data.lineTime).start
+      const onlineTimeEnd = mapTimeToSearch(data.lineTime).end
       handleQueryClick({
         ...data,
-        beginDate,
-        endDate
+        begin,
+        end,
+        onlineTimeBegin,
+        onlineTimeEnd
       })
-    }
-    const exportData = () => {
-      const result = ref<any>([])
-      const dataList = pageContentRef.value?.dataList
-      dataList.forEach((data: any) => {
-        result.value.push({
-          订单号: data.onId,
-          商品ID: data.code,
-          pofiID: data.nickId,
-          用户昵称: data.nickName,
-          支付状态: useComputedPayType(data.state),
-          充值方式: useComputedPayWay(data.way),
-          金额: `${data.cost ? data.cost / 100 : 0}P币`,
-          附件: data.attachment,
-          创建时间: data.createTime
-        })
-      })
-      const ExportExcel = new ExcelService()
-      ExportExcel.exportAsExcelFile(result.value, '用户钱包数据导出')
     }
     const otherInfo = ref<any>({})
-    const getItem = (item: any) => {
-      getItemData(item).then((res: any) => {
-        if (res.result === 0) {
-          otherInfo.value = {
-            id: res.data.id,
-            nickId: res.data.nickId
-          }
-        }
-      })
-    }
-    const edit = (item: any) => {
-      getItem({
-        nickId: item.nickId,
-        onId: item.onId
-      })
-      item.wayCopy = useComputedPayWay(item.way)
-      item.costCopy = `${item.cost ? item.cost / 100 : 0}P币`
-      item.create = item.createTime
-    }
-
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(undefined, edit)
+      usePageModal()
 
     const modalConfigRef = computed(() => {
-      modalConfig.formItems.map((item: any) => {
-        item.otherOptions = {}
-        item.otherOptions['disabled'] = false
-        if (item.field === 'remark' || item.field === 'state') {
-          item.otherOptions['disabled'] = false
-        } else item.otherOptions['disabled'] = true
-      })
       return modalConfig
     })
     // 模态框区域
@@ -153,9 +108,6 @@ export default defineComponent({
       pageDialogRef,
       pageOperationRef,
       handleOperationClick,
-      selectList,
-      optType,
-      POFIID,
       pageInfo,
       dataList,
       dataCount
@@ -176,14 +128,10 @@ export default defineComponent({
       defaultInfo,
       otherInfo,
       operationName,
-      exportData,
       handleOperationClick,
       pageDialogRef,
       pageOperationRef,
       operationTableConfig,
-      selectList,
-      optType,
-      POFIID,
       pageInfo,
       dataList,
       dataCount

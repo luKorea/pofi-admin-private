@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 11:08:54
+ * @LastEditTime: 2022-03-10 14:07:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -60,6 +60,7 @@ import { usePageModal } from '@/hooks/use-page-modal'
 
 import { useStoreName } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
+import { mapTimeToSearch } from '@/utils'
 
 export default defineComponent({
   name: 'tradeRecord',
@@ -70,8 +71,8 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const begin = data.dateTime[0] ?? ''
-      const end = data.dateTime[1] ?? ''
+      const begin = mapTimeToSearch(data.dateTime).start
+      const end = mapTimeToSearch(data.dateTime).end
       handleQueryClick({
         ...data,
         begin,
