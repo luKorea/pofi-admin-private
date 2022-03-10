@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 11:29:31
+ * @LastEditTime: 2022-03-10 11:42:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/App.vue
 -->
@@ -15,12 +15,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, watch, watchEffect } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { useExpirationTime } from '@/hooks/use-expiration-time'
 export default defineComponent({
   name: 'App',
   components: {
@@ -33,6 +34,10 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
+    if (route.path !== '/login' && route.path !== '/') {
+      useExpirationTime(router)
+    }
     watchEffect(() => {
       router.beforeEach((to, from, next) => {
         // 开启进度条

@@ -51,6 +51,7 @@ import { useStore } from '@/store'
 import { useRouter, useRoute } from 'vue-router'
 
 import { pathMapToMenu } from '@/utils/map-menus'
+import { useExpirationTime } from '@/hooks/use-expiration-time'
 
 // vuex - typescript  => pinia
 
@@ -65,7 +66,6 @@ export default defineComponent({
     // store
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
-
     // router
     const router = useRouter()
     const route = useRoute()
@@ -76,7 +76,7 @@ export default defineComponent({
     const defaultValue = ref(menu.id + '')
     // event handle
     const handleMenuItemClick = (subItem: any) => {
-      console.log(subItem, '路由参数')
+      useExpirationTime(router)
       router.push({
         path: subItem.url ?? '/not-found'
       })

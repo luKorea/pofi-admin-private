@@ -37,7 +37,6 @@ export function requestUserInfo() {
 
 export function requestUserMenusByRoleId() {
   return hyRequest.post<any>({
-    url: LoginAPI.UserMenus,
-    showLoading: false
+    url: LoginAPI.UserMenus
   })
 }

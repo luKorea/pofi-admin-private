@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:05:40
+ * @LastEditTime: 2022-03-10 10:03:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -18,6 +18,7 @@ import { IUserImeiType } from './main/device/imei/types'
 import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
+import { IResourceDataType } from './main/resource/data/types'
 export interface IRootState {
   name: string
   age: number
@@ -38,6 +39,8 @@ export interface IRootWithModule {
   // 设备管理
   userImeiModule: IUserImeiType
   conditionModule: IConditionType
+  // 资源库
+  resourceDataModule: IResourceDataType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState
