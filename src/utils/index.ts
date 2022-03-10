@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 14:04:22
+ * @LastEditTime: 2022-03-10 16:50:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -75,9 +75,33 @@ export function timeNow() {
   return time
 }
 
+// 处理高级检索时间格式
 export function mapTimeToSearch(date: any) {
   return {
     start: (date && date[0]) ?? undefined,
     end: (date && date[1]) ?? undefined
   }
+}
+// 处理当前系统环境
+export function handleChangeEnvTitle(env: number | string) {
+  let title = 'Pofi Create 后台管理系统 · '
+  //   2：dev 开发
+  // 3：pe 预发布
+  // 4：prod 正式
+  // 5：audit 审核
+  switch (env) {
+    case 2:
+      title += '测试'
+      break
+    case 3:
+      title += '预发布'
+      break
+    case 4:
+      title += '正式'
+      break
+    case 5:
+      title += '审核'
+      break
+  }
+  return title
 }
