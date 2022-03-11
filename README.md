@@ -113,3 +113,6 @@ bug
 1. upload图片上传闪动 / success
 2. oss获取token设定时间自动清除
 3. 后续将排序功能增加到page-content中
+
+<!-- 接口文档地址 -->
+http://47.243.49.122:38001/doc.html#/default/cms%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F/updateHeadUsingPOST
