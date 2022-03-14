@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 17:26:40
+ * @LastEditTime: 2022-03-14 15:46:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/nav-header.vue
 -->
@@ -49,6 +49,7 @@ export default defineComponent({
     const envName = computed(() => {
       return handleChangeEnv(store.state.login.userInfo.env).title
     })
+    document.title = envName.value
     const breadcrumbs = computed(() => {
       const userMenus = store.state.login.userMenus
       const route = useRoute()

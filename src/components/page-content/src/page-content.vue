@@ -200,7 +200,7 @@ export default defineComponent({
 
     // 1.双向绑定pageInfo
     const pageInfo = ref({ currentPage: 1, pageSize: 10 })
-    const backQueryInfo = ref({})
+    const backQueryInfo = ref<any>({})
     watch(pageInfo, () => {
       getPageData(backQueryInfo.value)
     })
