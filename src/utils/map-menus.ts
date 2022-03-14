@@ -20,6 +20,7 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
       if (menu.children && menu.children.length > 0) {
+        console.log(menu.children, 'menu.children')
         _recurseGetRoute(menu.children)
       } else {
         const route = allRoutes.find((route) => {

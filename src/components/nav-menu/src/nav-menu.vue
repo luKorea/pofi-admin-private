@@ -1,9 +1,5 @@
 <template>
   <div class="nav-menu">
-    <!--    <div class="logo">-->
-    <!--      <img class="img" src="~@/assets/img/logo.svg" alt="logo" />-->
-    <!--      <span v-if="!collapse" class="title">Pofi管理系统</span>-->
-    <!--    </div>-->
     <el-menu
       :default-active="defaultValue"
       class="el-menu-vertical"
@@ -12,35 +8,7 @@
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
     >
-      <template v-for="item in userMenus" :key="item.id">
-        <!-- 二级菜单 -->
-        <template v-if="item.children.length > 0">
-          <!-- 二级菜单的可以展开的标题 -->
-          <el-submenu :index="item.id + ''">
-            <template #title>
-              <i v-if="item.icon" :class="item.icon"></i>
-              <span>{{ item.title }}</span>
-            </template>
-            <!-- 遍历里面的item -->
-            <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item
-                :index="subitem.id + ''"
-                @click="handleMenuItemClick(subitem)"
-              >
-                <i v-if="subitem.icon" :class="subitem.icon"></i>
-                <span>{{ subitem.title }}</span>
-              </el-menu-item>
-            </template>
-          </el-submenu>
-        </template>
-        <!-- 一级菜单 -->
-        <template v-else-if="item.children.length === 0">
-          <el-menu-item :index="item.id + ''">
-            <i v-if="item.icon" :class="item.icon"></i>
-            <span>{{ item.title }}</span>
-          </el-menu-item>
-        </template>
-      </template>
+      <nav-menu-item :menuList="userMenus"></nav-menu-item>
     </el-menu>
   </div>
 </template>
@@ -48,14 +16,15 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import { pathMapToMenu } from '@/utils/map-menus'
-import { useExpirationTime } from '@/hooks/use-expiration-time'
-
-// vuex - typescript  => pinia
+import navMenuItem from './nav-menu-item.vue'
 
 export default defineComponent({
+  components: {
+    navMenuItem
+  },
   props: {
     collapse: {
       type: Boolean,
@@ -66,25 +35,16 @@ export default defineComponent({
     // store
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
-    // router
-    const router = useRouter()
+    // route
     const route = useRoute()
     const currentPath = route.path
 
     // data
     const menu = pathMapToMenu(userMenus.value, currentPath)
     const defaultValue = ref(menu.id + '')
-    // event handle
-    const handleMenuItemClick = (subItem: any) => {
-      useExpirationTime(router)
-      router.push({
-        path: subItem.url ?? '/not-found'
-      })
-    }
     return {
       userMenus,
-      defaultValue,
-      handleMenuItemClick
+      defaultValue
     }
   }
 })
