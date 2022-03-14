@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 17:28:04
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 14:46:56
+ * @LastEditTime: 2022-03-14 15:02:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-country/src/page-country.vue
 -->
@@ -12,7 +12,7 @@
       <el-card style="height: 600px; overflow: hidden; overflow-y: scroll">
         <div class="wrap">
           <template v-for="(item, index) in countryList" :key="item.id">
-            <el-tooltip :content="item.name" placement="right-start ">
+            <el-tooltip :content="item.name" placement="right-start">
               <div
                 class="item"
                 :class="index === currentIndex && 'active'"

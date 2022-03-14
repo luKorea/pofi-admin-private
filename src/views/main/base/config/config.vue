@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 10:24:42
+ * @LastEditTime: 2022-03-14 15:16:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -15,6 +15,7 @@
     ></page-country>
     <div style="width: 100%">
       <page-search
+        v-if="isAdmin"
         :searchFormConfig="searchConfigReset"
         @resetBtnClick="handleResetBtnClick"
         @queryBtnClick="handleQueryBtnClick"
@@ -83,7 +84,7 @@ export default defineComponent({
     const countryRef = ref()
     const [countryID, editorValue, otherInfo] = useOther()
     const [storeTypeInfo, operationName] = useStoreName()
-    const [countryList, groupList] = usePageList()
+    const [countryList, groupList, isAdmin] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
     const newClick = () => {
@@ -129,6 +130,7 @@ export default defineComponent({
     }
     // 表单
     const modalConfigRef = computed(() => {
+      // 超级管理员拥有分类分组选项，普通用户没有，后续增加
       const countryItem = modalConfig.formItems.find(
         (item: any) => item.field === 'areaIds'
       )
@@ -144,6 +146,7 @@ export default defineComponent({
       storeTypeInfo,
       countryList,
       groupList,
+      isAdmin,
       selectCountryClick,
       pageContentRef,
       searchConfigReset,
