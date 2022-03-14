@@ -24,10 +24,10 @@
               <keep-alive>
                 <component :is="Component"></component>
               </keep-alive>
-              <component
+              <!-- <component
                 :is="Component"
                 v-if="$route.meta.cache == 0"
-              ></component>
+              ></component> -->
             </router-view>
           </transition>
           <!-- </el-card> -->

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-21 11:30:41
+ * @LastEditTime: 2022-03-14 11:39:56
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/modal.config.ts
  */
@@ -16,7 +16,10 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '上级路由',
       placeholder: '请选择上级路由',
-      options: []
+      options: [],
+      otherOptions: {
+        filterable: true
+      }
     },
     {
       field: 'name',

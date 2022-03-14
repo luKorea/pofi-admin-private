@@ -24,7 +24,7 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         _recurseGetRoute(menu.children)
       } else {
         const route = allRoutes.find((route) => {
-          const component = menu.component.split('/')
+          const component = menu.component ? menu.component.split('/') : []
           if (menu.name === 'resource_index') {
             // 特殊路由处理，后续前端命名
             menu['url'] = '/' + 'resource' + '/' + component[0]
