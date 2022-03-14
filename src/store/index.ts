@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:02:37
+ * @LastEditTime: 2022-03-14 14:24:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -30,6 +30,7 @@ import payModule from './main/finance/pay/pay'
 import baseConfigModule from './main/base/config/config'
 import baseHeadModule from './main/base/head/head'
 import baseAreaModule from './main/base/area/area'
+import baseLanguageModule from './main/base/language/language'
 // 帮助中心
 import companionModule from './main/help/companion/companion'
 // import cache from '@/utils/cache'
@@ -142,6 +143,7 @@ const store = createStore<IRootState>({
     baseConfigModule,
     baseHeadModule,
     baseAreaModule,
+    baseLanguageModule,
     // 帮助中心
     companionModule
   }

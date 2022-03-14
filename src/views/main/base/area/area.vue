@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:47:10
+ * @LastEditTime: 2022-03-14 14:18:37
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/area/area.vue
 -->
@@ -77,7 +77,7 @@ import { useStoreName, useImageUpload } from './hooks/use-page-list'
 import hyUpload from '@/base-ui/upload'
 import { Picture as IconPicture } from '@element-plus/icons-vue'
 export default defineComponent({
-  name: 'baseHeader',
+  name: 'baseArea',
   components: {
     hyUpload,
     IconPicture

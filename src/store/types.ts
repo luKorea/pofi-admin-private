@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:03:03
+ * @LastEditTime: 2022-03-14 14:28:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -12,6 +12,7 @@ import { IBaseConfigType } from './main/base/config/types'
 import { IRouterState } from './main/system/router/types'
 import { IBaseHeadType } from './main/base/head/types'
 import { IBaseAreaType } from './main/base/area/types'
+import { IBaseLanguageType } from './main/base/language/types'
 import { IPayType } from './main/finance/pay/types'
 import { ITradeTRecordType } from './main/finance/tradeRecord/types'
 import { IUserImeiType } from './main/device/imei/types'
@@ -34,6 +35,7 @@ export interface IRootWithModule {
   baseConfigModule: IBaseConfigType
   baseHeadModule: IBaseHeadType
   baseAreaModule: IBaseAreaType
+  baseLanguageModule: IBaseLanguageType
   // 帮助中心
   companionModule: IConditionType
   // 设备管理
