@@ -68,6 +68,7 @@
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"
                   clearable
+                  filterable
                 >
                   <el-option
                     v-for="option in item.options"

@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 17:26:24
+ * @LastEditTime: 2022-03-14 14:10:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -112,4 +112,14 @@ export function handleChangeEnv(env: number | string) {
     title: title,
     color: color
   }
+}
+
+/**
+ * @desc 处理表格中返回的类型值
+ * @param selectValue
+ * @param list
+ * @returns
+ */
+export function mapSelectListTitle(selectValue: string | number, list: any[]) {
+  return list.find((item: any) => item.value === selectValue).title
 }

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:50:55
+ * @LastEditTime: 2022-03-14 12:13:40
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -12,7 +12,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
   // 1.配置方式一: CLI提供的属性
-  outputDir: './build',
+  outputDir: './dist',
   // publicPath: './',
   devServer: {
     proxy: {

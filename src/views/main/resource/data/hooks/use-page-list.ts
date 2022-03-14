@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 13:52:40
+ * @LastEditTime: 2022-03-14 14:00:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/hooks/use-page-list.ts
  */
@@ -11,6 +11,29 @@ import PageContent from '@/components/page-content'
 
 import { usePageDialog } from '@/hooks/use-page-dialog'
 import { useStore } from '@/store'
+import { searchFormConfig } from '../config/search.config'
+import {
+  resourceTypeList,
+  resourceConditionList,
+  resourceValueList
+} from '@/utils/select-list/map-resource-list'
+// 初始化高级检索值
+export function useMapSearchFormConfigData() {
+  const searchFormConfigData = computed(() => {
+    searchFormConfig.formItems.map((item: any) => {
+      if (item.field === 'moType') item.options = resourceTypeList
+      if (item.field === 'open') item.options = resourceConditionList
+      if (item.field === 'state') item.options = resourceValueList
+    })
+    return searchFormConfig
+  })
+  return [
+    searchFormConfigData,
+    resourceTypeList,
+    resourceConditionList,
+    resourceValueList
+  ]
+}
 
 export function useOperationData() {
   const pageInfo = ref({ currentPage: 1, pageSize: 10 })
@@ -47,45 +70,6 @@ export function useOperationData() {
     dataList,
     dataCount
   ]
-}
-
-export function useComputedPayType(state: number | string) {
-  switch (state) {
-    case 0:
-      return '等待支付'
-      break
-    case 1:
-      return '完成支付'
-      break
-    case 2:
-      return '取消支付'
-      break
-  }
-}
-export function useComputedPayWay(state: number | string) {
-  switch (state) {
-    case 0:
-      return '微信'
-      break
-    case 1:
-      return '支付宝'
-      break
-    case 2:
-      return 'QQ支付'
-      break
-    case 3:
-      return 'apple支付'
-      break
-    case 4:
-      return 'apple订阅'
-      break
-    case 5:
-      return 'google支付'
-      break
-    case 6:
-      return 'google订阅'
-      break
-  }
 }
 
 export function useStoreName() {

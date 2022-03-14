@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 11:54:58
+ * @LastEditTime: 2022-03-14 14:12:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/config/content.config.ts
  */
@@ -11,7 +11,7 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '资源数据统计',
   propList: [
-    { prop: 'id', label: 'ID' },
+    { prop: 'id', label: 'ID', width: '50' },
     { prop: 'moId', label: '资源编号' },
     { prop: 'nickId', label: '标准ID' },
     { prop: 'moType', label: '资源类型', slotName: 'isMoType' },

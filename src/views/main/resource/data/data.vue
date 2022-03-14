@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 14:05:00
+ * @LastEditTime: 2022-03-14 14:12:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
 <template>
   <div class="tradeRecord">
     <page-search
-      :searchFormConfig="searchFormConfig"
+      :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryBtnClick"
     />
@@ -22,11 +22,14 @@
       @editBtnClick="handleEditData"
       @operationBtnClick="handleOperationClick"
     >
-      <template #payState="scope">
-        <span>{{ useComputedPayType(scope.row.state) }}</span>
+      <template #isMoType="{ row }">
+        <span>{{ mapTitle(row.moType, resourceTypeList) }}</span>
       </template>
-      <template #payWay="scope">
-        <span>{{ useComputedPayWay(scope.row.way) }}</span>
+      <template #isOpen="{ row }">
+        <span>{{ mapTitle(row.open, resourceConditionList) }}</span>
+      </template>
+      <template #isState="{ row }">
+        <span>{{ mapTitle(row.state, resourceValueList) }}</span>
       </template>
       <template #payMoney="scope">
         <span>{{ scope.row.cost ? scope.row.cost / 100 : 0 }}P币</span>
@@ -57,7 +60,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { operationTableConfig } from './config/operation.config'
 import { modalConfig } from './config/modal.config'
@@ -67,11 +69,10 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useOperationData,
   useStoreName,
-  useComputedPayType,
-  useComputedPayWay
+  useMapSearchFormConfigData
 } from './hooks/use-page-list'
 import HyTable from '@/base-ui/table'
-import { mapTimeToSearch } from '@/utils'
+import { mapTimeToSearch, mapSelectListTitle } from '@/utils'
 
 export default defineComponent({
   name: 'resourceData',
@@ -82,6 +83,15 @@ export default defineComponent({
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const [
+      searchFormConfigData,
+      resourceTypeList,
+      resourceConditionList,
+      resourceValueList
+    ] = useMapSearchFormConfigData()
+    const mapTitle = (value: number, list: any[]) => {
+      return mapSelectListTitle(value, list)
+    }
     const handleQueryBtnClick = (data: any) => {
       console.log(data, 'data')
       const begin = mapTimeToSearch(data.dateTime).start
@@ -113,12 +123,14 @@ export default defineComponent({
       dataCount
     ] = useOperationData()
     return {
-      searchFormConfig,
+      searchFormConfigData,
+      resourceTypeList,
+      resourceConditionList,
+      resourceValueList,
+      mapTitle,
       handleResetClick,
       handleQueryBtnClick,
       storeTypeInfo,
-      useComputedPayType,
-      useComputedPayWay,
       contentTableConfig,
       pageContentRef,
       modalConfigRef,
