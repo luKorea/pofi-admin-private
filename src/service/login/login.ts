@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 17:41:14
+ * @LastEditTime: 2022-03-15 18:27:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
@@ -45,6 +45,7 @@ export function requestUserMenusByRoleId() {
 // 获取后管用户是否为超管
 export function checkUserIsAdmin() {
   return hyRequest.post<any>({
-    url: LoginAPI.isAdmin
+    url: LoginAPI.isAdmin,
+    showLoading: false
   })
 }

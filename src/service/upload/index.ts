@@ -4,6 +4,7 @@ import hyRequest from '../index'
 export const getOssToken = (paramData: any) => {
   return hyRequest.post<any>({
     url: '/cms/oss/file/getToken',
-    data: { ossType: paramData }
+    data: { ossType: paramData },
+    showLoading: false
   })
 }
