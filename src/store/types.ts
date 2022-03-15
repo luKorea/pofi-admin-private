@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 15:26:28
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 11:01:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -22,6 +22,7 @@ import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
 import { IResourceDataType } from './main/resource/data/types'
 import { IGoodsRechargeType } from './main/goods/recharge/types'
+import { IGoodsFunctionType } from './main/goods/function/types'
 export interface IRootState {
   name: string
   age: number
@@ -41,6 +42,7 @@ export interface IRootWithModule {
   baseFusingModule: IBaseFusingType
   // 商品中心
   goodsRechargeModule: IGoodsRechargeType
+  goodsFunctionModule: IGoodsFunctionType
   // 帮助中心
   companionModule: IConditionType
   // 设备管理
