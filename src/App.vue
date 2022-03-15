@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 11:42:50
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 09:22:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/App.vue
 -->
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, watchEffect } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'

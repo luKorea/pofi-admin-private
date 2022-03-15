@@ -21,6 +21,7 @@ import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
 import { IResourceDataType } from './main/resource/data/types'
+import { IGoodsRechargeType } from './main/goods/recharge/types'
 export interface IRootState {
   name: string
   age: number
@@ -38,6 +39,8 @@ export interface IRootWithModule {
   baseAreaModule: IBaseAreaType
   baseLanguageModule: IBaseLanguageType
   baseFusingModule: IBaseFusingType
+  // 商品中心
+  goodsRechargeModule: IGoodsRechargeType
   // 帮助中心
   companionModule: IConditionType
   // 设备管理

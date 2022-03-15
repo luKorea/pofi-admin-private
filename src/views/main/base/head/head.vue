@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 15:33:09
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 09:55:46
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
@@ -15,7 +15,6 @@
       pageName="heads"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-      @drawBtnClick="handleDrawTable"
     >
       <template #slotState="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
@@ -174,21 +173,6 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
-    const store = useStore()
-    const handleDrawTable = (data: any) => {
-      const idList = data.map((item: any) => item.id)
-      store
-        .dispatch('baseHeadModule/sortPageDataAction', {
-          pageName: 'heads',
-          sortData: {
-            idList: JSON.stringify(idList)
-          }
-        })
-        .then((res: any) => {
-          successTip(res)
-        })
-        .catch((err: any) => errorTip(err))
-    }
     return {
       storeTypeInfo,
       contentTableConfig,
@@ -204,8 +188,7 @@ export default defineComponent({
       areaIds,
       handleChangeCountry,
       imgLimit,
-      imgList,
-      handleDrawTable
+      imgList
     }
   }
 })

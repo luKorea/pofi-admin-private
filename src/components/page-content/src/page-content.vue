@@ -133,7 +133,7 @@ import { useStore } from '@/store'
 
 import HyTable from '@/base-ui/table'
 import { PermissionType } from '@/types/permission'
-import { infoTipBox } from '@/utils/tip-info'
+import { infoTipBox, successTip, errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'PageContent',
@@ -160,7 +160,8 @@ export default defineComponent({
         actionName: 'system/getPageListAction',
         actionListName: 'system/pageListData',
         actionCountName: 'system/pageListCount',
-        deleteAction: 'oaUserModule/deletePageDataAction'
+        deleteAction: 'system/deletePageDataAction',
+        sortAction: 'system/sortPageDataAction'
       })
     }
   },
@@ -259,9 +260,21 @@ export default defineComponent({
       })
       // emit('removeBtnClick', item)
     }
-    // TODO 处理用户拖动表格后更新数据
+    // TODO 处理用户拖动表格后更新数据, 后续更改为通过用户传递action处理
     const drawTable = (data: any) => {
-      emit('drawBtnClick', data)
+      // emit('drawBtnClick', data)
+      const idList = data.map((item: any) => item.id)
+      store
+        .dispatch(props.storeTypeInfo.sortAction, {
+          pageName: props.pageName,
+          sortData: {
+            idList: JSON.stringify(idList)
+          }
+        })
+        .then((res: any) => {
+          successTip(res)
+        })
+        .catch((err: any) => errorTip(err))
     }
     const handleExportClick = () => emit('exportBtnClick')
     const handleSelectAllClick = () => emit('selectAllBtnClick', userSelectData)

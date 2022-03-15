@@ -31,6 +31,16 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
+              <template v-if="item.type === 'textarea'">
+                <el-input
+                  clearable
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  type="textarea"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                />
+              </template>
               <template v-if="item.type === 'inputNumber'">
                 <el-input-number
                   :placeholder="item.placeholder"
