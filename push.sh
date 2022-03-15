@@ -6,7 +6,7 @@
  # @LastEditTime: 2022-03-08 15:24:58
  # @Description: file content
  # @FilePath: /h5-active-v2/push.sh
-### 
+###
 baseball=$(
   cd $(dirname $0) || exit
   pwd
@@ -16,3 +16,4 @@ git add .
 npm run commit
 git push origin
 git push pofi
+git push pofi-create

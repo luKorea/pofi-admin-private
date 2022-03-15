@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:29:12
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-14 13:56:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 17:28:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-properties.ts
  */
@@ -16,6 +16,9 @@ export default function registerProperties(app: App) {
     // 日期时间过滤器
     formatTime(value: string) {
       return formatUtcString(value)
+    },
+    formatMoney(value: number) {
+      return +value / 100
     }
   }
   console.log(APP, 'Vue全局配置')

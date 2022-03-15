@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 14:06:43
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 16:44:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -97,7 +97,7 @@ import HyTable from '@/base-ui/table'
 import { mapTimeToSearch } from '@/utils'
 
 export default defineComponent({
-  name: 'pay',
+  name: 'financePay',
   components: {
     // Money
     HyTable

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 14:07:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 16:44:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -63,7 +63,7 @@ import { ExcelService } from '@/utils/exportExcel'
 import { mapTimeToSearch } from '@/utils'
 
 export default defineComponent({
-  name: 'tradeRecord',
+  name: 'financeTradeRecord',
   components: {
     // Money
   },

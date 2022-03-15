@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 11:01:23
+ * @LastEditTime: 2022-03-15 16:53:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -16,6 +16,7 @@ import { IBaseLanguageType } from './main/base/language/types'
 import { IBaseFusingType } from './main/base/fusing/types'
 import { IPayType } from './main/finance/pay/types'
 import { ITradeTRecordType } from './main/finance/tradeRecord/types'
+import { IFinancePurseType } from './main/finance/purse/types'
 import { IUserImeiType } from './main/device/imei/types'
 import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
@@ -58,6 +59,7 @@ export interface IRootWithModule {
   // 财务管理
   tradeRecordModule: ITradeTRecordType
   payModule: IPayType
+  purseModule: IFinancePurseType
 }
 
 export type IStoreType = IRootState & IRootWithModule

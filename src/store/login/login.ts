@@ -2,8 +2,8 @@ import { getRouterSelectList } from '@/service/common'
 /*
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:57:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 17:43:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -13,7 +13,8 @@ import { errorTip } from '@/utils/tip-info'
 import {
   accountLoginRequest,
   requestUserInfo,
-  requestUserMenusByRoleId
+  requestUserMenusByRoleId,
+  checkUserIsAdmin
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
 import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/map-menus'
@@ -31,7 +32,8 @@ const loginModule: Module<any, any> = {
       userInfo: {},
       userMenus: [],
       permissions: [],
-      routerList: []
+      routerList: [],
+      isAdmin: false // 判断用户是否是超管
     }
   },
   getters: {},
@@ -55,6 +57,9 @@ const loginModule: Module<any, any> = {
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(userMenus)
       state.permissions = permissions
+    },
+    changeIsAdmin(state, isAdmin: boolean) {
+      state.isAdmin = isAdmin
     }
   },
   actions: {
@@ -86,7 +91,11 @@ const loginModule: Module<any, any> = {
           const { data } = await getRouterSelectList()
           commit('changeRouterList', data)
           localCache.setCache('routerList', data)
-          // 4.跳到首页
+          // 5. 校验用户是否是超级管理员，后续页面按钮，表单编辑权限分配
+          const { data: isAdmin } = await checkUserIsAdmin()
+          commit('changeIsAdmin', isAdmin)
+          localCache.setCache('isAdmin', isAdmin)
+          // 6.跳到首页
           router.push('/main')
         } else errorTip(userInfoResult.msg)
       } else {
@@ -111,6 +120,10 @@ const loginModule: Module<any, any> = {
       const routerList = localCache.getCache('routerList')
       if (routerList) {
         commit('changeRouterList', routerList)
+      }
+      const isAdmin = localCache.getCache('isAdmin')
+      if (isAdmin) {
+        commit('changeIsAdmin', isAdmin)
       }
     }
   }
