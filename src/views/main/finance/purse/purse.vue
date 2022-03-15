@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 18:05:10
+ * @LastEditTime: 2022-03-15 18:12:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -107,13 +107,10 @@ export default defineComponent({
       const dataList = pageContentRef.value?.dataList
       dataList.forEach((data: any) => {
         result.value.push({
-          订单号: data.onId,
-          商品ID: data.code,
           pofiID: data.nickId,
           用户昵称: data.nickName,
-          金额: `${data.cost ? data.cost / 100 : 0}P币`,
-          附件: data.attachment,
-          创建时间: data.createTime
+          P币余额: `${data.pb ? data.pb / 100 : 0}P币`,
+          等级: data.lv
         })
       })
       const ExportExcel = new ExcelService()
