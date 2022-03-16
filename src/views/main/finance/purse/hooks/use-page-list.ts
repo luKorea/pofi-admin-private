@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 11:24:50
+ * @LastEditTime: 2022-03-16 14:41:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/hooks/use-page-list.ts
  */
@@ -51,6 +51,11 @@ export function useVIPData() {
       }
     })
   }
+  watch(vipPageInfo, () =>
+    getData({
+      nickId: nickId.value
+    })
+  )
   const vipList = computed(() => {
     return store.getters['purseModule/pageListData']('vip')
   })
@@ -85,6 +90,12 @@ export function useOperationData() {
   const optType = ref<any>(-999)
   const POFIID = ref<any>()
   const UID = ref<any>()
+  watch(pageInfo, () =>
+    getData({
+      uid: UID.value,
+      optType: optType.value
+    })
+  )
   const pageOperationRef = ref<InstanceType<typeof PageContent>>()
   const [pageDialogRef, handleShowDialog] = usePageDialog()
   const handleOperationClick = (item: any) => {

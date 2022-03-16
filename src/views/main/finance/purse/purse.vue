@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 11:18:58
+ * @LastEditTime: 2022-03-16 14:44:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -80,6 +80,7 @@
       :dataList="vipList"
       :nickId="nickId"
       :uid="vipUseId"
+      :pageInfo="vipPageInfo"
       :operationTableConfig="vipTableConfig"
     ></vip-component>
   </div>

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 16:48:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-16 14:48:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/hooks/use-page-list.ts
  */
@@ -57,6 +57,12 @@ export function useOperationData() {
       })
     }
   )
+  watch(pageInfo, () => {
+    getData({
+      uid: Uid.value,
+      optType: optType.value
+    })
+  })
   const store = useStore()
   const getData = (queryInfo: any) => {
     store.dispatch('payModule/getPageListAction', {
