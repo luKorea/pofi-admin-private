@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 15:16:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-16 12:04:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -66,6 +66,7 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import { searchFormConfig } from './page-config/search.config'
 import { contentTableConfig } from './page-config/content.config'
 import { modalConfig } from './page-config/modal.config'
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'baseConfig',
@@ -81,10 +82,12 @@ export default defineComponent({
         trigger: 'blur'
       }
     ])
+    const store = useStore()
+    const isAdmin = computed(() => store.state.login.isAdmin)
     const countryRef = ref()
     const [countryID, editorValue, otherInfo] = useOther()
     const [storeTypeInfo, operationName] = useStoreName()
-    const [countryList, groupList, isAdmin] = usePageList()
+    const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
     const newClick = () => {
@@ -141,12 +144,12 @@ export default defineComponent({
       return modalConfig
     })
     return {
+      isAdmin,
       countryRef,
       editorRules,
       storeTypeInfo,
       countryList,
       groupList,
-      isAdmin,
       selectCountryClick,
       pageContentRef,
       searchConfigReset,

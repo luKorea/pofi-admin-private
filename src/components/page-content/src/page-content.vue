@@ -51,8 +51,6 @@
       </template>
       <!-- 操作插槽 -->
       <template #handler="scope">
-        <!-- 扩展其他操作 -->
-        <slot name="otherTableHandler" :row="scope"></slot>
         <el-button
           v-if="permissionList.isDistribution"
           size="mini"
@@ -110,6 +108,8 @@
           @click="handleDeleteClick(scope.row)"
           >删除</el-button
         >
+        <!-- 扩展其他操作 -->
+        <slot name="otherTableHandler" :row="scope.row"></slot>
       </template>
 
       <!-- 在page-content中动态插入剩余的插槽 -->

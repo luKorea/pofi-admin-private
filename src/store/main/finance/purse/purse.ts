@@ -3,7 +3,7 @@ import { cultureDifferentType } from '@/utils/index'
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:58:20
+ * @LastEditTime: 2022-03-16 11:44:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/pay/pay.ts
  */
@@ -22,9 +22,11 @@ import {
 
 const apiList: any = {
   purses: '/cms/userPurse/',
-  log: '/cms/userPurse/'
+  log: '/cms/userPurse/',
+  vip: '/cms/userPurse/',
+  vips: '/cms/vip/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -35,7 +37,9 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
       pursesCount: 0,
       pursesList: [],
       logCount: 0,
-      logList: []
+      logList: [],
+      vipCount: 0,
+      vipList: []
     }
   },
   mutations: {
@@ -50,6 +54,12 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
     },
     changeLogCount(state, logCount: number) {
       state.logCount = logCount
+    },
+    changeVipList(state, vipList: any[]) {
+      state.vipList = vipList
+    },
+    changeVipCount(state, vipCount: number) {
+      state.vipCount = vipCount
     }
   },
   getters: {
@@ -63,8 +73,19 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      const pageUrl =
-        apiList[pageName] + (pageName === 'purses' ? 'getRecords' : 'log')
+      let url = null
+      switch (pageName) {
+        case 'purses':
+          url = 'getRecords'
+          break
+        case 'log':
+          url = 'log'
+          break
+        case 'vip':
+          url = 'vipShow'
+          break
+      }
+      const pageUrl = apiList[pageName] + url
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
@@ -98,9 +119,15 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
           apiList[pageName] + cultureDifferentType('add', pageName)
         const data = await createPageData(pageUrl, newData)
         if (data.result === 0) {
+          if (pageName === 'vips') {
+            queryInfo = {
+              ...queryInfo,
+              nickId: sessionStorage.getItem('tempNickId')
+            }
+          }
           // 2.请求最新的数据
           dispatch('getPageListAction', {
-            pageName,
+            pageName: pageName === 'vips' ? 'vip' : pageName,
             queryInfo: queryInfo
           })
           resolve(data.msg)
@@ -114,12 +141,22 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
-        const data = await editPageData(pageUrl, editData)
+          apiList[pageName] +
+          cultureDifferentType(pageName === 'vips' ? 'add' : 'update', pageName)
+        const data = await editPageData(pageUrl, {
+          ...editData,
+          pb: pageName === 'purses' ? editData.pb * 100 : undefined
+        })
         if (data.result === 0) {
+          if (pageName === 'vips') {
+            queryInfo = {
+              ...queryInfo,
+              nickId: sessionStorage.getItem('tempNickId')
+            }
+          }
           // 2.请求最新的数据
           dispatch('getPageListAction', {
-            pageName,
+            pageName: pageName === 'vips' ? 'vip' : pageName,
             queryInfo: queryInfo
           })
           resolve(data.msg)

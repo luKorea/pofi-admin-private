@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:10
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 15:48:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-16 10:37:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-page-modal.ts
  */
@@ -28,5 +28,5 @@ export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
       pageModalRef.value.dialogVisible = true
     }
   }
-  return [pageModalRef, defaultInfo, handleNewData, handleEditData]
+  return [pageModalRef, defaultInfo, handleNewData, handleEditData] as const
 }

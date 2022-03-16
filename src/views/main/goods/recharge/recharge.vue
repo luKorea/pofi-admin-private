@@ -2,12 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:25:26
+ * @LastEditTime: 2022-03-16 09:25:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
-  <div class="tradeRecord">
+  <!-- TODO 暂时隐藏 -->
+  <div class="tradeRecord" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"

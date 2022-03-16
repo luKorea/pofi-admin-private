@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:48:37
+ * @LastEditTime: 2022-03-16 11:24:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/hooks/use-page-list.ts
  */
@@ -11,7 +11,56 @@ import PageContent from '@/components/page-content'
 
 import { usePageDialog } from '@/hooks/use-page-dialog'
 import { useStore } from '@/store'
+import { getUserTypeData } from '@/service/main/finance/purse'
 
+// 获取用户特殊标记
+export function useGetUserType() {
+  const userTypeList = ref<any>([])
+  getUserTypeData().then((res: any) => {
+    if (res.result === 0) {
+      userTypeList.value = res.data
+    }
+  })
+  return userTypeList
+}
+
+// 编辑VIP
+export function useVIPData() {
+  const vipPageInfo = ref({ currentPage: 1, pageSize: 10 })
+  const nickId = ref()
+  const vipUseId = ref<any>()
+  const handleVIPClick = (item: any, pageVip: any) => {
+    if (pageVip) {
+      pageVip.pageVipRef.dialogVisible = true
+    }
+    nickId.value = item.nickId
+    vipUseId.value = item.uid
+    sessionStorage.setItem('tempNickId', item.nickId)
+    getData({
+      nickId: item.nickId
+    })
+  }
+  const store = useStore()
+  const getData = (queryInfo: any) => {
+    store.dispatch('purseModule/getPageListAction', {
+      pageName: 'vip',
+      queryInfo: {
+        currentPage: vipPageInfo.value.currentPage,
+        pageSize: vipPageInfo.value.pageSize,
+        ...queryInfo
+      }
+    })
+  }
+  const vipList = computed(() => {
+    return store.getters['purseModule/pageListData']('vip')
+  })
+  const vipCount = computed(() => {
+    return store.getters['purseModule/pageListCount']('vip')
+  })
+  return [handleVIPClick, vipPageInfo, vipList, vipCount, nickId, vipUseId]
+}
+
+// 操作日志
 export function useOperationData() {
   // 模态框区域
   const selectList = ref<any>([
@@ -35,12 +84,12 @@ export function useOperationData() {
   const pageInfo = ref({ currentPage: 1, pageSize: 10 })
   const optType = ref<any>(-999)
   const POFIID = ref<any>()
-  const Uid = ref<any>()
+  const UID = ref<any>()
   const pageOperationRef = ref<InstanceType<typeof PageContent>>()
   const [pageDialogRef, handleShowDialog] = usePageDialog()
   const handleOperationClick = (item: any) => {
     POFIID.value = item.nickId
-    Uid.value = item.uid
+    UID.value = item.uid
     optType.value = -999
     handleShowDialog()
     getData({
@@ -52,7 +101,7 @@ export function useOperationData() {
     () => optType.value,
     () => {
       getData({
-        uid: Uid.value,
+        uid: UID.value,
         optType: optType.value
       })
     }
@@ -83,7 +132,8 @@ export function useOperationData() {
     POFIID,
     pageInfo,
     dataList,
-    dataCount
+    dataCount,
+    UID
   ]
 }
 

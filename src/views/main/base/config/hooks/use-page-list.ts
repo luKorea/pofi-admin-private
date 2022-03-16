@@ -1,15 +1,14 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 15:11:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-16 12:06:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
 import { ref, watch } from 'vue'
 import { getCountrySelectList, getBaseConfigGroupList } from '@/service/common'
-import { checkUserIsAdmin } from '@/service/main/base/config'
 
 export function usePageList() {
   const countryList = ref<any>([
@@ -18,15 +17,7 @@ export function usePageList() {
       id: -999
     }
   ])
-  // 判断用户是否是超级管理员，如果是展示高级检索
-  const isAdmin = ref<boolean>(false)
   const groupList = ref<any>([])
-  const checkUser = () => {
-    checkUserIsAdmin().then((res) => {
-      res.data ? (isAdmin.value = true) : (isAdmin.value = false)
-    })
-  }
-  checkUser()
   const getCountryList = () => {
     getCountrySelectList().then((res) => {
       if (res.state) {
@@ -43,7 +34,7 @@ export function usePageList() {
   }
   getCountryList()
   getGroupList()
-  return [countryList, groupList, isAdmin]
+  return [countryList, groupList]
 }
 
 export function useStoreName() {
