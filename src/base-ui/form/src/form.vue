@@ -112,7 +112,9 @@
 
               <template
                 v-else-if="
-                  item.type === 'datepicker' || item.type === 'datetimerange'
+                  item.type === 'datepicker' ||
+                  item.type === 'datetimerange' ||
+                  item.type === 'date'
                 "
               >
                 <el-date-picker

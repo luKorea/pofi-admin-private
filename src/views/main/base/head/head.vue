@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 09:55:46
+ * @LastEditTime: 2022-03-17 14:04:26
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
@@ -25,25 +25,7 @@
         }}</el-link>
       </template>
       <template #slotImage="scope">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="点击查看大图"
-          placement="top-start"
-        >
-          <el-image
-            :src="scope.row.url"
-            style="width: 40px; height: 40px"
-            fit="cover"
-            :preview-src-list="[scope.row.url]"
-          >
-            <template #error>
-              <div class="image-slot" style="font-size: 50px">
-                <el-icon><icon-picture /></el-icon>
-              </div>
-            </template>
-          </el-image>
-        </el-tooltip>
+        <page-image :img-src="scope.row.url"></page-image>
       </template>
     </page-content>
     <page-modal
@@ -105,17 +87,13 @@ import {
   useStoreName,
   useImageUpload
 } from './hooks/use-page-list'
-import { useStore } from '@/store'
 import hyUpload from '@/base-ui/upload'
-import { errorTip, successTip } from '@/utils/tip-info'
-
-import { Picture as IconPicture } from '@element-plus/icons-vue'
+import { mapImageToObject } from '../../../../utils/index'
 
 export default defineComponent({
   name: 'baseHeader',
   components: {
-    hyUpload,
-    IconPicture
+    hyUpload
   },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
@@ -141,6 +119,11 @@ export default defineComponent({
           ...otherInfo.value,
           url: imgList.value[0].url
         }
+      } else {
+        otherInfo.value = {
+          ...otherInfo.value,
+          url: undefined
+        }
       }
     })
     const handleChangeCountry = (item: any) => {
@@ -155,15 +138,7 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       imgList.value = []
-      if (item.url && item.url !== '') {
-        const imgName = item.url.split('/')
-        const img =
-          imgName[imgName.length - 2] + '/' + imgName[imgName.length - 1]
-        imgList.value.push({
-          name: img,
-          url: item.url
-        })
-      }
+      imgList.value.push(mapImageToObject(item.url))
       otherInfo.value = {
         areaIds: item.areaIds, // 用户如果没有修改这个选项。使用默认值
         id: item.id,

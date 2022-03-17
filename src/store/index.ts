@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:53:20
+ * @LastEditTime: 2022-03-17 09:55:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -18,9 +18,11 @@ import oaRouterModule from './main/system/router/router'
 import goodsRechargeModule from './main/goods/recharge/recharge'
 import goodsFunctionModule from './main/goods/function/function'
 
-// 设备管理
+// 用户中心 --- 设备管理
 import conditionModule from './main/device/condition/condition'
 import userImeiModule from './main/device/imei/imei'
+// 用户中心 --- 用户管理
+import userOperationModule from './main/userOperation/userOperation'
 
 // 资源库
 import resourceDataModule from './main/resource/data/data'
@@ -139,9 +141,11 @@ const store = createStore<IRootState>({
     // 商品中心
     goodsRechargeModule,
     goodsFunctionModule,
-    // 设备管理
+    // 用户中心---设备管理
     conditionModule,
     userImeiModule,
+    // 用户中心---用户管理
+    userOperationModule,
     // 资源库
     resourceDataModule,
     // 财务中心

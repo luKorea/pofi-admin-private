@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-18 18:21:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 10:54:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -25,25 +25,7 @@
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
       <template #image="scope">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="点击查看大图"
-          placement="top-start"
-        >
-          <el-image
-            :src="scope.row.bgUrl"
-            style="width: 40px; height: 40px"
-            fit="cover"
-            :preview-src-list="[scope.row.bgUrl]"
-          >
-            <template #error>
-              <div class="image-slot">
-                <el-icon><icon-picture /></el-icon>
-              </div>
-            </template>
-          </el-image>
-        </el-tooltip>
+        <page-image :img-src="scope.row.bgUrl"></page-image>
       </template>
       <template #video="scope">
         <el-tooltip

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:18:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 14:02:31
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/area/area.vue
 -->
@@ -20,25 +20,7 @@
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
       <template #slotImage="scope">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="点击查看大图"
-          placement="top-start"
-        >
-          <el-image
-            :src="scope.row.picture"
-            style="width: 40px; height: 40px"
-            fit="cover"
-            :preview-src-list="[scope.row.picture]"
-          >
-            <template #error>
-              <div class="image-slot" style="font-size: 50px">
-                <el-icon><icon-picture /></el-icon>
-              </div>
-            </template>
-          </el-image>
-        </el-tooltip>
+        <page-image :img-src="scope.row.picture"></page-image>
       </template>
     </page-content>
     <page-modal
@@ -75,12 +57,11 @@ import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName, useImageUpload } from './hooks/use-page-list'
 import hyUpload from '@/base-ui/upload'
-import { Picture as IconPicture } from '@element-plus/icons-vue'
+import { mapImageToObject } from '../../../../utils/index'
 export default defineComponent({
   name: 'baseArea',
   components: {
-    hyUpload,
-    IconPicture
+    hyUpload
   },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
@@ -106,15 +87,7 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       imgList.value = []
-      if (item.picture && item.picture !== '') {
-        const imgName = item.picture.split('/')
-        const img =
-          imgName[imgName.length - 2] + '/' + imgName[imgName.length - 1]
-        imgList.value.push({
-          name: img,
-          url: item.picture
-        })
-      }
+      imgList.value.push(mapImageToObject(item.picture))
       otherInfo.value = {
         id: item.id
       }

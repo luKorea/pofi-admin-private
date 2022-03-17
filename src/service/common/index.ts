@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 10:22:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 11:01:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -12,7 +12,19 @@ enum commonAPI {
   router = '/cms/router/getPlainRouter',
   group = '/cms/config/getGroup',
   routers = '/cms/router/routers',
-  role = '/cms/role/getRoles' // 获取系统角色列表
+  role = '/cms/role/getRoles', // 获取系统角色列表
+  reg = '/cms/userInfo/getRegList', // 获取用户注册来源
+  mark = '/cms/userInfo/getMarkList', // 获取用户特殊标记
+  job = '/cms/userInfo/getJobList', // 获取用户职业
+  draw = '/cms/userInfo/getDrawList' // 获取用户画风
+}
+
+// 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改
+export function getCommonSelectList(type: string) {
+  return hyRequest.post<any>({
+    url: (commonAPI as any)[type],
+    showLoading: false
+  })
 }
 
 // 获取所有地区数据

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:53:40
+ * @LastEditTime: 2022-03-17 09:56:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -18,12 +18,14 @@ import { IPayType } from './main/finance/pay/types'
 import { ITradeTRecordType } from './main/finance/tradeRecord/types'
 import { IFinancePurseType } from './main/finance/purse/types'
 import { IUserImeiType } from './main/device/imei/types'
+import { IUserOperationType } from './main/userOperation/types'
 import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
 import { IResourceDataType } from './main/resource/data/types'
 import { IGoodsRechargeType } from './main/goods/recharge/types'
 import { IGoodsFunctionType } from './main/goods/function/types'
+
 export interface IRootState {
   name: string
   age: number
@@ -49,6 +51,7 @@ export interface IRootWithModule {
   // 设备管理
   userImeiModule: IUserImeiType
   conditionModule: IConditionType
+  userOperationModule: IUserOperationType
   // 资源库
   resourceDataModule: IResourceDataType
   // 系统管理

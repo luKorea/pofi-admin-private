@@ -2,8 +2,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:10:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 13:59:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -77,9 +77,24 @@ export function timeNow() {
 
 // 处理高级检索时间格式
 export function mapTimeToSearch(date: any) {
+  let start = undefined
+  let end = undefined
+  if (date !== null && date[0]) {
+    if (date[0] === '') {
+      start = undefined
+    }
+    start = date[0]
+  }
+  if (date !== null && date[1]) {
+    if (date[1] === '') {
+      end = undefined
+    }
+    end = date[1]
+  }
+  console.log(start, end, '开始时间-结束时间')
   return {
-    start: (date && date[0]) ?? undefined,
-    end: (date && date[1]) ?? undefined
+    start,
+    end
   }
 }
 // 处理当前系统环境
@@ -122,4 +137,21 @@ export function handleChangeEnv(env: number | string) {
  */
 export function mapSelectListTitle(selectValue: string | number, list: any[]) {
   return list.find((item: any) => item.value === selectValue).title
+}
+
+// 处理默认值
+export function mapTypeState(type: any) {
+  return type && type !== '' ? type : -999
+}
+// 处理图片返回处理成对象
+export function mapImageToObject(url: string) {
+  if (url && url !== '') {
+    const imgSplit = url.split('/')
+    const imgName =
+      imgSplit[imgSplit.length - 2] + '/' + imgSplit[imgSplit.length - 1]
+    return {
+      name: imgName,
+      url: url
+    }
+  }
 }

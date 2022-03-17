@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 17:40:12
+ * @LastEditTime: 2022-03-17 09:52:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -44,6 +44,14 @@ export function editPageData(url: string, editData: any) {
   return hyRequest.post<any>({
     url: url,
     data: editData
+  })
+}
+// 获取单行数据
+export const getItemData = (url: string, data: any) => {
+  return hyRequest.post<any>({
+    url: url,
+    data: data,
+    showLoading: false
   })
 }
 
