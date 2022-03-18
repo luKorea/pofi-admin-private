@@ -8,6 +8,7 @@
       :label-width="labelWidth"
       label-position="top"
       :model="modelValue"
+      class="animate__animated animate__fadeIn"
     >
       <el-row :gutter="16">
         <template v-for="item in formItems" :key="item.label">

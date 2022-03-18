@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 17:37:18
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 09:28:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -30,6 +30,11 @@
       v-if="changeFormVisible"
       v-bind="searchFormConfig"
       v-model="formData"
+      :class="
+        !changeFormVisible
+          ? 'animate__animated animate__fadeOut'
+          : 'animate__animated animate__fadeIn'
+      "
     >
       <!-- <template #header>
         <span class="hg-flex">条件筛选</span>

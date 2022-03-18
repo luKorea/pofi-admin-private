@@ -19,6 +19,7 @@
         v-bind="childrenProps"
         empty-text="暂时没有其他数据"
         ref="tableRef"
+        class="animate__animated animate__fadeIn"
       >
         <el-table-column
           v-if="showSelectColumn"
