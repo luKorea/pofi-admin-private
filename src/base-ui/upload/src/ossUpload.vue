@@ -21,12 +21,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
-import OSS from 'ali-oss'
-import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
+import { useGetClient, clientSendFile } from '@/hooks/use-oss-config'
 import { errorTip, successTip, warnTip } from '@/utils/tip-info'
 import { IMG_URL } from '@/service/request/config'
-import localCache from '@/utils/cache'
-import { formatUtcString } from '@/utils/date-format'
 import { Plus } from '@element-plus/icons-vue'
 export default defineComponent({
   components: {
@@ -49,44 +46,7 @@ export default defineComponent({
   emits: ['successClick', 'removeClick', 'update:value'],
   setup(props, { emit }) {
     let client: any = null
-    onMounted(() => {
-      if (localCache.getSessionCache('ossRes')) {
-        const res = localCache.getSessionCache('ossRes')
-        const expirationDate = formatUtcString(res.expiration)
-        const nowDate = formatUtcString(new Date().toString())
-        console.log(nowDate, expirationDate)
-        if (expirationDate === nowDate) {
-          console.log('OSS过期')
-          localCache.clearSessionCache()
-          useOSSConfig().then((res) => {
-            localCache.setSessionCache('ossRes', res)
-            client = new OSS({
-              region: 'oss-cn-hongkong',
-              stsToken: res.securityToken,
-              bucket: res.bucketName,
-              ...res
-            })
-          })
-        } else {
-          client = new OSS({
-            region: 'oss-cn-hongkong',
-            stsToken: res.securityToken,
-            bucket: res.bucketName,
-            ...res
-          })
-        }
-      } else {
-        useOSSConfig().then((res) => {
-          localCache.setSessionCache('ossRes', res)
-          client = new OSS({
-            region: 'oss-cn-hongkong',
-            stsToken: res.securityToken,
-            bucket: res.bucketName,
-            ...res
-          })
-        })
-      }
-    })
+    onMounted(() => (client = useGetClient()))
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
     const onSuccess = (res: any, file: any, fileList: any) => {

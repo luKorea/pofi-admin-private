@@ -22,10 +22,7 @@ export interface EditorInfo {
   text: string
 }
 
-import { useOSSConfig, clientSendFile } from '@/hooks/use-oss-config'
-import OSS from 'ali-oss'
-import localCache from '@/utils/cache'
-import { formatUtcString } from '@/utils/date-format'
+import { clientSendFile, useGetClient } from '@/hooks/use-oss-config'
 export default defineComponent({
   components: {},
   props: {
@@ -65,43 +62,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     let client: any = null
-    onMounted(() => {
-      if (localCache.getSessionCache('ossRes')) {
-        const res = localCache.getSessionCache('ossRes')
-        const expirationDate = formatUtcString(res.expiration)
-        const nowDate = formatUtcString(new Date().toString())
-        if (expirationDate === nowDate) {
-          console.log('OSS过期')
-          localCache.clearSessionCache()
-          useOSSConfig().then((res) => {
-            localCache.setSessionCache('ossRes', res)
-            client = new OSS({
-              region: 'oss-cn-hongkong',
-              stsToken: res.securityToken,
-              bucket: res.bucketName,
-              ...res
-            })
-          })
-        } else {
-          client = new OSS({
-            region: 'oss-cn-hongkong',
-            stsToken: res.securityToken,
-            bucket: res.bucketName,
-            ...res
-          })
-        }
-      } else {
-        useOSSConfig().then((res) => {
-          localCache.setSessionCache('ossRes', res)
-          client = new OSS({
-            region: 'oss-cn-hongkong',
-            stsToken: res.securityToken,
-            bucket: res.bucketName,
-            ...res
-          })
-        })
-      }
-    })
+    onMounted(() => (client = useGetClient()))
     const editorRef = ref<HTMLDivElement | null>(null)
     const isInitContent = ref<boolean>(false)
     const content = reactive<EditorInfo>({
@@ -140,7 +101,7 @@ export default defineComponent({
       console.log(isFocus)
       if (!instance.value) return
       const editor: Editor = instance.value as Editor
-      if (!htmlStr) return
+      // if (!htmlStr) return
       isInitContent.value = true
       editor.txt.html(htmlStr)
     }
@@ -203,7 +164,7 @@ export default defineComponent({
         // emit('onChange', content.html, content.text)
       }
       // 配置触发 onchange 的时间频率，默认为 200ms
-      editor.config.onchangeTimeout = 500 // 修改为 500ms
+      editor.config.onchangeTimeout = 200 // 修改为 500ms
       // 配置菜单栏，删减菜单，调整顺序
       // editor.config.menus = [
       //   'head',

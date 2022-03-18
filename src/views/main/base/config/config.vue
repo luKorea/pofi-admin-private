@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 16:04:50
+ * @LastEditTime: 2022-03-18 16:22:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -109,6 +109,7 @@
           <div class="item-flex">
             <span class="item-title">内容</span>
             <hy-editor
+              :ref="languageId + 'editor'"
               v-model:value="languageItem.value"
               fileTypeName="base/"
             ></hy-editor>
