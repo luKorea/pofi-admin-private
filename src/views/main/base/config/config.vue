@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
 <template>
-  <div class="hg-flex">
+  <div class="hg-flex" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
