@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 09:52:38
+ * @LastEditTime: 2022-03-18 10:57:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -46,10 +46,15 @@ export function editPageData(url: string, editData: any) {
     data: editData
   })
 }
+
+enum getInfoUrl {
+  baseConfig = '/cms/config/get' // 基础配置
+}
+
 // 获取单行数据
 export const getItemData = (url: string, data: any) => {
   return hyRequest.post<any>({
-    url: url,
+    url: (getInfoUrl as any)[url],
     data: data,
     showLoading: false
   })

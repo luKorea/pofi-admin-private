@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 09:28:14
+ * @LastEditTime: 2022-03-18 09:37:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -115,7 +115,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .search-title {
   display: flex;
   justify-content: space-between;

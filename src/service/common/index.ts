@@ -2,16 +2,18 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 11:01:29
- * @Description: file content
+ * @LastEditTime: 2022-03-18 09:45:35
+ * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
 import hyRequest from '../index'
 enum commonAPI {
-  country = '/cms/area/getRecordsAll',
-  router = '/cms/router/getPlainRouter',
-  group = '/cms/config/getGroup',
-  routers = '/cms/router/routers',
+  country = '/cms/area/getRecordsAll', // 获取国家列表
+  router = '/cms/router/getPlainRouter', // 获取路由列表
+  group = '/cms/config/getGroup', // 获取分组 （超级管理员使用）
+  classification = '/cms/config/getType', // 获取分类 （超级管理员使用）
+  language = '/cms/language/getLanguage', // 获取多语言
+  routers = '/cms/router/routers', // 获取所有角色路由列表
   role = '/cms/role/getRoles', // 获取系统角色列表
   reg = '/cms/userInfo/getRegList', // 获取用户注册来源
   mark = '/cms/userInfo/getMarkList', // 获取用户特殊标记

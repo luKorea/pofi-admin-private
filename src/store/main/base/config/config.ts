@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:59:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 16:03:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/config/config.ts
  */
@@ -69,9 +69,9 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('delete', pageName)
-      const data = await deletePageToQueryData(pageUrl, { id: id })
+      const name = payload.queryInfo.name
+      const pageUrl = apiList[pageName] + 'delete'
+      const data = await deletePageToQueryData(pageUrl, { id: id, name: name })
       if (data.result === 0) {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
@@ -87,8 +87,7 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('add', pageName)
+        const pageUrl = apiList[pageName] + 'add'
         const data = await createPageData(pageUrl, newData)
         if (data.result === 0) {
           // 2.请求最新的数据
@@ -106,8 +105,7 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
+        const pageUrl = apiList[pageName] + 'update'
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据

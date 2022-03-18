@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-24 14:26:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 11:18:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/page-config/modal.config.ts
  */
@@ -25,16 +25,29 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'areaIds',
-      type: 'select',
-      label: '国家/地区',
-      placeholder: '请选择国家或者地区',
-      options: [],
-      otherOptions: {
-        multiple: true,
-        collapseTags: true
-      }
+      field: 'name',
+      type: 'input',
+      label: '变量名',
+      placeholder: '请输入变量名',
+      rules: [
+        {
+          required: true,
+          message: '请输入变量名',
+          trigger: 'blur'
+        }
+      ]
     },
+    // {
+    //   field: 'areaIds',
+    //   type: 'select',
+    //   label: '国家/地区',
+    //   placeholder: '请选择国家或者地区, 默认不选全部',
+    //   options: [],
+    //   otherOptions: {
+    //     multiple: true,
+    //     collapseTags: true
+    //   }
+    // },
     {
       field: 'show',
       type: 'select',
@@ -66,6 +79,22 @@ export const modalConfig: IForm = {
           value: 0
         }
       ]
+    },
+    {
+      field: 'group',
+      type: 'select',
+      label: '分组',
+      placeholder: '请选择分组',
+      options: [],
+      otherOptions: {}
+    },
+    {
+      field: 'type',
+      type: 'select',
+      label: '分类',
+      placeholder: '请选择分类',
+      options: [],
+      otherOptions: {}
     }
   ],
   colLayout: {

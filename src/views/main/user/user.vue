@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 16:01:59
+ * @LastEditTime: 2022-03-18 14:37:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
 <template>
-  <div class="tradeRecord" v-if="0">
+  <div class="userOperation" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -215,35 +215,27 @@ export default defineComponent({
     const [regList, markList, countryList, jobList, drawList] =
       useMapSelectValue()
     const searchFormConfigRef = computed(() => {
-      searchFormConfig.formItems.map((item: any) => {
-        if (item.field === 'srcType') {
-          const list = regList.value.map((i: any) => {
-            return {
-              title: i.dec,
-              value: i.type
-            }
-          })
-          item.options.push(...list)
-        }
-        if (item.field === 'markId') {
-          const list = markList.value.map((i: any) => {
-            return {
-              title: i.dec,
-              value: i.type
-            }
-          })
-          item.options.push(...list)
-        }
-        if (item.field === 'areaId') {
-          const list = countryList.value.map((i: any) => {
-            return {
-              title: i.name,
-              value: i.id
-            }
-          })
-          item.options.push(...list)
-        }
-      })
+      const srcTypeItem = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'srcType'
+      )
+      const areaIdItem = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'areaId'
+      )
+      const markIdItem = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'markId'
+      )
+      srcTypeItem!.options = regList.value.map((i: any) => ({
+        title: i.dec,
+        value: i.type
+      }))
+      markIdItem!.options = markList.value.map((i: any) => ({
+        title: i.dec,
+        value: i.type
+      }))
+      areaIdItem!.options = countryList.value.map((i: any) => ({
+        title: i.name,
+        value: i.id
+      }))
       return searchFormConfig
     })
     const [storeTypeInfo, operationName] = useStoreName()
@@ -298,35 +290,27 @@ export default defineComponent({
       usePageModal()
 
     const modalConfigRef = computed(() => {
-      modalConfig.formItems.map((item: any) => {
-        if (item.field === 'jobId') {
-          const list = jobList.value.map((i: any) => {
-            return {
-              title: i.name,
-              value: i.id
-            }
-          })
-          item.options.push(...list)
-        }
-        if (item.field === 'interest') {
-          const list = drawList.value.map((i: any) => {
-            return {
-              title: i.name,
-              value: i.name
-            }
-          })
-          item.options.push(...list)
-        }
-        if (item.field === 'mark') {
-          const list = markList.value.map((i: any) => {
-            return {
-              title: i.dec,
-              value: i.type
-            }
-          })
-          item.options.push(...list)
-        }
-      })
+      const jobItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'jobId'
+      )
+      const interestItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'interest'
+      )
+      const markItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'mark'
+      )
+      jobItem!.options = jobList.value.map((i: any) => ({
+        title: i.name,
+        value: i.id
+      }))
+      interestItem!.options = drawList.value.map((i: any) => ({
+        title: i.name,
+        value: i.name
+      }))
+      markItem!.options = markList.value.map((i: any) => ({
+        title: i.dec,
+        value: i.type
+      }))
       return modalConfig
     })
     // 模态框区域

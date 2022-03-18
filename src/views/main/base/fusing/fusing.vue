@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 09:27:21
+ * @LastEditTime: 2022-03-18 14:37:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/fusing/fusing.vue
 -->
@@ -14,7 +14,7 @@
       :countryList="countryList"
       @selectCountryItem="selectCountryClick"
     ></page-country>
-    <div style="width: 100%">
+    <div class="page-country-wrap">
       <page-content
         ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
