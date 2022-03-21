@@ -60,9 +60,9 @@ export function usePageLanguage(field: any) {
   getLanguageList()
   return [
     languageList,
-    languageIndex,
     languageId,
     resetLanguageList,
-    languageBtnList
+    languageBtnList,
+    languageIndex
   ]
 }

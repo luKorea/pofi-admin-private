@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
 <template>
-  <div class="hg-flex" v-if="0">
+  <div class="hg-flex" v-if="1">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -68,54 +68,41 @@
           </div>
         </el-col>
       </el-row>
-      <el-divider>多语言配置</el-divider>
-      <el-row :gutter="12">
-        <el-col :span="3">
-          <div class="item-flex">
-            <el-card>
-              <span class="item-title">多语言选择</span>
-              <div class="wrap">
-                <template
-                  v-for="item in languageBtnList"
-                  :key="item.languageId"
-                >
-                  <div
-                    class="item"
-                    :class="item.languageId === languageId && 'active'"
-                    @click="handleChangeLanguage(item.languageId)"
-                  >
-                    {{ item.name }}
-                  </div>
-                </template>
+      <page-language
+        :languageList="languageList"
+        :languageId="languageId"
+        :languageBtnList="languageBtnList"
+        @changeLanguage="handleChangeLanguage"
+      >
+        <template #formItem>
+          <el-col :span="21">
+            <div class="item-flex">
+              <span class="item-title">标题</span>
+              <el-input
+                v-model="languageItem.title"
+                placeholder="请输入标题"
+              ></el-input>
+            </div>
+            <div class="item-flex">
+              <span class="item-title">副标题</span>
+              <el-input
+                v-model="languageItem.subTitle"
+                placeholder="请输入副标题"
+              ></el-input>
+            </div>
+            <div class="item-flex">
+              <div class="item-title">
+                <span class="item-tip">*</span>
+                内容
               </div>
-            </el-card>
-          </div>
-        </el-col>
-        <el-col :span="21">
-          <div class="item-flex">
-            <span class="item-title">标题</span>
-            <el-input
-              v-model="languageItem.title"
-              placeholder="请输入标题"
-            ></el-input>
-          </div>
-          <div class="item-flex">
-            <span class="item-title">副标题</span>
-            <el-input
-              v-model="languageItem.subTitle"
-              placeholder="请输入副标题"
-            ></el-input>
-          </div>
-          <div class="item-flex">
-            <span class="item-title">内容</span>
-            <hy-editor
-              :ref="languageId + 'editor'"
-              v-model:value="languageItem.value"
-              fileTypeName="base/"
-            ></hy-editor>
-          </div>
-        </el-col>
-      </el-row>
+              <hy-editor
+                v-model:value="languageItem.value"
+                :fileTypeName="editorFileName"
+              ></hy-editor>
+            </div>
+          </el-col>
+        </template>
+      </page-language>
     </page-modal>
   </div>
 </template>
@@ -124,8 +111,6 @@
 import { computed, defineComponent, ref, watchEffect } from 'vue'
 
 import PageCountry from '@/components/page-country'
-import HyEditor from '@/base-ui/editor'
-
 import { usePageList, useStoreName, useOther } from './hooks/use-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
@@ -137,6 +122,7 @@ import { contentTableConfig } from './page-config/content.config'
 import { modalConfig } from './page-config/modal.config'
 import { useStore } from '@/store'
 import { getItemData } from '@/service/common-api'
+import HyEditor from '@/base-ui/editor'
 
 export default defineComponent({
   name: 'baseConfig',
@@ -152,22 +138,19 @@ export default defineComponent({
         trigger: 'blur'
       }
     ])
-    const [
-      languageList,
-      languageIndex,
-      languageId,
-      resetLanguageList,
-      languageBtnList
-    ] = usePageLanguage({
-      value: '',
-      title: '',
-      subTitle: ''
-    })
+    const [languageList, languageId, resetLanguageList, languageBtnList] =
+      usePageLanguage({
+        value: '',
+        title: '',
+        subTitle: ''
+      })
     const languageItem = computed(() => {
       return languageList.value.find(
         (item: any) => item.languageId === languageId.value
       )
     })
+    // 改变多语言
+    const handleChangeLanguage = (id: any) => (languageId.value = id)
     const store = useStore()
     const isAdmin = computed(() => store.state.login.isAdmin)
     const countryRef = ref()
@@ -209,12 +192,6 @@ export default defineComponent({
         areaIds: item.toString()
       }
     }
-    // 改变多语言
-    const handleChangeLanguage = (id: any) => {
-      console.log(id, '用户选中的值')
-      languageId.value = id
-    }
-
     const newClick = () => {
       areaIds.value = []
       resetLanguageList()
@@ -302,7 +279,6 @@ export default defineComponent({
     return {
       // 多语言编辑
       languageList,
-      languageIndex,
       languageId,
       languageItem,
       languageBtnList,
@@ -337,24 +313,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less" scoped>
-.wrap {
-  width: 120px;
-  display: flex;
-  flex-direction: column;
-  .item {
-    height: 40px;
-    line-height: 40px;
-    width: 100%;
-    cursor: pointer;
-  }
-  .item:hover {
-    color: #409eff;
-  }
-  .active {
-    background: #eaeaec;
-    border-radius: 4px;
-    color: #409eff;
-  }
-}
-</style>
+<style lang="less" scoped></style>

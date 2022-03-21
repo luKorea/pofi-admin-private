@@ -12,6 +12,7 @@ import PageSearch from '@/components/page-search'
 import PageModal from '@/components/page-modal'
 import PageDialog from '@/components/page-dialog'
 import PageCountry from '@/components/page-country'
+import PageLanguage from '@/components/page-language'
 import PageImage from '@/base-ui/image'
 
 const components: any[] = [
@@ -20,6 +21,7 @@ const components: any[] = [
   PageModal,
   PageDialog,
   PageCountry,
+  PageLanguage,
   PageImage
 ]
 
