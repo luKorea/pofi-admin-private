@@ -10,13 +10,15 @@
               </div>
             </div>
             <div class="handler">
-              <!-- <el-input
+              <el-input
+                v-if="showSearch"
                 size="mini"
                 v-model="search"
                 placeholder="请输入内容"
                 suffix-icon="el-icon-search"
                 style="margin-right: 10px"
-              ></el-input> -->
+                clearable
+              ></el-input>
               <slot name="otherHandler"></slot>
               <slot name="headerHandler"></slot>
             </div>
@@ -137,6 +139,10 @@ export default defineComponent({
     handleDraw: {
       type: Boolean,
       default: false
+    },
+    showSearch: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
@@ -144,28 +150,54 @@ export default defineComponent({
     const HyTableRef = ref()
     const tableRef = ref<InstanceType<typeof ElTable>>()
     const search = ref('')
-    const filterTableData = computed(() =>
-      props.listData.filter((data: any) => {
-        console.log(data)
-        return !search.value || handleTreeData(props.listData, search.value)
-      })
-    )
+    const expandRow = ref<any>([])
+    // 目前只做树形搜索
+    const filterTableData = computed(() => {
+      if (search.value !== '') {
+        setExpandRow(props.listData)
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        expandRow.value = expandRow.value.join(',').split(',')
+        return handleTreeData(props.listData, search.value)
+      } else {
+        return props.listData
+      }
+    })
     //  树形表格过滤
     const handleTreeData = (treeData: any, searchValue: any): any => {
-      const array: any[] = []
-      for (const item of treeData) {
-        if (item.children && item.children.length > 0) {
-          const findItem = handleTreeData(item.children, searchValue)
-          if (findItem) {
-            array?.push(item)
-            return findItem
+      if (!treeData || treeData.length === 0) {
+        return []
+      }
+      const array = []
+      for (let i = 0; i < treeData.length; i += 1) {
+        let match: any = false
+        for (let pro in treeData[i]) {
+          if (typeof treeData[i][pro] == 'string') {
+            match |= treeData[i][pro].includes(searchValue)
+            if (match) break
           }
-        } else if (item.name == searchValue) {
-          return item
+        }
+        if (
+          handleTreeData(treeData[i].children, searchValue).length > 0 ||
+          match
+        ) {
+          array.push({
+            ...treeData[i],
+            children: handleTreeData(treeData[i].children, searchValue)
+          })
         }
       }
-      console.log(array)
       return array
+    }
+    // 将过滤好的树形数据展开
+    const setExpandRow = (handleTreeData: any) => {
+      if (handleTreeData.length) {
+        for (let i of handleTreeData) {
+          expandRow.value.push(i.id)
+          if (i.children.length) {
+            setExpandRow(i.children)
+          }
+        }
+      }
     }
     onMounted(() => {
       if (props.handleDraw) {
@@ -193,6 +225,7 @@ export default defineComponent({
     const handleSizeChange = (pageSize: number) =>
       emit('update:page', { ...props.page, pageSize })
     return {
+      expandRow,
       HyTableRef,
       filterTableData,
       search,

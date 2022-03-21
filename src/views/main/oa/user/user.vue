@@ -10,11 +10,11 @@
   <div class="user">
     <!-- 测试 style module的使用 -->
     <!-- <span :class="$style.red">测试style样式</span> -->
-    <page-search
+    <!-- <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryClick"
-    />
+    /> -->
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"

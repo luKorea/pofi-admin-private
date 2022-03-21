@@ -10,6 +10,14 @@ import { errorTip } from '@/utils/tip-info'
 import { ref, computed } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
+import { getSelectTitle } from '@/service/main/resource/classify'
+export function useMapSelectTitle(id: any) {
+  const name = ref<string>('')
+  getSelectTitle(id).then((res) => {
+    console.log(res)
+  })
+  return [name]
+}
 
 export function useSetLanguage() {
   const [languageList, languageId, resetLanguageList, languageBtnList] =
@@ -26,10 +34,11 @@ export function useSetLanguage() {
   console.log(languageItem.value, 'la')
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
-    if (languageItem.value.name === '') {
-      errorTip('请确保多语言配置中带*号的字段已经填写')
-      return
-    } else languageId.value = id
+    languageId.value = id
+    // if (languageItem.value.name === '') {
+    //   errorTip('请确保多语言配置中带*号的字段已经填写')
+    //   return
+    // } else languageId.value = id
   }
 
   return [

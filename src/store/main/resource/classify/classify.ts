@@ -19,6 +19,7 @@ import {
   deletePageToQueryData
 } from '@/service/common-api'
 import { sortTableList } from '@/service/main/base/head'
+import { warnTip } from '../../../../utils/tip-info'
 
 const apiList: any = {
   classifys: '/cms/classify/'
@@ -69,19 +70,22 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
       const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
-      const data = await deletePageToQueryData(pageUrl, {
-        id: id,
-        name: payload.queryInfo.name,
-        iso: payload.queryInfo.iso
-      })
-      if (data.result === 0) {
-        // 3.重新请求最新的数据
-        dispatch('getPageListAction', {
-          pageName, // 这里的pageName，无需处理，在getPageListAction会处理
-          queryInfo: queryInfo
+      if (id === 1 || id === 2) {
+        warnTip('当前分类不能删除')
+        return
+      } else {
+        const data = await deletePageToQueryData(pageUrl, {
+          id: id
         })
-        successTip(data.msg)
-      } else errorTip(data.msg)
+        if (data.result === 0) {
+          // 3.重新请求最新的数据
+          dispatch('getPageListAction', {
+            pageName, // 这里的pageName，无需处理，在getPageListAction会处理
+            queryInfo: queryInfo
+          })
+          successTip(data.msg)
+        } else errorTip(data.msg)
+      }
     },
 
     createPageDataAction({ dispatch }, payload: any) {

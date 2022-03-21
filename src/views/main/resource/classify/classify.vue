@@ -2,13 +2,14 @@
   <div class="resource-classify">
     <!-- <page-search
       :searchFormConfig="searchFormConfigRef"
-      @resetBtnClick="handleResetClick"
-      @queryBtnClick="handleQueryClick"
+      @resetBtnClick="handleResetBtnClick"
+      @queryBtnClick="handleQueryBtnClick"
     /> -->
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
       :storeTypeInfo="storeTypeInfo"
+      :showSearch="true"
       pageName="classifys"
       @newBtnClick="handleNewData"
       @editBtnClick="editData"
@@ -91,12 +92,14 @@ import {
   useStoreName,
   usePageList,
   useSetLanguage,
-  useImageUpload
+  useImageUpload,
+  useMapSelectTitle
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
 import { mapImageToObject } from '@/utils/index'
-
+import { warnTip } from '@/utils/tip-info'
+import { useStore } from '@/store'
 export default defineComponent({
   name: 'resourceClassify',
   components: {
@@ -136,15 +139,6 @@ export default defineComponent({
       }
     })
     const searchFormConfigRef = computed(() => {
-      const typeItem = searchFormConfig.formItems.find((item: any) => {
-        return item.field === 'type'
-      })
-      typeItem!.options = keyTypeList.value.map((item: any) => {
-        return {
-          title: item.desc,
-          value: item.id
-        }
-      })
       return searchFormConfig
     })
     const modalConfigRef = computed(() => {
@@ -152,6 +146,7 @@ export default defineComponent({
     })
     const newData = (item: any) => {
       selectName.value = item.name
+      const [name] = useMapSelectTitle(item.id)
       imgList.value = []
       otherInfo.value = {
         parent: item.id
@@ -159,40 +154,47 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
-      getItemData('resourceClassify', {
-        id: item.id,
-        language: 1
-      }).then((res: any) => {
-        if (res.result === 0) {
-          imgList.value = []
-          if (res.data.url) {
-            imgList.value.push(mapImageToObject(res.data.url))
+      if (item.id === 1 || item.id === 2) {
+        warnTip('该功能暂时未开放')
+        return
+      } else {
+        getItemData('resourceClassify', {
+          id: item.id,
+          language: 1
+        }).then((res: any) => {
+          if (res.result === 0) {
+            imgList.value = []
+            if (res.data.url) {
+              imgList.value.push(mapImageToObject(res.data.url))
+            }
+            otherInfo.value = {
+              id: res.data.id
+            }
+            languageList.value = res?.data?.moldCategoryList
+            languageId.value = res?.data?.moldCategoryList[0].lid
+            handleEditData(res.data)
           }
-          otherInfo.value = {
-            id: res.data.id
-          }
-          languageList.value = res?.data?.moldCategoryList
-          languageId.value = res?.data?.moldCategoryList[0].lid
-          handleEditData(res.data)
-        }
-      })
-    }
-    const mapType = (type: any) => {
-      switch (type) {
-        case 1:
-          return '外貌类型'
-        case 2:
-          return '风格主题'
-        case 3:
-          return '场景应用'
-        case 4:
-          return '其他关联'
-        case 9:
-          return '隐藏标签'
+        })
       }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
+    const store = useStore()
+    const dataList = computed(
+      () => store.state.resourceClassifyModule.classifysList
+    )
+    const handleResetBtnClick = () => {
+      console.log(store)
+    }
+    const handleQueryBtnClick = (queryInfo: any) => {
+      const data: any[] = []
+      dataList.value.map((item: any) => {
+        if (item.name.indexOf(queryInfo.name)) {
+          console.log(item)
+        }
+      })
+      console.log(data)
+    }
     return {
       imgLimit,
       imgList,
@@ -204,9 +206,8 @@ export default defineComponent({
       languageBtnList,
       handleChangeLanguage,
       searchFormConfigRef,
-      mapType,
-      handleResetClick,
-      handleQueryClick,
+      handleResetBtnClick,
+      handleQueryBtnClick,
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,

@@ -1,11 +1,11 @@
 <template>
   <!-- 新增，删除完成 -->
   <div class="oa-router">
-    <page-search
+    <!-- <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryClick"
-    />
+    /> -->
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
@@ -14,6 +14,7 @@
       @editBtnClick="handleEditData"
       @selectAllBtnClick="test"
       :storeTypeInfo="storeTypeInfo"
+      :showSearch="true"
     >
       <template #isRouter="scope">
         <span>{{ scope.row.props ? '是' : '否' }}</span>

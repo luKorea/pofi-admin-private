@@ -11,6 +11,7 @@
       :handleDraw="permissionList.isDrawTable"
       ref="tableRef"
       :showHeader="showHeader"
+      :showSearch="showSearch"
     >
       <!-- 用户其他操作 -->
       <template #otherHandler>
@@ -153,6 +154,10 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
+    showSearch: {
+      type: Boolean,
+      default: false
+    },
     contentTableConfig: {
       type: Object,
       require: true
@@ -266,7 +271,6 @@ export default defineComponent({
           queryInfo: item
         })
       })
-      // emit('removeBtnClick', item)
     }
     // TODO 处理用户拖动表格后更新数据, 后续更改为通过用户传递action处理
     const drawTable = (data: any) => {

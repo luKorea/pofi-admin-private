@@ -17,15 +17,8 @@ export const searchFormConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '关键词',
-      placeholder: '请输入关键词'
-    },
-    {
-      field: 'type',
-      type: 'select',
-      label: '关键词类型',
-      placeholder: '请选择关键词类型',
-      options: []
+      label: '分类名称',
+      placeholder: '请输入分类名称'
     }
   ]
 }
