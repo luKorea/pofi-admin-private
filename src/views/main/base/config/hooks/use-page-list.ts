@@ -7,8 +7,9 @@
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { getCommonSelectList } from '@/service/common'
+import { usePageLanguage } from '@/hooks/use-page-language'
 
 export function usePageList() {
   // 国家地区
@@ -63,4 +64,29 @@ export function useOther() {
   const countryID = ref(-999)
   const otherInfo = ref({})
   return [countryID, otherInfo]
+}
+
+export function useSetLanguage() {
+  const [languageList, languageId, resetLanguageList, languageBtnList] =
+    usePageLanguage({
+      value: '',
+      title: '',
+      subTitle: ''
+    })
+  const languageItem = computed(() => {
+    return languageList.value.find(
+      (item: any) => item.languageId === languageId.value
+    )
+  })
+  // 改变多语言
+  const handleChangeLanguage = (id: any) => (languageId.value = id)
+
+  return [
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    languageItem,
+    handleChangeLanguage
+  ]
 }

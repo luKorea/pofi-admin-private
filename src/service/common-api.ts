@@ -48,7 +48,8 @@ export function editPageData(url: string, editData: any) {
 }
 
 enum getInfoUrl {
-  baseConfig = '/cms/config/get' // 基础配置
+  baseConfig = '/cms/config/get', // 基础配置
+  resourceKeyword = '/cms/keyword/getKeyword'
 }
 
 // 获取单行数据

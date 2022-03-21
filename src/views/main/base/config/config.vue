@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
 <template>
-  <div class="hg-flex" v-if="1">
+  <div class="hg-flex" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -111,11 +111,15 @@
 import { computed, defineComponent, ref, watchEffect } from 'vue'
 
 import PageCountry from '@/components/page-country'
-import { usePageList, useStoreName, useOther } from './hooks/use-page-list'
+import {
+  usePageList,
+  useStoreName,
+  useOther,
+  useSetLanguage
+} from './hooks/use-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
-import { usePageLanguage } from '@/hooks/use-page-language'
 
 import { searchFormConfig } from './page-config/search.config'
 import { contentTableConfig } from './page-config/content.config'
@@ -138,19 +142,14 @@ export default defineComponent({
         trigger: 'blur'
       }
     ])
-    const [languageList, languageId, resetLanguageList, languageBtnList] =
-      usePageLanguage({
-        value: '',
-        title: '',
-        subTitle: ''
-      })
-    const languageItem = computed(() => {
-      return languageList.value.find(
-        (item: any) => item.languageId === languageId.value
-      )
-    })
-    // 改变多语言
-    const handleChangeLanguage = (id: any) => (languageId.value = id)
+    const [
+      languageList,
+      languageId,
+      resetLanguageList,
+      languageBtnList,
+      languageItem,
+      handleChangeLanguage
+    ] = useSetLanguage()
     const store = useStore()
     const isAdmin = computed(() => store.state.login.isAdmin)
     const countryRef = ref()
@@ -204,8 +203,7 @@ export default defineComponent({
         if (res.result === 0) {
           otherInfo.value = {
             areaIds: res.data.areaIds, // 用户如果没有修改这个选项。使用默认值
-            id: res.data.id,
-            ...res.data
+            id: res.data.id
           }
           areaIds.value = res.data.areaIds
           languageList.value = res?.data?.sysConfigVoList

@@ -73,7 +73,7 @@ export default defineComponent({
       if (imgList.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
-          picture: imgList.value[0].url
+          picture: imgList.value[0].picture
         }
       } else {
         otherInfo.value = {
@@ -86,8 +86,11 @@ export default defineComponent({
       imgList.value = []
     }
     const editData = (item: any) => {
+      console.log(item, 'item')
       imgList.value = []
-      imgList.value.push(mapImageToObject(item.picture))
+      if (item.picture) {
+        imgList.value.push(mapImageToObject(item.picture))
+      }
       otherInfo.value = {
         id: item.id
       }

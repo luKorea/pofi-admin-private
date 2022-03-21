@@ -138,7 +138,9 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       imgList.value = []
-      imgList.value.push(mapImageToObject(item.url))
+      if (item.url) {
+        imgList.value.push(mapImageToObject(item.url))
+      }
       otherInfo.value = {
         areaIds: item.areaIds, // 用户如果没有修改这个选项。使用默认值
         id: item.id,

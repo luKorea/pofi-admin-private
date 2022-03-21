@@ -18,7 +18,8 @@ enum commonAPI {
   reg = '/cms/userInfo/getRegList', // 获取用户注册来源
   mark = '/cms/userInfo/getMarkList', // 获取用户特殊标记
   job = '/cms/userInfo/getJobList', // 获取用户职业
-  draw = '/cms/userInfo/getDrawList' // 获取用户画风
+  draw = '/cms/userInfo/getDrawList', // 获取用户画风
+  keywords = '/cms/keyword/getType' // 关键词类型
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改

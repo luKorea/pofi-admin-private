@@ -23,6 +23,7 @@ import { IRoleState } from './main/system/role/types'
 import { IPermissionState } from './main/system/permission/types'
 import { IUserState } from './main/system/user/types'
 import { IResourceDataType } from './main/resource/data/types'
+import { IResourceKeywordType } from './main/resource/keyword/types'
 import { IGoodsRechargeType } from './main/goods/recharge/types'
 import { IGoodsFunctionType } from './main/goods/function/types'
 
@@ -54,6 +55,7 @@ export interface IRootWithModule {
   userOperationModule: IUserOperationType
   // 资源库
   resourceDataModule: IResourceDataType
+  resourceKeywordModule: IResourceKeywordType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

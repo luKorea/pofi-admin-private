@@ -7,11 +7,11 @@
         <el-card>
           <span class="item-title">多语言选择</span>
           <div class="wrap">
-            <template v-for="item in languageBtnList" :key="item.languageId">
+            <template v-for="item in languageBtnList" :key="item.id">
               <div
                 class="item"
-                :class="item.languageId === languageId && 'active'"
-                @click="handleChangeLanguage(item.languageId)"
+                :class="item.id === languageId && 'active'"
+                @click="handleChangeLanguage(item.id)"
               >
                 {{ item.name }}
               </div>
