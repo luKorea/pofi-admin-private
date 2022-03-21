@@ -72,6 +72,14 @@
         >
           操作日志
         </el-button>
+        <el-button
+          v-if="permissionList.isRowAdd"
+          size="mini"
+          type="text"
+          @click="handleAddRowClick(scope.row)"
+        >
+          新增
+        </el-button>
         <!-- <el-divider
           direction="vertical"
           v-if="permissionList.isRowAdd"

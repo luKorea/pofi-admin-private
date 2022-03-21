@@ -22,9 +22,10 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import { useGetClient, clientSendFile } from '@/hooks/use-oss-config'
-import { errorTip, successTip, warnTip } from '@/utils/tip-info'
+import { errorTip, warnTip } from '@/utils/tip-info'
 import { IMG_URL } from '@/service/request/config'
 import { Plus } from '@element-plus/icons-vue'
+import { hideLoading, showLoading } from '../../../utils/index'
 export default defineComponent({
   components: {
     Plus
@@ -50,7 +51,7 @@ export default defineComponent({
     const dialogImageUrl = ref('')
     const dialogVisible = ref(false)
     const onSuccess = (res: any, file: any, fileList: any) => {
-      console.log(1)
+      console.log(res, file, fileList)
     }
     const onRemove = (file: any) => {
       const newValue = props.value.filter(
@@ -81,6 +82,7 @@ export default defineComponent({
     const httpRequest = (options: any) => {
       return new Promise((resolve, reject) => {
         const file = options.file
+        showLoading()
         clientSendFile(
           client,
           props.fileTypeName,
@@ -106,6 +108,7 @@ export default defineComponent({
             reject(err)
             console.log(err, 'err')
           })
+          .finally(() => hideLoading())
       })
     }
     return {

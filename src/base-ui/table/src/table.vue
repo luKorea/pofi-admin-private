@@ -4,8 +4,19 @@
       <template #header v-if="showHeader">
         <div class="header">
           <slot name="header">
-            <div class="title">{{ title }}</div>
+            <div class="flex-title">
+              <div class="title">
+                {{ title }}
+              </div>
+            </div>
             <div class="handler">
+              <!-- <el-input
+                size="mini"
+                v-model="search"
+                placeholder="请输入内容"
+                suffix-icon="el-icon-search"
+                style="margin-right: 10px"
+              ></el-input> -->
               <slot name="otherHandler"></slot>
               <slot name="headerHandler"></slot>
             </div>
@@ -13,7 +24,7 @@
         </div>
       </template>
       <el-table
-        :data="listData"
+        :data="filterTableData"
         style="width: 100%"
         @selection-change="handleSelectionChange"
         v-bind="childrenProps"
@@ -37,7 +48,7 @@
         <template v-for="propItem in propList" :key="propItem.prop">
           <el-table-column
             v-bind="propItem"
-            align="center"
+            :align="propItem.align ? propItem.align : 'center'"
             show-overflow-tooltip
           >
             <template #default="scope">
@@ -68,7 +79,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
 import SortTable from 'sortablejs'
 import { ElTable } from 'element-plus'
 
@@ -132,6 +143,30 @@ export default defineComponent({
   setup(props, { emit }) {
     const HyTableRef = ref()
     const tableRef = ref<InstanceType<typeof ElTable>>()
+    const search = ref('')
+    const filterTableData = computed(() =>
+      props.listData.filter((data: any) => {
+        console.log(data)
+        return !search.value || handleTreeData(props.listData, search.value)
+      })
+    )
+    //  树形表格过滤
+    const handleTreeData = (treeData: any, searchValue: any): any => {
+      const array: any[] = []
+      for (const item of treeData) {
+        if (item.children && item.children.length > 0) {
+          const findItem = handleTreeData(item.children, searchValue)
+          if (findItem) {
+            array?.push(item)
+            return findItem
+          }
+        } else if (item.name == searchValue) {
+          return item
+        }
+      }
+      console.log(array)
+      return array
+    }
     onMounted(() => {
       if (props.handleDraw) {
         handleSortTable()
@@ -159,6 +194,8 @@ export default defineComponent({
       emit('update:page', { ...props.page, pageSize })
     return {
       HyTableRef,
+      filterTableData,
+      search,
       handleSelectionChange,
       handleCurrentChange,
       handleSizeChange,
@@ -168,33 +205,4 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="less">
-.hy-table {
-  margin-top: 10px;
-}
-.header {
-  display: flex;
-  // height: 45px;
-  // padding: 0 5px;
-  justify-content: space-between;
-  align-items: center;
-
-  .title {
-    font-size: 14px;
-    // font-weight: 700;
-    color: rgb(182, 176, 176);
-  }
-
-  .handler {
-    align-items: center;
-  }
-}
-
-.footer {
-  margin-top: 15px;
-
-  .el-pagination {
-    text-align: right;
-  }
-}
-</style>
+<style scoped lang="less"></style>

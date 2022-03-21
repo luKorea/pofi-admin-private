@@ -19,6 +19,9 @@
       <template #slotState="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
+      <template #slotLevel="scope">
+        {{ scope.row.developed === 1 ? '发展国家' : '发展中国家' }}
+      </template>
       <template #slotImage="scope">
         <page-image :img-src="scope.row.picture"></page-image>
       </template>
@@ -57,7 +60,7 @@ import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName, useImageUpload } from './hooks/use-page-list'
 import hyUpload from '@/base-ui/upload'
-import { mapImageToObject } from '../../../../utils/index'
+import { mapImageToObject } from '@/utils/index'
 export default defineComponent({
   name: 'baseArea',
   components: {

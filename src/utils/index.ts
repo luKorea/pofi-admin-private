@@ -8,6 +8,22 @@
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
 import type { App, Plugin } from 'vue'
+import { ElLoading } from 'element-plus'
+import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
+let loading: ILoadingInstance
+
+export function showLoading() {
+  loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    spinner: 'el-icon-loading',
+    background: 'rgba(250, 250, 250, 1)'
+  })
+}
+export function hideLoading() {
+  loading?.close()
+}
+
 export const withInstall = <T>(component: T, alias?: string) => {
   const comp = component as any
   comp.install = (app: App) => {

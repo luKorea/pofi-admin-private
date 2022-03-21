@@ -26,7 +26,7 @@ enum commonAPI {
 export function getCommonSelectList(type: string) {
   return hyRequest.post<any>({
     url: (commonAPI as any)[type],
-    showLoading: false
+    showLoading: true
   })
 }
 

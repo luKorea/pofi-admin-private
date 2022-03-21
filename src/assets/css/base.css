@@ -152,3 +152,25 @@ a {
   margin-left: 160px;
   box-sizing: border-box;
 }
+.hy-table {
+  margin-top: 10px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header .flex-title .title {
+  font-size: 14px;
+  color: #b6b0b0;
+}
+.header .handler {
+  align-items: center;
+  display: flex;
+}
+.footer {
+  margin-top: 15px;
+}
+.footer .el-pagination {
+  text-align: right;
+}

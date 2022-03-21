@@ -14,12 +14,13 @@ type CallbackFn = (item?: any) => void
 export function usePageModal(newCb?: CallbackFn, editCb?: CallbackFn) {
   const pageModalRef = ref<InstanceType<typeof PageModal>>()
   const defaultInfo = ref({})
-  const handleNewData = () => {
+  const handleNewData = (item: any) => {
+    // TODO 修改新增函数执行顺序
+    newCb && newCb(item)
     defaultInfo.value = {}
     if (pageModalRef.value) {
       pageModalRef.value.dialogVisible = true
     }
-    newCb && newCb()
   }
   const handleEditData = (item: any) => {
     editCb && editCb(item)

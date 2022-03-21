@@ -49,7 +49,8 @@ export function editPageData(url: string, editData: any) {
 
 enum getInfoUrl {
   baseConfig = '/cms/config/get', // 基础配置
-  resourceKeyword = '/cms/keyword/getKeyword'
+  resourceKeyword = '/cms/keyword/getKeyword', // 关键词
+  resourceClassify = '/cms/classify/getClassify' // 分类管理
 }
 
 // 获取单行数据
