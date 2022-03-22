@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:37:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 17:27:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -20,6 +20,7 @@ import {
 } from '@/service/common-api'
 import { sortTableList } from '@/service/main/base/head'
 import { warnTip } from '../../../../utils/tip-info'
+import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   classifys: '/cms/classify/'
@@ -98,17 +99,20 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('add', pageName)
-        const data = await createPageData(pageUrl, newData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
-          })
-          resolve(data.msg)
-        } else reject(data.msg)
+        const validData = JSON.parse(newData.moldCategoryJson)[0]
+        if (mapObjectIsNull(['name'], validData)) {
+          const pageUrl =
+            apiList[pageName] + cultureDifferentType('add', pageName)
+          const data = await createPageData(pageUrl, newData)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
       })
     },
 
@@ -117,17 +121,20 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
-        const data = await editPageData(pageUrl, editData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
-          })
-          resolve(data.msg)
-        } else reject(data.msg)
+        const validData = JSON.parse(editData.moldCategoryJson)[0]
+        if (mapObjectIsNull(['name'], validData)) {
+          const pageUrl =
+            apiList[pageName] + cultureDifferentType('update', pageName)
+          const data = await createPageData(pageUrl, editData)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {

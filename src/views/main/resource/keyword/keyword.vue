@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:45:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 17:16:18
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/language/language.vue
 -->
@@ -51,6 +51,20 @@
                 placeholder="请输入多语言关键词"
                 required
               ></el-input>
+              <!-- <el-form :model="languageItem">
+                <el-form-item
+                  prop="name"
+                  :rules="[
+                    {
+                      required: true,
+                      message: '请输入内部编码',
+                      trigger: 'blur'
+                    }
+                  ]"
+                >
+
+                </el-form-item>
+              </el-form> -->
             </div>
             <div class="item-flex">
               <span class="item-title">描述</span>
