@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:53:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 16:56:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/area/config/modal.config.ts
  */
@@ -42,6 +42,9 @@ export const modalConfig: IForm = {
       type: 'input',
       label: '电话区号',
       placeholder: '请输入电话区号',
+      otherOptions: {
+        type: 'number'
+      },
       rules: [
         {
           required: true,
@@ -67,6 +70,13 @@ export const modalConfig: IForm = {
       field: 'developed',
       type: 'select',
       label: '定价等级',
+      rules: [
+        {
+          required: true,
+          message: '请选择定价等级',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           title: '发展国家',

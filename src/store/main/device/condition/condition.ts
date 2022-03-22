@@ -22,7 +22,7 @@ import {
 const apiList: any = {
   limit: '/cms/userImei/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -52,9 +52,10 @@ const conditionModule: Module<IConditionType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

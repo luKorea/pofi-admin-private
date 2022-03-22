@@ -14,7 +14,7 @@ import {
 const apiList: any = {
   router: '/cms/router/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -44,6 +44,7 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       // TODO 这个action会在用户操作增删改后调用它，在这些操作中，
       //  传递过来的pageName无需做任何处理，例如: user，就按user返回就行，这里会做一层处理
       // 1.获取pageUrl
@@ -54,7 +55,7 @@ const oaRouterModule: Module<IRouterState, IRootState> = {
         pageUrl = apiList[pageName] + 'routers'
       }
       // 2.对页面发送请求
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       // 3.将数据存储到state中
       if (pageResult.result === 0) {
         const { data, totalCount = 0 } = pageResult as any

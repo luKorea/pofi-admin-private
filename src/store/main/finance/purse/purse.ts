@@ -72,6 +72,7 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       let url = null
       switch (pageName) {
@@ -86,7 +87,7 @@ const purseModule: Module<IFinancePurseType, IRootState> = {
           break
       }
       const pageUrl = apiList[pageName] + url
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 11:04:01
+ * @LastEditTime: 2022-03-22 16:57:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
@@ -78,20 +78,27 @@ export const modalConfig: IForm = {
       placeholder: '请输入P币余额',
       label: 'P币余额',
       otherOptions: {
-        disabled: false
+        disabled: false,
+        type: 'number'
       }
     },
     {
       field: 'score',
       type: 'input',
       placeholder: '请输入积分',
-      label: '积分'
+      label: '积分',
+      otherOptions: {
+        type: 'number'
+      }
     },
     {
       field: 'lv',
       type: 'input',
       placeholder: '请输入等级',
-      label: '等级'
+      label: '等级',
+      otherOptions: {
+        type: 'number'
+      }
     },
     {
       field: 'remark',

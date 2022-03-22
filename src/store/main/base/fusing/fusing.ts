@@ -22,7 +22,7 @@ import { successTip, errorTip } from '@/utils/tip-info'
 const apiList: any = {
   fusings: '/cms/fusing/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -52,11 +52,12 @@ const baseFusingModule: Module<IBaseFusingType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
-        ...payload.queryInfo,
-        rid: payload.queryInfo.rid ?? -999
+        ...queryInfo,
+        rid: queryInfo.rid ?? -999
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

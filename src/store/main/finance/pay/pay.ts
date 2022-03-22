@@ -24,7 +24,7 @@ const apiList: any = {
   pays: '/cms/userPay/',
   log: '/cms/userPay/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -50,6 +50,9 @@ const payModule: Module<IPayType, IRootState> = {
     },
     changeLogCount(state, logCount: number) {
       state.logCount = logCount
+    },
+    changeQueryInfo(state, queryInfo: any) {
+      state.queryInfo = queryInfo
     }
   },
   getters: {
@@ -62,10 +65,11 @@ const payModule: Module<IPayType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl =
         apiList[pageName] + (pageName === 'pays' ? 'getRecords' : 'log')
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)

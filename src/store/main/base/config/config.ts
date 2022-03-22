@@ -22,7 +22,7 @@ import { successTip, errorTip } from '@/utils/tip-info'
 const apiList: any = {
   records: '/cms/config/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -52,12 +52,13 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
-        ...payload.queryInfo,
-        rid: payload.queryInfo.rid ?? -999,
-        group: payload.queryInfo.group ?? ''
+        ...queryInfo,
+        rid: queryInfo.rid ?? -999,
+        group: queryInfo.group ?? ''
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

@@ -122,12 +122,8 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const begin = mapTimeToSearch(data.dateTime).start
-      const end = mapTimeToSearch(data.dateTime).end
       handleQueryClick({
-        ...data,
-        begin,
-        end
+        ...data
       })
     }
     const exportData = () => {

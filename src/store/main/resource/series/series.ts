@@ -24,7 +24,7 @@ import { warnTip } from '@/utils/tip-info'
 const apiList: any = {
   series: '/cms/series/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -54,9 +54,10 @@ const resourceSeriesModule: Module<IResourceSeriesType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
         const { data, total = 0 } = pageResult.data as any

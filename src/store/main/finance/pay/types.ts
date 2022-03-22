@@ -11,4 +11,5 @@ export interface IPayType {
   paysCount: number
   logList: any[]
   logCount: number
+  queryInfo?: any
 }

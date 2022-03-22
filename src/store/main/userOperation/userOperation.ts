@@ -24,7 +24,7 @@ const apiList: any = {
   userOperations: '/cms/userInfo/',
   log: '/cms/userInfo/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -62,21 +62,22 @@ const userOperationModule: Module<IUserOperationType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl =
         apiList[pageName] +
         (pageName === 'userOperations' ? 'getRecords' : 'log')
-      const queryInfo = {
-        ...payload.queryInfo,
-        srcType: mapTypeState(payload.queryInfo.srcType),
-        isReal: mapTypeState(payload.queryInfo.isReal),
-        status: mapTypeState(payload.queryInfo.status),
-        markId: mapTypeState(payload.queryInfo.markId),
-        areaId: mapTypeState(payload.queryInfo.areaId)
+      const backQueryInfo = {
+        ...queryInfo,
+        srcType: mapTypeState(queryInfo.srcType),
+        isReal: mapTypeState(queryInfo.isReal),
+        status: mapTypeState(queryInfo.status),
+        markId: mapTypeState(queryInfo.markId),
+        areaId: mapTypeState(queryInfo.areaId)
       }
       const pageResult = await getPageListData(
         pageUrl,
-        pageName === 'userOperations' ? queryInfo : payload.queryInfo
+        pageName === 'userOperations' ? backQueryInfo : queryInfo
       )
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

@@ -24,7 +24,7 @@ const apiList: any = {
   heads: '/cms/head/',
   sort: '/cms/head/updateSort'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -54,9 +54,10 @@ const baseHeadModule: Module<IBaseHeadType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

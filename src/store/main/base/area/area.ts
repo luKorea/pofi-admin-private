@@ -23,7 +23,7 @@ import { sortTableList } from '@/service/main/base/head'
 const apiList: any = {
   areas: '/cms/area/'
 }
-const queryInfo: any = {
+let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
@@ -53,9 +53,10 @@ const baseAreaModule: Module<IBaseAreaType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      queryInfo = payload.queryInfo
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
-      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
+      const pageResult = await getPageListData(pageUrl, queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
