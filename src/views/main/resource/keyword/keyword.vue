@@ -83,6 +83,7 @@ import {
   useSetLanguage
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
+import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'resourceKeywords',
   setup() {
@@ -144,7 +145,7 @@ export default defineComponent({
           languageList.value = res?.data?.moldKeywordList
           languageId.value = res?.data?.moldKeywordList[0].lid
           handleEditData(res.data)
-        }
+        } else errorTip(res.msg)
       })
     }
     const mapType = (type: any) => {

@@ -27,6 +27,7 @@ import { IResourceKeywordType } from './main/resource/keyword/types'
 import { IGoodsRechargeType } from './main/goods/recharge/types'
 import { IGoodsFunctionType } from './main/goods/function/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
+import { IResourceSeriesType } from './main/resource/series/types'
 
 export interface IRootState {
   name: string
@@ -58,6 +59,7 @@ export interface IRootWithModule {
   resourceDataModule: IResourceDataType
   resourceKeywordModule: IResourceKeywordType
   resourceClassifyModule: IResourceClassifyType
+  resourceSeriesModule: IResourceSeriesType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

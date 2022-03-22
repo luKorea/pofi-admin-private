@@ -47,18 +47,21 @@ export function editPageData(url: string, editData: any) {
   })
 }
 
-enum getInfoUrl {
+enum getItemUrl {
   baseConfig = '/cms/config/get', // 基础配置
   resourceKeyword = '/cms/keyword/getKeyword', // 关键词
-  resourceClassify = '/cms/classify/getClassify' // 分类管理
+  resourceClassify = '/cms/classify/getClassify', // 分类管理
+  payItem = '/cms/userPay/getPay', // 订单管理
+  purseItem = '/cms/userPurse/getPurse', // 用户钱包
+  userItem = '/cms/userInfo/show' // 用户操作记录
 }
 
 // 获取单行数据
 export const getItemData = (url: string, data: any) => {
   return hyRequest.post<any>({
-    url: (getInfoUrl as any)[url],
+    url: (getItemUrl as any)[url],
     data: data,
-    showLoading: false
+    showLoading: true
   })
 }
 

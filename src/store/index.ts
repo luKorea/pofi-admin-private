@@ -28,6 +28,7 @@ import userOperationModule from './main/userOperation/userOperation'
 import resourceDataModule from './main/resource/data/data'
 import resourceKeywordModule from './main/resource/keyword/keyword'
 import resourceClassifyModule from './main/resource/classify/classify'
+import resourceSeriesModule from './main/resource/series/series'
 
 // 财务中心
 import tradeRecordModule from './main/finance/tradeRecord/tradeRecord'
@@ -152,6 +153,7 @@ const store = createStore<IRootState>({
     resourceDataModule,
     resourceKeywordModule,
     resourceClassifyModule,
+    resourceSeriesModule,
     // 财务中心
     tradeRecordModule,
     payModule,

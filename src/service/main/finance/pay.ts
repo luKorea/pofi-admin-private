@@ -13,6 +13,6 @@ export const getItemData = (data: any) => {
   return hyRequest.post<any>({
     url: '/cms/userPay/getPay',
     data: data,
-    showLoading: false
+    showLoading: true
   })
 }

@@ -14,9 +14,6 @@
       @newBtnClick="handleNewData"
       @editBtnClick="editData"
     >
-      <template #isType="{ row }">
-        <span>{{ mapType(row.type) }}</span>
-      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -98,7 +95,7 @@ import {
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
 import { mapImageToObject } from '@/utils/index'
-import { warnTip } from '@/utils/tip-info'
+import { warnTip, errorTip } from '@/utils/tip-info'
 import { useStore } from '@/store'
 export default defineComponent({
   name: 'resourceClassify',
@@ -146,7 +143,8 @@ export default defineComponent({
     })
     const newData = (item: any) => {
       selectName.value = item.name
-      const [name] = useMapSelectTitle(item.id)
+      item.selectName = item.name
+      // const [name] = useMapSelectTitle(item.id)
       imgList.value = []
       otherInfo.value = {
         parent: item.id
@@ -154,8 +152,8 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
-      if (item.id === 1 || item.id === 2) {
-        warnTip('该功能暂时未开放')
+      if (item.parent === 0) {
+        warnTip('当前分类暂不支持编辑')
         return
       } else {
         getItemData('resourceClassify', {
@@ -170,10 +168,11 @@ export default defineComponent({
             otherInfo.value = {
               id: res.data.id
             }
+            item.selectName = res.data.name
             languageList.value = res?.data?.moldCategoryList
             languageId.value = res?.data?.moldCategoryList[0].lid
             handleEditData(res.data)
-          }
+          } else errorTip(res.msg)
         })
       }
     }

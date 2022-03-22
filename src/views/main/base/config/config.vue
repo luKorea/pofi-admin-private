@@ -127,6 +127,7 @@ import { modalConfig } from './page-config/modal.config'
 import { useStore } from '@/store'
 import { getItemData } from '@/service/common-api'
 import HyEditor from '@/base-ui/editor'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'baseConfig',
@@ -209,7 +210,7 @@ export default defineComponent({
           languageList.value = res?.data?.sysConfigVoList
           languageId.value = res?.data?.sysConfigVoList[0].languageId
           handleEditData(res.data)
-        }
+        } else errorTip(res.msg)
       })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

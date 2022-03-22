@@ -10,7 +10,7 @@ import { errorTip, successTip } from '@/utils/tip-info'
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IResourceClassifyType } from './types'
+import { IResourceSeriesType } from './types'
 
 import {
   getPageListData,
@@ -19,29 +19,29 @@ import {
   deletePageToQueryData
 } from '@/service/common-api'
 import { sortTableList } from '@/service/main/base/head'
-import { warnTip } from '../../../../utils/tip-info'
+import { warnTip } from '@/utils/tip-info'
 
 const apiList: any = {
-  classifys: '/cms/classify/'
+  series: '/cms/series/'
 }
 const queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
+const resourceSeriesModule: Module<IResourceSeriesType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      classifysCount: 0,
-      classifysList: []
+      seriesCount: 0,
+      seriesList: []
     }
   },
   mutations: {
-    changeClassifysList(state, classifysList: any[]) {
-      state.classifysList = classifysList
+    changeSeriesList(state, seriesList: any[]) {
+      state.seriesList = seriesList
     },
-    changeClassifysCount(state, classifysCount: number) {
-      state.classifysCount = classifysCount
+    changeSeriesCount(state, seriesCount: number) {
+      state.seriesCount = seriesCount
     }
   },
   getters: {
@@ -55,7 +55,7 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + 'getRecords'
+      const pageUrl = apiList[pageName] + 'routers'
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
@@ -73,10 +73,10 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
       const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
       console.log(payload.queryInfo, '当前点击的项目')
       if (info.parent === 0) {
-        warnTip('当前分类不能删除')
+        warnTip('当前系列类不能删除')
         return
       } else if (info.children && info.children.length > 0) {
-        warnTip('当前分类下有子类，不能删除')
+        warnTip('当前系列下有子类，不能删除')
         return
       } else {
         const data = await deletePageToQueryData(pageUrl, {
@@ -92,7 +92,6 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
         } else errorTip(data.msg)
       }
     },
-
     createPageDataAction({ dispatch }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
@@ -148,4 +147,4 @@ const resourceClassifyModule: Module<IResourceClassifyType, IRootState> = {
   }
 }
 
-export default resourceClassifyModule
+export default resourceSeriesModule

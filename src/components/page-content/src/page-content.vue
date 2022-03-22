@@ -264,13 +264,15 @@ export default defineComponent({
       infoTipBox({
         message: '您确定删除吗',
         title: '删除数据'
-      }).then(() => {
-        console.log(item)
-        store.dispatch(props.storeTypeInfo.deleteAction, {
-          pageName: props.pageName,
-          queryInfo: item
-        })
       })
+        .then(() => {
+          console.log(item)
+          store.dispatch(props.storeTypeInfo.deleteAction, {
+            pageName: props.pageName,
+            queryInfo: item
+          })
+        })
+        .catch(() => console.log('用户取消操作'))
     }
     // TODO 处理用户拖动表格后更新数据, 后续更改为通过用户传递action处理
     const drawTable = (data: any) => {

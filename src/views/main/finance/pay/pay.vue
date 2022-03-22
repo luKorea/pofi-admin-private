@@ -91,10 +91,11 @@ import {
   useComputedPayWay
 } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
-import { getItemData } from '@/service/main/finance/pay'
+import { getItemData } from '@/service/common-api'
 
 import HyTable from '@/base-ui/table'
 import { mapTimeToSearch } from '@/utils'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'financePay',
@@ -135,13 +136,13 @@ export default defineComponent({
     }
     const otherInfo = ref<any>({})
     const getItem = (item: any) => {
-      getItemData(item).then((res: any) => {
+      getItemData('payItem', item).then((res: any) => {
         if (res.result === 0) {
           otherInfo.value = {
             id: res.data.id,
             nickId: res.data.nickId
           }
-        }
+        } else errorTip(res.msg)
       })
     }
     const edit = (item: any) => {

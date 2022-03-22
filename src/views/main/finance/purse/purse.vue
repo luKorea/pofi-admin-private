@@ -104,12 +104,13 @@ import {
   useVIPData
 } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
-import { getItemData } from '@/service/main/finance/purse'
+import { getItemData } from '@/service/common-api'
 
 import HyTable from '@/base-ui/table'
 import VipComponent from './components/vip.vue'
 import { mapTimeToSearch } from '@/utils'
 import { useStore } from '@/store'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'fiancePurse',
@@ -155,7 +156,7 @@ export default defineComponent({
     const typeList = useGetUserType()
     // 自定义编辑
     const handleEdit = (item: any) => {
-      getItemData({
+      getItemData('purseItem', {
         nickId: item.nickId
       }).then((res: any) => {
         if (res.result === 0) {
@@ -167,7 +168,7 @@ export default defineComponent({
             ...res.data,
             pb: res.data.pb / 100
           })
-        }
+        } else errorTip(res.msg)
       })
       modalConfigRef?.value.formItems.map((item: any) => {
         if (item.field === 'pb') {

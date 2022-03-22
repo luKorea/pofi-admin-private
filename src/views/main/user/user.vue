@@ -172,12 +172,13 @@ import {
   useMapSelectValue,
   useImageUpload
 } from './hooks/use-page-list'
-import { getItemData } from '@/service/main/userOperation/userOperation'
+import { getItemData } from '@/service/common-api'
 
 import HyTable from '@/base-ui/table'
 import HyUpload from '@/base-ui/upload'
 import { mapTimeToSearch } from '@/utils'
 import { mapImageToObject } from '../../../utils/index'
+import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'userOperation',
   components: {
@@ -250,7 +251,7 @@ export default defineComponent({
       })
     }
     const handleEdit = (item: any) => {
-      getItemData({
+      getItemData('userItem', {
         nickId: item.nickId
       }).then((res: any) => {
         if (res.result === 0) {
@@ -268,7 +269,7 @@ export default defineComponent({
           imgList.value = []
           imgList.value.push(mapImageToObject(res.data.head))
           handleEditData(res.data)
-        }
+        } else errorTip(res.msg)
       })
     }
     // 重置操作
