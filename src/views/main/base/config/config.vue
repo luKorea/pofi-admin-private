@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 17:03:10
+ * @LastEditTime: 2022-03-22 18:26:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
 <template>
-  <div class="hg-flex" v-if="0">
+  <div class="hg-flex" v-if="1">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -207,8 +207,10 @@ export default defineComponent({
             id: res.data.id
           }
           areaIds.value = res.data.areaIds
-          languageList.value = res?.data?.sysConfigVoList
-          languageId.value = res?.data?.sysConfigVoList[0].languageId
+          if (res.data.sysConfigVoList) {
+            languageList.value = res?.data?.sysConfigVoList
+            languageId.value = res?.data?.sysConfigVoList[0].languageId
+          }
           handleEditData(res.data)
         } else errorTip(res.msg)
       })
