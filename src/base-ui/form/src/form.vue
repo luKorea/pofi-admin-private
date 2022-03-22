@@ -115,7 +115,8 @@
                 v-else-if="
                   item.type === 'datepicker' ||
                   item.type === 'datetimerange' ||
-                  item.type === 'date'
+                  item.type === 'date' ||
+                  item.type === 'datetime'
                 "
               >
                 <el-date-picker

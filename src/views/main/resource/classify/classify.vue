@@ -169,8 +169,13 @@ export default defineComponent({
               id: res.data.id
             }
             item.selectName = res.data.name
-            languageList.value = res?.data?.moldCategoryList
-            languageId.value = res?.data?.moldCategoryList[0].lid
+            if (
+              res.data.moldCategoryList &&
+              res.data.moldCategoryList.length > 0
+            ) {
+              languageList.value = res?.data?.moldCategoryList
+              languageId.value = res?.data?.moldCategoryList[0].lid
+            }
             handleEditData(res.data)
           } else errorTip(res.msg)
         })

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 09:56:18
+ * @LastEditTime: 2022-03-22 11:51:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -26,6 +26,8 @@ import { IResourceDataType } from './main/resource/data/types'
 import { IResourceKeywordType } from './main/resource/keyword/types'
 import { IGoodsRechargeType } from './main/goods/recharge/types'
 import { IGoodsFunctionType } from './main/goods/function/types'
+import { IGoodsItemType } from './main/goods/good/types'
+import { IGoodsDescriptionType } from './main/goods/description/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
 import { IResourceSeriesType } from './main/resource/series/types'
 
@@ -49,6 +51,8 @@ export interface IRootWithModule {
   // 商品中心
   goodsRechargeModule: IGoodsRechargeType
   goodsFunctionModule: IGoodsFunctionType
+  goodsItemModule: IGoodsItemType
+  goodsDescriptionModule: IGoodsDescriptionType
   // 帮助中心
   companionModule: IConditionType
   // 设备管理

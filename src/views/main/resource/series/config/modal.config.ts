@@ -11,15 +11,15 @@ import { IForm } from '@/base-ui/form'
 export const modalConfig: IForm = {
   title: '系列管理操作',
   formItems: [
-    {
-      field: 'id',
-      type: 'input',
-      label: '编号',
-      placeholder: '系统生成',
-      otherOptions: {
-        disabled: true
-      }
-    },
+    // {
+    //   field: 'id',
+    //   type: 'input',
+    //   label: '编号',
+    //   placeholder: '系统生成',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
       field: 'name',
       type: 'input',
@@ -29,6 +29,29 @@ export const modalConfig: IForm = {
         {
           required: true,
           message: '请输入后管显示名称',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'color',
+      type: 'select',
+      label: '标题颜色',
+      placeholder: '请选择标题颜色',
+      options: [
+        {
+          title: '深色',
+          value: 1
+        },
+        {
+          title: '浅色',
+          value: 0
+        }
+      ],
+      rules: [
+        {
+          required: true,
+          message: '请选择标题颜色',
           trigger: 'blur'
         }
       ]

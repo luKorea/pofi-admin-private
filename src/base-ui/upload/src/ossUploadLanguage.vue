@@ -57,7 +57,7 @@ export default defineComponent({
       const newValue = props.value.filter(
         (item: any) => item.name !== file.name
       )
-      // console.log(newData)
+      console.log(file, '文件')
       emit('update:value', newValue)
     }
     // 限制上传个数
@@ -103,7 +103,7 @@ export default defineComponent({
               ...props.value,
               {
                 url: url + '?' + new Date().getTime(),
-                name: res.name + '?' + new Date().getTime()
+                name: res.name + new Date().getTime()
               }
             ])
           })

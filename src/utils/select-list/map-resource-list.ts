@@ -1,11 +1,53 @@
 /*
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 13:44:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 11:57:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 文案类型
+
+// USD模型
+export const unityModalList = [
+  {
+    title: '未知',
+    value: undefined
+  },
+  {
+    title: '单人偶',
+    value: 1
+  },
+  {
+    title: '单道具',
+    value: 2
+  },
+  {
+    title: '道具包',
+    value: 3
+  },
+  {
+    title: '发型包',
+    value: 4
+  },
+  {
+    title: '场景',
+    value: 5
+  },
+  {
+    title: '天空环境',
+    value: 6
+  },
+  {
+    title: 'Pose库',
+    value: 7
+  },
+  {
+    title: '动画库',
+    value: 8
+  }
+]
 // 资源类型
 export const resourceTypeList = [
   {

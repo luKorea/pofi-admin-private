@@ -10,6 +10,7 @@
 import type { App, Plugin } from 'vue'
 import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
+import { warnTip } from './tip-info'
 let loading: ILoadingInstance
 
 export function showLoading() {
@@ -170,4 +171,18 @@ export function mapImageToObject(url: string) {
       url: url
     }
   }
+}
+
+// 判断必填字段是否为
+export function mapObjectIsNull(params: any[], obj: any) {
+  let result = false
+  Object.keys(obj).map((key: any) => {
+    params.map((item: any) => {
+      if (key === item) {
+        if (!obj[key]) result = false
+        else result = true
+      }
+    })
+  })
+  return result
 }

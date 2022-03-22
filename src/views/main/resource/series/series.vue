@@ -26,18 +26,30 @@
       <el-row :gutter="12">
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
-            <span class="item-title">当前节点</span>
-            <el-input v-model="selectName" disabled></el-input>
+            <span class="item-title">地区</span>
+            <el-select
+              placeholder="请选择国家地区，不选默认全部"
+              style="width: 100%"
+              clearable
+              v-model="areaIds"
+              multiple
+              collapse-tags
+              @change="handleChangeCountry($event)"
+            >
+              <el-option
+                v-for="option in countryList"
+                :key="option.id"
+                :value="option.id"
+                :label="option.name"
+                >{{ option.name }}</el-option
+              >
+            </el-select>
           </div>
         </el-col>
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
-            <span class="item-title">图片上传</span>
-            <hy-upload
-              :limit="imgLimit"
-              fileTypeName="series/"
-              v-model:value="imgList"
-            ></hy-upload>
+            <span class="item-title">当前节点</span>
+            <el-input v-model="selectName" disabled></el-input>
           </div>
         </el-col>
       </el-row>
@@ -49,25 +61,50 @@
       >
         <template #formItem>
           <el-col :span="21">
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <div class="item-flex">
+                  <div class="item-title">
+                    <span class="item-tip">*</span>
+                    系列名称
+                  </div>
+                  <el-input
+                    v-model="languageItem.name"
+                    placeholder="请输入系列名称"
+                    required
+                  ></el-input>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="item-flex">
+                  <span class="item-title">
+                    <span class="item-tip">*</span>
+                    副标题(所属库)
+                  </span>
+                  <el-input
+                    v-model="languageItem.subTitle"
+                    placeholder="请输入副标题(所属库)"
+                  ></el-input>
+                </div>
+              </el-col>
+            </el-row>
             <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                分类名称
-              </div>
-              <el-input
-                v-model="languageItem.name"
-                placeholder="请输入分类名称"
-                required
-              ></el-input>
+              <span class="item-title">图标上传</span>
+              <hy-upload
+                :limit="imgLimit"
+                fileTypeName="series/"
+                v-model:value="languageItem.url"
+              ></hy-upload>
             </div>
             <div class="item-flex">
-              <span class="item-title">描述</span>
-              <el-input
-                type="textarea"
-                :rows="3"
-                v-model="languageItem.desc"
-                placeholder="请输入描述"
-              ></el-input>
+              <span class="item-title">
+                <span class="item-tip">*</span>
+                描述
+              </span>
+              <hy-editor
+                v-model:value="languageItem.desc"
+                fileTypeName="series/"
+              ></hy-editor>
             </div>
           </el-col>
         </template>
@@ -94,13 +131,15 @@ import {
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
+import hyEditor from '@/base-ui/editor'
 import { mapImageToObject } from '@/utils/index'
 import { warnTip, errorTip } from '@/utils/tip-info'
 import { useStore } from '@/store'
 export default defineComponent({
   name: 'resourceClassify',
   components: {
-    hyUpload
+    hyUpload,
+    hyEditor
   },
   setup() {
     const [
@@ -111,30 +150,53 @@ export default defineComponent({
       languageItem,
       handleChangeLanguage
     ] = useSetLanguage()
-    const [keyTypeList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [imgLimit, imgList] = useImageUpload()
     const otherInfo = ref<any>({})
+    const [keyTypeList, countryList] = usePageList()
+    const areaIds = ref<any>([])
     // 用户选中的节点名称
     const selectName = ref<any>()
+    // 监听国家地区
     watchEffect(() => {
-      if (imgList.value.length > 0) {
+      if (areaIds.value.length === 0) {
+        const region: any[] = []
+        countryList.value.forEach((item: any) => {
+          region.push(item.id)
+        })
         otherInfo.value = {
           ...otherInfo.value,
-          url: imgList.value[0].url
-        }
-      } else {
-        otherInfo.value = {
-          ...otherInfo.value,
-          url: undefined
+          rids: region.toString()
         }
       }
       otherInfo.value = {
         ...otherInfo.value,
-        moldCategoryJson: JSON.stringify(languageList.value)
+        moldSeriesJson: JSON.stringify(languageList.value)
       }
     })
+    // 监听多语言图片设置
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.url.length > 0) {
+          console.log(languageItem.value.url[0].url, '获取图片地址')
+          languageItem.value.icon = languageItem.value.url[0].url
+          languageItem.value = {
+            ...languageItem.value,
+            icon: languageItem.value.url[0].url
+          }
+          console.log(languageItem.value, '用户选中图片')
+        } else {
+          languageItem.value.icon = undefined
+        }
+      }
+    })
+    const handleChangeCountry = (item: any) => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        rids: item.toString()
+      }
+    }
     const searchFormConfigRef = computed(() => {
       return searchFormConfig
     })
@@ -143,8 +205,9 @@ export default defineComponent({
     })
     const newData = (item: any) => {
       selectName.value = item.name
-      const [name] = useMapSelectTitle(item.id)
+      // const [name] = useMapSelectTitle(item.id)
       imgList.value = []
+      areaIds.value = []
       otherInfo.value = {
         parent: item.id
       }
@@ -155,20 +218,29 @@ export default defineComponent({
         warnTip('当前系列暂不支持编辑')
         return
       } else {
-        getItemData('resourceClassify', {
+        getItemData('seriesItem', {
           id: item.id,
           language: 1
         }).then((res: any) => {
           if (res.result === 0) {
-            imgList.value = []
-            if (res.data.url) {
-              imgList.value.push(mapImageToObject(res.data.url))
-            }
             otherInfo.value = {
-              id: res.data.id
+              id: res.data.id,
+              msId: res.data.msId,
+              rids: res.data.rids
             }
-            languageList.value = res?.data?.moldCategoryList
-            languageId.value = res?.data?.moldCategoryList[0].lid
+            areaIds.value = res?.data?.rids.split(',')
+            if (res.data.moldSeriesList && res.data.moldSeriesList.length > 0) {
+              let result: any[] = []
+              result = res?.data?.moldSeriesList.map((item: any) => {
+                return {
+                  ...item,
+                  url: item.icon ? [mapImageToObject(item.icon)] : []
+                }
+              })
+              console.log(result)
+              languageList.value = result
+              languageId.value = res?.data?.moldSeriesList[0].lid
+            }
             handleEditData(res.data)
           } else errorTip(res.msg)
         })
@@ -196,6 +268,10 @@ export default defineComponent({
       imgLimit,
       imgList,
       selectName,
+      // 地区选择
+      countryList,
+      areaIds,
+      handleChangeCountry,
       // 多语言编辑
       languageList,
       languageId,

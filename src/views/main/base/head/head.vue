@@ -98,9 +98,9 @@ export default defineComponent({
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef] = usePageSearch()
-    const [countryList] = usePageList()
     const [imgLimit, imgList] = useImageUpload()
     const otherInfo = ref<any>({})
+    const [countryList] = usePageList()
     const areaIds = ref<any>([])
     // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
     watchEffect(() => {

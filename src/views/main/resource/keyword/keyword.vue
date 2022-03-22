@@ -142,8 +142,10 @@ export default defineComponent({
           otherInfo.value = {
             id: res.data.id
           }
-          languageList.value = res?.data?.moldKeywordList
-          languageId.value = res?.data?.moldKeywordList[0].lid
+          if (res.data.moldKeywordList && res.data.moldKeywordList.length > 0) {
+            languageList.value = res?.data?.moldKeywordList
+            languageId.value = res?.data?.moldKeywordList[0].lid
+          }
           handleEditData(res.data)
         } else errorTip(res.msg)
       })

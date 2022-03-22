@@ -8,12 +8,12 @@
  */
 import { errorTip } from '@/utils/tip-info'
 import { ref } from 'vue'
-import { getCountrySelectList } from '@/service/common'
+import { getCommonSelectList } from '@/service/common'
 
 export function usePageList() {
   const countryList = ref<any>([])
   const getCountryList = () => {
-    getCountrySelectList().then((res) => {
+    getCommonSelectList('country').then((res) => {
       if (res.state) {
         countryList.value.push(...res.data.rows)
       } else errorTip(res.msg)

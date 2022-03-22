@@ -53,7 +53,8 @@ enum getItemUrl {
   resourceClassify = '/cms/classify/getClassify', // 分类管理
   payItem = '/cms/userPay/getPay', // 订单管理
   purseItem = '/cms/userPurse/getPurse', // 用户钱包
-  userItem = '/cms/userInfo/show' // 用户操作记录
+  userItem = '/cms/userInfo/show', // 用户操作记录
+  seriesItem = '/cms/series/getSeries' // 系列管理
 }
 
 // 获取单行数据

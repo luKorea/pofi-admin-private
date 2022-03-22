@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:29:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 12:00:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -11,6 +11,8 @@ import { ref, computed } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
 import { getSelectTitle } from '@/service/main/resource/classify'
+import { mapObjectIsNull } from '@/utils'
+import { warnTip } from '@/utils/tip-info'
 export function useMapSelectTitle(id: any) {
   const name = ref<string>('')
   getSelectTitle(id).then((res) => {
@@ -24,21 +26,26 @@ export function useSetLanguage() {
     usePageLanguage(
       {
         name: '',
-        desc: ''
+        subTitle: '',
+        desc: '',
+        url: [],
+        icon: ''
       },
       'lid'
     )
+  // eslint-disable-next-line vue/return-in-computed-property
   const languageItem = computed(() => {
-    return languageList.value.find((item: any) => item.lid === languageId.value)
+    if (languageList.value.length > 0) {
+      return languageList.value.find(
+        (item: any) => item.lid === languageId.value
+      )
+    } else resetLanguageList()
   })
-  console.log(languageItem.value, 'la')
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
-    languageId.value = id
-    // if (languageItem.value.name === '') {
-    //   errorTip('请确保多语言配置中带*号的字段已经填写')
-    //   return
-    // } else languageId.value = id
+    if (mapObjectIsNull(['name', 'subTitle', 'desc'], languageItem.value)) {
+      languageId.value = id
+    } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
@@ -60,8 +67,17 @@ export function usePageList() {
       } else errorTip(res.msg)
     })
   }
+  const countryList = ref<any>([])
+  const getCountryList = () => {
+    getCommonSelectList('country').then((res) => {
+      if (res.state) {
+        countryList.value.push(...res.data.rows)
+      } else errorTip(res.msg)
+    })
+  }
+  getCountryList()
   getKeyTypeList()
-  return [keyTypeList]
+  return [keyTypeList, countryList]
 }
 
 export function useStoreName() {
