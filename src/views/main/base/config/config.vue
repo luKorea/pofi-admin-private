@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 14:48:11
+ * @LastEditTime: 2022-03-23 17:17:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -207,7 +207,7 @@ export default defineComponent({
             id: res.data.id
           }
           areaIds.value = res.data.areaIds
-          if (res.data.sysConfigVoList) {
+          if (res.data.sysConfigVoList && res.data.sysConfigVoList.length > 0) {
             languageList.value = res?.data?.sysConfigVoList
             languageId.value = res?.data?.sysConfigVoList[0].languageId
           }

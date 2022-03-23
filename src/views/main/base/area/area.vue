@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 14:02:31
+ * @LastEditTime: 2022-03-23 17:08:19
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/area/area.vue
 -->
@@ -76,7 +76,7 @@ export default defineComponent({
       if (imgList.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
-          picture: imgList.value[0].picture
+          picture: imgList.value[0].url
         }
       } else {
         otherInfo.value = {

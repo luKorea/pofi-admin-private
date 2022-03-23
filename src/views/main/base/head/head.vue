@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 10:40:59
+ * @LastEditTime: 2022-03-23 17:11:57
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
@@ -143,8 +143,7 @@ export default defineComponent({
       }
       otherInfo.value = {
         areaIds: item.areaIds, // 用户如果没有修改这个选项。使用默认值
-        id: item.id,
-        ...item
+        id: item.id
       }
       areaIds.value = item.areaIds
     }

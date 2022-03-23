@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 11:27:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 17:13:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -104,8 +104,7 @@ export default defineComponent({
     const editData = (item: any) => {
       otherInfo.value = {
         region: item.region, // 用户如果没有修改这个选项。使用默认值
-        id: item.id,
-        ...item
+        id: item.id
       }
       areaIds.value = item.region.split(',').map((item: any) => +item)
     }
