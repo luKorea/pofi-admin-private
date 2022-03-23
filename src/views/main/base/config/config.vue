@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 18:26:10
+ * @LastEditTime: 2022-03-23 14:48:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -222,6 +222,7 @@ export default defineComponent({
       const groupItem = searchFormConfig.formItems.find(
         (item: any) => item.field === 'group'
       )
+      console.log(groupList.value)
       groupItem!.options = groupList.value.map((item: any) => ({
         title: item.dec,
         value: item.group

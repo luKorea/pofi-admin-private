@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 09:45:35
+ * @LastEditTime: 2022-03-23 16:01:41
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -19,7 +19,9 @@ enum commonAPI {
   mark = '/cms/userInfo/getMarkList', // 获取用户特殊标记
   job = '/cms/userInfo/getJobList', // 获取用户职业
   draw = '/cms/userInfo/getDrawList', // 获取用户画风
-  keywords = '/cms/keyword/getType' // 关键词类型
+  keywords = '/cms/keyword/getType', // 关键词类型
+  functionType = '/cms/function/explain/getType', // 功能说明分类
+  questionType = '/cms/question/getType' // 问题
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 10:57:50
+ * @LastEditTime: 2022-03-23 15:43:26
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -54,7 +54,9 @@ enum getItemUrl {
   payItem = '/cms/userPay/getPay', // 订单管理
   purseItem = '/cms/userPurse/getPurse', // 用户钱包
   userItem = '/cms/userInfo/show', // 用户操作记录
-  seriesItem = '/cms/series/getSeries' // 系列管理
+  seriesItem = '/cms/series/getSeries', // 系列管理
+  functionItem = '/cms/function/explain/getExplain', // 功能说明
+  functionTypeItem = '/cms/function/type/getFunctionType' // 功能说明分类
 }
 
 // 获取单行数据

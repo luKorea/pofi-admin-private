@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 11:51:28
+ * @LastEditTime: 2022-03-23 11:32:27
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -30,6 +30,11 @@ import { IGoodsItemType } from './main/goods/good/types'
 import { IGoodsDescriptionType } from './main/goods/description/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
 import { IResourceSeriesType } from './main/resource/series/types'
+import { IHelpFunctionTypeType } from './main/help/functionType/types'
+import { ICompanionType } from './main/help/companion/types'
+import { IHelpFunctionType } from './main/help/function/types'
+import { IHelpQuestionType } from './main/help/question/types'
+import { IHelpQuestionTypeType } from './main/help/questionType/types'
 
 export interface IRootState {
   name: string
@@ -54,7 +59,11 @@ export interface IRootWithModule {
   goodsItemModule: IGoodsItemType
   goodsDescriptionModule: IGoodsDescriptionType
   // 帮助中心
-  companionModule: IConditionType
+  companionModule: ICompanionType
+  helpFunctionTypeModule: IHelpFunctionTypeType
+  helpFunctionModule: IHelpFunctionType
+  helpQuestionModule: IHelpQuestionType
+  helpQuestionTypeModule: IHelpQuestionTypeType
   // 设备管理
   userImeiModule: IUserImeiType
   conditionModule: IConditionType

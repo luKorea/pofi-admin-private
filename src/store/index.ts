@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 11:51:05
+ * @LastEditTime: 2022-03-23 12:01:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -45,6 +45,10 @@ import baseLanguageModule from './main/base/language/language'
 import baseFusingModule from './main/base/fusing/fusing'
 // 帮助中心
 import companionModule from './main/help/companion/companion'
+import helpFunctionTypeModule from './main/help/functionType/functionType'
+import helpFunctionModule from './main/help/function/function'
+import helpQuestionModule from './main/help/question/question'
+import helpQuestionTypeModule from './main/help/questionType/questionType'
 // import cache from '@/utils/cache'
 
 import { getPageListData } from '@/service/common-api'
@@ -169,7 +173,11 @@ const store = createStore<IRootState>({
     baseLanguageModule,
     baseFusingModule,
     // 帮助中心
-    companionModule
+    companionModule,
+    helpFunctionTypeModule,
+    helpFunctionModule,
+    helpQuestionModule,
+    helpQuestionTypeModule
   }
 })
 
