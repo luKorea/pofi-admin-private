@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 11:32:27
+ * @LastEditTime: 2022-03-24 10:00:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -31,7 +31,7 @@ import { IGoodsDescriptionType } from './main/goods/description/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
 import { IResourceSeriesType } from './main/resource/series/types'
 import { IHelpFunctionTypeType } from './main/help/functionType/types'
-import { ICompanionType } from './main/help/companion/types'
+import { IHelpCompanionType } from './main/help/companion/types'
 import { IHelpFunctionType } from './main/help/function/types'
 import { IHelpQuestionType } from './main/help/question/types'
 import { IHelpQuestionTypeType } from './main/help/questionType/types'
@@ -59,7 +59,7 @@ export interface IRootWithModule {
   goodsItemModule: IGoodsItemType
   goodsDescriptionModule: IGoodsDescriptionType
   // 帮助中心
-  companionModule: ICompanionType
+  helpCompanionModule: IHelpCompanionType
   helpFunctionTypeModule: IHelpFunctionTypeType
   helpFunctionModule: IHelpFunctionType
   helpQuestionModule: IHelpQuestionType

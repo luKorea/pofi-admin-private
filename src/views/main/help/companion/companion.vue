@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 10:54:02
+ * @LastEditTime: 2022-03-24 10:57:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -17,9 +17,9 @@
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"
       :storeTypeInfo="storeTypeInfo"
-      pageName="records"
+      pageName="companions"
       @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
+      @editBtnClick="editData"
     >
       <template #state="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
@@ -28,128 +28,180 @@
         <page-image :img-src="scope.row.bgUrl"></page-image>
       </template>
       <template #video="scope">
-        <el-tooltip
-          class="box-item"
-          effect="dark"
-          content="点击预览视频"
-          placement="top-start"
-        >
-          <el-button
-            size="mini"
-            plain
-            @click="handleShowVideoClick(scope.row.fileUrl, scope.row.title)"
-            >预览</el-button
-          >
-        </el-tooltip>
+        <preview-video
+          :fileUrl="scope.row.fileUrl"
+          :title="scope.row.title"
+        ></preview-video>
       </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="records"
+      pageName="companions"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
+      :otherInfo="otherInfo"
     >
-      <el-row :gutter="12">
-        <el-col v-bind="modalConfigRef.colLayout">
-          <div class="item-flex">
-            <span class="item-title">图片上传</span>
-            <hy-upload
-              :limit="imgLimit"
-              fileTypeName="help/"
-              v-model:value="imgList"
-            ></hy-upload>
-          </div>
-        </el-col>
-        <el-col v-bind="modalConfigRef.colLayout">
-          <div class="item-flex">
-            <span class="item-title">视频上传</span>
-            <hy-upload
-              :limit="videoLimit"
-              fileTypeName="help/"
-              v-model:value="videoList"
-            ></hy-upload>
-          </div>
-        </el-col>
-      </el-row>
+      <page-language
+        :languageList="languageList"
+        :languageId="languageId"
+        :languageBtnList="languageBtnList"
+        @changeLanguage="handleChangeLanguage"
+      >
+        <template #formItem>
+          <el-col :span="21">
+            <div class="item-flex">
+              <div class="item-title">
+                <span class="item-tip">*</span>
+                标题
+              </div>
+              <el-input
+                v-model="languageItem.title"
+                placeholder="请输入标题"
+                required
+              ></el-input>
+            </div>
+            <el-row :gutter="12">
+              <el-col v-bind="modalConfigRef.colLayout">
+                <div class="item-flex">
+                  <span class="item-title">图片上传</span>
+                  <hy-upload
+                    :limit="imgLimit"
+                    fileTypeName="helpCompanion/"
+                    v-model:value="languageItem.bgList"
+                  ></hy-upload>
+                </div>
+              </el-col>
+              <el-col v-bind="modalConfigRef.colLayout">
+                <div class="item-flex">
+                  <span class="item-title">视频上传</span>
+                  <hy-upload
+                    :limit="videoLimit"
+                    fileTypeName="helpCompanion/"
+                    v-model:value="languageItem.fileList"
+                  ></hy-upload>
+                </div>
+              </el-col>
+            </el-row>
+          </el-col>
+        </template>
+      </page-language>
     </page-modal>
-    <hy-video
-      :videoUrl="videoUrl"
-      :isShowVideo="isShowVideo"
-      :title="videoTitle"
-      @close="isShowVideo = false"
-    ></hy-video>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, watchEffect, ref } from 'vue'
+import PreviewVideo from '@/base-ui/preview-video'
 
 import {
-  usePageList,
   useStoreName,
   useImageUpload,
-  useVideoUpload
+  useVideoUpload,
+  useSetLanguage
 } from './hooks/use-page-list'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
-import { searchFormConfig } from './page-config/search.config'
-import { contentTableConfig } from './page-config/content.config'
-import { modalConfig } from './page-config/modal.config'
+import { searchFormConfig } from './config/search.config'
+import { contentTableConfig } from './config/content.config'
+import { modalConfig } from './config/modal.config'
 
-import HyVideo from '@/base-ui/video'
 import HyUpload from '@/base-ui/upload'
+import { getItemData } from '@/service/common-api'
+import { mapImageToObject } from '@/utils/index'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'companion',
   components: {
-    HyVideo,
-    HyUpload
+    HyUpload,
+    PreviewVideo
   },
   setup() {
-    const isShowVideo = ref<boolean>(false)
-    const videoUrl = ref<string>('')
-    const videoTitle = ref<string>('')
-
-    // 点击按钮播放视频
-    const handleShowVideoClick = (src: string, title: string) => {
-      isShowVideo.value = !isShowVideo.value
-      videoUrl.value = src
-      videoTitle.value = title
-    }
-
+    const [
+      languageList,
+      languageId,
+      resetLanguageList,
+      languageBtnList,
+      languageItem,
+      handleChangeLanguage
+    ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [imgLimit, imgList] = useImageUpload()
     const [videoLimit, videoList] = useVideoUpload()
-    const [countryList, groupList] = usePageList()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+
+    const newData = () => resetLanguageList()
+    const editData = (item: any) => {
+      getItemData('companionItem', {
+        id: item.id,
+        language: 1
+      }).then((res: any) => {
+        if (res.result === 0) {
+          otherInfo.value = {
+            id: res.data.id,
+            rank: res.data.rank
+          }
+          if (res.data.companionList && res.data.companionList.length > 0) {
+            let result: any[] = []
+            result = res?.data?.companionList.map((item: any) => {
+              return {
+                ...item,
+                bgList: item.bgUrl ? [mapImageToObject(item.bgUrl)] : [],
+                fileList: item.fileUrl ? [mapImageToObject(item.fileUrl)] : []
+              }
+            })
+            languageList.value = result
+            languageId.value = res?.data?.companionList[0].languageId
+          }
+          handleEditData(res.data)
+        } else errorTip(res.msg)
+      })
+    }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(newData)
+    const otherInfo = ref<any>({})
+    watchEffect(() => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        CompanionJson: JSON.stringify(languageList.value)
+      }
+    })
+    // 监听多语言图片设置
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.bgList.length > 0) {
+          languageItem.value.bgUrl = languageItem.value.bgList[0].url
+        } else {
+          languageItem.value.bgUrl = undefined
+        }
+        if (languageItem.value.fileList.length > 0) {
+          languageItem.value.fileUrl = languageItem.value.fileList[0].url
+        } else {
+          languageItem.value.fileUrl = undefined
+        }
+      }
+    })
     // 表单
     const modalConfigRef = computed(() => {
-      const countryItem = modalConfig.formItems.find(
-        (item: any) => item.field === 'areaIds'
-      )
-      countryItem!.options = countryList.value.map((item: any) => ({
-        title: item.name,
-        value: item.id
-      }))
       return modalConfig
     })
     return {
+      //多语言
+      languageList,
+      languageId,
+      resetLanguageList,
+      languageBtnList,
+      languageItem,
+      handleChangeLanguage,
+      otherInfo,
       imgLimit,
       imgList,
       videoLimit,
       videoList,
-      isShowVideo,
-      videoUrl,
-      videoTitle,
-      handleShowVideoClick,
       storeTypeInfo,
-      countryList,
-      groupList,
       searchFormConfig,
       pageContentRef,
       handleResetClick,
@@ -158,6 +210,7 @@ export default defineComponent({
       pageModalRef,
       defaultInfo,
       handleNewData,
+      editData,
       handleEditData,
       modalConfigRef,
       operationName

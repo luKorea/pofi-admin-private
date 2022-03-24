@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 10:09:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-24 14:37:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -58,10 +58,12 @@ import {
   ElCheckboxGroup,
   ElDescriptions,
   ElDescriptionsItem,
-  ElBadge
+  ElBadge,
+  ElProgress
 } from 'element-plus'
 
 const components = [
+  ElProgress,
   ElLink,
   ElBadge,
   ElDescriptions,

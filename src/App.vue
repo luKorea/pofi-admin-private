@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 09:22:35
+ * @LastEditTime: 2022-03-24 09:37:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/App.vue
 -->
@@ -15,13 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from 'vue'
+import { defineComponent, watchEffect, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useExpirationTime } from '@/hooks/use-expiration-time'
+import { useGetClient } from '@/hooks/use-oss-config'
 export default defineComponent({
   name: 'App',
   components: {
@@ -33,6 +34,10 @@ export default defineComponent({
     }
   },
   setup() {
+    onMounted(() => {
+      const client = useGetClient()
+      console.log(client, 'OSS客户端')
+    })
     const router = useRouter()
     const route = useRoute()
     if (route.path !== '/login' && route.path !== '/') {

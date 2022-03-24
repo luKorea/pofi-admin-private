@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-18 11:45:02
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 17:06:42
+ * @LastEditTime: 2022-03-24 14:30:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-oss-config.ts
  */
@@ -10,6 +10,7 @@ import { getOssToken } from '@/service/upload'
 import OSS from 'ali-oss'
 import localCache from '@/utils/cache'
 import dayJs from 'dayjs'
+import { OSSURL } from '@/service/request/config'
 
 // export function useGetClient() {
 //   let client: any = null

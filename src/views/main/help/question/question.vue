@@ -1,5 +1,5 @@
 <template>
-  <div class="base-languages">
+  <div class="base-languages" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"

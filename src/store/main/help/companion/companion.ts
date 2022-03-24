@@ -1,45 +1,48 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 10:15:12
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-24 13:42:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/help/companion/companion.ts
  */
 import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { ICompanionType } from './types'
+import { IHelpCompanionType } from './types'
 import { errorTip } from '@/utils/tip-info'
+import { mapObjectIsNull } from '@/utils'
 
 import {
   getPageListData,
-  deletePageData,
+  deletePageToQueryData,
   createPageData,
-  editPageData
+  editPageData,
+  sortPageTableData
 } from '@/service/common-api'
 
 const apiList: any = {
-  records: '/cms/companion/'
+  companions: '/cms/companion/',
+  sort: '/cms/companion/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const companionModule: Module<ICompanionType, IRootState> = {
+const helpCompanionModule: Module<IHelpCompanionType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      recordsCount: 0,
-      recordsList: []
+      companionsCount: 0,
+      companionsList: []
     }
   },
   mutations: {
-    changeRecordsList(state, recordsList: any[]) {
-      state.recordsList = recordsList
+    changeCompanionsList(state, companionsList: any[]) {
+      state.companionsList = companionsList
     },
-    changeRecordsCount(state, recordsCount: number) {
-      state.recordsCount = recordsCount
+    changeCompanionsCount(state, companionsCount: number) {
+      state.companionsCount = companionsCount
     }
   },
   getters: {
@@ -54,7 +57,7 @@ const companionModule: Module<ICompanionType, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       queryInfo = payload.queryInfo
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + cultureDifferentType('get', pageName)
+      const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
@@ -65,10 +68,11 @@ const companionModule: Module<ICompanionType, IRootState> = {
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const id = payload.id
-      const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
+      const id = payload.queryInfo.id
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('delete', pageName)
       // 2.调用删除网络请求
-      await deletePageData(pageUrl, { id: id })
+      await deletePageToQueryData(pageUrl, { id: id })
 
       // 3.重新请求最新的数据
       dispatch('getPageListAction', {
@@ -82,17 +86,24 @@ const companionModule: Module<ICompanionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('add', pageName)
-        const data = await createPageData(pageUrl, newData)
-        if (data.state) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        console.log(newData)
+        const validData = JSON.parse(newData.CompanionJson)[0]
+        if (mapObjectIsNull(['title'], validData)) {
+          const pageUrl =
+            apiList[pageName] + cultureDifferentType('add', pageName)
+          const data = await createPageData(pageUrl, {
+            ...validData, // 获取一级数据，传递给后台
+            ...newData
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
       })
     },
 
@@ -101,10 +112,31 @@ const companionModule: Module<ICompanionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
-        const data = await editPageData(pageUrl, editData)
-        if (data.state) {
+        const validData = JSON.parse(editData.CompanionJson)[0]
+        if (mapObjectIsNull(['title'], validData)) {
+          const pageUrl =
+            apiList[pageName] + cultureDifferentType('update', pageName)
+          const data = await editPageData(pageUrl, {
+            ...validData,
+            ...editData
+          })
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
+      })
+    },
+    async sortPageDataAction({ dispatch }, payload: any) {
+      const { pageName, sortData } = payload
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise<any>(async (resolve, reject) => {
+        const data = await sortPageTableData(apiList.sort, sortData)
+        if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
@@ -117,4 +149,4 @@ const companionModule: Module<ICompanionType, IRootState> = {
   }
 }
 
-export default companionModule
+export default helpCompanionModule

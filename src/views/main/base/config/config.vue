@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 17:17:14
+ * @LastEditTime: 2022-03-24 10:16:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -121,9 +121,9 @@ import {
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
-import { searchFormConfig } from './page-config/search.config'
-import { contentTableConfig } from './page-config/content.config'
-import { modalConfig } from './page-config/modal.config'
+import { searchFormConfig } from './config/search.config'
+import { contentTableConfig } from './config/content.config'
+import { modalConfig } from './config/modal.config'
 import { useStore } from '@/store'
 import { getItemData } from '@/service/common-api'
 import HyEditor from '@/base-ui/editor'
@@ -206,7 +206,7 @@ export default defineComponent({
             areaIds: res.data.areaIds, // 用户如果没有修改这个选项。使用默认值
             id: res.data.id
           }
-          areaIds.value = res.data.areaIds
+          areaIds.value = res.data.areaIds ?? []
           if (res.data.sysConfigVoList && res.data.sysConfigVoList.length > 0) {
             languageList.value = res?.data?.sysConfigVoList
             languageId.value = res?.data?.sysConfigVoList[0].languageId

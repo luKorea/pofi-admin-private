@@ -3,32 +3,93 @@
     :limit="limit"
     :http-request="httpRequest"
     :on-success="onSuccess"
-    :on-remove="onRemove"
     :before-remove="beforeRemove"
     :on-preview="onPreview"
     :on-exceed="onExceed"
     :before-upload="onChange"
-    :on-progress="onProgress"
     :file-list="value"
     list-type="picture-card"
   >
-    <el-icon><plus /></el-icon>
+    <template #default>
+      <template v-if="!progressFlag">
+        <el-icon><plus /></el-icon>
+      </template>
+      <template v-else>
+        <el-progress type="circle" :percentage="percent"></el-progress>
+      </template>
+    </template>
+    <template #file="{ file }">
+      <div style="width: 100%; height: 100%">
+        <template v-if="fileType === 'image'">
+          <img
+            style="object-fit: cover"
+            class="el-upload-list__item-thumbnail"
+            :src="file.url"
+            alt=""
+          />
+        </template>
+        <template v-else-if="fileType === 'video'">
+          <video :src="file.url"></video>
+        </template>
+        <span class="el-upload-list__item-actions">
+          <span class="el-upload-list__item-preview" @click="onPreview(file)">
+            <el-icon><zoom-in /></el-icon>
+          </span>
+          <span
+            v-if="!disabled"
+            class="el-upload-list__item-delete"
+            @click="onRemove(file)"
+          >
+            <el-icon><Delete /></el-icon>
+          </span>
+        </span>
+      </div>
+    </template>
   </el-upload>
-  <!-- <el-dialog v-model="dialogVisible">
-    <img width="400px" :src="dialogImageUrl" alt="" />
+
+  <!-- 预览界面 -->
+  <!-- <el-dialog
+    v-model="dialogVisible"
+    width="30%"
+    :title="fileType === 'image' ? '图片预览' : '视频预览'"
+  >
+    <div
+      class="hg-flex hg-items-center hg-justify-center"
+      style="height: 200px"
+    >
+      <template v-if="fileType === 'image'">
+        <div style="width: 300px; height: 300px">
+          <img
+            style="width: 400px; object-fit: cover"
+            :src="dialogImageUrl"
+            alt=""
+          />
+        </div>
+      </template>
+      <template v-else>
+        <video
+          style="width: 100%; height: 100%"
+          :src="dialogImageUrl"
+          controls
+        ></video>
+      </template>
+    </div>
   </el-dialog> -->
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import { useGetClient, clientSendFile } from '@/hooks/use-oss-config'
+import { defineComponent, ref, onMounted, watchEffect } from 'vue'
+import { useGetClient } from '@/hooks/use-oss-config'
 import { errorTip, warnTip } from '@/utils/tip-info'
-import { IMG_URL } from '@/service/request/config'
-import { Plus } from '@element-plus/icons-vue'
-import { hideLoading, showLoading } from '../../../utils/index'
+import { OSSURL } from '@/service/request/config'
+import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
+import { fileTypeIsImage } from '@/utils/index'
+
 export default defineComponent({
   components: {
-    Plus
+    Plus,
+    Delete,
+    ZoomIn
   },
   props: {
     limit: {
@@ -47,9 +108,27 @@ export default defineComponent({
   emits: ['successClick', 'removeClick', 'update:value'],
   setup(props, { emit }) {
     let client: any = null
+    const fileType = ref<any>('image')
+    // 进度条展示
+    const progressFlag = ref<boolean>(false)
+    const percent = ref<number>(0)
     onMounted(() => (client = useGetClient()))
-    const dialogImageUrl = ref('')
-    const dialogVisible = ref(false)
+    watchEffect(() => {
+      if (props.value && props.value.length > 0) {
+        props.value.forEach((item: any) => {
+          let name = item.name
+          if (item.name.indexOf('?')) {
+            name = item.name.split('?')[0]
+          }
+          const type = fileTypeIsImage(name)
+          fileType.value = type
+        })
+      }
+    })
+    const dialogImageUrl = ref<string>('')
+    const dialogVisible = ref<boolean>(false)
+    const videoRef = ref<any>()
+    const disabled = ref(false)
     const onSuccess = (res: any, file: any, fileList: any) => {
       console.log(res, file, fileList)
     }
@@ -75,48 +154,48 @@ export default defineComponent({
       }
     }
     // 进度条
-    const onProgress = () => {
-      console.log(2)
+    const onProgress = (progress: any) => {
+      console.log(progress)
     }
     // beforeRemove
     const httpRequest = (options: any) => {
       return new Promise((resolve, reject) => {
         const file = options.file
-        showLoading()
-        clientSendFile(
-          client,
-          props.fileTypeName,
-          client.options.fileName,
-          file
-        )
+        const suffix = '.' + file.type.split('/')[1]
+        const name = props.fileTypeName + client.options.fileName + suffix
+        client
+          .multipartUpload(name, file, {
+            progress: function (p: any) {
+              progressFlag.value = true
+              percent.value = p.toFixed(0) * 100
+              if (p === 1) {
+                progressFlag.value = false
+              }
+            }
+          })
           .then((res: any) => {
-            resolve(res)
-            console.log(res.res)
-            // const url = res.res.requestUrls[0].split('?')[0] // 地址一，后续可能会有改动
-            // TODO 图片上传地址
-            const url = `${IMG_URL}/${res.name}`
-            console.log(
-              res.name + new Date().getTime(),
-              '图片名字加随机数，防止出错'
-            )
+            const url = `${OSSURL}/${res.name}`
             emit('update:value', [
               ...props.value,
               {
-                url: url + '?' + new Date().getTime(),
-                name: res.name + '?' + new Date().getTime()
+                name: res.name + '?' + new Date().getTime(),
+                url: url + '?' + new Date().getTime()
               }
             ])
+            resolve(res)
           })
-          .catch((err) => {
-            reject(err)
-            console.log(err, 'err')
-          })
-          .finally(() => hideLoading())
+          .catch((err: any) => reject(err))
       })
     }
     return {
+      // 进度条
+      progressFlag,
+      percent,
       dialogImageUrl,
       dialogVisible,
+      fileType,
+      videoRef,
+      disabled,
       httpRequest,
       onPreview,
       onSuccess,
@@ -156,5 +235,11 @@ export default defineComponent({
   width: 178px;
   height: 178px;
   display: block;
+}
+.el-upload--picture-card {
+  text-align: center;
+}
+.el-upload--picture-card .el-progress {
+  margin-top: 10px;
 }
 </style>
