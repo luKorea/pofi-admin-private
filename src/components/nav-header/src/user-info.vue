@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-23 11:36:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-24 17:48:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
@@ -63,7 +63,10 @@ export default defineComponent({
         localCache.deleteCache('token')
         localCache.deleteCache('userInfo')
         localCache.deleteCache('userMenus')
+        localCache.deleteCache('routerList')
+        localCache.deleteCache('isAdmin')
         router.push('/login')
+        location.reload()
       })
     }
 

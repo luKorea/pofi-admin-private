@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 10:28:39
+ * @LastEditTime: 2022-03-24 15:58:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/page-config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '配置管理操作',
+  title: '使用指南操作',
   formItems: [
     {
       field: 'id',
