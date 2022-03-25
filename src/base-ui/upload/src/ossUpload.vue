@@ -161,6 +161,7 @@ export default defineComponent({
       dialogImageUrl.value = file.url!
       dialogVisible.value = true
     }
+    // 每次上传都要重新获取fileName
     const beforeUpload = () => {
       return new Promise((resolve, reject) => {
         if (props.value.length === props.limit) {
