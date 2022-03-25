@@ -27,14 +27,14 @@
         >
           新建数据
         </el-button>
-        <!-- <el-button
+        <el-button
           v-if="permissionList.isColumnAdd"
           type="primary"
           size="mini"
           @click="handleNewColumnClick"
         >
           新建表格数据
-        </el-button> -->
+        </el-button>
         <el-button
           size="mini"
           icon="el-icon-refresh"
@@ -125,14 +125,14 @@
           @click="handleDeleteClick(scope.row)"
           >删除</el-button
         >
-        <!-- <el-button
+        <el-button
           v-if="permissionList.isColumnDelete"
           size="mini"
           type="text"
           style="color: #f56c6c"
           @click="handleDeleteColumnClick(scope.row)"
           >删除</el-button
-        > -->
+        >
         <!-- 扩展其他操作 -->
         <slot name="otherTableHandler" :row="scope.row"></slot>
       </template>

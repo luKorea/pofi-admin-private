@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 10:57:17
+ * @LastEditTime: 2022-03-25 09:43:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
 <template>
-  <div>
+  <div v-if="0">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"

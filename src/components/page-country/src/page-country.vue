@@ -17,10 +17,19 @@
       "
     >
       <div class="wrap">
+        <!-- <div class="search-country">
+          <el-input
+            v-model="searchName"
+            placeholder="高级检索"
+            suffix-icon="el-icon-search"
+            clearable
+            size="mini"
+          ></el-input>
+        </div> -->
         <div style="color: rgb(182, 176, 176); font-size: 14px">国家地区</div>
         <el-divider style="margin: 10px 0"></el-divider>
-        <template v-if="countryList && countryList.length > 0">
-          <template v-for="(item, index) in countryList" :key="item.id">
+        <template v-if="filterCountry && filterCountry.length > 0">
+          <template v-for="(item, index) in filterCountry" :key="item.id">
             <div
               class="item"
               :class="index === currentIndex && 'active'"
@@ -34,7 +43,7 @@
           </template>
         </template>
         <template v-else>
-          <div>暂无数据</div>
+          <div style="color: #b6b0b0; font-size: 14px">暂无数据</div>
         </template>
       </div>
     </el-card>
@@ -42,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 export default defineComponent({
   name: 'PageCountry',
   props: {
@@ -52,14 +61,24 @@ export default defineComponent({
     }
   },
   emits: ['selectCountryItem'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const currentIndex = ref(0)
+    const searchName = ref<string>()
+    const filterCountry = computed(() =>
+      (props.countryList as any[]).filter(
+        (data) =>
+          !searchName.value ||
+          data.name.toLowerCase().includes(searchName.value.toLowerCase())
+      )
+    )
     const selectItem = (item: any, index: string) => {
-      if (currentIndex.value === +index) return
+      // if (currentIndex.value === +index) return
       currentIndex.value = +index
       emit('selectCountryItem', item)
     }
     return {
+      searchName,
+      filterCountry,
       currentIndex,
       selectItem
     }

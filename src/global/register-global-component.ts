@@ -25,7 +25,7 @@ const components: any[] = [
   PageImage
 ]
 
-export function registerGlobalComponents(app: App): void {
+export default function (app: App): void {
   for (const component of components) {
     app.component(component.name, component)
   }

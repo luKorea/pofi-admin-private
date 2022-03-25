@@ -17,4 +17,9 @@ export interface PermissionType {
   operation?: boolean // 操作日志
   distribution?: boolean // 分配按钮
   export?: boolean // 导出
+
+  // 单行编辑
+  columnEdit?: boolean
+  columnAdd?: boolean
+  columnDelete?: boolean
 }

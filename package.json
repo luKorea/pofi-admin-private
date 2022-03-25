@@ -35,7 +35,9 @@
     "vue": "^3.2.31",
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2",
+    "vxe-table": "^4.2.2-beta.1",
     "wangeditor": "^4.7.11",
+    "xe-utils": "^3.5.4",
     "xgplayer": "^2.31.4",
     "xlsx": "^0.18.2"
   },

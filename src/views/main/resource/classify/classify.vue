@@ -143,7 +143,6 @@ export default defineComponent({
     })
     const newData = (item: any) => {
       selectName.value = item.name
-      item.selectName = item.name
       // const [name] = useMapSelectTitle(item.id)
       imgList.value = []
       otherInfo.value = {
@@ -152,6 +151,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      selectName.value = item.name
       if (item.parent === 0) {
         warnTip('当前分类暂不支持编辑')
         return
@@ -168,7 +168,6 @@ export default defineComponent({
             otherInfo.value = {
               id: res.data.id
             }
-            item.selectName = res.data.name
             if (
               res.data.moldCategoryList &&
               res.data.moldCategoryList.length > 0

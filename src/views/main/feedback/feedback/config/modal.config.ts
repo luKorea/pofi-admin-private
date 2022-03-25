@@ -2,20 +2,20 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:40:58
+ * @LastEditTime: 2022-02-25 09:57:50
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
+ * @FilePath: /pofi-admin/src/views/main/device/condition/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '关键词管理操作',
+  title: '限制条件管理操作',
   formItems: [
     {
       field: 'id',
       type: 'input',
-      label: '编号',
-      placeholder: '系统自动生成',
+      label: 'ID',
+      placeholder: '唯一ID',
       otherOptions: {
         disabled: true
       }
@@ -23,35 +23,47 @@ export const modalConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '关键词',
-      placeholder: '请输入关键词',
+      label: '方案名称',
+      placeholder: '请输入方案名称',
       rules: [
         {
           required: true,
-          message: '请输入关键词',
+          message: '请输入方案名称',
           trigger: 'blur'
         }
       ]
     },
     {
-      field: 'type',
-      type: 'select',
-      label: '关键词类型',
-      placeholder: '请选择关键词类型',
-      options: [],
+      field: 'limitNum',
+      type: 'inputNumber',
+      label: '设备限制',
+      placeholder: '请输入设备限制',
+      otherOptions: {
+        min: 0
+      },
       rules: [
         {
           required: true,
-          message: '请选择关键词类型',
+          message: '请输入设备限制',
           trigger: 'blur'
         }
       ]
     },
+    // {
+    //   field: 'region',
+    //   type: 'select',
+    //   label: '地区',
+    //   placeholder: '不选默认全部',
+    //   options: [],
+    //   otherOptions: {
+    //     multiple: true,
+    //     collapseTags: true
+    //   }
+    // },
     {
-      field: 'status',
+      field: 'state',
       type: 'select',
       label: '状态',
-      placeholder: '请选择状态',
       options: [
         {
           title: '启用',
@@ -60,17 +72,6 @@ export const modalConfig: IForm = {
         {
           title: '禁用',
           value: 0
-        }
-        // {
-        //   title: '未知',
-        //   value: 2
-        // }
-      ],
-      rules: [
-        {
-          required: true,
-          message: '请选择状态',
-          trigger: 'blur'
         }
       ]
     }

@@ -214,6 +214,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      selectName.value = item.name
       if (item.parent === 0) {
         warnTip('当前系列暂不支持编辑')
         return
