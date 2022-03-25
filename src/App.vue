@@ -22,7 +22,6 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useExpirationTime } from '@/hooks/use-expiration-time'
-import { useGetClient } from '@/hooks/use-oss-config'
 export default defineComponent({
   name: 'App',
   components: {
@@ -34,10 +33,6 @@ export default defineComponent({
     }
   },
   setup() {
-    onMounted(() => {
-      const client = useGetClient()
-      console.log(client, 'OSS客户端')
-    })
     const router = useRouter()
     const route = useRoute()
     if (route.path !== '/login' && route.path !== '/') {

@@ -66,6 +66,9 @@
               :limit="imgLimit"
               fileTypeName="base/"
               v-model:value="imgList"
+              :otherOptions="{
+                multiple: false
+              }"
             ></hy-upload>
           </div>
         </el-col>

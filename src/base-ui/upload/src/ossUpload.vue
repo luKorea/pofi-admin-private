@@ -1,54 +1,61 @@
 <template>
-  <el-upload
-    :limit="limit"
-    :http-request="httpRequest"
-    :on-success="onSuccess"
-    :before-remove="beforeRemove"
-    :on-preview="onPreview"
-    :on-exceed="onExceed"
-    :before-upload="onChange"
-    :file-list="value"
-    list-type="picture-card"
+  <draggable
+    :value="value"
+    forceFallback="true"
+    animation="400"
+    class="clearfix"
   >
-    <template #default>
-      <template v-if="!progressFlag">
-        <el-icon><plus /></el-icon>
-      </template>
-      <template v-else>
-        <el-progress type="circle" :percentage="percent"></el-progress>
-      </template>
-    </template>
-    <template #file="{ file }">
-      <div style="width: 100%; height: 100%">
-        <template v-if="fileType === 'image'">
-          <img
-            style="object-fit: cover"
-            class="el-upload-list__item-thumbnail"
-            :src="file.url"
-            alt=""
-          />
+    <el-upload
+      :limit="limit"
+      :http-request="httpRequest"
+      :on-success="onSuccess"
+      :before-remove="beforeRemove"
+      :on-preview="onPreview"
+      :on-exceed="onExceed"
+      :before-upload="beforeUpload"
+      :file-list="value"
+      list-type="picture-card"
+      v-bind="otherOptions"
+    >
+      <template #default>
+        <template v-if="!progressFlag">
+          <el-icon><plus /></el-icon>
         </template>
-        <template v-else-if="fileType === 'video'">
-          <video :src="file.url"></video>
+        <template v-else>
+          <el-progress type="circle" :percentage="percent"></el-progress>
         </template>
-        <span class="el-upload-list__item-actions">
-          <span class="el-upload-list__item-preview" @click="onPreview(file)">
-            <el-icon><zoom-in /></el-icon>
+      </template>
+      <template #file="{ file }">
+        <div style="width: 100%; height: 100%">
+          <template v-if="fileType === 'image'">
+            <img
+              style="object-fit: cover"
+              class="el-upload-list__item-thumbnail"
+              :src="file.url"
+              alt=""
+            />
+          </template>
+          <template v-else-if="fileType === 'video'">
+            <video :src="file.url"></video>
+          </template>
+          <span class="el-upload-list__item-actions">
+            <span class="el-upload-list__item-preview" @click="onPreview(file)">
+              <el-icon><zoom-in /></el-icon>
+            </span>
+            <span
+              v-if="!disabled"
+              class="el-upload-list__item-delete"
+              @click="onRemove(file)"
+            >
+              <el-icon><Delete /></el-icon>
+            </span>
           </span>
-          <span
-            v-if="!disabled"
-            class="el-upload-list__item-delete"
-            @click="onRemove(file)"
-          >
-            <el-icon><Delete /></el-icon>
-          </span>
-        </span>
-      </div>
-    </template>
-  </el-upload>
+        </div>
+      </template>
+    </el-upload>
 
-  <!-- 预览界面 -->
-  <!-- <el-dialog
+    <!-- 预览界面 -->
+    <!-- <el-dialog
     v-model="dialogVisible"
     width="30%"
     :title="fileType === 'image' ? '图片预览' : '视频预览'"
@@ -75,21 +82,25 @@
       </template>
     </div>
   </el-dialog> -->
+  </draggable>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 import { useGetClient } from '@/hooks/use-oss-config'
 import { errorTip, warnTip } from '@/utils/tip-info'
 import { OSSURL } from '@/service/request/config'
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
 import { fileTypeIsImage } from '@/utils/index'
-
+import draggable from 'vuedraggable'
+import { useOSSConfig } from '../../../hooks/use-oss-config'
+import OSS from 'ali-oss'
 export default defineComponent({
   components: {
     Plus,
     Delete,
     ZoomIn
+    // draggable
   },
   props: {
     limit: {
@@ -103,16 +114,19 @@ export default defineComponent({
     value: {
       type: Array,
       default: () => []
+    },
+    otherOptions: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['successClick', 'removeClick', 'update:value'],
   setup(props, { emit }) {
-    let client: any = null
+    let client = ref<any>()
     const fileType = ref<any>('image')
     // 进度条展示
     const progressFlag = ref<boolean>(false)
     const percent = ref<number>(0)
-    onMounted(() => (client = useGetClient()))
     watchEffect(() => {
       if (props.value && props.value.length > 0) {
         props.value.forEach((item: any) => {
@@ -147,11 +161,24 @@ export default defineComponent({
       dialogImageUrl.value = file.url!
       dialogVisible.value = true
     }
-    const onChange = () => {
-      if (props.value.length === props.limit) {
-        warnTip('当前上传文件数量已经达到限制啦，请删除后重新上传')
-        return
-      }
+    const beforeUpload = () => {
+      return new Promise((resolve, reject) => {
+        if (props.value.length === props.limit) {
+          warnTip('当前上传文件数量已经达到限制啦，请删除后重新上传')
+          return
+        }
+        useOSSConfig()
+          .then((res) => {
+            client.value = new OSS({
+              region: 'oss-cn-hongkong',
+              stsToken: res.securityToken,
+              bucket: res.bucketName,
+              ...res
+            })
+            resolve(client.value)
+          })
+          .catch((err) => reject(err))
+      })
     }
     // 进度条
     const onProgress = (progress: any) => {
@@ -159,33 +186,42 @@ export default defineComponent({
     }
     // beforeRemove
     const httpRequest = (options: any) => {
-      return new Promise((resolve, reject) => {
-        const file = options.file
-        const suffix = '.' + file.type.split('/')[1]
-        const name = props.fileTypeName + client.options.fileName + suffix
-        client
-          .multipartUpload(name, file, {
-            progress: function (p: any) {
-              progressFlag.value = true
-              percent.value = p.toFixed(0) * 100
-              if (p === 1) {
-                progressFlag.value = false
+      async function uploadImage() {
+        if (client.value !== null) {
+          const file = options.file
+          const suffix = '.' + file.type.split('/')[1]
+          const name =
+            props.fileTypeName + client.value.options.fileName + suffix
+          client.value
+            .multipartUpload(name, file, {
+              progress: function (p: any) {
+                progressFlag.value = true
+                percent.value = p.toFixed(0) * 100
+                if (p === 1) {
+                  progressFlag.value = false
+                }
               }
-            }
-          })
-          .then((res: any) => {
-            const url = `${OSSURL}/${res.name}`
-            emit('update:value', [
-              ...props.value,
-              {
-                name: res.name + '?' + new Date().getTime(),
-                url: url + '?' + new Date().getTime()
-              }
-            ])
-            resolve(res)
-          })
-          .catch((err: any) => reject(err))
-      })
+            })
+            .then((res: any) => {
+              const url = `${OSSURL}/${res.name}`
+              emit('update:value', [
+                ...props.value,
+                {
+                  name: res.name + '?' + new Date().getTime(),
+                  url: url + '?' + new Date().getTime()
+                }
+              ])
+              // resolve(res)
+            })
+        }
+      }
+      uploadImage()
+      // .catch((err: any) => reject(err))
+      // return new Promise((resolve, reject) => {
+      //   console.log(client.value)
+      //   if (client.value !== null) {
+      //   }
+      // })
     }
     return {
       // 进度条
@@ -201,7 +237,7 @@ export default defineComponent({
       onSuccess,
       onExceed,
       onRemove,
-      onChange,
+      beforeUpload,
       onProgress
     }
   }

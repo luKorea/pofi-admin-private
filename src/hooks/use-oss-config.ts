@@ -48,41 +48,14 @@ import { OSSURL } from '@/service/request/config'
 // }
 export function useGetClient() {
   let client: any = null
-  if (localCache.getSessionCache('ossRes')) {
-    const res = localCache.getSessionCache('ossRes')
-    const expirationDate = dayJs(res.expiration).valueOf()
-    const nowDate = dayJs(new Date()).valueOf()
-    if (expirationDate < nowDate) {
-      console.log('OSS过期')
-      localCache.clearSessionCache()
-      useOSSConfig().then((res) => {
-        localCache.setSessionCache('ossRes', res)
-        client = new OSS({
-          region: 'oss-cn-hongkong',
-          stsToken: res.securityToken,
-          bucket: res.bucketName,
-          ...res
-        })
-      })
-    } else {
-      client = new OSS({
-        region: 'oss-cn-hongkong',
-        stsToken: res.securityToken,
-        bucket: res.bucketName,
-        ...res
-      })
-    }
-  } else {
-    useOSSConfig().then((res) => {
-      localCache.setSessionCache('ossRes', res)
-      client = new OSS({
-        region: 'oss-cn-hongkong',
-        stsToken: res.securityToken,
-        bucket: res.bucketName,
-        ...res
-      })
+  useOSSConfig().then((res) => {
+    client = new OSS({
+      region: 'oss-cn-hongkong',
+      stsToken: res.securityToken,
+      bucket: res.bucketName,
+      ...res
     })
-  }
+  })
   return client
 }
 

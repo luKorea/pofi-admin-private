@@ -34,6 +34,7 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "vue": "^3.2.31",
     "vue-router": "^4.0.10",
+    "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2",
     "vxe-table": "^4.2.2-beta.1",
     "wangeditor": "^4.7.11",
