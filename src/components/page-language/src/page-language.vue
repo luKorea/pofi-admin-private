@@ -1,8 +1,8 @@
 <template>
   <!-- 暂时只做选择封装，后续有时间再做表单封装 -->
-  <el-divider>多语言配置</el-divider>
-  <el-row :gutter="12">
-    <el-col :span="3">
+  <el-divider>{{ title }}</el-divider>
+  <el-row>
+    <el-col :span="4">
       <div class="item-flex">
         <el-card>
           <span class="item-title">多语言选择</span>
@@ -20,7 +20,9 @@
         </el-card>
       </div>
     </el-col>
-    <slot name="formItem"></slot>
+    <el-col :span="20">
+      <slot name="formItem"></slot>
+    </el-col>
   </el-row>
 </template>
 

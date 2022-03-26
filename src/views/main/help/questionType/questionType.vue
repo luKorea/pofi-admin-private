@@ -37,26 +37,24 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <span class="item-title">
-                <span class="item-tip">*</span>
-                问题类型
-              </span>
-              <el-input
-                v-model="languageItem.subTitle"
-                placeholder="请输入问题类型"
-              ></el-input>
-            </div>
-            <div class="item-flex">
-              <span class="item-title">主图</span>
-              <hy-upload
-                :limit="imgLimit"
-                fileTypeName="helpQuestionType/"
-                v-model:value="languageItem.url"
-              ></hy-upload>
-            </div>
-          </el-col>
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              问题类型
+            </span>
+            <el-input
+              v-model="languageItem.subTitle"
+              placeholder="请输入问题类型"
+            ></el-input>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">主图</span>
+            <hy-upload
+              :limit="imgLimit"
+              fileTypeName="helpQuestionType/"
+              v-model:value="languageItem.url"
+            ></hy-upload>
+          </div>
         </template>
       </page-language>
     </page-modal>

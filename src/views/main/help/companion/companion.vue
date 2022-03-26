@@ -49,41 +49,39 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                标题
-              </div>
-              <el-input
-                v-model="languageItem.title"
-                placeholder="请输入标题"
-                required
-              ></el-input>
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              标题
             </div>
-            <el-row :gutter="12">
-              <el-col v-bind="modalConfigRef.colLayout">
-                <div class="item-flex">
-                  <span class="item-title">图片上传</span>
-                  <hy-upload
-                    :limit="imgLimit"
-                    fileTypeName="helpCompanion/"
-                    v-model:value="languageItem.bgList"
-                  ></hy-upload>
-                </div>
-              </el-col>
-              <el-col v-bind="modalConfigRef.colLayout">
-                <div class="item-flex">
-                  <span class="item-title">视频上传</span>
-                  <hy-upload
-                    :limit="videoLimit"
-                    fileTypeName="helpCompanion/"
-                    v-model:value="languageItem.fileList"
-                  ></hy-upload>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
+            <el-input
+              v-model="languageItem.title"
+              placeholder="请输入标题"
+              required
+            ></el-input>
+          </div>
+          <el-row :gutter="12">
+            <el-col v-bind="modalConfigRef.colLayout">
+              <div class="item-flex">
+                <span class="item-title">图片上传</span>
+                <hy-upload
+                  :limit="imgLimit"
+                  fileTypeName="helpCompanion/"
+                  v-model:value="languageItem.bgList"
+                ></hy-upload>
+              </div>
+            </el-col>
+            <el-col v-bind="modalConfigRef.colLayout">
+              <div class="item-flex">
+                <span class="item-title">视频上传</span>
+                <hy-upload
+                  :limit="videoLimit"
+                  fileTypeName="helpCompanion/"
+                  v-model:value="languageItem.fileList"
+                ></hy-upload>
+              </div>
+            </el-col>
+          </el-row>
         </template>
       </page-language>
     </page-modal>

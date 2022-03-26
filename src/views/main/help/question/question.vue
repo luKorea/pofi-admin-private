@@ -35,29 +35,27 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                问题标题
-              </div>
-              <el-input
-                v-model="languageItem.name"
-                placeholder="请输入问题标题"
-                required
-              ></el-input>
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              问题标题
             </div>
-            <div class="item-flex">
-              <span class="item-title">
-                <span class="item-tip">*</span>
-                回答内容
-              </span>
-              <hy-editor
-                v-model:value="languageItem.desc"
-                fileTypeName="helpQuestion/"
-              ></hy-editor>
-            </div>
-          </el-col>
+            <el-input
+              v-model="languageItem.name"
+              placeholder="请输入问题标题"
+              required
+            ></el-input>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              回答内容
+            </span>
+            <hy-editor
+              v-model:value="languageItem.desc"
+              fileTypeName="helpQuestion/"
+            ></hy-editor>
+          </div>
         </template>
       </page-language>
     </page-modal>

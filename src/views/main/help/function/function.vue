@@ -32,77 +32,75 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <div class="item-flex">
-                  <div class="item-title">
-                    <span class="item-tip">*</span>
-                    功能分类标题
-                  </div>
-                  <el-input
-                    v-model="languageItem.title"
-                    placeholder="请输入功能分类标题"
-                    required
-                  ></el-input>
+          <el-row :gutter="12">
+            <el-col :span="12">
+              <div class="item-flex">
+                <div class="item-title">
+                  <span class="item-tip">*</span>
+                  功能分类标题
                 </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="item-flex">
-                  <span class="item-title">
-                    <span class="item-tip">*</span>
-                    描述
-                  </span>
-                  <el-input
-                    v-model="languageItem.desc"
-                    placeholder="请输入描述"
-                  ></el-input>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <div class="item-flex">
-                  <div class="item-title">Pro标签</div>
-                  <el-input
-                    v-model="languageItem.proTag"
-                    placeholder="请输入Pro标签"
-                    required
-                  ></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="item-flex">
-                  <span class="item-title"> Plus标签 </span>
-                  <el-input
-                    v-model="languageItem.plusTag"
-                    placeholder="请输入Plus标签"
-                  ></el-input>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <div class="item-flex">
-                  <span class="item-title"> 小提示 </span>
-                  <el-input
-                    v-model="languageItem.tips"
-                    placeholder="请输入描述"
-                  ></el-input>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="item-flex">
-                  <span class="item-title">演示图</span>
-                  <hy-upload
-                    :limit="imgLimit"
-                    fileTypeName="helpFunction/"
-                    v-model:value="languageItem.icon"
-                  ></hy-upload>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
+                <el-input
+                  v-model="languageItem.title"
+                  placeholder="请输入功能分类标题"
+                  required
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="item-flex">
+                <span class="item-title">
+                  <span class="item-tip">*</span>
+                  描述
+                </span>
+                <el-input
+                  v-model="languageItem.desc"
+                  placeholder="请输入描述"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="12">
+            <el-col :span="12">
+              <div class="item-flex">
+                <div class="item-title">Pro标签</div>
+                <el-input
+                  v-model="languageItem.proTag"
+                  placeholder="请输入Pro标签"
+                  required
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="item-flex">
+                <span class="item-title"> Plus标签 </span>
+                <el-input
+                  v-model="languageItem.plusTag"
+                  placeholder="请输入Plus标签"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="12">
+            <el-col :span="12">
+              <div class="item-flex">
+                <span class="item-title"> 小提示 </span>
+                <el-input
+                  v-model="languageItem.tips"
+                  placeholder="请输入描述"
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="item-flex">
+                <span class="item-title">演示图</span>
+                <hy-upload
+                  :limit="imgLimit"
+                  fileTypeName="helpFunction/"
+                  v-model:value="languageItem.icon"
+                ></hy-upload>
+              </div>
+            </el-col>
+          </el-row>
         </template>
       </page-language>
     </page-modal>

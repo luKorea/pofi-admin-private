@@ -75,32 +75,30 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <span class="item-title">标题</span>
-              <el-input
-                v-model="languageItem.title"
-                placeholder="请输入标题"
-              ></el-input>
+          <div class="item-flex">
+            <span class="item-title">标题</span>
+            <el-input
+              v-model="languageItem.title"
+              placeholder="请输入标题"
+            ></el-input>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">副标题</span>
+            <el-input
+              v-model="languageItem.subTitle"
+              placeholder="请输入副标题"
+            ></el-input>
+          </div>
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              内容
             </div>
-            <div class="item-flex">
-              <span class="item-title">副标题</span>
-              <el-input
-                v-model="languageItem.subTitle"
-                placeholder="请输入副标题"
-              ></el-input>
-            </div>
-            <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                内容
-              </div>
-              <hy-editor
-                v-model:value="languageItem.value"
-                :fileTypeName="editorFileName"
-              ></hy-editor>
-            </div>
-          </el-col>
+            <hy-editor
+              v-model:value="languageItem.value"
+              :fileTypeName="editorFileName"
+            ></hy-editor>
+          </div>
         </template>
       </page-language>
     </page-modal>

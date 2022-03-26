@@ -48,28 +48,26 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                分类名称
-              </div>
-              <el-input
-                v-model="languageItem.name"
-                placeholder="请输入分类名称"
-                required
-              ></el-input>
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              分类名称
             </div>
-            <div class="item-flex">
-              <span class="item-title">描述</span>
-              <el-input
-                type="textarea"
-                :rows="3"
-                v-model="languageItem.desc"
-                placeholder="请输入描述"
-              ></el-input>
-            </div>
-          </el-col>
+            <el-input
+              v-model="languageItem.name"
+              placeholder="请输入分类名称"
+              required
+            ></el-input>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">描述</span>
+            <el-input
+              type="textarea"
+              :rows="3"
+              v-model="languageItem.desc"
+              placeholder="请输入描述"
+            ></el-input>
+          </div>
         </template>
       </page-language>
     </page-modal>

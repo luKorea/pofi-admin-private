@@ -40,18 +40,17 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <div class="item-flex">
-              <div class="item-title">
-                <span class="item-tip">*</span>
-                关键词(多语言)
-              </div>
-              <el-input
-                v-model="languageItem.name"
-                placeholder="请输入多语言关键词"
-                required
-              ></el-input>
-              <!-- <el-form :model="languageItem">
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              关键词(多语言)
+            </div>
+            <el-input
+              v-model="languageItem.name"
+              placeholder="请输入多语言关键词"
+              required
+            ></el-input>
+            <!-- <el-form :model="languageItem">
                 <el-form-item
                   prop="name"
                   :rules="[
@@ -65,17 +64,16 @@
 
                 </el-form-item>
               </el-form> -->
-            </div>
-            <div class="item-flex">
-              <span class="item-title">描述</span>
-              <el-input
-                type="textarea"
-                :rows="3"
-                v-model="languageItem.desc"
-                placeholder="请输入描述"
-              ></el-input>
-            </div>
-          </el-col>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">描述</span>
+            <el-input
+              type="textarea"
+              :rows="3"
+              v-model="languageItem.desc"
+              placeholder="请输入描述"
+            ></el-input>
+          </div>
         </template>
       </page-language>
     </page-modal>

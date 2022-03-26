@@ -60,53 +60,51 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <el-col :span="21">
-            <el-row :gutter="12">
-              <el-col :span="12">
-                <div class="item-flex">
-                  <div class="item-title">
-                    <span class="item-tip">*</span>
-                    系列名称
-                  </div>
-                  <el-input
-                    v-model="languageItem.name"
-                    placeholder="请输入系列名称"
-                    required
-                  ></el-input>
+          <el-row :gutter="12">
+            <el-col :span="12">
+              <div class="item-flex">
+                <div class="item-title">
+                  <span class="item-tip">*</span>
+                  系列名称
                 </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="item-flex">
-                  <span class="item-title">
-                    <span class="item-tip">*</span>
-                    副标题(所属库)
-                  </span>
-                  <el-input
-                    v-model="languageItem.subTitle"
-                    placeholder="请输入副标题(所属库)"
-                  ></el-input>
-                </div>
-              </el-col>
-            </el-row>
-            <div class="item-flex">
-              <span class="item-title">图标上传</span>
-              <hy-upload
-                :limit="imgLimit"
-                fileTypeName="series/"
-                v-model:value="languageItem.url"
-              ></hy-upload>
-            </div>
-            <div class="item-flex">
-              <span class="item-title">
-                <span class="item-tip">*</span>
-                描述
-              </span>
-              <hy-editor
-                v-model:value="languageItem.desc"
-                fileTypeName="series/"
-              ></hy-editor>
-            </div>
-          </el-col>
+                <el-input
+                  v-model="languageItem.name"
+                  placeholder="请输入系列名称"
+                  required
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="item-flex">
+                <span class="item-title">
+                  <span class="item-tip">*</span>
+                  副标题(所属库)
+                </span>
+                <el-input
+                  v-model="languageItem.subTitle"
+                  placeholder="请输入副标题(所属库)"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <div class="item-flex">
+            <span class="item-title">图标上传</span>
+            <hy-upload
+              :limit="imgLimit"
+              fileTypeName="series/"
+              v-model:value="languageItem.url"
+            ></hy-upload>
+          </div>
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              描述
+            </span>
+            <hy-editor
+              v-model:value="languageItem.desc"
+              fileTypeName="series/"
+            ></hy-editor>
+          </div>
         </template>
       </page-language>
     </page-modal>
