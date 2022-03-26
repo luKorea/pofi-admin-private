@@ -101,6 +101,7 @@
               描述
             </span>
             <hy-editor
+              ref="editorRef"
               v-model:value="languageItem.desc"
               fileTypeName="series/"
             ></hy-editor>
@@ -141,6 +142,7 @@ export default defineComponent({
   },
   setup() {
     const [
+      editorRef,
       languageList,
       languageId,
       resetLanguageList,
@@ -272,6 +274,7 @@ export default defineComponent({
       areaIds,
       handleChangeCountry,
       // 多语言编辑
+      editorRef,
       languageList,
       languageId,
       languageItem,

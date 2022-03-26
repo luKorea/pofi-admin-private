@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
 import { getSelectTitle } from '@/service/main/resource/classify'
@@ -22,6 +22,7 @@ export function useMapSelectTitle(id: any) {
 }
 
 export function useSetLanguage() {
+  const editorRef = ref<any>()
   const [languageList, languageId, resetLanguageList, languageBtnList] =
     usePageLanguage(
       {
@@ -42,13 +43,16 @@ export function useSetLanguage() {
     } else resetLanguageList()
   })
   // 改变多语言
-  const handleChangeLanguage = (id: any) => {
+  const handleChangeLanguage = async (id: any) => {
     if (mapObjectIsNull(['name', 'subTitle', 'desc'], languageItem.value)) {
       languageId.value = id
+      await nextTick()
+      editorRef.value.setEditorValue()
     } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
+    editorRef,
     languageList,
     languageId,
     resetLanguageList,

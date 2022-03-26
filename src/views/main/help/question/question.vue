@@ -1,5 +1,5 @@
 <template>
-  <div class="base-languages" v-if="0">
+  <div class="base-languages" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -52,6 +52,7 @@
               回答内容
             </span>
             <hy-editor
+              ref="editorRef"
               v-model:value="languageItem.desc"
               fileTypeName="helpQuestion/"
             ></hy-editor>
@@ -86,6 +87,7 @@ export default defineComponent({
   },
   setup() {
     const [
+      editorRef,
       languageList,
       languageId,
       resetLanguageList,
@@ -143,6 +145,7 @@ export default defineComponent({
       usePageModal(newData)
     return {
       // 多语言编辑
+      editorRef,
       languageList,
       languageId,
       languageItem,

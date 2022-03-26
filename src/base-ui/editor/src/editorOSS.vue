@@ -65,13 +65,12 @@ export default defineComponent({
       text: ''
     })
     const instance = ref<Editor | null>(null)
-
-    watch(
-      () => props.value,
-      () => {
-        initEditorContent(props.value, false)
-      }
-    )
+    // watch(
+    //   () => props.value,
+    //   () => {
+    //     initEditorContent(props.value, false)
+    //   }
+    // )
 
     onMounted(() => {
       setClient()
@@ -94,6 +93,31 @@ export default defineComponent({
         })
       })
     }
+    const setEditorValue = () => {
+      initEditorContent(props.value, false)
+    }
+    const uploadOptions = (resultFiles: any, insertFn: any) => {
+      setClient()
+      if (client.value !== null) {
+        console.log(client.value, 'log')
+        clientSendFile(
+          client.value,
+          props.fileTypeName,
+          client.value?.options!.fileName,
+          resultFiles[0]
+        )
+          .then((res: any) => {
+            console.log(res)
+            const url = res.res.requestUrls[0].split('?')[0]
+            console.log(res.res.requestUrls[0].split('?')[0], '图片')
+            // 后续再改
+            insertFn(url)
+          })
+          .catch((err: any) => {
+            console.log(err)
+          })
+      }
+    }
     const createWangEditor = () => {
       instance.value = new WangEditor(editorRef.value)
       setEditorConfig()
@@ -104,10 +128,11 @@ export default defineComponent({
     }
 
     const initEditorContent = (htmlStr: string, isFocus = false) => {
-      isInitContent.value = true
       if (!instance.value) return
-      const editor: Editor = instance.value as Editor
+      // editor.config.focus = isFocus
       // if (!htmlStr) return
+      isInitContent.value = true
+      const editor: Editor = instance.value as Editor
       editor.txt.html(htmlStr)
     }
 
@@ -117,34 +142,22 @@ export default defineComponent({
       editor.config.uploadFileName = props.fileTypeName
       // 一次最多上传图片的数量
       // editor.config.uploadImgMaxLength = 1
-      console.log(editor.config, 'editor.config')
       editor.config.customUploadImg = function (
         resultFiles: any,
-        insertImgFn: any
+        insertFn: any
       ) {
-        // resultFiles 是 input 中选中的文件列表
-        // insertImgFn 是获取图片 url 后，插入到编辑器的方法
-        setClient()
-        if (client.value !== null) {
-          console.log(client.value, 'log')
-          clientSendFile(
-            client.value,
-            props.fileTypeName,
-            client.value?.options!.fileName,
-            resultFiles[0]
-          )
-            .then((res: any) => {
-              console.log(res)
-              const url = res.res.requestUrls[0].split('?')[0]
-              console.log(res.res.requestUrls[0].split('?')[0], '图片')
-              // 后续再改
-              insertImgFn(url)
-            })
-            .catch((err: any) => {
-              console.log(err)
-            })
-        }
+        uploadOptions(resultFiles, insertFn)
       }
+      editor.config.uploadVideoAccept = ['mp4']
+      editor.config.showLinkVideo = true // 隐藏插入网络视频的功能
+      // 后续开放
+      // editor.config.customUploadVideo = function (
+      //   resultFiles: any,
+      //   insertFn: any
+      // ) {
+      //   uploadOptions(resultFiles, insertFn)
+      // }
+      // 配置触发 onchange 的时间频率，默认为 200ms
       // 设置编辑区域高度为 500px
       editor.config.height = props.height
       // 设计z-index
@@ -152,50 +165,48 @@ export default defineComponent({
       // 取消自动 focus
       // editor.config.focus = props.focus
       // 配置 onchange 回调函数
+      editor.config.onchangeTimeout = 500 // 修改为 500ms
       editor.config.onchange = function (newHtml: string) {
         content.html = newHtml
         content.text = editor.txt.text()
         if (!isInitContent.value) {
-          emit('update:value', content.html)
-          console.log('xx')
+          emit('update:value', `<div>${content.html}</div>`)
         }
-        // 最后标记为 false
         isInitContent.value = false
-        // emit('onChange', content.html, content.text)
       }
-      // 配置触发 onchange 的时间频率，默认为 200ms
-      editor.config.onchangeTimeout = 200 // 修改为 500ms
       // 配置菜单栏，删减菜单，调整顺序
-      // editor.config.menus = [
-      //   'head',
-      //   'bold',
-      //   'fontSize',
-      //   'fontName',
-      //   'italic',
-      //   'underline',
-      //   'strikeThrough',
-      //   'indent',
-      //   'lineHeight',
-      //   'foreColor',
-      //   'backColor',
-      //   'link',
-      //   'list',
-      //   'todo',
-      //   'justify',
-      //   'quote',
-      //   'emoticon',
-      //   'image',
-      //   'video',
-      //   'table',
-      //   'code',
-      //   'splitLine',
-      //   'undo',
-      //   'redo'
-      // ]
+      editor.config.menus = [
+        'head',
+        'bold',
+        'fontSize',
+        'fontName',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'indent',
+        'lineHeight',
+        'foreColor',
+        'backColor',
+        'link',
+        'list',
+        'todo',
+        'justify',
+        'quote',
+        'emoticon',
+        'image',
+        'video',
+        'table',
+        'code',
+        'splitLine',
+        'undo',
+        'redo'
+      ]
+      console.log(editor.config, 'editor.config')
     }
 
     return {
-      editorRef
+      editorRef,
+      setEditorValue
     }
   }
 })

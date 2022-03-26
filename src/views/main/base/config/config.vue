@@ -95,6 +95,7 @@
               内容
             </div>
             <hy-editor
+              ref="editorRef"
               v-model:value="languageItem.value"
               :fileTypeName="editorFileName"
             ></hy-editor>
@@ -142,6 +143,7 @@ export default defineComponent({
       }
     ])
     const [
+      editorRef,
       languageList,
       languageId,
       resetLanguageList,
@@ -278,6 +280,7 @@ export default defineComponent({
     })
     return {
       // 多语言编辑
+      editorRef,
       languageList,
       languageId,
       languageItem,

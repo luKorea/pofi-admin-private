@@ -6,10 +6,11 @@
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
-import { errorTip } from '@/utils/tip-info'
-import { ref, computed } from 'vue'
+import { errorTip, warnTip } from '@/utils/tip-info'
+import { ref, computed, nextTick } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
+import { mapObjectIsNull } from '@/utils'
 
 export function usePageList() {
   // 国家地区
@@ -67,6 +68,7 @@ export function useOther() {
 }
 
 export function useSetLanguage() {
+  const editorRef = ref<any>()
   const [languageList, languageId, resetLanguageList, languageBtnList] =
     usePageLanguage({
       value: '',
@@ -79,9 +81,16 @@ export function useSetLanguage() {
     )
   })
   // 改变多语言
-  const handleChangeLanguage = (id: any) => (languageId.value = id)
+  const handleChangeLanguage = async (id: any) => {
+    if (mapObjectIsNull(['value'], languageItem.value)) {
+      languageId.value = id
+      await nextTick()
+      editorRef.value.setEditorValue()
+    } else warnTip('请确保多语言配置中带*号的字段已经填写')
+  }
 
   return [
+    editorRef,
     languageList,
     languageId,
     resetLanguageList,
