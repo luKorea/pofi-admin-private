@@ -53,10 +53,10 @@
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import { pathMapToMenu } from '@/utils/map-menus'
-import { useExpirationTime } from '@/hooks/use-expiration-time'
+// import { useExpirationTime } from '@/hooks/use-expiration-time'
 
 // vuex - typescript  => pinia
 
@@ -72,7 +72,7 @@ export default defineComponent({
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
     // router
-    const router = useRouter()
+    // const router = useRouter()
     const route = useRoute()
     const currentPath = route.path
 

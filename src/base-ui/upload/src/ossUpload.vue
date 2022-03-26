@@ -87,7 +87,6 @@
 
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from 'vue'
-import { useGetClient } from '@/hooks/use-oss-config'
 import { errorTip, warnTip } from '@/utils/tip-info'
 import { OSSURL } from '@/service/request/config'
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
