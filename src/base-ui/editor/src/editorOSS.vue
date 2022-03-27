@@ -148,6 +148,10 @@ export default defineComponent({
       ) {
         uploadOptions(resultFiles, insertFn)
       }
+      // editorRef.value?.addEventListener('blur', function (e) {
+      //   e.preventDefault()
+      //   emit('update:value', `<div>${content.html}</div>`)
+      // })
       editor.config.uploadVideoAccept = ['mp4']
       editor.config.showLinkVideo = true // 隐藏插入网络视频的功能
       // 后续开放
