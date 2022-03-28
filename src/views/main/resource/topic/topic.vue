@@ -159,14 +159,7 @@ export default defineComponent({
     editorTable
   },
   setup() {
-    const [
-      languageList,
-      languageId,
-      resetLanguageList,
-      languageBtnList,
-      languageItem,
-      handleChangeLanguage
-    ] = useSetLanguage()
+    // 编辑表格
     const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
       newTableData({
@@ -185,6 +178,15 @@ export default defineComponent({
         }
       })
     })
+    // 多语言
+    const [
+      languageList,
+      languageId,
+      resetLanguageList,
+      languageBtnList,
+      languageItem,
+      handleChangeLanguage
+    ] = useSetLanguage()
     const [, countryList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, , handleQueryClick] = usePageSearch()
