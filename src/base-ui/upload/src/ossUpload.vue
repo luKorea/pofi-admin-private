@@ -126,7 +126,11 @@ export default defineComponent({
     // 进度条展示
     const progressFlag = ref<boolean>(false)
     const percent = ref<number>(0)
+    const isFirstMount = ref(true) // 控制防止重复回显
     watchEffect(() => {
+      if (!isFirstMount.value) {
+        return
+      }
       if (props.value && props.value.length > 0) {
         props.value.forEach((item: any) => {
           let name = item.name
@@ -162,6 +166,7 @@ export default defineComponent({
     }
     // 每次上传都要重新获取fileName
     const beforeUpload = () => {
+      isFirstMount.value = false
       return new Promise((resolve, reject) => {
         if (props.value.length === props.limit) {
           warnTip('当前上传文件数量已经达到限制啦，请删除后重新上传')
@@ -188,6 +193,7 @@ export default defineComponent({
     const httpRequest = (options: any) => {
       async function uploadImage() {
         if (client.value !== null) {
+          isFirstMount.value = false
           const file = options.file
           const suffix = '.' + file.type.split('/')[1]
           const name =
@@ -244,8 +250,11 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="less">
 .el-upload-list__item.is-ready {
+  display: none;
+}
+/deep/.el-upload-list__item.is-ready {
   display: none;
 }
 </style>

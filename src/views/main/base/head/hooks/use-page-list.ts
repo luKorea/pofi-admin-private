@@ -40,7 +40,7 @@ export function useStoreName() {
 
 export function useImageUpload() {
   // 上传操作
-  const imgLimit = ref(10)
+  const imgLimit = ref(1)
   const imgList = ref<any>([])
   return [imgLimit, imgList]
 }

@@ -17,7 +17,6 @@
           <el-image
             v-if="element.type === 'image'"
             :src="element.url"
-            fit="cover"
             :preview-src-list="[element.url]"
           ></el-image>
           <video
@@ -48,6 +47,7 @@
           :disabled="disabled"
           :http-request="httpRequest"
           :on-success="onSuccess"
+          :on-exceed="onExceed"
           :before-upload="beforeUpload"
           v-bind="otherOptions"
         >
@@ -77,15 +77,13 @@ import {
   defineEmits
 } from 'vue'
 import Vuedraggable from 'vuedraggable'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { createUniqueString } from '@/utils/index'
 import { useOSSConfig } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
 import { OSSURL } from '@/service/request/config'
-import {
-  fileTypeIsImage,
-  formatStorage,
-  createUniqueString
-} from '@/utils/index'
-import { errorTip, infoTipBox, warnTip } from '@/utils/tip-info'
+import { fileTypeIsImage } from '@/utils/index'
+import { formatStorage } from '../../../utils/index'
 
 const props = defineProps({
   fileTypeName: {
@@ -118,12 +116,12 @@ const props = defineProps({
   // 图片显示的宽度(px)
   showWidth: {
     type: Number,
-    default: 126
+    default: 100
   },
   // 图片显示的高度(px)
   showHeight: {
     type: Number,
-    default: 126
+    default: 100
   },
   // 是否禁用
   disabled: {
@@ -271,27 +269,38 @@ function onSuccess(res: any, file: any) {
 
 // 上传出错
 function onError(err: any, file: any) {
-  errorTip(file.name + ' 上传失败')
+  ElMessage({
+    type: 'error',
+    message: file.name + ' 上传失败'
+  })
   isUploading.value = false
   console.log(err)
 }
 
 // 移除单张图片
 function onRemoveHandler(index: number) {
-  infoTipBox({
-    title: '提示',
-    message: '确定删除该图片?'
-  }).then(() => {
-    imgList.value.splice(index, 1)
-    syncElUpload()
+  ElMessageBox.confirm('确定删除该图片?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
   })
+    .then(() => {
+      imgList.value.splice(index, 1)
+      syncElUpload()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 // 超限
 function onExceed() {
-  // uploadRef.value.abort() // 取消剩余接口请求
-  // syncElUpload()
-  // warnTip(`图片超限，最多可上传${props.limit}张图片`)
+  uploadRef.value.abort() // 取消剩余接口请求
+  syncElUpload()
+  ElMessage({
+    type: 'warning',
+    message: `图片超限，最多可上传${props.limit}张图片`
+  })
 }
 
 function onDragStart(e: any) {
@@ -311,7 +320,10 @@ function validateSize(file: any) {
   const size = +props.maxSize
   const isSizeOut = file.size / 1024 > size
   if (isSizeOut) {
-    errorTip(`上传图片大小不能超过${formatStorage(size * 1024)}`)
+    ElMessage({
+      type: 'error',
+      message: '上传图片大小不能超过' + formatStorage(size * 1024)
+    })
     return false
   } else {
     isUploading.value = true
@@ -329,19 +341,31 @@ function validateImgScreen(file: any) {
         // console.log(img.width, img.height)
         if (props.screenWidth && +img.width !== +props.screenWidth) {
           reject()
-          errorTip(`上传图片宽度限制只能为${props.screenWidth}像素`)
+          ElMessage({
+            type: 'error',
+            message: '上传图片宽度限制只能为' + props.screenWidth + '像素'
+          })
         } else if (props.screenHeight && +img.height !== +props.screenHeight) {
           reject()
-          errorTip(`上传图片高度限制只能为${props.screenHeight}像素`)
+          ElMessage({
+            type: 'error',
+            message: '上传图片高度限制只能为' + props.screenHeight + '像素'
+          })
         } else if (props.maxScreenWidth && +img.width > +props.maxScreenWidth) {
           reject()
-          errorTip(`上传图片宽度不能超过${props.maxScreenWidth}像素`)
+          ElMessage({
+            type: 'error',
+            message: '上传图片宽度不能超过' + props.maxScreenWidth + '像素'
+          })
         } else if (
           props.maxScreenHeight &&
           +img.height > +props.maxScreenHeight
         ) {
           reject()
-          errorTip(`上传图片高度不能超过${props.maxScreenHeight}像素`)
+          ElMessage({
+            type: 'error',
+            message: '上传图片高度不能超过' + props.maxScreenHeight + '像素'
+          })
         } else {
           isUploading.value = true
           resolve(true)

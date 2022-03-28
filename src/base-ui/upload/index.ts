@@ -6,6 +6,6 @@
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/upload/index.ts
  */
-import HyUpload from './src/ossUpload.vue'
+import HyUpload from './src/upload.vue'
 
 export default HyUpload
