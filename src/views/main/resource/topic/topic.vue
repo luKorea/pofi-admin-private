@@ -59,6 +59,7 @@
           </div>
         </el-col>
       </el-row>
+      <!-- 多语言 -->
       <page-language
         :languageList="languageList"
         :languageId="languageId"
@@ -69,13 +70,24 @@
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
-              问题类型
+              专题名称
             </span>
             <el-input
               v-model="languageItem.title"
-              placeholder="请输入问题类型"
+              placeholder="请输入专题名称"
             ></el-input>
           </div>
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              副标题
+            </span>
+            <el-input
+              v-model="languageItem.title"
+              placeholder="请输入副标题"
+            ></el-input>
+          </div>
+
           <div class="item-flex">
             <span class="item-title">主图</span>
             <hy-upload
@@ -84,19 +96,46 @@
               v-model:value="languageItem.url"
             ></hy-upload>
           </div>
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>专题内容</span
+            >
+            <hy-editor
+              fileTypeName="helpQuestionType/"
+              v-model:value="languageItem.value"
+            ></hy-editor>
+          </div>
         </template>
       </page-language>
+      <!-- 可编辑表格 -->
+      <editor-table :listData="listData" v-bind="contentTableEditConfig">
+        <template #otherHandler>
+          <el-button type="primary" size="mini" @click="handleNewTableData"
+            >新增</el-button
+          >
+        </template>
+        <template #handler="{ row }">
+          <el-button
+            type="danger"
+            size="mini"
+            @click="deleteTableData(row.editId)"
+            >删除</el-button
+          >
+        </template>
+      </editor-table>
     </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, watch } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
+import { contentTableEditConfig } from './config/content.edit-config'
 import { modalConfig } from './config/modal.config'
 
+import { useEditTableData } from '@/hooks/use-page-table-edit'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
@@ -107,12 +146,17 @@ import {
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
+import hyEditor from '@/base-ui/editor'
+import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { warnTip, errorTip } from '@/utils/tip-info'
+import { uid } from 'uid'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
-    hyUpload
+    hyUpload,
+    hyEditor,
+    editorTable
   },
   setup() {
     const [
@@ -123,6 +167,24 @@ export default defineComponent({
       languageItem,
       handleChangeLanguage
     ] = useSetLanguage()
+    const [listData, newTableData, deleteTableData] = useEditTableData()
+    const handleNewTableData = () => {
+      newTableData({
+        editId: uid(8),
+        title: '',
+        subTitle: '',
+        url: [],
+        img: ''
+      })
+    }
+    watch(listData.value, () => {
+      listData.value = listData.value.map((item: any) => {
+        return {
+          ...item,
+          img: item.url && item.url.length > 0 ? item.url[0].url : ''
+        }
+      })
+    })
     const [, countryList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, , handleQueryClick] = usePageSearch()
@@ -238,6 +300,11 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     return {
+      // 编辑表格
+      contentTableEditConfig,
+      handleNewTableData,
+      listData,
+      deleteTableData,
       // 侧边国家
       countryRef,
       handleCountryList,

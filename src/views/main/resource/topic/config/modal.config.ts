@@ -9,7 +9,7 @@
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '问题类型管理操作',
+  title: '专题管理操作',
   formItems: [
     // {
     //   field: 'id',
@@ -23,15 +23,45 @@ export const modalConfig: IForm = {
     {
       field: 'title',
       type: 'input',
-      label: '问题类型',
-      placeholder: '请输入问题类型',
+      label: '名称',
+      placeholder: '请输入名称',
       rules: [
         {
           required: true,
-          message: '请输入问题类型',
+          message: '请输入名称',
           trigger: 'blur'
         }
       ]
+    },
+    {
+      field: 'state',
+      type: 'select',
+      label: '标题颜色',
+      placeholder: '请选择标题颜色',
+      rules: [
+        {
+          required: true,
+          message: '请选择标题颜色',
+          trigger: 'blur'
+        }
+      ],
+      options: [
+        {
+          title: '深色',
+          value: 1
+        },
+        {
+          title: '浅色',
+          value: 0
+        }
+      ]
+    },
+    {
+      field: 'state',
+      type: 'select',
+      label: '作者',
+      placeholder: '请选择作者',
+      options: []
     },
     {
       field: 'state',

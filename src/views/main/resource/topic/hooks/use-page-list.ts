@@ -18,7 +18,8 @@ export function useSetLanguage() {
       {
         title: '',
         url: [],
-        img: ''
+        img: '',
+        value: ''
       },
       'lid'
     )

@@ -9,14 +9,12 @@
 
 import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
-  title: '问题类型管理',
+  title: '专题管理',
   propList: [
     { prop: 'id', label: '编号' },
-    { prop: 'rank', label: '排序序号' },
-    { prop: 'title', label: '问题类型' },
-    { prop: 'areaList', label: '可用地区' },
-    { prop: 'num', label: '问题数量' },
-    { prop: 'img', label: '图片', slotName: 'isImage' },
+    { prop: 'title', label: '专题名称' },
+    { prop: 'num', label: '内容数量' },
+    { prop: 'num', label: '国家/地区' },
     { prop: 'state', label: '状态', slotName: 'isState' },
     { label: '操作', slotName: 'handler' }
   ],
