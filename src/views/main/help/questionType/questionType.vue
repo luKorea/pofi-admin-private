@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex" v-if="0">
+  <div class="hg-flex help-questionType">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -30,6 +30,30 @@
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">地区</span>
+            <el-select
+              placeholder="请选择国家地区，不选默认全部"
+              style="width: 100%"
+              clearable
+              v-model="areaIds"
+              multiple
+              collapse-tags
+              @change="handleChangeCountry($event)"
+            >
+              <el-option
+                v-for="option in countryList"
+                :key="option.id"
+                :value="option.id"
+                :label="option.name"
+                >{{ option.name }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+      </el-row>
       <page-language
         :languageList="languageList"
         :languageId="languageId"
@@ -43,7 +67,7 @@
               问题类型
             </span>
             <el-input
-              v-model="languageItem.subTitle"
+              v-model="languageItem.title"
               placeholder="请输入问题类型"
             ></el-input>
           </div>
@@ -73,7 +97,8 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useStoreName,
   useSetLanguage,
-  usePageList
+  usePageList,
+  useImageUpload
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
@@ -96,10 +121,13 @@ export default defineComponent({
     const [, countryList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, , handleQueryClick] = usePageSearch()
+    const [imgLimit] = useImageUpload()
     const otherInfo = ref<any>({})
-    // 地区
+    // 侧边地区
     const countryRef = ref()
     const countryID = ref(-999)
+    // 下拉地区
+    const areaIds = ref<any>([])
     const handleCountryList = computed(() => {
       const list = [
         {
@@ -119,9 +147,19 @@ export default defineComponent({
       })
     }
     watchEffect(() => {
+      if (areaIds.value && areaIds.value.length === 0) {
+        const region: any[] = []
+        countryList.value.forEach((item: any) => {
+          region.push(item.id)
+        })
+        otherInfo.value = {
+          ...otherInfo.value,
+          areaIds: region.toString()
+        }
+      }
       otherInfo.value = {
         ...otherInfo.value,
-        moldSeriesJson: JSON.stringify(languageList.value)
+        questionTypeJson: JSON.stringify(languageList.value)
       }
     })
     // 监听多语言图片设置
@@ -129,33 +167,31 @@ export default defineComponent({
       if (languageItem.value) {
         if (languageItem.value.url.length > 0) {
           console.log(languageItem.value.url[0].url, '获取图片地址')
-          languageItem.value.icon = languageItem.value.url[0].url
+          languageItem.value.img = languageItem.value.url[0].url
           languageItem.value = {
             ...languageItem.value,
-            icon: languageItem.value.url[0].url
+            img: languageItem.value.url[0].url
           }
           console.log(languageItem.value, '用户选中图片')
         } else {
-          languageItem.value.icon = undefined
+          languageItem.value.img = undefined
         }
       }
     })
+    const handleChangeCountry = (item: any) => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: item.toString()
+      }
+    }
     const searchFormConfigRef = computed(() => {
       return searchFormConfig
     })
     const modalConfigRef = computed(() => {
-      const countryItem = modalConfig.formItems.find(
-        (item) => item.field === 'areaIds'
-      )
-      countryItem!.options = countryList.value.map((item: any) => {
-        return {
-          title: item.name,
-          value: item.id
-        }
-      })
       return modalConfig
     })
     const newData = () => {
+      areaIds.value = []
       resetLanguageList()
     }
     const editData = (item: any) => {
@@ -163,27 +199,31 @@ export default defineComponent({
         warnTip('当前系列暂不支持编辑')
         return
       } else {
-        getItemData('seriesItem', {
+        getItemData('questionTypeItem', {
           id: item.id,
           language: 1
         }).then((res: any) => {
           if (res.result === 0) {
+            areaIds.value = res.data.areaIds
             otherInfo.value = {
               id: res.data.id,
-              msId: res.data.msId,
-              rids: res.data.rids
+              areaIds: res.data.areaIds,
+              rank: res.data.rank
             }
-            if (res.data.moldSeriesList && res.data.moldSeriesList.length > 0) {
+            if (
+              res.data.questionTypeList &&
+              res.data.questionTypeList.length > 0
+            ) {
               let result: any[] = []
-              result = res?.data?.moldSeriesList.map((item: any) => {
+              result = res?.data?.questionTypeList.map((item: any) => {
                 return {
                   ...item,
-                  url: item.icon ? [mapImageToObject(item.icon)] : []
+                  url: item.img ? [mapImageToObject(item.img)] : []
                 }
               })
               console.log(result)
               languageList.value = result
-              languageId.value = res?.data?.moldSeriesList[0].lid
+              languageId.value = res?.data?.questionTypeList[0].lid
             }
             handleEditData(res.data)
           } else errorTip(res.msg)
@@ -197,7 +237,11 @@ export default defineComponent({
       countryRef,
       handleCountryList,
       selectCountryClick,
+      areaIds,
+      countryList,
+      handleChangeCountry,
       // 多语言编辑
+      imgLimit,
       languageList,
       languageId,
       languageItem,

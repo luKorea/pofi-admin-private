@@ -23,7 +23,7 @@ import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   questionTypes: '/cms/question/type/',
-  sort: '/cms/function/sort'
+  sort: '/cms/function/type/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -72,11 +72,10 @@ const helpQuestionTypeModule: Module<IHelpQuestionTypeType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('delete', pageName)
       const data = await deletePageToQueryData(pageUrl, {
-        id: id,
-        name: payload.queryInfo.name,
-        iso: payload.queryInfo.iso
+        id: id
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -94,11 +93,14 @@ const helpQuestionTypeModule: Module<IHelpQuestionTypeType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         console.log(newData)
-        const validData = JSON.parse(newData.moldKeywordJson)[0]
-        if (mapObjectIsNull(['name'], validData)) {
+        const validData = JSON.parse(newData.questionTypeJson)[0]
+        if (mapObjectIsNull(['title'], validData)) {
           const pageUrl =
             apiList[pageName] + cultureDifferentType('add', pageName)
-          const data = await createPageData(pageUrl, newData)
+          const data = await createPageData(pageUrl, {
+            ...newData,
+            img: validData.img
+          })
           if (data.result === 0) {
             // 2.请求最新的数据
             dispatch('getPageListAction', {
@@ -116,11 +118,14 @@ const helpQuestionTypeModule: Module<IHelpQuestionTypeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.moldKeywordJson)[0]
-        if (mapObjectIsNull(['name'], validData)) {
+        const validData = JSON.parse(editData.questionTypeJson)[0]
+        if (mapObjectIsNull(['title'], validData)) {
           const pageUrl =
             apiList[pageName] + cultureDifferentType('update', pageName)
-          const data = await editPageData(pageUrl, editData)
+          const data = await editPageData(pageUrl, {
+            ...editData,
+            img: validData.img
+          })
           if (data.result === 0) {
             // 2.请求最新的数据
             dispatch('getPageListAction', {

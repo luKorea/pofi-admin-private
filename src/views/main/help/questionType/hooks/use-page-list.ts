@@ -16,11 +16,9 @@ export function useSetLanguage() {
   const [languageList, languageId, resetLanguageList, languageBtnList] =
     usePageLanguage(
       {
-        name: '',
-        subTitle: '',
-        desc: '',
+        title: '',
         url: [],
-        icon: ''
+        img: ''
       },
       'lid'
     )
@@ -34,7 +32,7 @@ export function useSetLanguage() {
   })
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
-    if (mapObjectIsNull(['name', 'subTitle', 'desc'], languageItem.value)) {
+    if (mapObjectIsNull(['title'], languageItem.value)) {
       languageId.value = id
     } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }

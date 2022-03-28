@@ -1,5 +1,5 @@
 <template>
-  <div class="base-languages" v-if="1">
+  <div class="help-question">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -41,7 +41,7 @@
               问题标题
             </div>
             <el-input
-              v-model="languageItem.name"
+              v-model="languageItem.title"
               placeholder="请输入问题标题"
               required
             ></el-input>
@@ -53,7 +53,7 @@
             </span>
             <hy-editor
               ref="editorRef"
-              v-model:value="languageItem.desc"
+              v-model:value="languageItem.answer"
               fileTypeName="helpQuestion/"
             ></hy-editor>
           </div>
@@ -102,7 +102,7 @@ export default defineComponent({
     watchEffect(() => {
       otherInfo.value = {
         ...otherInfo.value,
-        moldKeywordJson: JSON.stringify(languageList.value)
+        questionJson: JSON.stringify(languageList.value)
       }
     })
     const searchFormConfigRef = computed(() => {
@@ -125,7 +125,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
-      getItemData('resourceKeyword', {
+      getItemData('questionItem', {
         id: item.id,
         language: 1
       }).then((res: any) => {
@@ -133,9 +133,9 @@ export default defineComponent({
           otherInfo.value = {
             id: res.data.id
           }
-          if (res.data.moldKeywordList && res.data.moldKeywordList.length > 0) {
-            languageList.value = res?.data?.moldKeywordList
-            languageId.value = res?.data?.moldKeywordList[0].lid
+          if (res.data.questionList && res.data.questionList.length > 0) {
+            languageList.value = res?.data?.questionList
+            languageId.value = res?.data?.questionList[0].lid
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

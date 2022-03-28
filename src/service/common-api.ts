@@ -57,7 +57,9 @@ enum getItemUrl {
   seriesItem = '/cms/series/getSeries', // 系列管理
   functionItem = '/cms/function/explain/getExplain', // 功能说明
   functionTypeItem = '/cms/function/type/getFunctionType', // 功能说明分类
-  companionItem = '/cms/companion/getCompanion' // 使用指南
+  companionItem = '/cms/companion/getCompanion', // 使用指南
+  questionItem = '/cms/question/getQuestion', // 问题管理
+  questionTypeItem = '/cms/question/type/getQuestionType' // 问题类型管理
 }
 
 // 获取单行数据

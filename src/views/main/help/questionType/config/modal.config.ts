@@ -11,17 +11,17 @@ import { IForm } from '@/base-ui/form'
 export const modalConfig: IForm = {
   title: '问题类型管理操作',
   formItems: [
+    // {
+    //   field: 'id',
+    //   type: 'input',
+    //   label: '编号',
+    //   placeholder: '系统生成',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
-      field: 'id',
-      type: 'input',
-      label: '编号',
-      placeholder: '系统生成',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'name',
+      field: 'title',
       type: 'input',
       label: '问题类型',
       placeholder: '请输入问题类型',
@@ -48,13 +48,6 @@ export const modalConfig: IForm = {
           value: 0
         }
       ]
-    },
-    {
-      field: 'areaIds',
-      type: 'select',
-      label: '地区',
-      placeholder: '请选择地区',
-      options: []
     }
   ],
   colLayout: {

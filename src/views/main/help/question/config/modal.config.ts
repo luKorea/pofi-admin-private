@@ -51,7 +51,10 @@ export const modalConfig: IForm = {
       field: 'createTime',
       type: 'datetime',
       label: '发布时间',
-      placeholder: '请选择发布时间'
+      placeholder: '请选择发布时间',
+      otherOptions: {
+        valueFormat: 'YYYY-MM-DD HH:mm:ss'
+      }
     },
     {
       field: 'state',

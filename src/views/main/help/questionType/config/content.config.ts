@@ -23,6 +23,9 @@ export const contentTableConfig: TableConfig = {
   showIndexColumn: false,
   showSelectColumn: false,
   showFooter: true,
+  childrenProps: {
+    rowKey: 'id'
+  },
   permission: {
     add: true,
     update: true,

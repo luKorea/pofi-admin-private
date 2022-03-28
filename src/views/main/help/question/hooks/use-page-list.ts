@@ -17,8 +17,8 @@ export function useSetLanguage() {
   const [languageList, languageId, resetLanguageList, languageBtnList] =
     usePageLanguage(
       {
-        name: '',
-        desc: ''
+        title: '',
+        answer: ''
       },
       'lid'
     )
@@ -28,7 +28,7 @@ export function useSetLanguage() {
   console.log(languageItem.value, 'la')
   // 改变多语言
   const handleChangeLanguage = async (id: any) => {
-    if (mapObjectIsNull(['name'], languageItem.value)) {
+    if (mapObjectIsNull(['title', 'answer'], languageItem.value)) {
       languageId.value = id
       await nextTick()
       editorRef.value.setEditorValue()

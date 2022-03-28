@@ -63,7 +63,11 @@
      
   2. animate.css 动画库
 
-  2. vxe-table 可编辑表格
+  3. vxe-table 可编辑表格
+
+  4. VueDragger 可拖拽
+
+  2. Sortable 排序
 # 该系统大致按钮权限划分
   1. 新增
   2. 编辑

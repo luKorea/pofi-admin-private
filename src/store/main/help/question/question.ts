@@ -23,7 +23,7 @@ import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   questions: '/cms/question/',
-  sort: '/cms/question/'
+  sort: '/cms/question/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -71,11 +71,11 @@ const helpQuestionModule: Module<IHelpQuestionType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + cultureDifferentType('del', pageName)
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('delete', pageName)
       const data = await deletePageToQueryData(pageUrl, {
         id: id,
-        name: payload.queryInfo.name,
-        iso: payload.queryInfo.iso
+        typeId: payload.queryInfo.typeId
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -93,8 +93,8 @@ const helpQuestionModule: Module<IHelpQuestionType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         console.log(newData)
-        const validData = JSON.parse(newData.moldKeywordJson)[0]
-        if (mapObjectIsNull(['name'], validData)) {
+        const validData = JSON.parse(newData.questionJson)[0]
+        if (mapObjectIsNull(['title', 'answer'], validData)) {
           const pageUrl =
             apiList[pageName] + cultureDifferentType('add', pageName)
           const data = await createPageData(pageUrl, newData)
@@ -115,8 +115,8 @@ const helpQuestionModule: Module<IHelpQuestionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.moldKeywordJson)[0]
-        if (mapObjectIsNull(['name'], validData)) {
+        const validData = JSON.parse(editData.questionJson)[0]
+        if (mapObjectIsNull(['title', 'answer'], validData)) {
           const pageUrl =
             apiList[pageName] + cultureDifferentType('update', pageName)
           const data = await editPageData(pageUrl, editData)
