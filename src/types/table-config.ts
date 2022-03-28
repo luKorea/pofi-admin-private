@@ -18,4 +18,6 @@ export interface TableConfig {
   permission?: PermissionType
   handleDraw?: boolean
   childrenProps?: any
+  isEdit?: boolean
+  editInfo?: any
 }

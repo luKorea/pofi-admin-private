@@ -11,11 +11,67 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '用户列表',
   propList: [
-    { prop: 'id', label: '序号', sortable: true },
-    { prop: 'name', label: '方案名称', isEdit: true },
-    { prop: 'limitNum', label: '具体内容', slotName: 'limitNum', isEdit: true },
-    { prop: 'createTime', label: '编辑时间', isEdit: true },
-    { label: '操作', slotName: 'handler' }
+    {
+      prop: 'id',
+      label: '序号',
+      editInfo: {
+        type: 'input',
+        placeholder: '系统生成',
+        disabled: true
+      }
+    },
+    {
+      prop: 'rank',
+      label: '排序序号',
+      editInfo: {
+        type: 'input',
+        placeholder: '系统生成',
+        disabled: true
+      }
+    },
+    {
+      prop: 'title',
+      label: '标题',
+      editInfo: {
+        type: 'input',
+        placeholder: '请输入标题',
+        disabled: false
+      }
+    },
+    {
+      prop: 'subTitle',
+      label: '副标题',
+      editInfo: {
+        type: 'input',
+        placeholder: '请输入副标题'
+      }
+    },
+    {
+      prop: 'url',
+      label: '副标题',
+      editInfo: {
+        type: 'upload',
+        fileTypeName: 'test/'
+      }
+    },
+    // {
+    //   prop: 'createTime',
+    //   label: '编辑时间',
+    //   isEdit: false,
+    //   editInfo: {
+    //     type: 'datetime',
+    //     placeholder: '请输入编辑时间',
+    //     otherOptions: {
+    //       valueFormat: 'YYYY-MM-DD HH:mm:ss'
+    //     }
+    //   }
+    // },
+    {
+      label: '操作',
+      editInfo: {
+        type: 'handler'
+      }
+    }
   ],
   showIndexColumn: false,
   showSelectColumn: false,

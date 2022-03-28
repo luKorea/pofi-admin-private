@@ -56,7 +56,54 @@
             <template #default="scope">
               <!-- 动态插槽，动态作用域插槽 -->
               <slot :name="propItem.slotName" :row="scope.row">
-                {{ scope.row[propItem.prop] }}
+                <template v-if="!propItem.editInfo">
+                  {{ scope.row[propItem.prop] }}
+                </template>
+                <template v-else>
+                  <template v-if="propItem.editInfo.type === 'input'">
+                    <el-input
+                      v-model="scope.row[propItem.prop]"
+                      :placeholder="propItem.editInfo.placeholder"
+                      :disabled="propItem.editInfo.disabled"
+                    ></el-input>
+                  </template>
+                  <template v-if="propItem.editInfo.type === 'textarea'">
+                    <el-input
+                      type="textarea"
+                      v-bind="propItem.editInfo.otherOptions"
+                      v-model="scope.row[propItem.prop]"
+                      :placeholder="propItem.editInfo.placeholder"
+                      :disabled="propItem.editInfo.disabled"
+                    ></el-input>
+                  </template>
+                  <template
+                    v-else-if="
+                      propItem.editInfo.type === 'datepicker' ||
+                      propItem.editInfo.type === 'datetimerange' ||
+                      propItem.editInfo.type === 'date' ||
+                      propItem.editInfo.type === 'datetime'
+                    "
+                  >
+                    <el-date-picker
+                      style="width: 100%"
+                      :type="propItem.editInfo.type"
+                      v-bind="propItem.editInfo.otherOptions"
+                      v-model="scope.row[propItem.prop]"
+                    ></el-date-picker>
+                  </template>
+                  <template v-else-if="propItem.editInfo.type === 'upload'">
+                    <hyUpload
+                      :limit="1"
+                      :showWidth="80"
+                      :showHeight="80"
+                      v-model:value="scope.row[propItem.prop]"
+                      :fileTypeName="propItem.editInfo.fileTypeName"
+                    ></hyUpload>
+                  </template>
+                  <template v-else-if="propItem.editInfo.type === 'handler'">
+                    <slot name="handler" :row="scope.row"></slot>
+                  </template>
+                </template>
               </slot>
             </template>
           </el-table-column>
@@ -84,8 +131,12 @@
 import { defineComponent, onMounted, ref, computed } from 'vue'
 import SortTable from 'sortablejs'
 import { ElTable } from 'element-plus'
+import hyUpload from '@/base-ui/upload'
 
 export default defineComponent({
+  components: {
+    hyUpload
+  },
   props: {
     showHeader: {
       type: Boolean,
@@ -97,7 +148,7 @@ export default defineComponent({
     },
     height: {
       type: String,
-      default: '600px'
+      default: '400px'
     },
     listData: {
       type: Array,

@@ -59,12 +59,6 @@
                 <template v-if="!propItem.isEdit">
                   {{ scope.row[propItem.prop] }}
                 </template>
-                <template v-else>
-                  <el-input
-                    v-model="scope.row[propItem.prop]"
-                    placeholder=""
-                  ></el-input>
-                </template>
               </slot>
             </template>
           </el-table-column>
