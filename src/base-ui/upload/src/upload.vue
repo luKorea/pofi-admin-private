@@ -22,6 +22,8 @@
           ></el-image>
           <video
             v-else-if="element.type === 'video'"
+            controls
+            style="width: 200px; height: 200px"
             :src="element.url"
           ></video>
           <div class="shadow" @click="onRemoveHandler(index)">
@@ -44,7 +46,7 @@
           :style="{ width: showWidth + 'px', height: showHeight + 'px' }"
           :show-file-list="false"
           :multiple="!isSingle"
-          :limit="limit || 999"
+          :limit="999"
           :disabled="disabled"
           :http-request="httpRequest"
           :on-success="onSuccess"
@@ -290,8 +292,8 @@ function onRemoveHandler(index: number) {
 // 超限
 function onExceed() {
   // uploadRef.value.abort() // 取消剩余接口请求
-  // syncElUpload()
-  // warnTip(`图片超限，最多可上传${props.limit}张图片`)
+  syncElUpload()
+  warnTip(`图片超限，最多可上传${props.limit}张图片`)
 }
 
 function onDragStart(e: any) {

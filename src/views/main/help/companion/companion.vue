@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
 <template>
-  <div v-if="0">
+  <div class="help-companion">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
