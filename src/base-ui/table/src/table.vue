@@ -65,11 +65,13 @@
                       v-model="scope.row[propItem.prop]"
                       :placeholder="propItem.editInfo.placeholder"
                       :disabled="propItem.editInfo.disabled"
+                      clearable
                     ></el-input>
                   </template>
                   <template v-if="propItem.editInfo.type === 'textarea'">
                     <el-input
                       type="textarea"
+                      clearable
                       v-bind="propItem.editInfo.otherOptions"
                       v-model="scope.row[propItem.prop]"
                       :placeholder="propItem.editInfo.placeholder"

@@ -18,6 +18,7 @@ import {
   editPageData
 } from '@/service/common-api'
 import { successTip, errorTip } from '@/utils/tip-info'
+import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   records: '/cms/config/'
@@ -88,16 +89,22 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'add'
-        const data = await createPageData(pageUrl, newData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        const validData = JSON.parse(newData.sysConfigJson)[0]
+        if (mapObjectIsNull(['value'], validData)) {
+          const pageUrl = apiList[pageName] + 'add'
+          const data = await createPageData(pageUrl, {
+            ...newData,
+            subTitle: validData.subTitle
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
       })
     },
 
@@ -106,16 +113,22 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'update'
-        const data = await editPageData(pageUrl, editData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        const validData = JSON.parse(editData.sysConfigJson)[0]
+        if (mapObjectIsNull(['value'], validData)) {
+          const pageUrl = apiList[pageName] + 'update'
+          const data = await editPageData(pageUrl, {
+            ...editData,
+            subTitle: validData.subTitle
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        } else errorTip('请确保带*号的字段填写完整')
       })
     }
   }
