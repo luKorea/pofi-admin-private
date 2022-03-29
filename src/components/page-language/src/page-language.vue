@@ -13,6 +13,14 @@
                 :class="item.id === languageId && 'active'"
                 @click="handleChangeLanguage(item.id)"
               >
+                <!-- 后续完善 -->
+                <!-- <i
+                  :class="iconType"
+                  :style="{
+                    color:
+                      iconType === 'el-icon-warning' ? 'rgb(230, 162, 60)' : ''
+                  }"
+                ></i> -->
                 {{ item.name }}
               </div>
             </template>
@@ -49,6 +57,10 @@ export default defineComponent({
     editorFileName: {
       type: String,
       default: 'base/'
+    },
+    iconType: {
+      type: String,
+      default: 'el-icon-warning'
     }
   },
   emits: ['changeLanguage'],
@@ -75,13 +87,18 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   .item {
+    // display: flex;
+    // align-items: center;
     height: 40px;
     line-height: 40px;
     width: 100%;
     cursor: pointer;
-  }
-  .item:hover {
-    color: #409eff;
+    i {
+      margin: 0 10px 0 6px;
+    }
+    &:hover {
+      color: #409eff;
+    }
   }
   .active {
     background: #eaeaec;
