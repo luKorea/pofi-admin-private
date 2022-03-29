@@ -15,19 +15,19 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
-      field: 'id',
+      field: 'mtId',
       type: 'input',
       label: '编号',
       placeholder: '请输入编号'
     },
     {
-      field: 'name',
+      field: 'pname',
       type: 'input',
       label: '专题名称',
       placeholder: '请输入专题名称'
     },
     {
-      field: 'typeId',
+      field: 'status',
       type: 'select',
       label: '状态',
       placeholder: '请选择状态',

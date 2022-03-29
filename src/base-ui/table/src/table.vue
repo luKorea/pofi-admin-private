@@ -105,6 +105,9 @@
                   <template v-else-if="propItem.editInfo.type === 'handler'">
                     <slot name="handler" :row="scope.row"></slot>
                   </template>
+                  <template v-else-if="propItem.editInfo.type === 'other'">
+                    <slot name="other" :row="scope.row"></slot>
+                  </template>
                 </template>
               </slot>
             </template>

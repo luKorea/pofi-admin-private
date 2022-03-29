@@ -52,6 +52,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue'
+import { _debounce } from '@/utils'
 export default defineComponent({
   name: 'PageCountry',
   props: {
@@ -71,11 +72,11 @@ export default defineComponent({
           data.name.toLowerCase().includes(searchName.value.toLowerCase())
       )
     )
-    const selectItem = (item: any, index: string) => {
+    const selectItem = _debounce((item: any, index: string) => {
       // if (currentIndex.value === +index) return
       currentIndex.value = +index
       emit('selectCountryItem', item)
-    }
+    }, 200)
     return {
       searchName,
       filterCountry,

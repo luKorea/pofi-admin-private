@@ -30,6 +30,7 @@ import { IGoodsItemType } from './main/goods/good/types'
 import { IGoodsDescriptionType } from './main/goods/description/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
 import { IResourceSeriesType } from './main/resource/series/types'
+import { IResourceTopicType } from './main/resource/topic/types'
 import { IHelpFunctionTypeType } from './main/help/functionType/types'
 import { IHelpCompanionType } from './main/help/companion/types'
 import { IHelpFunctionType } from './main/help/function/types'
@@ -73,6 +74,7 @@ export interface IRootWithModule {
   resourceKeywordModule: IResourceKeywordType
   resourceClassifyModule: IResourceClassifyType
   resourceSeriesModule: IResourceSeriesType
+  resourceTopicModule: IResourceTopicType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

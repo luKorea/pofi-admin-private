@@ -15,22 +15,19 @@
         ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
         :storeTypeInfo="storeTypeInfo"
-        pageName="questionTypes"
+        pageName="topics"
         @newBtnClick="handleNewData"
         @editBtnClick="editData"
       >
-        <template #isImage="{ row }">
-          <page-image :img-src="row.img"></page-image>
-        </template>
-        <template #isState="scope">
-          {{ scope.row.state == 1 ? '启用' : '关闭' }}
+        <template #isStatus="scope">
+          {{ scope.row.status == 1 ? '有效' : '无效' }}
         </template>
       </page-content>
     </div>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="questionTypes"
+      pageName="topics"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
@@ -58,6 +55,30 @@
             </el-select>
           </div>
         </el-col>
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">作者</span>
+            <el-select
+              placeholder="请输入Pofi ID或昵称"
+              style="width: 100%"
+              filterable
+              remote
+              reserve-keyword
+              clearable
+              :remote-method="getAuthorList"
+              :loading="loading"
+              v-model="author"
+            >
+              <el-option
+                v-for="option in authorList"
+                :key="option.nickName"
+                :value="option.nickName"
+                :label="option.nickName"
+                >{{ option.nickName }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
       </el-row>
       <!-- 多语言 -->
       <page-language
@@ -73,7 +94,7 @@
               专题名称
             </span>
             <el-input
-              v-model="languageItem.title"
+              v-model="languageItem.name"
               placeholder="请输入专题名称"
             ></el-input>
           </div>
@@ -83,7 +104,7 @@
               副标题
             </span>
             <el-input
-              v-model="languageItem.title"
+              v-model="languageItem.subTitle"
               placeholder="请输入副标题"
             ></el-input>
           </div>
@@ -101,8 +122,9 @@
               <span class="item-tip">*</span>专题内容</span
             >
             <hy-editor
+              ref="editorRef"
               fileTypeName="helpQuestionType/"
-              v-model:value="languageItem.value"
+              v-model:value="languageItem.desc"
             ></hy-editor>
           </div>
         </template>
@@ -114,11 +136,29 @@
             >新增</el-button
           >
         </template>
+        <template #other="{ row }">
+          <el-select
+            placeholder="资源搜索"
+            style="width: 100%"
+            filterable
+            remote
+            reserve-keyword
+            :loading="loading"
+            :remote-method="handleChangeResourceData"
+            @change="handleChangeResourceItemData(row.mid)"
+            v-model="row.mid"
+            clearable
+          >
+            <el-option
+              v-for="option in resourceList"
+              :key="option.moId"
+              :value="option.moId"
+              :label="option.pname"
+            ></el-option>
+          </el-select>
+        </template>
         <template #handler="{ row }">
-          <el-button
-            type="danger"
-            size="mini"
-            @click="deleteTableData(row.editId)"
+          <el-button type="danger" size="mini" @click="deleteTableData(row.id)"
             >删除</el-button
           >
         </template>
@@ -135,14 +175,14 @@ import { contentTableConfig } from './config/content.config'
 import { contentTableEditConfig } from './config/content.edit-config'
 import { modalConfig } from './config/modal.config'
 
-import { useEditTableData } from '@/hooks/use-page-table-edit'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useStoreName,
   useSetLanguage,
   usePageList,
-  useImageUpload
+  useImageUpload,
+  useEditTableData
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
@@ -150,7 +190,6 @@ import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { warnTip, errorTip } from '@/utils/tip-info'
-import { uid } from 'uid'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
@@ -163,23 +202,25 @@ export default defineComponent({
     const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
       newTableData({
-        editId: uid(8),
-        title: '',
+        id: '',
+        rank: '',
+        mid: '',
         subTitle: '',
         url: [],
-        img: ''
+        cover: ''
       })
     }
     watch(listData.value, () => {
       listData.value = listData.value.map((item: any) => {
         return {
           ...item,
-          img: item.url && item.url.length > 0 ? item.url[0].url : ''
+          cover: item.url && item.cover.length > 0 ? item.cover[0].url : ''
         }
       })
     })
     // 多语言
     const [
+      editorRef,
       languageList,
       languageId,
       resetLanguageList,
@@ -187,11 +228,40 @@ export default defineComponent({
       languageItem,
       handleChangeLanguage
     ] = useSetLanguage()
-    const [, countryList] = usePageList()
+    const [
+      countryList,
+      authorList,
+      getAuthorList,
+      resourceList,
+      getResourceList,
+      loading
+    ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
-    const [pageContentRef, , handleQueryClick] = usePageSearch()
+    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [imgLimit] = useImageUpload()
+    const author = ref<any>()
     const otherInfo = ref<any>({})
+    // 资源管理
+    const handleChangeResourceData = (keyword: string) => {
+      getResourceList(keyword)
+    }
+    const handleChangeResourceItemData = (mid: any) => {
+      const selectItem = resourceList.value.find(
+        (item: any) => item.moId === mid
+      )
+      const index = listData.value.findIndex((item: any) => item.mid === mid)
+      listData.value.splice(index, 1, {
+        id: selectItem.id,
+        rank: '',
+        cover: selectItem.cover,
+        title: selectItem.name,
+        subTitle: selectItem.seriesName,
+        mid: selectItem.moId,
+        url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
+      })
+      // listData.value = result
+      console.log(listData.value, index, 'value')
+    }
     // 侧边地区
     const countryRef = ref()
     const countryID = ref(-999)
@@ -215,6 +285,19 @@ export default defineComponent({
         rid: countryID.value
       })
     }
+    const handleQueryBtnClick = (queryInfo: any) => {
+      copyQueryInfo.value = queryInfo
+      handleQueryClick({
+        ...queryInfo,
+        rid: countryID.value
+      })
+    }
+    // 刷新时重新选择第一条数据
+    const handleResetBtnClick = () => {
+      countryRef.value.currentIndex = 0
+      countryID.value = -999
+      handleResetClick()
+    }
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {
         const region: any[] = []
@@ -226,27 +309,25 @@ export default defineComponent({
           areaIds: region.toString()
         }
       }
+      if (languageItem.value) {
+        if (languageItem.value.url.length > 0) {
+          languageItem.value.cover = languageItem.value.url[0].url
+          languageItem.value = {
+            ...languageItem.value,
+            cover: languageItem.value.url[0].url
+          }
+        } else {
+          languageItem.value.cover = undefined
+          languageItem.value.url = []
+        }
+      }
       otherInfo.value = {
         ...otherInfo.value,
-        questionTypeJson: JSON.stringify(languageList.value)
+        topicJson: JSON.stringify(languageList.value),
+        childListStr: JSON.stringify(listData.value)
       }
     })
     // 监听多语言图片设置
-    watchEffect(() => {
-      if (languageItem.value) {
-        if (languageItem.value.url.length > 0) {
-          console.log(languageItem.value.url[0].url, '获取图片地址')
-          languageItem.value.img = languageItem.value.url[0].url
-          languageItem.value = {
-            ...languageItem.value,
-            img: languageItem.value.url[0].url
-          }
-          console.log(languageItem.value, '用户选中图片')
-        } else {
-          languageItem.value.img = undefined
-        }
-      }
-    })
     const handleChangeCountry = (item: any) => {
       otherInfo.value = {
         ...otherInfo.value,
@@ -261,6 +342,7 @@ export default defineComponent({
     })
     const newData = () => {
       areaIds.value = []
+      listData.value = []
       resetLanguageList()
     }
     const editData = (item: any) => {
@@ -268,31 +350,35 @@ export default defineComponent({
         warnTip('当前系列暂不支持编辑')
         return
       } else {
-        getItemData('questionTypeItem', {
-          id: item.id,
-          language: 1
+        getItemData('topicItem', {
+          mtId: item.mtId
         }).then((res: any) => {
           if (res.result === 0) {
             areaIds.value = res.data.areaIds
             otherInfo.value = {
               id: res.data.id,
-              areaIds: res.data.areaIds,
+              areaIds: res.data.areaIds.toString(),
               rank: res.data.rank
             }
-            if (
-              res.data.questionTypeList &&
-              res.data.questionTypeList.length > 0
-            ) {
+            if (res.data.topicList && res.data.topicList.length > 0) {
               let result: any[] = []
-              result = res?.data?.questionTypeList.map((item: any) => {
+              result = res?.data?.topicList.map((item: any) => {
                 return {
                   ...item,
-                  url: item.img ? [mapImageToObject(item.img)] : []
+                  url: item.cover ? [mapImageToObject(item.cover)] : []
                 }
               })
               console.log(result)
               languageList.value = result
-              languageId.value = res?.data?.questionTypeList[0].lid
+              let info: any[] = []
+              info = res?.data?.childList.map((item: any) => {
+                return {
+                  ...item,
+                  url: item.cover ? [mapImageToObject(item.cover)] : []
+                }
+              })
+              listData.value = info
+              languageId.value = res?.data?.topicList[0].lid
             }
             handleEditData(res.data)
           } else errorTip(res.msg)
@@ -311,17 +397,29 @@ export default defineComponent({
       countryRef,
       handleCountryList,
       selectCountryClick,
+      // 下拉框数据
       areaIds,
+      author,
       countryList,
       handleChangeCountry,
+      authorList,
+      getAuthorList,
+      resourceList,
+      getResourceList,
+      handleChangeResourceData,
+      handleChangeResourceItemData,
+      loading,
       // 多语言编辑
       imgLimit,
+      editorRef,
       languageList,
       languageId,
       languageItem,
       languageBtnList,
       handleChangeLanguage,
       searchFormConfigRef,
+      handleQueryBtnClick,
+      handleResetBtnClick,
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,

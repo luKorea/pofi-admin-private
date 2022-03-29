@@ -30,11 +30,11 @@ export const contentTableEditConfig: TableConfig = {
       }
     },
     {
-      prop: 'title',
-      label: '标题',
+      prop: 'mid',
+      label: '资源名称',
       editInfo: {
-        type: 'input',
-        placeholder: '请输入标题',
+        type: 'other',
+        placeholder: '请输入资源名称',
         disabled: false
       }
     },
@@ -52,7 +52,7 @@ export const contentTableEditConfig: TableConfig = {
       width: '100px',
       editInfo: {
         type: 'upload',
-        fileTypeName: 'test/'
+        fileTypeName: 'resourceTopic/'
       }
     },
     // {

@@ -11,11 +11,11 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '专题管理',
   propList: [
-    { prop: 'id', label: '编号' },
-    { prop: 'title', label: '专题名称' },
-    { prop: 'num', label: '内容数量' },
-    { prop: 'num', label: '国家/地区' },
-    { prop: 'state', label: '状态', slotName: 'isState' },
+    { prop: 'mtId', label: '编号' },
+    { prop: 'pname', label: '专题名称' },
+    { prop: 'count', label: '内容数量' },
+    { prop: 'areaList', label: '国家/地区' },
+    { prop: 'status', label: '状态', slotName: 'isStatus' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
@@ -29,6 +29,6 @@ export const contentTableConfig: TableConfig = {
     update: true,
     delete: true,
     rowAdd: false,
-    drawTable: true
+    drawTable: false
   }
 }

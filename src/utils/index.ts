@@ -319,3 +319,24 @@ export function formatStorage(num: number, digits?: number) {
     }
   }
 }
+
+// 节流函数
+type CallBack = (...args: any) => void
+
+export function _debounce(cb: CallBack, delay = 100, immediate = false) {
+  let timer: any = null
+  let isInvoke = false
+  const _ = function (this: any, ...args: any) {
+    if (timer) clearTimeout(timer)
+    if (immediate && !isInvoke) {
+      cb.apply(this, args)
+      isInvoke = true
+    } else {
+      timer = setTimeout(() => {
+        cb.apply(this, args)
+        isInvoke = false
+      }, delay)
+    }
+  }
+  return _
+}

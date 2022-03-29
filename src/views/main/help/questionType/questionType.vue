@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, watch } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -146,6 +146,7 @@ export default defineComponent({
         rid: countryID.value
       })
     }
+    // 监听多语言图片设置
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {
         const region: any[] = []
@@ -161,9 +162,6 @@ export default defineComponent({
         ...otherInfo.value,
         questionTypeJson: JSON.stringify(languageList.value)
       }
-    })
-    // 监听多语言图片设置
-    watchEffect(() => {
       if (languageItem.value) {
         if (languageItem.value.url.length > 0) {
           console.log(languageItem.value.url[0].url, '获取图片地址')
@@ -175,6 +173,7 @@ export default defineComponent({
           console.log(languageItem.value, '用户选中图片')
         } else {
           languageItem.value.img = undefined
+          languageItem.value.url = []
         }
       }
     })

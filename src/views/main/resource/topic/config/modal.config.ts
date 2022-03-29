@@ -21,7 +21,7 @@ export const modalConfig: IForm = {
     //   }
     // },
     {
-      field: 'title',
+      field: 'pname',
       type: 'input',
       label: '名称',
       placeholder: '请输入名称',
@@ -34,7 +34,7 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'state',
+      field: 'color',
       type: 'select',
       label: '标题颜色',
       placeholder: '请选择标题颜色',
@@ -57,20 +57,13 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'state',
-      type: 'select',
-      label: '作者',
-      placeholder: '请选择作者',
-      options: []
-    },
-    {
-      field: 'state',
+      field: 'status',
       type: 'select',
       label: '状态',
       placeholder: '请选择状态',
       options: [
         {
-          title: '生效',
+          title: '有效',
           value: 1
         },
         {

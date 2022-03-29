@@ -34,7 +34,7 @@ export default defineComponent({
     },
     zIndex: {
       type: Number,
-      default: 500
+      default: 0
     },
     height: {
       type: Number,

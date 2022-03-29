@@ -21,14 +21,17 @@ enum commonAPI {
   draw = '/cms/userInfo/getDrawList', // 获取用户画风
   keywords = '/cms/keyword/getType', // 关键词类型
   functionType = '/cms/function/explain/getType', // 功能说明分类
-  questionType = '/cms/question/getType' // 问题
+  questionType = '/cms/question/getType', // 问题
+  resourceType = '/cms/mold/search', // 资源搜索
+  authorType = '/cms/topic/author' // 作者搜索
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改
-export function getCommonSelectList(type: string) {
+export function getCommonSelectList(type: string, data?: any) {
   return hyRequest.post<any>({
     url: (commonAPI as any)[type],
-    showLoading: true
+    data: data,
+    showLoading: false
   })
 }
 

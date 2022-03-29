@@ -161,24 +161,24 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     const otherInfo = ref<any>({})
+    // 监听多语言图片设置
     watchEffect(() => {
       otherInfo.value = {
         ...otherInfo.value,
         CompanionJson: JSON.stringify(languageList.value)
       }
-    })
-    // 监听多语言图片设置
-    watchEffect(() => {
       if (languageItem.value) {
         if (languageItem.value.bgList.length > 0) {
           languageItem.value.bgUrl = languageItem.value.bgList[0].url
         } else {
           languageItem.value.bgUrl = undefined
+          languageItem.value.bgList = []
         }
         if (languageItem.value.fileList.length > 0) {
           languageItem.value.fileUrl = languageItem.value.fileList[0].url
         } else {
           languageItem.value.fileUrl = undefined
+          languageItem.value.fileList = []
         }
       }
     })

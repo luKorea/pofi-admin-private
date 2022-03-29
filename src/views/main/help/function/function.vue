@@ -163,6 +163,7 @@ export default defineComponent({
           console.log(languageItem.value, '用户选中图片')
         } else {
           languageItem.value.url = undefined
+          languageItem.value.icon = []
         }
       }
     })

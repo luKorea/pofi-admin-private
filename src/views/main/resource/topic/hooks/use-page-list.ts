@@ -7,19 +7,35 @@
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
-import { mapObjectIsNull } from '@/utils'
+import { mapObjectIsNull, _debounce } from '@/utils'
 import { warnTip } from '@/utils/tip-info'
+
+export function useEditTableData() {
+  const listData = ref<any>([])
+  const newTableData = (field: any) => {
+    listData.value.push(field)
+  }
+  const deleteTableData = (id: any) => {
+    const index = listData.value.findIndex((res: any) => res.id === id)
+    listData.value.splice(index, 1)
+  }
+
+  return [listData, newTableData, deleteTableData]
+}
+
 export function useSetLanguage() {
+  const editorRef = ref<any>()
   const [languageList, languageId, resetLanguageList, languageBtnList] =
     usePageLanguage(
       {
-        title: '',
+        name: '',
+        subTitle: '',
         url: [],
-        img: '',
-        value: ''
+        cover: '',
+        desc: ''
       },
       'lid'
     )
@@ -32,13 +48,16 @@ export function useSetLanguage() {
     } else resetLanguageList()
   })
   // 改变多语言
-  const handleChangeLanguage = (id: any) => {
-    if (mapObjectIsNull(['title'], languageItem.value)) {
+  const handleChangeLanguage = async (id: any) => {
+    if (mapObjectIsNull(['name', 'subTitle', 'desc'], languageItem.value)) {
       languageId.value = id
+      await nextTick()
+      editorRef.value.setEditorValue()
     } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
+    editorRef,
     languageList,
     languageId,
     resetLanguageList,
@@ -49,16 +68,13 @@ export function useSetLanguage() {
 }
 
 export function usePageList() {
-  const functionTypeList = ref<any>([])
   // 国家地区
   const countryList = ref<any>([])
-  const getFunctionTypeList = () => {
-    getCommonSelectList('functionType').then((res) => {
-      if (res.state) {
-        functionTypeList.value = res.data
-      } else errorTip(res.msg)
-    })
-  }
+  // 作者
+  const authorList = ref<any>([])
+  // 资源
+  const resourceList = ref<any>([])
+  const loading = ref<boolean>(false)
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
       if (res.state) {
@@ -66,22 +82,58 @@ export function usePageList() {
       } else errorTip(res.msg)
     })
   }
-  getFunctionTypeList()
+  const getAuthorList = _debounce(
+    (author: string) => {
+      loading.value = true
+      getCommonSelectList('authorType', { author: author })
+        .then((res) => {
+          if (res.state) {
+            authorList.value = res.data
+          } else errorTip(res.msg)
+        })
+        .finally(() => (loading.value = false))
+    },
+    300,
+    true
+  )
+  const getResourceList = _debounce(
+    (keyword: string) => {
+      loading.value = true
+      getCommonSelectList('resourceType', { keyword: keyword, lid: 1 })
+        .then((res) => {
+          if (res.state) {
+            resourceList.value = res.data
+          } else errorTip(res.msg)
+        })
+        .finally(() => (loading.value = false))
+    },
+    300,
+    true
+  )
   getCountryList()
-  return [functionTypeList, countryList]
+  getAuthorList()
+  getResourceList()
+  return [
+    countryList,
+    authorList,
+    getAuthorList,
+    resourceList,
+    getResourceList,
+    loading
+  ]
 }
 
 export function useStoreName() {
   const storeTypeInfo = ref({
-    actionName: 'helpQuestionTypeModule/getPageListAction',
-    actionListName: 'helpQuestionTypeModule/pageListData',
-    actionCountName: 'helpQuestionTypeModule/pageListCount',
-    deleteAction: 'helpQuestionTypeModule/deletePageDataAction',
-    sortAction: 'helpQuestionTypeModule/sortPageDataAction'
+    actionName: 'resourceTopicModule/getPageListAction',
+    actionListName: 'resourceTopicModule/pageListData',
+    actionCountName: 'resourceTopicModule/pageListCount',
+    deleteAction: 'resourceTopicModule/deletePageDataAction',
+    sortAction: 'resourceTopicModule/sortPageDataAction'
   })
   const operationName = ref({
-    editName: 'helpQuestionTypeModule/editPageDataAction',
-    createName: 'helpQuestionTypeModule/createPageDataAction'
+    editName: 'resourceTopicModule/editPageDataAction',
+    createName: 'resourceTopicModule/createPageDataAction'
   })
   return [storeTypeInfo, operationName]
 }
