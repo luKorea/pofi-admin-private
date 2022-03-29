@@ -50,6 +50,8 @@ import helpFunctionTypeModule from './main/help/functionType/functionType'
 import helpFunctionModule from './main/help/function/function'
 import helpQuestionModule from './main/help/question/question'
 import helpQuestionTypeModule from './main/help/questionType/questionType'
+// 审核管理
+import auditUserModifyModule from './main/audit/userModify/userModify'
 // import cache from '@/utils/cache'
 
 import { getPageListData } from '@/service/common-api'
@@ -148,6 +150,8 @@ const store = createStore<IRootState>({
     oaRoleModule,
     oaUserModule,
     oaRouterModule,
+    // 审核管理
+    auditUserModifyModule,
     // 商品中心
     goodsRechargeModule,
     goodsFunctionModule,
