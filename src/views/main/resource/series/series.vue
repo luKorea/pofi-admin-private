@@ -170,13 +170,6 @@ export default defineComponent({
           rids: region.toString()
         }
       }
-      otherInfo.value = {
-        ...otherInfo.value,
-        moldSeriesJson: JSON.stringify(languageList.value)
-      }
-    })
-    // 监听多语言图片设置
-    watchEffect(() => {
       if (languageItem.value) {
         if (languageItem.value.url.length > 0) {
           console.log(languageItem.value.url[0].url, '获取图片地址')
@@ -190,6 +183,10 @@ export default defineComponent({
           languageItem.value.icon = undefined
           languageItem.value.url = []
         }
+      }
+      otherInfo.value = {
+        ...otherInfo.value,
+        moldSeriesJson: JSON.stringify(languageList.value)
       }
     })
     const handleChangeCountry = (item: any) => {

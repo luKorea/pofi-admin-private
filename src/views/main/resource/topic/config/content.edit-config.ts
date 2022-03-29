@@ -30,7 +30,7 @@ export const contentTableEditConfig: TableConfig = {
       }
     },
     {
-      prop: 'mid',
+      prop: 'tempMid',
       label: '资源名称',
       editInfo: {
         type: 'other',
@@ -77,11 +77,15 @@ export const contentTableEditConfig: TableConfig = {
   showIndexColumn: false,
   showSelectColumn: false,
   showFooter: false,
+  childrenProps: {
+    rowKey: 'id'
+  },
   permission: {
     add: false,
     update: false,
     delete: false,
     columnAdd: true,
-    columnDelete: true
+    columnDelete: true,
+    drawTable: true
   }
 }

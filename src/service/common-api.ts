@@ -76,6 +76,7 @@ export const getItemData = (url: string, data: any) => {
 export function sortPageTableData(url: string, sortData: any) {
   return hyRequest.post<any>({
     url: url,
-    data: sortData
+    data: sortData,
+    showLoading: false
   })
 }

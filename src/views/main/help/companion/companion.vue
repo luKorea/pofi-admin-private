@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-25 09:43:18
+ * @LastEditTime: 2022-03-29 15:05:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watchEffect, ref } from 'vue'
+import { computed, defineComponent, watchEffect, ref, watch } from 'vue'
 import PreviewVideo from '@/base-ui/preview-video'
 
 import {
@@ -170,12 +170,20 @@ export default defineComponent({
       if (languageItem.value) {
         if (languageItem.value.bgList.length > 0) {
           languageItem.value.bgUrl = languageItem.value.bgList[0].url
+          languageItem.value = {
+            ...languageItem.value,
+            bgUrl: languageItem.value.bgList[0].url
+          }
         } else {
           languageItem.value.bgUrl = undefined
           languageItem.value.bgList = []
         }
         if (languageItem.value.fileList.length > 0) {
           languageItem.value.fileUrl = languageItem.value.fileList[0].url
+          languageItem.value = {
+            ...languageItem.value,
+            fileUrl: languageItem.value.fileList[0].url
+          }
         } else {
           languageItem.value.fileUrl = undefined
           languageItem.value.fileList = []

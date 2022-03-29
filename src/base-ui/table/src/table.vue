@@ -133,7 +133,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, computed } from 'vue'
+import {
+  defineComponent,
+  onMounted,
+  ref,
+  computed,
+  watchEffect,
+  watch
+} from 'vue'
 import SortTable from 'sortablejs'
 import { ElTable } from 'element-plus'
 import hyUpload from '@/base-ui/upload'
@@ -193,6 +200,10 @@ export default defineComponent({
     },
     // 控制表格是否可以拖动
     handleDraw: {
+      type: Boolean,
+      default: false
+    },
+    editTableDraw: {
       type: Boolean,
       default: false
     },
@@ -262,8 +273,15 @@ export default defineComponent({
     })
     // TODO 表格拖动
     const handleSortTable = () => {
-      const tableSort: HTMLElement = document.getElementsByTagName('tbody')[0]
-      new SortTable(tableSort, {
+      const element = document.getElementsByTagName('tbody')
+      const tableSort = ref<HTMLElement | null>()
+      if (props.editTableDraw) {
+        tableSort.value = element[1]
+      } else {
+        tableSort.value = element[0]
+      }
+      console.log(tableSort.value, 'table')
+      new SortTable(tableSort.value, {
         animation: 500,
         onEnd(evt: any) {
           let data = [...props.listData]

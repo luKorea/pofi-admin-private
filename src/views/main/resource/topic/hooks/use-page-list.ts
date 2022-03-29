@@ -85,7 +85,7 @@ export function usePageList() {
   const getAuthorList = _debounce(
     (author: string) => {
       loading.value = true
-      getCommonSelectList('authorType', { author: author })
+      getCommonSelectList('authorType', { author: author }, false)
         .then((res) => {
           if (res.state) {
             authorList.value = res.data
@@ -99,7 +99,7 @@ export function usePageList() {
   const getResourceList = _debounce(
     (keyword: string) => {
       loading.value = true
-      getCommonSelectList('resourceType', { keyword: keyword, lid: 1 })
+      getCommonSelectList('resourceType', { keyword: keyword, lid: 1 }, false)
         .then((res) => {
           if (res.state) {
             resourceList.value = res.data

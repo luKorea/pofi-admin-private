@@ -245,6 +245,13 @@ export default defineComponent({
             props.fileTypeName + client.value.options.fileName + suffix
           client.value.multipartUpload(name, file).then((res: any) => {
             const url = `${OSSURL}/${res.name}`
+            emit('update:value', [
+              ...props.value,
+              {
+                name: res.name + '?' + new Date().getTime(),
+                url: url + '?' + new Date().getTime()
+              }
+            ])
             imgList.value.push({
               name: res.name + '?' + new Date().getTime(),
               url: url + '?' + new Date().getTime()

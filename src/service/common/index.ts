@@ -27,11 +27,15 @@ enum commonAPI {
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改
-export function getCommonSelectList(type: string, data?: any) {
+export function getCommonSelectList(
+  type: string,
+  data?: any,
+  showLoading = true
+) {
   return hyRequest.post<any>({
     url: (commonAPI as any)[type],
     data: data,
-    showLoading: false
+    showLoading: showLoading
   })
 }
 

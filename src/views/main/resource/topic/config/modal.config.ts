@@ -11,15 +11,15 @@ import { IForm } from '@/base-ui/form'
 export const modalConfig: IForm = {
   title: '专题管理操作',
   formItems: [
-    // {
-    //   field: 'id',
-    //   type: 'input',
-    //   label: '编号',
-    //   placeholder: '系统生成',
-    //   otherOptions: {
-    //     disabled: true
-    //   }
-    // },
+    {
+      field: 'mtId',
+      type: 'input',
+      label: '编号',
+      placeholder: '系统生成',
+      otherOptions: {
+        disabled: true
+      }
+    },
     {
       field: 'pname',
       type: 'input',

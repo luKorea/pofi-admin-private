@@ -130,7 +130,13 @@
         </template>
       </page-language>
       <!-- 可编辑表格 -->
-      <editor-table :listData="listData" v-bind="contentTableEditConfig">
+      <editor-table
+        :listData="listData"
+        v-bind="contentTableEditConfig"
+        :handleDraw="operationType === 'add' ? false : true"
+        :editTableDraw="operationType === 'add' ? false : true"
+        @drawTable="handleDrawTable"
+      >
         <template #otherHandler>
           <el-button type="primary" size="mini" @click="handleNewTableData"
             >新增</el-button
@@ -145,8 +151,8 @@
             reserve-keyword
             :loading="loading"
             :remote-method="handleChangeResourceData"
-            @change="handleChangeResourceItemData(row.mid)"
-            v-model="row.mid"
+            @change="handleChangeResourceItemData(row.tempMid)"
+            v-model="row.tempMid"
             clearable
           >
             <el-option
@@ -184,12 +190,14 @@ import {
   useImageUpload,
   useEditTableData
 } from './hooks/use-page-list'
-import { getItemData } from '@/service/common-api'
+import { getItemData, sortPageTableData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
 import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { warnTip, errorTip } from '@/utils/tip-info'
+import { useStore } from '@/store'
+import { successTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
@@ -237,26 +245,79 @@ export default defineComponent({
       loading
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
+    const getData = (mtId: any) => {
+      getItemData('topicItem', {
+        mtId: mtId
+      }).then((res: any) => {
+        if (res.result === 0) {
+          author.value = res.data.author
+          areaIds.value = res.data.areaIds
+          otherInfo.value = {
+            mtId: res.data.mtId,
+            author: res.data.author,
+            areaIds: res.data.areaIds.toString()
+          }
+          if (res.data.topicList && res.data.topicList.length > 0) {
+            let result: any[] = []
+            result = res?.data?.topicList.map((item: any) => {
+              return {
+                ...item,
+                url: item.cover ? [mapImageToObject(item.cover)] : []
+              }
+            })
+            console.log(result)
+            languageList.value = result
+            let info: any[] = []
+            info = res?.data?.childList.map((item: any) => {
+              return {
+                ...item,
+                tempMid: `${item.mid} : ${item.title}`,
+                url: item.cover ? [mapImageToObject(item.cover)] : []
+              }
+            })
+            listData.value = info
+            languageId.value = res?.data?.topicList[0].lid
+          }
+          handleEditData(res.data)
+        } else errorTip(res.msg)
+      })
+    }
+    const handleDrawTable = (data: any) => {
+      const idList = data.map((item: any) => item.id)
+      sortPageTableData('/cms/topic/updateSort', {
+        idList: JSON.stringify(idList)
+      }).then((res: any) => {
+        if (res.result === 0) {
+          successTip(res.msg)
+          getData(otherInfo.value.mtId)
+        } else errorTip(res.msg)
+      })
+    }
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [imgLimit] = useImageUpload()
     const author = ref<any>()
     const otherInfo = ref<any>({})
+    const operationType = ref<string>('add')
     // 资源管理
     const handleChangeResourceData = (keyword: string) => {
       getResourceList(keyword)
     }
-    const handleChangeResourceItemData = (mid: any) => {
+    const handleChangeResourceItemData = (tempMid: any) => {
+      console.log(resourceList.value)
+      debugger
       const selectItem = resourceList.value.find(
-        (item: any) => item.moId === mid
+        (item: any) => item.moId === tempMid
       )
-      const index = listData.value.findIndex((item: any) => item.mid === mid)
+      const index = listData.value.findIndex(
+        (item: any) => item.tempMid === tempMid
+      )
       listData.value.splice(index, 1, {
         id: selectItem.id,
-        rank: '',
         cover: selectItem.cover,
         title: selectItem.name,
         subTitle: selectItem.seriesName,
         mid: selectItem.moId,
+        tempMid: selectItem.moId,
         url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
       })
       // listData.value = result
@@ -323,6 +384,7 @@ export default defineComponent({
       }
       otherInfo.value = {
         ...otherInfo.value,
+        author: author.value,
         topicJson: JSON.stringify(languageList.value),
         childListStr: JSON.stringify(listData.value)
       }
@@ -341,58 +403,27 @@ export default defineComponent({
       return modalConfig
     })
     const newData = () => {
+      author.value = null
+      operationType.value = 'add'
       areaIds.value = []
       listData.value = []
       resetLanguageList()
     }
+
     const editData = (item: any) => {
-      if (item.parent === 0) {
-        warnTip('当前系列暂不支持编辑')
-        return
-      } else {
-        getItemData('topicItem', {
-          mtId: item.mtId
-        }).then((res: any) => {
-          if (res.result === 0) {
-            areaIds.value = res.data.areaIds
-            otherInfo.value = {
-              id: res.data.id,
-              areaIds: res.data.areaIds.toString(),
-              rank: res.data.rank
-            }
-            if (res.data.topicList && res.data.topicList.length > 0) {
-              let result: any[] = []
-              result = res?.data?.topicList.map((item: any) => {
-                return {
-                  ...item,
-                  url: item.cover ? [mapImageToObject(item.cover)] : []
-                }
-              })
-              console.log(result)
-              languageList.value = result
-              let info: any[] = []
-              info = res?.data?.childList.map((item: any) => {
-                return {
-                  ...item,
-                  url: item.cover ? [mapImageToObject(item.cover)] : []
-                }
-              })
-              listData.value = info
-              languageId.value = res?.data?.topicList[0].lid
-            }
-            handleEditData(res.data)
-          } else errorTip(res.msg)
-        })
-      }
+      operationType.value = 'edit'
+      getData(item.mtId)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     return {
       // 编辑表格
+      operationType,
       contentTableEditConfig,
       handleNewTableData,
       listData,
       deleteTableData,
+      handleDrawTable,
       // 侧边国家
       countryRef,
       handleCountryList,

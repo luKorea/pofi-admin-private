@@ -23,7 +23,7 @@ import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   topics: '/cms/topic/',
-  sort: '/cms/function/type/updateSort'
+  sort: '/cms/topic/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -71,11 +71,11 @@ const resourceTopicModule: Module<IResourceTopicType, IRootState> = {
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const id = payload.queryInfo.id
+      const mtId = payload.queryInfo.mtId
       const pageUrl =
         apiList[pageName] + cultureDifferentType('delete', pageName)
       const data = await deletePageToQueryData(pageUrl, {
-        id: id
+        mtId: mtId
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
