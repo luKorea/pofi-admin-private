@@ -9,67 +9,45 @@
 import { IForm } from '@/base-ui/form'
 
 export const modalConfig: IForm = {
-  title: '订单管理',
+  title: '资源数据统计操作',
   formItems: [
     {
-      field: 'nickName',
+      field: 'moId',
       type: 'input',
-      label: '用户昵称'
+      label: '资源编号',
+      otherOptions: {
+        disabled: true
+      }
     },
     {
-      field: 'onId',
+      field: 'pname',
       type: 'input',
-      label: '订单号'
+      label: '模型名称',
+      otherOptions: {
+        disabled: true
+      }
     },
     {
-      field: 'code',
+      field: 'frontShow',
       type: 'input',
-      label: '商品ID'
+      label: '前端显示',
+      otherOptions: {
+        disabled: true
+      }
     },
     {
-      field: 'wayCopy',
-      type: 'input',
-      label: '充值方式'
-    },
-    {
-      field: 'costCopy',
-      type: 'input',
-      label: '金额'
-    },
-    {
-      field: 'create',
-      type: 'input',
-      label: '创建时间'
-    },
-    {
-      field: 'state',
+      field: 'downloadState',
       type: 'select',
-      label: '订单状态',
-      placeholder: '请选择订单状态',
+      label: '状态',
+      placeholder: '请选择状态',
       options: [
         {
-          title: '等待支付',
+          title: '隐藏',
           value: 0
         },
         {
-          title: '完成支付',
+          title: '显示',
           value: 1
-        },
-        {
-          title: '取消支付',
-          value: 2
-        }
-      ]
-    },
-    {
-      label: '备注',
-      type: 'input',
-      field: 'remark',
-      rules: [
-        {
-          required: true,
-          message: '请输入备注',
-          trigger: 'blur'
         }
       ]
     }

@@ -23,6 +23,15 @@
       @editBtnClick="handleEditData"
       @operationBtnClick="handleOperationClick"
     >
+      <template #isDownload="scope">
+        <div
+          class="hg-flex hg-items-center hg-justify-center hg-cursor-pointer"
+          @click="handleEditData(scope.row)"
+        >
+          <span style="margin-right: 4px">{{ scope.row.download }}</span>
+          <i class="el-icon-edit"></i>
+        </div>
+      </template>
       <template #isMoType="{ row }">
         <span>{{ mapTitle(row.moType, resourceTypeList) }}</span>
       </template>
@@ -44,6 +53,17 @@
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
+      <div class="item-flex">
+        <span class="item-title">编辑数据</span>
+        <el-input
+          v-model="otherInfo.downloadShow"
+          placeholder="请输入值"
+          type="number"
+          @input="handleChangeNumber"
+        >
+          <template #prepend>{{ otherInfo.download }} +</template>
+        </el-input>
+      </div>
     </page-modal>
 
     <page-dialog ref="pageDialogRef" title="下载量日志">
@@ -107,9 +127,23 @@ export default defineComponent({
         onlineTimeEnd
       })
     }
-    const otherInfo = ref<any>({})
+    const otherInfo = ref<any>()
+    const editData = (item: any) => {
+      if (!isNaN(+item.download + +item.downloadShow / 1000))
+        item.frontShow = +item.download + +item.downloadShow / 1000 + 'K'
+      else item.frontShow = 0 + 'K'
+      otherInfo.value = {
+        downloadShow: item.downloadShow,
+        download: item.download
+      }
+    }
+    const handleChangeNumber = () => {
+      // if (!isNaN(otherInfo.value.downloadShow / 1000)) {
+      //   otherInfo.value.downloadShow = otherInfo.value.downloadShow / 1000
+      // } else otherInfo.value.downloadShow = 0
+    }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(undefined, editData)
 
     const modalConfigRef = computed(() => {
       return modalConfig
@@ -124,6 +158,7 @@ export default defineComponent({
       dataCount
     ] = useOperationData()
     return {
+      handleChangeNumber,
       searchFormConfigData,
       resourceTypeList,
       resourceConditionList,
