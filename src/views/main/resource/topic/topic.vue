@@ -195,9 +195,7 @@ import hyUpload from '@/base-ui/upload'
 import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
-import { warnTip, errorTip } from '@/utils/tip-info'
-import { useStore } from '@/store'
-import { successTip } from '@/utils/tip-info'
+import { successTip, errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
