@@ -2,61 +2,96 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-15 14:50:08
+ * @LastEditTime: 2022-02-28 17:29:01
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/oa/user/config/search.config.ts
+ * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
 export const searchFormConfig: IForm = {
   labelWidth: '120px',
   colLayout: {
-    span: 8
+    xl: 8, // >1920px 4个
+    lg: 8,
+    md: 12,
+    sm: 24,
+    xs: 24
   },
   formItems: [
     {
-      field: 'search',
+      field: 'content',
       type: 'input',
-      label: '模糊查询',
-      placeholder: '模糊查询'
+      label: '问题',
+      placeholder: '请输入反馈内容'
+    },
+    {
+      field: 'uid',
+      type: 'input',
+      label: 'Pofi ID',
+      placeholder: '请输入Pofi ID'
+    },
+    {
+      field: 'id',
+      type: 'input',
+      label: '问题编号',
+      placeholder: '请输入问题编号'
+    },
+    {
+      field: 'optId',
+      type: 'select',
+      label: '处理人',
+      placeholder: '请选择问题编号',
+      options: []
+    },
+    {
+      field: 'type',
+      type: 'select',
+      label: '类型',
+      placeholder: '请选择类型',
+      options: []
+    },
+    {
+      field: 'status',
+      type: 'select',
+      label: '状态',
+      placeholder: '请选择状态',
+      options: [
+        { value: 0, title: '新问题' },
+        { value: 1, title: '已回复' },
+        { value: 2, title: '用户新回复' },
+        { value: 3, title: '用户已关闭' }
+      ]
+    },
+    {
+      field: 'optTag',
+      type: 'select',
+      label: '标签',
+      placeholder: '请选择标签',
+      options: []
+    },
+    {
+      field: 'region',
+      type: 'select',
+      label: '地区',
+      placeholder: '请选择地区',
+      options: []
+    },
+    {
+      field: 'language',
+      type: 'select',
+      label: '语言',
+      placeholder: '请选择语言',
+      options: []
+    },
+    {
+      field: 'dateTime',
+      type: 'datetimerange',
+      label: '操作时间',
+      otherOptions: {
+        startPlaceholder: '请输入开始时间',
+        endPlaceholder: '请输入结束时间',
+        valueFormat: 'YYYY-MM-DD HH:mm:ss'
+      }
     }
-    // {
-    //   field: 'name',
-    //   type: 'input',
-    //   label: '用户名',
-    //   placeholder: '请输入用户名'
-    // },
-    // {
-    //   field: 'realname',
-    //   type: 'input',
-    //   label: '真实姓名',
-    //   placeholder: '请输入真实姓名'
-    // },
-    // {
-    //   field: 'cellphone',
-    //   type: 'input',
-    //   label: '电话号码',
-    //   placeholder: '请输入电话号码'
-    // },
-    // {
-    //   field: 'enable',
-    //   type: 'select',
-    //   label: '用户状态',
-    //   placeholder: '请选择用户状态',
-    //   options: [
-    //     { title: '启用', value: 1 },
-    //     { title: '禁用', value: 0 }
-    //   ]
-    // },
-    // {
-    //   field: 'createAt',
-    //   type: 'datepicker',
-    //   label: '创建时间',
-    //   otherOptions: {
-    //     startPlaceholder: '开始时间',
-    //     endPlaceholder: '结束时间',
-    //     type: 'daterange'
-    //   }
-    // }
   ]
 }

@@ -2,32 +2,22 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 10:29:39
+ * @LastEditTime: 2022-02-28 09:52:33
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/device/condition/hooks/use-page-list.ts
+ * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
-import { errorTip } from '@/utils/tip-info'
 import { ref } from 'vue'
-import { getCountrySelectList, getBaseConfigGroupList } from '@/service/common'
 
-export function usePageList() {
-  const countryList = ref<any>([])
-  const groupList = ref<any>([])
-  const getCountryList = () => {
-    getCountrySelectList().then((res) => {
-      if (res.state) {
-        countryList.value.push(...res.data.rows)
-      } else errorTip(res.msg)
-    })
-  }
-  const getGroupList = () => {
-    getBaseConfigGroupList().then((res) => {
-      if (res.state) {
-        groupList.value = res.data
-      } else errorTip(res.msg)
-    })
-  }
-  getCountryList()
-  getGroupList()
-  return [countryList, groupList]
+export function useStoreName() {
+  const storeTypeInfo = ref({
+    actionName: 'tradeRecordModule/getPageListAction',
+    actionListName: 'tradeRecordModule/pageListData',
+    actionCountName: 'tradeRecordModule/pageListCount',
+    deleteAction: 'tradeRecordModule/deletePageDataAction'
+  })
+  const operationName = ref({
+    editName: 'tradeRecordModule/editPageDataAction',
+    createName: 'tradeRecordModule/createPageDataAction'
+  })
+  return [storeTypeInfo, operationName]
 }

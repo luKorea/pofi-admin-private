@@ -23,7 +23,8 @@ enum commonAPI {
   functionType = '/cms/function/explain/getType', // 功能说明分类
   questionType = '/cms/question/getType', // 问题
   resourceType = '/cms/mold/search', // 资源搜索
-  authorType = '/cms/topic/author' // 作者搜索
+  authorType = '/cms/topic/author', // 作者搜索
+  feedbackSelect = '/cms/feedback/getCities' // 意见返回
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改

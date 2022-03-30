@@ -2,85 +2,30 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:10:55
+ * @LastEditTime: 2022-02-28 14:12:22
  * @Description: file content
- * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
+ * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/content.config.ts
  */
 
 import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
-  title: '用户列表',
+  title: '内购记录',
   propList: [
-    {
-      prop: 'id',
-      label: '序号',
-      editInfo: {
-        type: 'input',
-        placeholder: '系统生成',
-        disabled: true
-      }
-    },
-    {
-      prop: 'rank',
-      label: '排序序号',
-      editInfo: {
-        type: 'input',
-        placeholder: '系统生成',
-        disabled: true
-      }
-    },
-    {
-      prop: 'title',
-      label: '标题',
-      editInfo: {
-        type: 'input',
-        placeholder: '请输入标题',
-        disabled: false
-      }
-    },
-    {
-      prop: 'subTitle',
-      label: '副标题',
-      editInfo: {
-        type: 'input',
-        placeholder: '请输入副标题'
-      }
-    },
-    {
-      prop: 'url',
-      label: '副标题',
-      editInfo: {
-        type: 'upload',
-        fileTypeName: 'test/'
-      }
-    },
-    // {
-    //   prop: 'createTime',
-    //   label: '编辑时间',
-    //   isEdit: false,
-    //   editInfo: {
-    //     type: 'datetime',
-    //     placeholder: '请输入编辑时间',
-    //     otherOptions: {
-    //       valueFormat: 'YYYY-MM-DD HH:mm:ss'
-    //     }
-    //   }
-    // },
-    {
-      label: '操作',
-      editInfo: {
-        type: 'handler'
-      }
-    }
+    { prop: 'id', label: '内购ID', sortable: true },
+    { prop: 'nickId', label: 'POFI ID', sortable: true },
+    { prop: 'nickName', label: '用户昵称' },
+    { prop: 'costType', label: '支付方式', slotName: 'costType' },
+    { prop: 'cost', label: '支付金额', slotName: 'payMoney', width: 100 },
+    { prop: 'pname', label: '目标商品' },
+    { prop: 'version', label: '来源平台' },
+    { prop: 'remark', label: '备注' },
+    { prop: 'time', label: '操作时间' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
-  showFooter: false,
   permission: {
     add: false,
     update: false,
-    delete: false,
-    columnAdd: true,
-    columnDelete: true
+    delete: false
   }
 }
