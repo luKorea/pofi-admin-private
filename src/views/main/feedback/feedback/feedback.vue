@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
-  <div class="feedbacks">
+  <div class="feedbacks" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"

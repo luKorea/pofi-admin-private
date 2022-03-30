@@ -37,7 +37,7 @@
       <div class="tim-wrap">
         <div class="tim-message">
           <el-input
-            v-model="message"
+            v-model.trim="message"
             placeholder="请输入内容"
             :rows="4"
             type="textarea"
@@ -69,6 +69,7 @@
 import { defineComponent, ref, watch, nextTick } from 'vue'
 import HyCard from '@/base-ui/card/index'
 import HyUpload from '@/base-ui/upload'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'feedbackUserHistory',
@@ -111,15 +112,19 @@ export default defineComponent({
     ])
     // 这里是信息地方
     const sendData = () => {
-      const data = {
-        name: '管理员',
-        time: new Date().toLocaleString(),
-        content: message.value,
-        img: 'https://f3.pofiart.com/base/1638164937055YQjkm.jpg'
+      if (message.value === '') {
+        errorTip('请输入内容')
+      } else {
+        const data = {
+          name: '管理员',
+          time: new Date().toLocaleString(),
+          content: message.value,
+          img: 'https://f3.pofiart.com/base/1638164937055YQjkm.jpg'
+        }
+        list.value.push(data)
+        message.value = ''
+        // emit('handleSendData', data)
       }
-      list.value.push(data)
-      message.value = ''
-      // emit('handleSendData', data)
     }
     watch(list.value, async () => {
       let ele = document.getElementById('chat-room') as HTMLElement
