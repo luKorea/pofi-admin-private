@@ -59,21 +59,18 @@ const auditUserModifyModule: Module<IUserModifyType, IRootState> = {
       const pageResult = await getPageListData(pageUrl, queryInfo)
       console.log(pageResult, 're')
       if (pageResult.result === 0) {
-        const { rows, total } = pageResult.data as any
+        // const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)
-        commit(`change${changePageName}List`, rows)
-        commit(`change${changePageName}Count`, total)
+        commit(`change${changePageName}List`, pageResult.data)
+        commit(`change${changePageName}Count`, pageResult.data.length)
       } else errorTip(pageResult.msg)
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const id = payload.queryInfo.id
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('delete', pageName)
+      const uid = payload.queryInfo.uid
+      const pageUrl = apiList[pageName] + '/delHead'
       const data = await deletePageToQueryData(pageUrl, {
-        id: id,
-        name: payload.queryInfo.name,
-        iso: payload.queryInfo.iso
+        uid: uid
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据

@@ -1,12 +1,16 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" :shadow="shadow">
     <template #header>
       <div class="card-header">
-        <span>{{ title }}</span>
+        <span class="title">{{ title }}</span>
+        <slot name="handler"></slot>
       </div>
     </template>
     <div class="item">
       <slot></slot>
+    </div>
+    <div class="footer">
+      <slot name="footer"></slot>
     </div>
   </el-card>
 </template>
@@ -21,6 +25,10 @@ export default defineComponent({
     title: {
       type: String,
       default: 'Title'
+    },
+    shadow: {
+      type: String,
+      default: 'always'
     }
   },
 
@@ -42,10 +50,18 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   height: 30px;
+  .title {
+    font-size: 14px;
+    color: #b6b0b0;
+  }
 }
 
 .item {
   margin-bottom: 10px;
   // border: 1px solid red;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

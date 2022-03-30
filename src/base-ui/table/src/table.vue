@@ -1,5 +1,5 @@
 <template>
-  <div class="hy-table" ref="HyTableRef">
+  <div class="hy-table table-container" ref="HyTableRef">
     <el-card>
       <template #header v-if="showHeader">
         <div class="header">
@@ -312,4 +312,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.table-container {
+  &:deep(.el-card__header) {
+    padding: 10px 20px !important;
+  }
+}
+</style>

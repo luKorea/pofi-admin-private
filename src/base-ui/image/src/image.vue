@@ -15,7 +15,7 @@
   >
     <el-image
       :src="imgSrc"
-      style="width: 40px; height: 40px"
+      :style="{ width: showWidth, height: showHeight }"
       fit="cover"
       :preview-src-list="imgList.length > 0 ? imgList : [imgSrc]"
     >
@@ -45,6 +45,14 @@ export default defineComponent({
     imgList: {
       type: Array,
       default: () => []
+    },
+    showWidth: {
+      type: String,
+      default: '40px'
+    },
+    showHeight: {
+      type: String,
+      default: '40px'
     }
   },
   setup() {
