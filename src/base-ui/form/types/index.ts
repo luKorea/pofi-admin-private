@@ -14,6 +14,7 @@ type IFormType =
   | 'datepicker'
   | 'datetimerange'
   | 'datetime'
+  | 'daterange'
   | 'radio'
   | 'cascader'
   | 'checkbox'

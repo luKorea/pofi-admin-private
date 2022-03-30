@@ -7,6 +7,14 @@
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
 
+// 用户消息状态
+export const userMessageTypeList = [
+  { value: 0, title: '新问题' },
+  { value: 1, title: '已回复' },
+  { value: 2, title: '用户新回复' },
+  { value: 3, title: '用户已关闭' }
+]
+
 // 文案类型
 
 // USD模型

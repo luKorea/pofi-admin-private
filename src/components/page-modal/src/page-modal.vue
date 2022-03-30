@@ -21,10 +21,15 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button size="mini" @click="dialogVisible = false"
-              >取 消</el-button
+            <el-button size="mini" @click="dialogVisible = false">{{
+              showCancelText
+            }}</el-button>
+            <el-button
+              v-if="showConfigBtn"
+              size="mini"
+              type="primary"
+              @click="handleConfirmClick"
             >
-            <el-button size="mini" type="primary" @click="handleConfirmClick">
               确 定
             </el-button>
           </span>
@@ -81,6 +86,14 @@ export default defineComponent({
         editName: 'system/editPageDataAction',
         createName: 'system/createPageDataAction'
       })
+    },
+    showCancelText: {
+      type: String,
+      default: '取消'
+    },
+    showConfigBtn: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['editClick', 'addClick'],

@@ -37,6 +37,7 @@ import { IHelpFunctionType } from './main/help/function/types'
 import { IHelpQuestionType } from './main/help/question/types'
 import { IHelpQuestionTypeType } from './main/help/questionType/types'
 import { IUserModifyType } from './main/audit/userModify/types'
+import { IFeedbackType } from './main/feedback/types'
 
 export interface IRootState {
   name: string
@@ -55,6 +56,8 @@ export interface IRootWithModule {
   baseAreaModule: IBaseAreaType
   baseLanguageModule: IBaseLanguageType
   baseFusingModule: IBaseFusingType
+  // 问题反馈
+  feedbackModule: IFeedbackType
   // 审核管理
   auditUserModifyModule: IUserModifyType
   // 商品中心

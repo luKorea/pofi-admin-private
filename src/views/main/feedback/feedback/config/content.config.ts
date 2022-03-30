@@ -9,17 +9,21 @@
 
 import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
-  title: '内购记录',
+  title: '问题列表',
   propList: [
-    { prop: 'id', label: '内购ID', sortable: true },
-    { prop: 'nickId', label: 'POFI ID', sortable: true },
-    { prop: 'nickName', label: '用户昵称' },
-    { prop: 'costType', label: '支付方式', slotName: 'costType' },
-    { prop: 'cost', label: '支付金额', slotName: 'payMoney', width: 100 },
-    { prop: 'pname', label: '目标商品' },
-    { prop: 'version', label: '来源平台' },
+    { prop: 'id', label: '编号', sortable: true, width: '80' },
+    { prop: 'content', label: '内容' },
+    { prop: 'nickName', label: '用户名', slotName: 'isNickName' },
+    { prop: 'nickId', label: '用户ID', slotName: 'isNickID' },
+    { prop: 'typeDec', label: '类型' },
+    { prop: 'region', label: '地区', slotName: 'isRegion' },
+    { prop: 'contact', label: '联系方式' },
+    { prop: 'status', label: '状态', slotName: 'isStatus' },
+    { prop: 'optTag', label: '标签', slotName: 'isTag' },
     { prop: 'remark', label: '备注' },
-    { prop: 'time', label: '操作时间' }
+    { prop: 'optTime', label: '最后更新', slotName: 'updateAt' },
+    { prop: 'time', label: '创建时间', slotName: 'updateAt' },
+    { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,

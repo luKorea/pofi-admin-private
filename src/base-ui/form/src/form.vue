@@ -116,7 +116,8 @@
                   item.type === 'datepicker' ||
                   item.type === 'datetimerange' ||
                   item.type === 'date' ||
-                  item.type === 'datetime'
+                  item.type === 'datetime' ||
+                  item.type === 'daterange'
                 "
               >
                 <el-date-picker

@@ -14,6 +14,8 @@ import oaPermissionModule from './main/system/permission/permission'
 import oaRoleModule from './main/system/role/role'
 import oaUserModule from './main/system/user/user'
 import oaRouterModule from './main/system/router/router'
+// 意见反馈
+import feedbackModule from './main/feedback/feedback'
 // 商品中心
 import goodsRechargeModule from './main/goods/recharge/recharge'
 import goodsFunctionModule from './main/goods/function/function'
@@ -57,6 +59,7 @@ import auditUserModifyModule from './main/audit/userModify/userModify'
 import { getPageListData } from '@/service/common-api'
 
 import { IRootState, IStoreType } from './types'
+import { Iphone } from '@element-plus/icons-vue/dist/types'
 
 const store = createStore<IRootState>({
   state() {
@@ -150,6 +153,8 @@ const store = createStore<IRootState>({
     oaRoleModule,
     oaUserModule,
     oaRouterModule,
+    // 问题反馈
+    feedbackModule,
     // 审核管理
     auditUserModifyModule,
     // 商品中心

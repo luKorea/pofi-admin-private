@@ -40,7 +40,7 @@ export const searchFormConfig: IForm = {
       field: 'optId',
       type: 'select',
       label: '处理人',
-      placeholder: '请选择问题编号',
+      placeholder: '请选择处理人',
       options: []
     },
     {
@@ -55,12 +55,7 @@ export const searchFormConfig: IForm = {
       type: 'select',
       label: '状态',
       placeholder: '请选择状态',
-      options: [
-        { value: 0, title: '新问题' },
-        { value: 1, title: '已回复' },
-        { value: 2, title: '用户新回复' },
-        { value: 3, title: '用户已关闭' }
-      ]
+      options: []
     },
     {
       field: 'optTag',
@@ -85,12 +80,12 @@ export const searchFormConfig: IForm = {
     },
     {
       field: 'dateTime',
-      type: 'datetimerange',
+      type: 'daterange',
       label: '操作时间',
       otherOptions: {
         startPlaceholder: '请输入开始时间',
         endPlaceholder: '请输入结束时间',
-        valueFormat: 'YYYY-MM-DD HH:mm:ss'
+        valueFormat: 'YYYY-MM-DD'
       }
     }
   ]
