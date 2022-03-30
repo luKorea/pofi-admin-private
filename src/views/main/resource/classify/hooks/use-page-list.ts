@@ -35,9 +35,10 @@ export function useSetLanguage() {
   console.log(languageItem.value, 'la')
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
-    if (mapObjectIsNull(['name'], languageItem.value)) {
-      languageId.value = id
-    } else warnTip('请确保多语言配置中带*号的字段已经填写')
+    languageId.value = id
+    // if (mapObjectIsNull(['name'], languageItem.value)) {
+    //   languageId.value = id
+    // } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [

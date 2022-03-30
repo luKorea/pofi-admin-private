@@ -28,11 +28,14 @@ export function useSetLanguage() {
   console.log(languageItem.value, 'la')
   // 改变多语言
   const handleChangeLanguage = async (id: any) => {
-    if (mapObjectIsNull(['title', 'answer'], languageItem.value)) {
-      languageId.value = id
-      await nextTick()
-      editorRef.value.setEditorValue()
-    } else warnTip('请确保多语言配置中带*号的字段已经填写')
+    languageId.value = id
+    await nextTick()
+    editorRef.value.setEditorValue()
+    // if (mapObjectIsNull(['title', 'answer'], languageItem.value)) {
+    //   languageId.value = id
+    //   await nextTick()
+    //   editorRef.value.setEditorValue()
+    // } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
