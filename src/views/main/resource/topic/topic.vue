@@ -164,7 +164,10 @@
           </el-select>
         </template>
         <template #handler="{ row }">
-          <el-button type="danger" size="mini" @click="deleteTableData(row.id)"
+          <el-button
+            type="danger"
+            size="mini"
+            @click="handleDeleteEditTableData(row.id)"
             >删除</el-button
           >
         </template>
@@ -215,6 +218,14 @@ export default defineComponent({
         url: [],
         cover: ''
       })
+    }
+    const handleDeleteEditTableData = (item: any) => {
+      deleteTableData(item)
+      // 暂时不做处理
+      // if (operationType.value === 'add') deleteTableData(item)
+      // else {
+      //   console.log(1111)
+      // }
     }
     watch(listData.value, () => {
       listData.value = listData.value.map((item: any) => {
@@ -419,6 +430,7 @@ export default defineComponent({
       operationType,
       contentTableEditConfig,
       handleNewTableData,
+      handleDeleteEditTableData,
       listData,
       deleteTableData,
       handleDrawTable,
