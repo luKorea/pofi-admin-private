@@ -38,6 +38,7 @@ import { IHelpQuestionType } from './main/help/question/types'
 import { IHelpQuestionTypeType } from './main/help/questionType/types'
 import { IUserModifyType } from './main/audit/userModify/types'
 import { IFeedbackType } from './main/feedback/types'
+import { IHelpAccountType } from './main/help/account/types'
 
 export interface IRootState {
   name: string
@@ -71,6 +72,7 @@ export interface IRootWithModule {
   helpFunctionModule: IHelpFunctionType
   helpQuestionModule: IHelpQuestionType
   helpQuestionTypeModule: IHelpQuestionTypeType
+  helpAccountModule: IHelpAccountType
   // 设备管理
   userImeiModule: IUserImeiType
   conditionModule: IConditionType

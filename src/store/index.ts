@@ -52,6 +52,8 @@ import helpFunctionTypeModule from './main/help/functionType/functionType'
 import helpFunctionModule from './main/help/function/function'
 import helpQuestionModule from './main/help/question/question'
 import helpQuestionTypeModule from './main/help/questionType/questionType'
+import helpAccountModule from './main/help/account/account'
+
 // 审核管理
 import auditUserModifyModule from './main/audit/userModify/userModify'
 // import cache from '@/utils/cache'
@@ -59,12 +61,11 @@ import auditUserModifyModule from './main/audit/userModify/userModify'
 import { getPageListData } from '@/service/common-api'
 
 import { IRootState, IStoreType } from './types'
-import { Iphone } from '@element-plus/icons-vue/dist/types'
 
 const store = createStore<IRootState>({
   state() {
     return {
-      name: 'coderwhy',
+      name: 'koreaLu',
       age: 18,
       entireDepartment: [],
       entireRole: [],
@@ -188,7 +189,8 @@ const store = createStore<IRootState>({
     helpFunctionTypeModule,
     helpFunctionModule,
     helpQuestionModule,
-    helpQuestionTypeModule
+    helpQuestionTypeModule,
+    helpAccountModule
   }
 })
 

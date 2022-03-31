@@ -8,6 +8,7 @@
  */
 import { createApp } from 'vue'
 import { globalRegister } from './global'
+
 import 'normalize.css'
 import 'animate.css'
 import './assets/css/index.less'
