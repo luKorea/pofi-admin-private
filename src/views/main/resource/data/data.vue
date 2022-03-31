@@ -8,7 +8,7 @@
 -->
 <template>
   <!-- TODO 暂时隐藏 -->
-  <div class="resourceData" v-if="0">
+  <div class="resourceData" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"

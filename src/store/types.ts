@@ -40,6 +40,7 @@ import { IUserModifyType } from './main/audit/userModify/types'
 import { IFeedbackType } from './main/feedback/types'
 import { IHelpAccountType } from './main/help/account/types'
 import { IBaseJumpType } from './main/base/jump/types'
+import { IResourceCenterType } from './main/base/center/types'
 
 export interface IRootState {
   name: string
@@ -85,6 +86,7 @@ export interface IRootWithModule {
   resourceClassifyModule: IResourceClassifyType
   resourceSeriesModule: IResourceSeriesType
   resourceTopicModule: IResourceTopicType
+  resourceCenterModule: IResourceCenterType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

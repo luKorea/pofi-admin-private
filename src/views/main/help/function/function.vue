@@ -169,7 +169,7 @@ export default defineComponent({
     })
     const searchFormConfigRef = computed(() => {
       const typeItem = searchFormConfig.formItems.find(
-        (item) => item.field === 'typeId'
+        (item) => item.field === 'type'
       )
       typeItem!.options = typeList.value.map((item: any) => {
         return {

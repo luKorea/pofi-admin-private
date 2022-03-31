@@ -10,7 +10,7 @@
   <div class="page-dialog">
     <el-dialog
       v-model="dialogVisible"
-      width="50%"
+      :width="showWidth"
       top="8vh"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -38,7 +38,6 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-
 export default defineComponent({
   name: 'PageDialog',
   props: {
@@ -49,6 +48,10 @@ export default defineComponent({
     showTitle: {
       type: Boolean,
       default: false
+    },
+    showWidth: {
+      type: String,
+      default: '50%'
     }
   },
   emits: ['closeDialog'],

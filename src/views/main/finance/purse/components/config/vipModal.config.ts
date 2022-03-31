@@ -15,7 +15,14 @@ export const modalConfig: IForm = {
       field: 'day',
       type: 'inputNumber',
       label: '增加天数',
-      placeholder: '请输入整数日,负数表示扣除'
+      placeholder: '请输入整数日,负数表示扣除',
+      rules: [
+        {
+          required: true,
+          message: '请输入整数日,负数表示扣除',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'type',
@@ -30,7 +37,14 @@ export const modalConfig: IForm = {
       field: 'description',
       type: 'input',
       label: '描述',
-      placeholder: '描述内容仅在内部记录可见，可以选择不填写...'
+      placeholder: '描述内容仅在内部记录可见，可以选择不填写...',
+      rules: [
+        {
+          required: true,
+          message: '请输入描述',
+          trigger: 'blur'
+        }
+      ]
     }
   ],
   colLayout: {

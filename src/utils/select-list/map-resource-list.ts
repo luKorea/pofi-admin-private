@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 16:00:06
+ * @LastEditTime: 2022-03-31 15:57:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */

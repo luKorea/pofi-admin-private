@@ -27,7 +27,7 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入名称'
     },
     {
-      field: 'typeId',
+      field: 'type',
       type: 'select',
       label: '所属分类',
       placeholder: '所属分类',

@@ -2,7 +2,7 @@
   <!-- 暂时只做选择封装，后续有时间再做表单封装 -->
   <el-divider>{{ title }}</el-divider>
   <el-row>
-    <el-col :span="4">
+    <el-col :span="3">
       <div class="item-flex">
         <el-card>
           <span class="item-title">多语言选择</span>
