@@ -158,6 +158,7 @@
               VIP类型
             </span>
             <el-select
+              style="width: 100%"
               @change="handleChangeLink"
               v-model="otherInfo.funcType"
               placeholder="请选择VIP类型"
@@ -257,6 +258,7 @@
               指定问题
             </span>
             <el-select
+              style="width: 100%"
               v-model="otherInfo.qaId"
               @change="handleChangeLink"
               placeholder="请选择指定问题"
@@ -295,6 +297,7 @@
               指定使用指南
             </span>
             <el-select
+              style="width: 100%"
               v-model="otherInfo.guideId"
               placeholder="请选择指定使用指南"
               @change="handleChangeLink"
@@ -333,6 +336,7 @@
               系列编号
             </span>
             <el-select
+              style="width: 100%"
               v-model="otherInfo.msId"
               @change="handleChangeLink"
               placeholder="请选择系列编号"
@@ -489,7 +493,7 @@ export default defineComponent({
         effectImgList.value.push(mapImageToObject(item.blackIcon))
       }
       otherInfo.value = {
-        areaIds: item.areaIds, // 用户如果没有修改这个选项。使用默认值
+        areaIds: item.areaIds.toString(), // 用户如果没有修改这个选项。使用默认值
         id: item.id,
         jump: item.jump,
         jumpType: item.jumpType

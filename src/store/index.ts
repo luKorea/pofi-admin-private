@@ -46,6 +46,8 @@ import baseHeadModule from './main/base/head/head'
 import baseAreaModule from './main/base/area/area'
 import baseLanguageModule from './main/base/language/language'
 import baseFusingModule from './main/base/fusing/fusing'
+import baseJumpModule from './main/base/jump/jump'
+
 // 帮助中心
 import helpCompanionModule from './main/help/companion/companion'
 import helpFunctionTypeModule from './main/help/functionType/functionType'
@@ -184,6 +186,7 @@ const store = createStore<IRootState>({
     baseAreaModule,
     baseLanguageModule,
     baseFusingModule,
+    baseJumpModule,
     // 帮助中心
     helpCompanionModule,
     helpFunctionTypeModule,
