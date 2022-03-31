@@ -10,7 +10,9 @@
 import type { App, Plugin } from 'vue'
 import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
-import { warnTip } from './tip-info'
+import Clipboard from 'clipboard'
+import { successTip, errorTip } from '@/utils/tip-info'
+
 let loading: ILoadingInstance
 
 export function showLoading() {
@@ -339,4 +341,22 @@ export function _debounce(cb: CallBack, delay = 100, immediate = false) {
     }
   }
   return _
+}
+
+// 复制到剪切板
+
+export function clipboardText(element: any) {
+  let clipboard = new Clipboard(element)
+  clipboard.on('success', () => {
+    successTip('复制成功')
+    // 释放内存
+    clipboard.destroy()
+  })
+  clipboard.on('error', () => {
+    // 不支持复制
+    //console.log('该浏览器不支持自动复制')
+    // 释放内存
+    errorTip('该浏览器不支持自动复制')
+    clipboard.destroy()
+  })
 }

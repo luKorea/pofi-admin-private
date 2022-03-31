@@ -2,10 +2,26 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 11:57:20
+ * @LastEditTime: 2022-03-31 16:00:06
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 跳转方向
+export const directionList = [
+  { value: -999, info: 'all', title: '全部' },
+  { value: 1, info: 'out', title: 'APP外部' },
+  { value: 2, info: 'in', title: '内部' }
+]
+
+// 跳转链接使用平台
+export const platformList = [
+  { value: 1, info: 'out', title: 'APP' },
+  { value: 2, info: 'in', title: 'APP内-H5网页' },
+  { value: 3, info: 'in', title: 'H5网页' },
+  { value: 4, info: 'in', title: '小程序' },
+  { value: 5, info: 'in', title: '其他' }
+]
 
 // 用户消息状态
 export const userMessageTypeList = [

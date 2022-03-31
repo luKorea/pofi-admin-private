@@ -2,16 +2,16 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 15:35:46
+ * @LastEditTime: 2022-03-31 16:00:15
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
 <template>
-  <div class="base-head">
+  <div class="base-jump" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
-      @queryBtnClick="handleQueryClick"
+      @queryBtnClick="handleQueryBtnClick"
     />
     <page-content
       ref="pageContentRef"
@@ -24,12 +24,22 @@
       <template #isState="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
+      <template #otherTableHandler="{ row }">
+        <el-button
+          type="text"
+          :data-clipboard-text="row.jump"
+          size="mini"
+          @click="copyLink"
+          class="copyBtn"
+          >复制链接</el-button
+        >
+      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
       pageName="jumps"
-      :modalConfig="modalConfig"
+      :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
@@ -340,9 +350,14 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import { usePageList, useStoreName } from './hooks/use-page-list'
 import { getJumpLink } from '@/service/main/help/account'
 import { errorTip } from '@/utils/tip-info'
-import { _debounce, mapSelectListTitle } from '@/utils'
+import { _debounce, mapSelectListTitle, mapTimeToSearch } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
 import { Base64 } from 'js-base64'
+import {
+  platformList,
+  directionList
+} from '@/utils/select-list/map-resource-list'
+import { clipboardText } from '@/utils/index'
 
 export default defineComponent({
   name: 'baseJump',
@@ -351,16 +366,45 @@ export default defineComponent({
       const typeItem = searchFormConfig.formItems.find(
         (item: any) => item.field === 'type'
       )
+      const platformItem = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'platform'
+      )
+      const directionItem = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'direction'
+      )
       typeItem!.options = jumpList.value.map((item: any) => {
         return {
           title: item.dec,
           value: item.type
         }
       })
+      platformItem!.options = platformList
+      directionItem!.options = directionList
       return searchFormConfig
+    })
+    const modalConfigRef = computed(() => {
+      const platformItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'platform'
+      )
+      const directionItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'direction'
+      )
+      platformItem!.options = platformList
+      directionItem!.options = directionList
+      return modalConfig
     })
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const handleQueryBtnClick = (data: any) => {
+      console.log(data, 'data')
+      const beginDate = mapTimeToSearch(data.dateTime).start
+      const endDate = mapTimeToSearch(data.dateTime).end
+      handleQueryClick({
+        ...data,
+        beginDate,
+        endDate
+      })
+    }
     const otherInfo = ref<any>()
     const [, jumpList, otherList] = usePageList()
     const mapType = (type: any) => {
@@ -433,17 +477,23 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
+    const copyLink = () => {
+      clipboardText('.copyBtn')
+    }
     return {
       // 跳转链接
       jumpList,
       otherList,
+      copyLink,
       handleChangeLink,
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,
       searchFormConfigRef,
       handleResetClick,
+      handleQueryBtnClick,
       handleQueryClick,
+      modalConfigRef,
       modalConfig,
       handleNewData,
       handleEditData,

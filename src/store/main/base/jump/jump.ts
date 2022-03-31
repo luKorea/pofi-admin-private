@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 09:57:07
+ * @LastEditTime: 2022-03-31 15:53:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/head/head.ts
  */
@@ -69,7 +69,7 @@ const baseJumpModule: Module<IBaseJumpType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + 'deleteAccount'
+      const pageUrl = apiList[pageName] + 'del'
       const data = await deletePageToQueryData(pageUrl, { id: id })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -86,7 +86,7 @@ const baseJumpModule: Module<IBaseJumpType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'addAccount'
+        const pageUrl = apiList[pageName] + 'add'
         const data = await createPageData(pageUrl, newData)
         if (data.result === 0) {
           // 2.请求最新的数据
@@ -104,7 +104,7 @@ const baseJumpModule: Module<IBaseJumpType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'updateAccount'
+        const pageUrl = apiList[pageName] + 'update'
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据

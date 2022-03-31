@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:26:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-31 15:55:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/config/search.config.ts
  */
@@ -35,24 +35,14 @@ export const searchFormConfig: IForm = {
       type: 'select',
       label: '跳转方向',
       placeholder: '请选择跳转方向',
-      options: [
-        { value: -999, info: 'all', title: '全部' },
-        { value: 1, info: 'out', title: 'APP外部' },
-        { value: 2, info: 'in', title: '内部' }
-      ]
+      options: []
     },
     {
       field: 'platform',
       type: 'select',
       label: '使用平台',
       placeholder: '请选择使用平台',
-      options: [
-        { value: 1, info: 'out', title: 'APP' },
-        { value: 2, info: 'in', title: 'APP内-H5网页' },
-        { value: 3, info: 'in', title: 'H5网页' },
-        { value: 4, info: 'in', title: '小程序' },
-        { value: 5, info: 'in', title: '其他' }
-      ]
+      options: []
     },
     {
       field: 'type',
@@ -63,7 +53,7 @@ export const searchFormConfig: IForm = {
     },
     {
       field: 'dateTime',
-      type: 'datetimerange',
+      type: 'daterange',
       label: '创建时间',
       otherOptions: {
         startPlaceholder: '请输入开始时间',
