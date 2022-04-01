@@ -71,6 +71,10 @@ export default defineComponent({
     searchFormConfig: {
       type: Object,
       required: true
+    },
+    searchInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
