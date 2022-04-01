@@ -17,6 +17,13 @@ export const modalConfig: IForm = {
       label: '上级路由',
       placeholder: '请选择上级路由',
       options: [],
+      rules: [
+        {
+          required: true,
+          message: '请选择上级路由',
+          trigger: 'blur'
+        }
+      ],
       otherOptions: {
         filterable: true
       }
@@ -25,36 +32,79 @@ export const modalConfig: IForm = {
       field: 'name',
       type: 'input',
       label: '路由名称',
-      placeholder: '请输入路由名称'
+      placeholder: '请输入路由名称',
+      rules: [
+        {
+          required: true,
+          message: '请输入路由名称',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'title',
       type: 'input',
       label: '路由标题',
-      placeholder: '请输入路由标题'
+      placeholder: '请输入路由标题',
+      rules: [
+        {
+          required: true,
+          message: '请输入路由标题',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'path',
       type: 'input',
       label: '路由路径',
-      placeholder: '请输入路由路径'
+      placeholder: '请输入路由路径',
+      rules: [
+        {
+          required: true,
+          message: '请输入路由路径',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'component',
       type: 'input',
       label: '路由组件地址',
-      placeholder: '请输入路由组件地址'
+      placeholder: '请输入路由组件地址',
+      rules: [
+        {
+          required: true,
+          message: '请输入路由组件地址',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'icon',
       type: 'input',
       label: '路由图标',
-      placeholder: '请输入路由图标'
+      placeholder: '请输入路由图标',
+      rules: [
+        {
+          required: true,
+          message: '请输入路由图标',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'show',
       type: 'select',
       label: '是否可见',
+      placeholder: '请选择是否可见',
+      rules: [
+        {
+          required: true,
+          message: '请选择是否可见',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           value: 1,
@@ -70,6 +120,14 @@ export const modalConfig: IForm = {
       field: 'cache',
       type: 'select',
       label: '是否缓存',
+      placeholder: '请选择是否缓存',
+      rules: [
+        {
+          required: true,
+          message: '请选择是否缓存',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           value: 1,
@@ -85,6 +143,14 @@ export const modalConfig: IForm = {
       field: 'access',
       type: 'select',
       label: '是否授权',
+      placeholder: '请选择是否授权',
+      rules: [
+        {
+          required: true,
+          message: '请选择是否授权',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           value: 1,
@@ -100,6 +166,14 @@ export const modalConfig: IForm = {
       field: 'props',
       type: 'select',
       label: '是否是动态路由',
+      placeholder: '请选择是否是动态路由',
+      rules: [
+        {
+          required: true,
+          message: '请选择是否是动态路由',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           value: true,
