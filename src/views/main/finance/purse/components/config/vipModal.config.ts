@@ -26,9 +26,26 @@ export const modalConfig: IForm = {
     },
     {
       field: 'type',
-      type: 'input',
+      type: 'select',
       label: 'VIP类型',
-      placeholder: '请输入VIP类型:pro或plus',
+      placeholder: '请选择VIP类型',
+      rules: [
+        {
+          required: true,
+          message: '请选择VIP类型',
+          trigger: 'blur'
+        }
+      ],
+      options: [
+        {
+          title: 'Pro',
+          value: 'Pro'
+        },
+        {
+          title: 'Plus',
+          value: 'Plus'
+        }
+      ],
       otherOptions: {
         disabled: false
       }
