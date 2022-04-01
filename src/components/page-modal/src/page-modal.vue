@@ -21,6 +21,14 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
+            <!-- 新增自定义按钮，用于单页面中操作走不同请求操作, 增加延展性 -->
+            <slot
+              name="otherModalHandler"
+              :row="{
+                data: formData,
+                ref: pageFormRef
+              }"
+            ></slot>
             <el-button size="mini" @click="dialogVisible = false">{{
               showCancelText
             }}</el-button>
