@@ -60,6 +60,8 @@ import helpAccountModule from './main/help/account/account'
 // 审核管理
 import auditUserModifyModule from './main/audit/userModify/userModify'
 // import cache from '@/utils/cache'
+// 广告管理
+import advertisementBannerModule from './main/ad/banner/banner'
 
 import { getPageListData } from '@/service/common-api'
 
@@ -195,7 +197,9 @@ const store = createStore<IRootState>({
     helpFunctionModule,
     helpQuestionModule,
     helpQuestionTypeModule,
-    helpAccountModule
+    helpAccountModule,
+    // 广告管理
+    advertisementBannerModule
   }
 })
 

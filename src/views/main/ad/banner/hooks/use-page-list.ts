@@ -13,6 +13,7 @@ import { searchFormConfig } from '../config/search.config'
 import { modalConfig } from '../config/modal.config'
 import { libraryList } from '@/utils/select-list/map-resource-list'
 import { usePageLanguage } from '@/hooks/use-page-language'
+import { mapSelectListTitle } from '@/utils'
 
 export function useSetLanguage() {
   const editorRef = ref<any>()
@@ -20,7 +21,9 @@ export function useSetLanguage() {
     usePageLanguage({
       value: '',
       title: '',
-      subTitle: ''
+      subTitle: '',
+      img: [],
+      icon: ''
     })
   const languageItem = computed(() => {
     return languageList.value.find(
@@ -94,10 +97,14 @@ export function useMapFormData() {
     libraryItem!.options = libraryList
     return modalConfig
   })
+  const mapTitle = (type: any) => {
+    return mapSelectListTitle(type, libraryList)
+  }
   return {
     searchFormConfigRef,
     modalConfigRef,
-    modalConfig
+    modalConfig,
+    mapTitle
   }
 }
 
@@ -158,15 +165,15 @@ export function usePageList() {
 
 export function useStoreName() {
   const storeTypeInfo = ref({
-    actionName: 'helpAccountModule/getPageListAction',
-    actionListName: 'helpAccountModule/pageListData',
-    actionCountName: 'helpAccountModule/pageListCount',
-    deleteAction: 'helpAccountModule/deletePageDataAction',
-    sortAction: 'helpAccountModule/sortPageDataAction'
+    actionName: 'advertisementBannerModule/getPageListAction',
+    actionListName: 'advertisementBannerModule/pageListData',
+    actionCountName: 'advertisementBannerModule/pageListCount',
+    deleteAction: 'advertisementBannerModule/deletePageDataAction',
+    sortAction: 'advertisementBannerModule/sortPageDataAction'
   })
   const operationName = ref({
-    editName: 'helpAccountModule/editPageDataAction',
-    createName: 'helpAccountModule/createPageDataAction'
+    editName: 'advertisementBannerModule/editPageDataAction',
+    createName: 'advertisementBannerModule/createPageDataAction'
   })
   return [storeTypeInfo, operationName]
 }

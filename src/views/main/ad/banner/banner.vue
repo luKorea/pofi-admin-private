@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
 <template>
-  <div class="hg-flex">
+  <div class="hg-flex" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -23,19 +23,22 @@
         ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
         :storeTypeInfo="storeTypeInfo"
-        pageName="helpAccounts"
+        pageName="banners"
         @newBtnClick="handleNewData"
         @editBtnClick="handleEditData"
       >
+        <template #isLibrary="scope">
+          <span>{{ mapTitle(scope.row.library) }}</span>
+        </template>
         <template #isState="scope">
-          <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
+          <span>{{ scope.row.state ? '显示' : '不显示' }}</span>
         </template>
       </page-content>
     </div>
     <page-modal
       :defaultInfo="defaultInfo"
       ref="pageModalRef"
-      pageName="helpAccounts"
+      pageName="banners"
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
@@ -355,7 +358,72 @@
           </div>
         </el-col>
       </el-row>
-      <el-divider>多语言配置</el-divider>
+      <!-- 多语言配置 -->
+      <page-language
+        :languageList="languageList"
+        :languageId="languageId"
+        :languageBtnList="languageBtnList"
+        @changeLanguage="handleChangeLanguage"
+      >
+        <template #formItem>
+          <el-row :gutter="12">
+            <el-col v-bind="modalConfig.colLayout">
+              <div class="item-flex">
+                <span class="item-title">
+                  <span class="item-tip">*</span>
+                  标题
+                </span>
+                <el-input
+                  v-model="languageItem.title"
+                  placeholder="请输入标题"
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col v-bind="modalConfig.colLayout">
+              <div class="item-flex">
+                <span class="item-title">
+                  <span class="item-tip">*</span>
+                  副标题
+                </span>
+                <el-input
+                  v-model="languageItem.subTitle"
+                  placeholder="请输入副标题"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="12">
+            <el-col v-bind="modalConfig.colLayout">
+              <div class="item-flex">
+                <span class="item-title"> 标签 </span>
+                <el-input
+                  v-model="languageItem.title"
+                  placeholder="请输入标签"
+                ></el-input>
+              </div>
+            </el-col>
+            <el-col v-bind="modalConfig.colLayout">
+              <div class="item-flex">
+                <span class="item-title"> 简述 </span>
+                <el-input
+                  v-model="languageItem.subTitle"
+                  placeholder="请输入简述"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <div class="item-flex">
+            <div class="item-title">
+              <span class="item-tip">*</span>
+              图片
+            </div>
+            <hy-upload
+              v-model:value="languageItem.img"
+              fileTypeName="banner/"
+            ></hy-upload>
+          </div>
+        </template>
+      </page-language>
     </page-modal>
   </div>
 </template>
@@ -380,9 +448,13 @@ import { getJumpLink } from '@/service/main/help/account'
 import { errorTip } from '@/utils/tip-info'
 import { _debounce, decryType } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
+import HyUpload from '@/base-ui/upload'
 
 export default defineComponent({
   name: 'advertisementBanner',
+  components: {
+    HyUpload
+  },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [imgLimit] = useImageUpload()

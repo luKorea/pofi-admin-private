@@ -1,6 +1,12 @@
 <template>
   <!-- 暂时只做选择封装，后续有时间再做表单封装 -->
-  <el-divider>{{ title }}</el-divider>
+  <el-divider
+    >{{ title }} (
+    <span style="font-size: 12px; color: #ccc"
+      >请确保带<span style="color: #f56c6c">*</span>号的字段填写完整</span
+    >
+    )
+  </el-divider>
   <el-row>
     <el-col :span="3">
       <div class="item-flex">

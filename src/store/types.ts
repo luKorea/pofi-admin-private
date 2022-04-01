@@ -41,6 +41,7 @@ import { IFeedbackType } from './main/feedback/types'
 import { IHelpAccountType } from './main/help/account/types'
 import { IBaseJumpType } from './main/base/jump/types'
 import { IResourceCenterType } from './main/base/center/types'
+import { IAadvertisementBannerType } from './main/ad/banner/types'
 
 export interface IRootState {
   name: string
@@ -96,6 +97,8 @@ export interface IRootWithModule {
   tradeRecordModule: ITradeTRecordType
   payModule: IPayType
   purseModule: IFinancePurseType
+  // 广告管理
+  advertisementBannerModule: IAadvertisementBannerType
 }
 
 export type IStoreType = IRootState & IRootWithModule
