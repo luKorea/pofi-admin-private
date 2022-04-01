@@ -184,7 +184,7 @@ import { contentTableConfig } from './config/content.config'
 import { contentTableEditConfig } from './config/content.edit-config'
 import { modalConfig } from './config/modal.config'
 
-import { usePageSearch } from '@/hooks/use-page-search'
+import { useMapCountry } from '@/hooks/use-page-side-country'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useStoreName,
@@ -302,7 +302,6 @@ export default defineComponent({
         } else errorTip(res.msg)
       })
     }
-    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const [imgLimit] = useImageUpload()
     const author = ref<any>()
     const otherInfo = ref<any>({})
@@ -332,42 +331,8 @@ export default defineComponent({
       // listData.value = result
       console.log(listData.value, index, 'value')
     }
-    // 侧边地区
-    const countryRef = ref()
-    const countryID = ref(-999)
     // 下拉地区
     const areaIds = ref<any>([])
-    const handleCountryList = computed(() => {
-      const list = [
-        {
-          name: '全部',
-          id: -999
-        },
-        ...countryList.value
-      ]
-      return list
-    })
-    const copyQueryInfo = ref({})
-    const selectCountryClick = (item: any) => {
-      countryID.value = item.id
-      handleQueryClick({
-        ...copyQueryInfo.value,
-        rid: countryID.value
-      })
-    }
-    const handleQueryBtnClick = (queryInfo: any) => {
-      copyQueryInfo.value = queryInfo
-      handleQueryClick({
-        ...queryInfo,
-        rid: countryID.value
-      })
-    }
-    // 刷新时重新选择第一条数据
-    const handleResetBtnClick = () => {
-      countryRef.value.currentIndex = 0
-      countryID.value = -999
-      handleResetClick()
-    }
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {
         const region: any[] = []
@@ -435,9 +400,7 @@ export default defineComponent({
       deleteTableData,
       handleDrawTable,
       // 侧边国家
-      countryRef,
-      handleCountryList,
-      selectCountryClick,
+      ...useMapCountry(),
       // 下拉框数据
       areaIds,
       author,
@@ -459,11 +422,8 @@ export default defineComponent({
       languageBtnList,
       handleChangeLanguage,
       searchFormConfigRef,
-      handleQueryBtnClick,
-      handleResetBtnClick,
       storeTypeInfo,
       contentTableConfig,
-      pageContentRef,
       modalConfigRef,
       handleNewData,
       editData,

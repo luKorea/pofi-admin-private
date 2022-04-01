@@ -86,13 +86,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect, watch } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
 
-import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useStoreName,
@@ -104,6 +103,7 @@ import { getItemData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
 import { mapImageToObject } from '@/utils/index'
 import { warnTip, errorTip } from '@/utils/tip-info'
+import { useMapCountry } from '@/hooks/use-page-side-country'
 export default defineComponent({
   name: 'helpQuestionType',
   components: {
@@ -120,32 +120,10 @@ export default defineComponent({
     ] = useSetLanguage()
     const [, countryList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
-    const [pageContentRef, , handleQueryClick] = usePageSearch()
     const [imgLimit] = useImageUpload()
     const otherInfo = ref<any>({})
-    // 侧边地区
-    const countryRef = ref()
-    const countryID = ref(-999)
     // 下拉地区
     const areaIds = ref<any>([])
-    const handleCountryList = computed(() => {
-      const list = [
-        {
-          name: '全部',
-          id: -999
-        },
-        ...countryList.value
-      ]
-      return list
-    })
-    const copyQueryInfo = ref({})
-    const selectCountryClick = (item: any) => {
-      countryID.value = item.id
-      handleQueryClick({
-        ...copyQueryInfo.value,
-        rid: countryID.value
-      })
-    }
     // 监听多语言图片设置
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {
@@ -233,9 +211,7 @@ export default defineComponent({
       usePageModal(newData)
     return {
       // 侧边国家
-      countryRef,
-      handleCountryList,
-      selectCountryClick,
+      ...useMapCountry(),
       areaIds,
       countryList,
       handleChangeCountry,
@@ -249,7 +225,6 @@ export default defineComponent({
       searchFormConfigRef,
       storeTypeInfo,
       contentTableConfig,
-      pageContentRef,
       modalConfigRef,
       handleNewData,
       editData,

@@ -226,7 +226,7 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.result === 0) {
           successTip(res.msg)
-          handleQueryClick()
+          // handleQueryClick()
         } else errorTip(res.msg)
       })
     }

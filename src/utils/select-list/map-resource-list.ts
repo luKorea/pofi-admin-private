@@ -7,6 +7,38 @@
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
 
+// POFI 库
+export const libraryList = [
+  {
+    value: 1,
+    title: '人偶库'
+  },
+  {
+    value: 2,
+    title: 'Pose库'
+  },
+  {
+    value: 3,
+    title: '动画库'
+  }
+]
+
+// VIP类型
+export const memberList = [
+  {
+    value: 0,
+    title: 'Free'
+  },
+  {
+    value: 1,
+    title: 'Pro'
+  },
+  {
+    value: 2,
+    title: 'Plus'
+  }
+]
+
 // 跳转方向
 export const directionList = [
   { value: -999, info: 'all', title: '全部' },

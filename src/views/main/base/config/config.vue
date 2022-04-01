@@ -117,7 +117,7 @@ import {
   useSetLanguage
 } from './hooks/use-page-list'
 
-import { usePageSearch } from '@/hooks/use-page-search'
+import { useMapCountry } from '@/hooks/use-page-side-country'
 import { usePageModal } from '@/hooks/use-page-modal'
 
 import { searchFormConfig } from './config/search.config'
@@ -135,13 +135,6 @@ export default defineComponent({
     HyEditor
   },
   setup() {
-    const editorRules = ref([
-      {
-        require: true,
-        message: '请输入内容',
-        trigger: 'blur'
-      }
-    ])
     const [
       editorRef,
       languageList,
@@ -153,22 +146,10 @@ export default defineComponent({
     ] = useSetLanguage()
     const store = useStore()
     const isAdmin = computed(() => store.state.login.isAdmin)
-    const countryRef = ref()
-    const [countryID, otherInfo] = useOther()
+    const [, otherInfo] = useOther()
     const [storeTypeInfo, operationName] = useStoreName()
     const [countryList, groupList, classificationList] = usePageList()
-    const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const areaIds = ref<any>([])
-    const handleCountryList = computed(() => {
-      const list = [
-        {
-          name: '全部',
-          id: -999
-        },
-        ...countryList.value
-      ]
-      return list
-    })
     // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
     watchEffect(() => {
       otherInfo.value = {
@@ -229,27 +210,6 @@ export default defineComponent({
       }))
       return searchFormConfig
     })
-    const copyQueryInfo = ref({})
-    const selectCountryClick = (item: any) => {
-      countryID.value = item.id
-      handleQueryClick({
-        ...copyQueryInfo.value,
-        rid: countryID.value
-      })
-    }
-    const handleQueryBtnClick = (queryInfo: any) => {
-      copyQueryInfo.value = queryInfo
-      handleQueryClick({
-        ...queryInfo,
-        rid: countryID.value
-      })
-    }
-    // 刷新时重新选择第一条数据
-    const handleResetBtnClick = () => {
-      countryRef.value.currentIndex = 0
-      countryID.value = '-999'
-      handleResetClick()
-    }
     // 表单
     const modalConfigRef = computed(() => {
       // 超级管理员拥有分类分组选项，普通用户没有，后续增加
@@ -279,6 +239,7 @@ export default defineComponent({
       return modalConfig
     })
     return {
+      ...useMapCountry(),
       // 多语言编辑
       editorRef,
       languageList,
@@ -288,20 +249,11 @@ export default defineComponent({
       handleChangeLanguage,
       areaIds,
       handleChangeCountry,
-      handleCountryList,
       isAdmin,
-      countryRef,
-      editorRules,
       storeTypeInfo,
       countryList,
       groupList,
-      selectCountryClick,
-      pageContentRef,
       searchConfigReset,
-      handleResetClick,
-      handleResetBtnClick,
-      handleQueryClick,
-      handleQueryBtnClick,
       contentTableConfig,
       pageModalRef,
       defaultInfo,
