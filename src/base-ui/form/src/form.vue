@@ -80,6 +80,7 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                   clearable
                   filterable
+                  @change="handleChangeSelect($event, item)"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -186,18 +187,25 @@ export default defineComponent({
       })
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'changeSelect'],
   setup(props, { emit }) {
     type FormInstance = InstanceType<typeof ElForm>
     const formRef = ref<FormInstance>()
+    // 更新表单数据
     const handleValueChange = (value: any, field: string) => {
-      console.log(value, field)
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
-
+    // 事件处理
+    const handleChangeSelect = (data: any, field: any) => {
+      emit('changeSelect', {
+        data: data,
+        field: field
+      })
+    }
     return {
       formRef,
-      handleValueChange
+      handleValueChange,
+      handleChangeSelect
     }
   }
 })

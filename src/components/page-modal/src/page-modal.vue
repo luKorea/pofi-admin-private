@@ -49,6 +49,7 @@
             ref="pageFormRef"
             v-bind="modalConfig"
             v-model="formData"
+            @changeSelect="handleChangeSelect"
           ></hy-form>
           <slot></slot>
         </div>
@@ -104,8 +105,8 @@ export default defineComponent({
       default: true
     }
   },
-  emits: ['editClick', 'addClick'],
-  setup(props) {
+  emits: ['editClick', 'addClick', 'changeSelect'],
+  setup(props, { emit }) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
     // 获取表单组件，监听表单是否填写完整
@@ -175,11 +176,16 @@ export default defineComponent({
         } else return false
       })
     }
+    // 表单事件监听
+    const handleChangeSelect = (item: any) => {
+      emit('changeSelect', item)
+    }
     return {
       pageFormRef,
       dialogVisible,
       formData,
-      handleConfirmClick
+      handleConfirmClick,
+      handleChangeSelect
     }
   }
 })
