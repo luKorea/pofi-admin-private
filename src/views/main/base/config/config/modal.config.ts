@@ -68,7 +68,14 @@ export const modalConfig: IForm = {
       field: 'state',
       type: 'select',
       label: '状态',
-      placeholder: '状态',
+      placeholder: '请选择状态',
+      rules: [
+        {
+          required: true,
+          message: '请选择状态',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           title: '启用',
