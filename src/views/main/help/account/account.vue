@@ -16,6 +16,16 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
     >
+      <template #otherTableHandler="{ row }">
+        <el-button
+          type="text"
+          :data-clipboard-text="row.jump"
+          size="mini"
+          @click="copyLink"
+          class="copyBtn"
+          >复制链接</el-button
+        >
+      </template>
       <template #isState="scope">
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
@@ -75,7 +85,6 @@
             <el-select
               placeholder="请选择链接类型"
               style="width: 100%"
-              clearable
               filterable
               v-model="otherInfo.jumpType"
               @change="handleChangeLink"
@@ -399,12 +408,11 @@ import {
   useImageUpload
 } from './hooks/use-page-list'
 import hyUpload from '@/base-ui/upload'
-import { mapImageToObject } from '@/utils/index'
+import { mapImageToObject, clipboardText } from '@/utils/index'
 import { getJumpLink } from '@/service/main/help/account'
 import { errorTip } from '@/utils/tip-info'
-import { _debounce } from '@/utils'
+import { _debounce, decryType } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
-import { Base64 } from 'js-base64'
 
 export default defineComponent({
   name: 'helpAccount',
@@ -504,39 +512,23 @@ export default defineComponent({
         type: item.jumpType
       }).then((res: any) => {
         if (res.result === 0) {
-          if (item.jumpType === 1) {
-            otherInfo.value.title = res.data.title
-            otherInfo.value.url = res.data.url
-          } else if (item.jumpType == 3) {
-            otherInfo.value.funcType = parseInt(res.data.funcType)
-          } else if (item.jumpType == 5) {
-            otherInfo.value.moId = res.data.id
-          } else if (item.jumpType == 6) {
-            otherInfo.value.topicId = res.data.id
-          } else if (item.jumpType == 13) {
-            otherInfo.value.packagename = res.data.packagename
-          } else if (item.jumpType == 15) {
-            otherInfo.value.url = Base64.decode(res.data.url)
-          } else if (item.jumpType === 17) {
-            otherInfo.value.email = res.data.recipient
-          } else if (item.jumpType == 19) {
-            otherInfo.value.qaId = parseInt(res.data.id)
-          } else if (item.jumpType == 21) {
-            otherInfo.value.guideId = parseInt(res.data.id)
-          } else if (item.jumpType == 23) {
-            otherInfo.value.configName = res.data.config
-          } else if (item.jumpType == 24) {
-            otherInfo.value.msId = res.data.id
+          otherInfo.value = {
+            ...otherInfo.value,
+            ...decryType(item.jumpType, otherInfo.value, res)
           }
         } else errorTip(res.msg)
       })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
+    const copyLink = () => {
+      clipboardText('.copyBtn')
+    }
     return {
       // 跳转链接
       jumpList,
       otherList,
+      copyLink,
       handleChangeLink,
       storeTypeInfo,
       contentTableConfig,

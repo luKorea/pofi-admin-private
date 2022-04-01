@@ -18,12 +18,12 @@ import {
   editPageData,
   deletePageToQueryData
 } from '@/service/common-api'
-import { sortTableList } from '@/service/main/base/head'
 import { mapObjectIsNull } from '@/utils'
+import { sortPageTableData } from '@/service/common-api'
 
 const apiList: any = {
   questionTypes: '/cms/question/type/',
-  sort: '/cms/function/type/updateSort'
+  sort: '/cms/question/type/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -141,7 +141,7 @@ const helpQuestionTypeModule: Module<IHelpQuestionTypeType, IRootState> = {
       const { pageName, sortData } = payload
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
-        const data = await sortTableList(sortData)
+        const data = await sortPageTableData(apiList.sort, sortData)
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {

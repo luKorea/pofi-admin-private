@@ -319,3 +319,10 @@ export default defineComponent({
   }
 }
 </style>
+
+<style>
+.el-popper.is-dark {
+  max-width: 220px !important;
+  line-height: 20px;
+}
+</style>

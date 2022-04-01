@@ -12,6 +12,7 @@ import { ElLoading } from 'element-plus'
 import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import Clipboard from 'clipboard'
 import { successTip, errorTip } from '@/utils/tip-info'
+import { Base64 } from 'js-base64'
 
 let loading: ILoadingInstance
 
@@ -359,4 +360,36 @@ export function clipboardText(element: any) {
     errorTip('该浏览器不支持自动复制')
     clipboard.destroy()
   })
+}
+
+// 返回不同链接类型
+export function decryType(type: any, otherInfo: any, res: any) {
+  type = +type
+  if (type === 1) {
+    otherInfo.title = res.data.title
+    otherInfo.url = Base64.decode(res.data.url)
+  } else if (type === 3) {
+    otherInfo.funcType = +res.data.funcType
+  } else if (type === 5) {
+    otherInfo.moId = res.data.id
+  } else if (type === 6) {
+    otherInfo.topicId = res.data.id
+  } else if (type === 13) {
+    otherInfo.packagename = res.data.packagename
+  } else if (type === 15) {
+    otherInfo.url = Base64.decode(res.data.url)
+  } else if (type === 17) {
+    otherInfo.email = res.data.recipient
+  } else if (type === 19) {
+    otherInfo.qaId = parseInt(res.data.id)
+  } else if (type === 21) {
+    otherInfo.guideId = parseInt(res.data.id)
+  } else if (type === 23) {
+    otherInfo.configName = res.data.config
+  } else if (type === 24) {
+    otherInfo.msId = res.data.id
+  } else if (type === 9) {
+    otherInfo.jumpKeyword = Base64.decode(res.data.word)
+  }
+  return otherInfo
 }

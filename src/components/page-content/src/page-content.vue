@@ -298,7 +298,7 @@ export default defineComponent({
     }
     const handleDeleteClick = (item: any) => {
       infoTipBox({
-        message: '您确定删除吗',
+        message: `您确定删除当前ID为${item.id}的数据吗`,
         title: '删除数据'
       })
         .then(() => {

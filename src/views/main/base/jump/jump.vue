@@ -7,7 +7,7 @@
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
 <template>
-  <div class="base-jump" v-if="0">
+  <div class="base-jump" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -53,9 +53,8 @@
             <el-select
               placeholder="请选择链接类型"
               style="width: 100%"
-              clearable
               filterable
-              v-model="otherInfo.jumpType"
+              v-model="otherInfo.type"
               @change="handleChangeLink"
             >
               <el-option
@@ -85,7 +84,7 @@
       <!-- 这里为跳转地址配置 -->
       <!-- APP内打开网址 -->
       <el-row :gutter="12">
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 1">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 1">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -100,7 +99,7 @@
         </el-col>
         <el-col
           v-bind="modalConfig.colLayout"
-          v-if="otherInfo.jumpType === 15 || otherInfo.jumpType === 1"
+          v-if="otherInfo.type === 15 || otherInfo.type === 1"
         >
           <div class="item-flex">
             <span class="item-title">
@@ -119,7 +118,7 @@
       </el-row>
       <el-row :gutter="12">
         <!-- VIP类型 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 3">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 3">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -142,7 +141,7 @@
           </div>
         </el-col>
         <!-- 模型编号 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 5">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 5">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -158,7 +157,7 @@
       </el-row>
       <el-row :gutter="12">
         <!-- 专题编号 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 6">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 6">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -172,7 +171,7 @@
           </div>
         </el-col>
         <!-- 应用的包名 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 13">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 13">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -187,7 +186,7 @@
         </el-col>
       </el-row>
       <!-- 小程序 -->
-      <el-row :gutter="12" v-if="otherInfo.jumpType === 16">
+      <el-row :gutter="12" v-if="otherInfo.type === 16">
         <!-- 小程序APPID -->
         <el-col v-bind="modalConfig.colLayout">
           <div class="item-flex">
@@ -219,7 +218,7 @@
       </el-row>
       <el-row :gutter="12">
         <!-- 指定问题 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 19">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 19">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -242,7 +241,7 @@
           </div>
         </el-col>
         <!-- 收信邮箱 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 17">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 17">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -258,7 +257,7 @@
       </el-row>
       <el-row :gutter="12">
         <!-- 指定使用指南 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 21">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 21">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -281,7 +280,7 @@
           </div>
         </el-col>
         <!-- 指定富文本配置 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 23">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 23">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -297,7 +296,7 @@
       </el-row>
       <el-row :gutter="12">
         <!-- 系列编号 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 24">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 24">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -320,7 +319,7 @@
           </div>
         </el-col>
         <!-- 搜索页 -->
-        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.jumpType === 9">
+        <el-col v-bind="modalConfig.colLayout" v-if="otherInfo.type === 9">
           <div class="item-flex">
             <span class="item-title">
               <span class="item-tip">*</span>
@@ -352,12 +351,11 @@ import { getJumpLink } from '@/service/main/help/account'
 import { errorTip } from '@/utils/tip-info'
 import { _debounce, mapSelectListTitle, mapTimeToSearch } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
-import { Base64 } from 'js-base64'
 import {
   platformList,
   directionList
 } from '@/utils/select-list/map-resource-list'
-import { clipboardText } from '@/utils/index'
+import { clipboardText, decryType } from '@/utils/index'
 
 export default defineComponent({
   name: 'baseJump',
@@ -378,7 +376,12 @@ export default defineComponent({
           value: item.type
         }
       })
-      platformItem!.options = platformList
+      platformItem!.options = platformList.map((item: any) => {
+        return {
+          title: item.title,
+          value: item.title
+        }
+      })
       directionItem!.options = directionList
       return searchFormConfig
     })
@@ -389,7 +392,12 @@ export default defineComponent({
       const directionItem = modalConfig.formItems.find(
         (item: any) => item.field === 'direction'
       )
-      platformItem!.options = platformList
+      platformItem!.options = platformList.map((item: any) => {
+        return {
+          title: item.title,
+          value: item.title
+        }
+      })
       directionItem!.options = directionList
       return modalConfig
     })
@@ -421,7 +429,7 @@ export default defineComponent({
       () => {
         getJumpLink({
           ...otherInfo.value,
-          type: otherInfo.value.jumpType
+          type: otherInfo.value.type
         }).then((res: any) => {
           if (res.result === 0) {
             otherInfo.value = {
@@ -441,36 +449,16 @@ export default defineComponent({
       otherInfo.value = {
         id: item.id,
         jump: item.jump,
-        jumpType: item.jumpType
+        type: item.type
       }
       decryptUrl({
         jump: item.jump,
-        type: item.jumpType
+        type: item.type
       }).then((res: any) => {
         if (res.result === 0) {
-          if (item.jumpType === 1) {
-            otherInfo.value.title = res.data.title
-            otherInfo.value.url = res.data.url
-          } else if (item.jumpType == 3) {
-            otherInfo.value.funcType = parseInt(res.data.funcType)
-          } else if (item.jumpType == 5) {
-            otherInfo.value.moId = res.data.id
-          } else if (item.jumpType == 6) {
-            otherInfo.value.topicId = res.data.id
-          } else if (item.jumpType == 13) {
-            otherInfo.value.packagename = res.data.packagename
-          } else if (item.jumpType == 15) {
-            otherInfo.value.url = Base64.decode(res.data.url)
-          } else if (item.jumpType === 17) {
-            otherInfo.value.email = res.data.recipient
-          } else if (item.jumpType == 19) {
-            otherInfo.value.qaId = parseInt(res.data.id)
-          } else if (item.jumpType == 21) {
-            otherInfo.value.guideId = parseInt(res.data.id)
-          } else if (item.jumpType == 23) {
-            otherInfo.value.configName = res.data.config
-          } else if (item.jumpType == 24) {
-            otherInfo.value.msId = res.data.id
+          otherInfo.value = {
+            ...otherInfo.value,
+            ...decryType(item.type, otherInfo.value, res)
           }
         } else errorTip(res.msg)
       })

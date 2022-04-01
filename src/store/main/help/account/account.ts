@@ -86,16 +86,21 @@ const helpAccountModule: Module<IHelpAccountType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'addAccount'
-        const data = await createPageData(pageUrl, newData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
-          })
-          resolve(data.msg)
-        } else reject(data.msg)
+        if (!newData.jumpType || newData.jumpType === '') {
+          errorTip('请选择链接类型')
+          return
+        } else {
+          const pageUrl = apiList[pageName] + 'addAccount'
+          const data = await createPageData(pageUrl, newData)
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
+            })
+            resolve(data.msg)
+          } else reject(data.msg)
+        }
       })
     },
 
