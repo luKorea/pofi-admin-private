@@ -30,6 +30,9 @@
       v-if="changeFormVisible"
       v-bind="searchFormConfig"
       v-model="formData"
+      @changeInput="handleQueryClick"
+      @changeClear="handleQueryClick"
+      @changeSelect="handleQueryClick"
       :class="
         !changeFormVisible
           ? 'animate__animated animate__fadeOut'
