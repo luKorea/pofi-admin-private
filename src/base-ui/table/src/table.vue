@@ -35,6 +35,16 @@
         class="animate__animated animate__fadeIn"
       >
         <el-table-column
+          v-if="handleDraw"
+          label="拖拽排序"
+          align="center"
+          width="100"
+        >
+          <template #default>
+            <i class="el-icon-menu"></i>
+          </template>
+        </el-table-column>
+        <el-table-column
           v-if="showSelectColumn"
           type="selection"
           align="center"
