@@ -7,6 +7,98 @@
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
 
+// 用户账号状态
+export const accountTypeList = [
+  {
+    value: 1,
+    title: '注销'
+  },
+  {
+    value: 2,
+    title: '正常'
+  }
+]
+
+// 是否实名制
+export const realNameList = [
+  {
+    title: '全部',
+    value: -999
+  },
+  {
+    title: '是',
+    value: 1
+  },
+  {
+    title: '否',
+    value: 0
+  }
+]
+
+// Pro plus 状态
+export const memberStateList = [
+  {
+    title: '全部',
+    value: -999
+  },
+  {
+    title: '已购买',
+    value: 0
+  },
+  {
+    title: '已过期',
+    value: 1
+  }
+]
+
+// 订单状态
+export const orderTypeList = [
+  {
+    title: '等待支付',
+    value: 0
+  },
+  {
+    title: '完成支付',
+    value: 1
+  },
+  {
+    title: '取消支付',
+    value: 2
+  }
+]
+
+// 用户充值方式
+export const payTypeList = [
+  {
+    value: 0,
+    title: '微信'
+  },
+  {
+    value: 1,
+    title: '支付宝'
+  },
+  {
+    value: 2,
+    title: 'QQ支付'
+  },
+  {
+    value: 3,
+    title: 'apple支付'
+  },
+  {
+    value: 4,
+    title: 'apple订阅'
+  },
+  {
+    value: 5,
+    title: 'google支付'
+  },
+  {
+    value: 6,
+    title: 'google订阅'
+  }
+]
+
 // POFI 库
 export const libraryList = [
   {

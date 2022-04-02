@@ -17,8 +17,8 @@ export default function registerProperties(app: App) {
     formatTime(value: string) {
       return formatUtcString(value)
     },
-    formatMoney(value: number) {
-      return (+value / 100).toFixed(2)
+    formatMoney(value: any) {
+      return value ? (+value / 100).toFixed(2) + 'P币' : 0 + 'P币'
     }
   }
   console.log(APP, 'Vue全局配置')

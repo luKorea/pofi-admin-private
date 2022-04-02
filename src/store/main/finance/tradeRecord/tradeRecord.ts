@@ -53,6 +53,7 @@ const tradeRecordModule: Module<ITradeTRecordType, IRootState> = {
   actions: {
     async getPageListAction({ commit }, payload: any) {
       queryInfo = payload.queryInfo
+      if (queryInfo.cost) queryInfo.cost = queryInfo.cost * 100
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, queryInfo)

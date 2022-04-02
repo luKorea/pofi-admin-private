@@ -9,7 +9,7 @@
 <template>
   <div class="tradeRecord">
     <page-search
-      :searchFormConfig="searchFormConfig"
+      :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryBtnClick"
     />
@@ -26,13 +26,13 @@
         <el-button size="mini" @click="exportData">导出Excel</el-button>
       </template>
       <template #payState="scope">
-        <span>{{ useComputedPayType(scope.row.state) }}</span>
+        <span>{{ mapOrderState(scope.row.state) }}</span>
       </template>
       <template #payWay="scope">
-        <span>{{ useComputedPayWay(scope.row.way) }}</span>
+        <span>{{ mapPay(scope.row.way) }}</span>
       </template>
       <template #payMoney="scope">
-        <span>{{ scope.row.cost ? scope.row.cost / 100 : 0 }}P币</span>
+        <span>{{ $filters.formatMoney(scope.row.cost) }}</span>
       </template>
     </page-content>
     <page-modal
@@ -74,21 +74,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
-// import { Money } from '@element-plus/icons-vue'
+import { defineComponent, ref } from 'vue'
 
-import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 import { operationTableConfig } from './config/operation.config'
-import { modalConfig } from './config/modal.config'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useOperationData,
   useStoreName,
-  useComputedPayType,
-  useComputedPayWay
+  useMapFormConfigData
 } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
 import { getItemData } from '@/service/common-api'
@@ -105,6 +101,13 @@ export default defineComponent({
   },
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
+    const {
+      searchFormConfigRef,
+      modalConfigRef,
+      modalConfig,
+      mapOrderState,
+      mapPay
+    } = useMapFormConfigData()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
       const beginDate = mapTimeToSearch(data.dateTime).start
@@ -124,8 +127,8 @@ export default defineComponent({
           商品ID: data.code,
           pofiID: data.nickId,
           用户昵称: data.nickName,
-          支付状态: useComputedPayType(data.state),
-          充值方式: useComputedPayWay(data.way),
+          支付状态: mapOrderState(data.state),
+          充值方式: mapPay(data.way),
           金额: `${data.cost ? data.cost / 100 : 0}P币`,
           附件: data.attachment,
           创建时间: data.createTime
@@ -150,7 +153,7 @@ export default defineComponent({
         nickId: item.nickId,
         onId: item.onId
       })
-      item.wayCopy = useComputedPayWay(item.way)
+      item.wayCopy = mapPay(item.way)
       item.costCopy = `${item.cost ? item.cost / 100 : 0}P币`
       item.create = item.createTime
     }
@@ -158,16 +161,6 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(undefined, edit)
 
-    const modalConfigRef = computed(() => {
-      modalConfig.formItems.map((item: any) => {
-        item.otherOptions = {}
-        item.otherOptions['disabled'] = false
-        if (item.field === 'remark' || item.field === 'state') {
-          item.otherOptions['disabled'] = false
-        } else item.otherOptions['disabled'] = true
-      })
-      return modalConfig
-    })
     // 模态框区域
     const [
       pageDialogRef,
@@ -181,15 +174,16 @@ export default defineComponent({
       dataCount
     ] = useOperationData()
     return {
-      searchFormConfig,
+      searchFormConfigRef,
+      modalConfigRef,
+      modalConfig,
+      mapOrderState,
+      mapPay,
       handleResetClick,
       handleQueryBtnClick,
       storeTypeInfo,
-      useComputedPayType,
-      useComputedPayWay,
       contentTableConfig,
       pageContentRef,
-      modalConfigRef,
       handleNewData,
       handleEditData,
       pageModalRef,

@@ -27,7 +27,7 @@
       </template>
       <template #payMoney="scope">
         <span class="hg-text-red-400 hg-ml-1"
-          >-{{ scope.row.cost / 100 }}P币</span
+          >-{{ $filters.formatMoney(scope.row.cost) }}</span
         >
         <!-- <div class="hg-flex hg-items-center">
           <el-icon><Money class="hg-text-red-400" /></el-icon>

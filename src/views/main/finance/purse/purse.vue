@@ -9,7 +9,7 @@
 <template>
   <div class="tradeRecord">
     <page-search
-      :searchFormConfig="searchFormConfig"
+      :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryBtnClick"
     />
@@ -102,7 +102,8 @@ import {
   useGetUserType,
   useOperationData,
   useStoreName,
-  useVIPData
+  useVIPData,
+  useMapSearchFormConfigData
 } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
 import { getItemData } from '@/service/common-api'
@@ -150,7 +151,7 @@ export default defineComponent({
     })
     const store = useStore()
     const isAdmin = computed(() => store.state.login.isAdmin)
-    const typeList = useGetUserType()
+    const [userTypeList] = useGetUserType()
     // 自定义编辑
     const handleEdit = (item: any) => {
       getItemData('purseItem', {
@@ -176,7 +177,7 @@ export default defineComponent({
       })
       modalConfigRef?.value.formItems.map((item: any) => {
         if (item.field === 'markId') {
-          item.options = typeList.value.map((item: any) => {
+          item.options = userTypeList.value.map((item: any) => {
             return {
               title: item.dec,
               value: item.type
@@ -202,6 +203,7 @@ export default defineComponent({
       useVIPData()
     const pageVip = ref<any>()
     return {
+      ...useMapSearchFormConfigData(),
       searchFormConfig,
       handleResetClick,
       handleQueryBtnClick,

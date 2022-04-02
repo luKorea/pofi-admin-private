@@ -19,6 +19,12 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
+      field: 'id',
+      type: 'input',
+      label: '用户编号',
+      placeholder: '请输入用户编号'
+    },
+    {
       field: 'nickId',
       type: 'input',
       label: 'Pofi ID',
@@ -29,6 +35,12 @@ export const searchFormConfig: IForm = {
       type: 'input',
       label: '用户昵称',
       placeholder: '请输入用户昵称'
+    },
+    {
+      field: 'account',
+      type: 'input',
+      label: '登录账号',
+      placeholder: '请输入登录账号'
     },
     {
       field: 'lv',
@@ -43,44 +55,69 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入区间，用英文逗号隔开'
     },
     {
+      field: 'pb',
+      type: 'input',
+      label: '积分',
+      placeholder: '请输入区间，用英文逗号隔开'
+    },
+    {
       field: 'proState',
       type: 'select',
       label: 'Pro版',
       placeholder: '请选择Pro版状态',
-      options: [
-        {
-          title: '全部',
-          value: -999
-        },
-        {
-          title: '已购买',
-          value: 0
-        },
-        {
-          title: '已过期',
-          value: 1
-        }
-      ]
+      options: []
     },
     {
       field: 'plusState',
       type: 'select',
       label: 'Plus版',
       placeholder: '请选择Plus版状态',
-      options: [
-        {
-          title: '全部',
-          value: -999
-        },
-        {
-          title: '已购买',
-          value: 0
-        },
-        {
-          title: '已过期',
-          value: 1
-        }
-      ]
+      options: []
+    },
+    {
+      field: 'real',
+      type: 'select',
+      label: '是否实名',
+      placeholder: '请选择是否实名',
+      options: []
+    },
+    {
+      field: 'markId',
+      type: 'select',
+      label: '特殊标记',
+      placeholder: '请选择特殊标记',
+      options: []
+    },
+    {
+      field: 'areasId',
+      type: 'select',
+      label: '国家/地区',
+      placeholder: '请选择国家/地区',
+      options: []
+    },
+    {
+      field: 'accountStatus',
+      type: 'select',
+      label: '账号状态',
+      placeholder: '请选择账号状态',
+      options: []
+    },
+    {
+      field: 'register',
+      type: 'select',
+      label: '注册来源',
+      placeholder: '请选择注册来源',
+      options: []
+    },
+    {
+      field: 'dateTime',
+      type: 'datetimerange',
+      label: '创建时间',
+      otherOptions: {
+        startPlaceholder: '请输入开始时间',
+        endPlaceholder: '请输入结束时间',
+        valueFormat: 'YYYY-MM-DD HH:mm:ss'
+      }
     }
   ]
 }

@@ -46,20 +46,7 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '订单状态',
       placeholder: '请选择订单状态',
-      options: [
-        {
-          title: '等待支付',
-          value: 0
-        },
-        {
-          title: '完成支付',
-          value: 1
-        },
-        {
-          title: '取消支付',
-          value: 2
-        }
-      ]
+      options: []
     },
     {
       label: '备注',

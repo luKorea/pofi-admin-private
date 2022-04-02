@@ -11,6 +11,117 @@ import PageContent from '@/components/page-content'
 
 import { usePageDialog } from '@/hooks/use-page-dialog'
 import { useStore } from '@/store'
+import { modalConfig } from '../config/modal.config'
+import { searchFormConfig } from '../config/search.config'
+import { mapSelectListTitle } from '@/utils'
+import {
+  orderTypeList,
+  payTypeList,
+  realNameList,
+  accountTypeList
+} from '@/utils/select-list/map-resource-list'
+import { getCommonSelectList } from '@/service/common'
+export function useMapFormConfigData() {
+  const [userTypeList, countryList, regList] = useGetUserType()
+  const searchFormConfigRef = computed(() => {
+    const real = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'real'
+    )
+    real!.options = realNameList
+    const markId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'markId'
+    )
+    markId!.options = userTypeList.value.map((item: any) => {
+      return {
+        title: item.dec,
+        value: item.type
+      }
+    })
+    const areasId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'areasId'
+    )
+    areasId!.options = countryList.value.map((item: any) => ({
+      title: item.name,
+      value: item.id
+    }))
+    const accountStatus = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'accountStatus'
+    )
+    accountStatus!.options = accountTypeList
+    const register = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'register'
+    )
+    register!.options = regList.value.map((item: any) => ({
+      title: item.dec,
+      value: item.type
+    }))
+    const order = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'state'
+    )
+    order!.options = orderTypeList
+    const way = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'way'
+    )
+    way!.options = payTypeList
+    return searchFormConfig
+  })
+  const modalConfigRef = computed(() => {
+    const order = modalConfig.formItems.find(
+      (item: any) => item.field === 'state'
+    )
+    order!.options = orderTypeList
+    modalConfig.formItems.map((item: any) => {
+      item.otherOptions = {}
+      item.otherOptions['disabled'] = false
+      if (item.field === 'remark' || item.field === 'state') {
+        item.otherOptions['disabled'] = false
+      } else item.otherOptions['disabled'] = true
+    })
+    return modalConfig
+  })
+  const mapOrderState = (type: any) => {
+    return mapSelectListTitle(type, orderTypeList)
+  }
+  const mapPay = (type: any) => {
+    return mapSelectListTitle(type, payTypeList)
+  }
+  return {
+    searchFormConfigRef,
+    modalConfigRef,
+    modalConfig,
+    mapOrderState,
+    mapPay
+  }
+}
+
+// 获取用户特殊标记
+export function useGetUserType() {
+  const userTypeList = ref<any>([])
+  const countryList = ref<any>([])
+  const regList = ref<any>([])
+  const getType = () => {
+    getCommonSelectList('mark').then((res: any) => {
+      if (res.result === 0) {
+        userTypeList.value = res.data
+      }
+    })
+  }
+  const getCountry = () => {
+    getCommonSelectList('country').then((res: any) => {
+      if (res.result === 0) {
+        countryList.value.push(...res.data.rows)
+      }
+    })
+  }
+  getCommonSelectList('reg').then((res: any) => {
+    if (res.result === 0) {
+      regList.value = res.data
+    }
+  })
+  getType()
+  getCountry()
+  return [userTypeList, countryList, regList]
+}
 
 export function useOperationData() {
   // 模态框区域
@@ -91,45 +202,6 @@ export function useOperationData() {
     dataList,
     dataCount
   ]
-}
-
-export function useComputedPayType(state: number | string) {
-  switch (state) {
-    case 0:
-      return '等待支付'
-      break
-    case 1:
-      return '完成支付'
-      break
-    case 2:
-      return '取消支付'
-      break
-  }
-}
-export function useComputedPayWay(state: number | string) {
-  switch (state) {
-    case 0:
-      return '微信'
-      break
-    case 1:
-      return '支付宝'
-      break
-    case 2:
-      return 'QQ支付'
-      break
-    case 3:
-      return 'apple支付'
-      break
-    case 4:
-      return 'apple订阅'
-      break
-    case 5:
-      return 'google支付'
-      break
-    case 6:
-      return 'google订阅'
-      break
-  }
 }
 
 export function useStoreName() {

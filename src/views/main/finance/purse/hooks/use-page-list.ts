@@ -11,17 +11,95 @@ import PageContent from '@/components/page-content'
 
 import { usePageDialog } from '@/hooks/use-page-dialog'
 import { useStore } from '@/store'
-import { getUserTypeData } from '@/service/main/finance/purse'
+import { getCommonSelectList } from '@/service/common'
+import { searchFormConfig } from '../config/search.config'
+import { modalConfig } from '../config/modal.config'
+import {
+  memberStateList,
+  realNameList,
+  accountTypeList
+} from '@/utils/select-list/map-resource-list'
+
+export function useMapSearchFormConfigData() {
+  const [userTypeList, countryList, regList] = useGetUserType()
+  const searchFormConfigRef = computed(() => {
+    const pro = searchFormConfig.formItems.find(
+      (item) => item.field === 'proState'
+    )
+    pro!.options = memberStateList
+    const plus = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'plusState'
+    )
+    plus!.options = memberStateList
+    const real = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'real'
+    )
+    real!.options = realNameList
+    const markId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'markId'
+    )
+    markId!.options = userTypeList.value.map((item: any) => {
+      return {
+        title: item.dec,
+        value: item.type
+      }
+    })
+    const areasId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'areasId'
+    )
+    areasId!.options = countryList.value.map((item: any) => ({
+      title: item.name,
+      value: item.id
+    }))
+    const accountStatus = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'accountStatus'
+    )
+    accountStatus!.options = accountTypeList
+    const register = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'register'
+    )
+    register!.options = regList.value.map((item: any) => ({
+      title: item.dec,
+      value: item.type
+    }))
+    return searchFormConfig
+  })
+  const modalConfigRef = computed(() => {
+    return modalConfig
+  })
+  return {
+    searchFormConfigRef,
+    modalConfigRef
+  }
+}
 
 // 获取用户特殊标记
 export function useGetUserType() {
   const userTypeList = ref<any>([])
-  getUserTypeData().then((res: any) => {
+  const countryList = ref<any>([])
+  const regList = ref<any>([])
+  const getType = () => {
+    getCommonSelectList('mark').then((res: any) => {
+      if (res.result === 0) {
+        userTypeList.value = res.data
+      }
+    })
+  }
+  const getCountry = () => {
+    getCommonSelectList('country').then((res: any) => {
+      if (res.result === 0) {
+        countryList.value.push(...res.data.rows)
+      }
+    })
+  }
+  getCommonSelectList('reg').then((res: any) => {
     if (res.result === 0) {
-      userTypeList.value = res.data
+      regList.value = res.data
     }
   })
-  return userTypeList
+  getType()
+  getCountry()
+  return [userTypeList, countryList, regList]
 }
 
 // 编辑VIP

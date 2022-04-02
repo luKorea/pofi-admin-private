@@ -31,20 +31,10 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入Pofi ID'
     },
     {
-      field: 'code',
+      field: 'id',
       type: 'input',
-      label: '商品ID',
-      placeholder: '请输入商品ID'
-    },
-    {
-      field: 'dateTime',
-      type: 'datetimerange',
-      label: '创建时间',
-      otherOptions: {
-        startPlaceholder: '请输入开始时间',
-        endPlaceholder: '请输入结束时间',
-        valueFormat: 'YYYY-MM-DD HH:mm:ss'
-      }
+      label: '用户编号',
+      placeholder: '请输入用户编号'
     },
     {
       field: 'nickName',
@@ -59,60 +49,63 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入附件名'
     },
     {
+      field: 'real',
+      type: 'select',
+      label: '是否实名',
+      placeholder: '请选择是否实名',
+      options: []
+    },
+    {
+      field: 'markId',
+      type: 'select',
+      label: '特殊标记',
+      placeholder: '请选择特殊标记',
+      options: []
+    },
+    {
+      field: 'areasId',
+      type: 'select',
+      label: '国家/地区',
+      placeholder: '请选择国家/地区',
+      options: []
+    },
+    {
+      field: 'accountStatus',
+      type: 'select',
+      label: '账号状态',
+      placeholder: '请选择账号状态',
+      options: []
+    },
+    {
+      field: 'register',
+      type: 'select',
+      label: '注册来源',
+      placeholder: '请选择注册来源',
+      options: []
+    },
+    {
+      field: 'dateTime',
+      type: 'datetimerange',
+      label: '创建时间',
+      otherOptions: {
+        startPlaceholder: '请输入开始时间',
+        endPlaceholder: '请输入结束时间',
+        valueFormat: 'YYYY-MM-DD HH:mm:ss'
+      }
+    },
+    {
       field: 'state',
       type: 'select',
       label: '订单状态',
       placeholder: '请选择订单状态',
-      options: [
-        {
-          title: '等待支付',
-          value: 0
-        },
-        {
-          title: '完成支付',
-          value: 1
-        },
-        {
-          title: '取消支付',
-          value: 2
-        }
-      ]
+      options: []
     },
     {
       field: 'way',
       type: 'select',
       label: '充值方式',
       placeholder: '请选择充值方式',
-      options: [
-        {
-          value: 0,
-          title: '微信'
-        },
-        {
-          value: 1,
-          title: '支付宝'
-        },
-        {
-          value: 2,
-          title: 'QQ支付'
-        },
-        {
-          value: 3,
-          title: 'apple支付'
-        },
-        {
-          value: 4,
-          title: 'apple订阅'
-        },
-        {
-          value: 5,
-          title: 'google支付'
-        },
-        {
-          value: 6,
-          title: 'google订阅'
-        }
-      ]
+      options: []
     }
   ]
 }
