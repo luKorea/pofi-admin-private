@@ -15,15 +15,15 @@ export const contentTableConfig: TableConfig = {
     { prop: 'code', label: '内部编码' },
     { prop: 'name', label: '语言名称' },
     { prop: 'area', label: '默认国家/地区' },
-    { prop: 'state', label: '状态', slotName: 'isState' },
-    { label: '操作', slotName: 'handler' }
+    { prop: 'state', label: '状态', slotName: 'isState' }
+    // { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
   permission: {
-    add: true,
-    update: true,
-    delete: true,
-    drawTable: false
+    add: false,
+    update: false,
+    delete: false,
+    drawTable: true
   }
 }

@@ -24,6 +24,14 @@
       <template #isType="{ row }">
         <span>{{ mapType(row.type) }}</span>
       </template>
+      <template #isState="scope">
+        <el-button
+          size="mini"
+          :type="scope.row.status ? 'primary' : 'info'"
+          @click="changeState(scope.row)"
+          >{{ scope.row.status ? '启用' : '禁用' }}</el-button
+        >
+      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -95,7 +103,9 @@ import {
   useSetLanguage
 } from './hooks/use-page-list'
 import { getItemData } from '@/service/common-api'
-import { errorTip } from '@/utils/tip-info'
+import { errorTip, infoTipBox, successTip } from '@/utils/tip-info'
+import { useStore } from '@/store'
+import { updateKeywordState } from '../../../../service/main/resource/keywords'
 export default defineComponent({
   name: 'resourceKeywords',
   setup() {
@@ -178,6 +188,24 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
+    const changeState = (item: any) => {
+      infoTipBox({
+        title: '修改关键词状态',
+        message: `您确定将当前关键词为${item.name}的状态修改为:${
+          item.status ? '禁用' : '启用'
+        }吗`
+      }).then(() => {
+        updateKeywordState({
+          ...item,
+          status: item.status ? 0 : 1
+        }).then((res) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            handleResetClick()
+          } else errorTip(res.msg)
+        })
+      })
+    }
     return {
       // 多语言编辑
       languageList,
@@ -199,7 +227,8 @@ export default defineComponent({
       pageModalRef,
       defaultInfo,
       operationName,
-      otherInfo
+      otherInfo,
+      changeState
     }
   }
 })

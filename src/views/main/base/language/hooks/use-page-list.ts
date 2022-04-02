@@ -28,7 +28,8 @@ export function useStoreName() {
     actionName: 'baseLanguageModule/getPageListAction',
     actionListName: 'baseLanguageModule/pageListData',
     actionCountName: 'baseLanguageModule/pageListCount',
-    deleteAction: 'baseLanguageModule/deletePageDataAction'
+    deleteAction: 'baseLanguageModule/deletePageDataAction',
+    sortAction: 'baseLanguageModule/sortPageDataAction'
   })
   const operationName = ref({
     editName: 'baseLanguageModule/editPageDataAction',

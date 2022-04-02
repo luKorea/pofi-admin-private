@@ -16,8 +16,13 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
     >
-      <template #isState="{ row }">
-        <span>{{ row.state ? '开启' : '禁用' }}</span>
+      <template #isState="scope">
+        <el-button
+          size="mini"
+          :type="scope.row.state ? 'primary' : 'info'"
+          @click="changeState(scope.row)"
+          >{{ scope.row.state ? '启用' : '禁用' }}</el-button
+        >
       </template>
     </page-content>
     <page-modal
@@ -41,11 +46,13 @@ import { modalConfig } from './config/modal.config'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName } from './hooks/use-page-list'
+import { useStore } from '@/store'
+import { infoTipBox, successTip, errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'baseLanguage',
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
-    const [pageContentRef] = usePageSearch()
+    const [pageContentRef, handleResetClick] = usePageSearch()
     const otherInfo = ref<any>({})
     const newData = () => {
       otherInfo.value = {}
@@ -57,6 +64,31 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
+    const store = useStore()
+    const changeState = (item: any) => {
+      infoTipBox({
+        title: '修改语言状态',
+        message: `您确定将当前语言为为${item.name}的状态修改为:${
+          item.state ? '禁用' : '启用'
+        }吗`
+      }).then(() => {
+        store
+          .dispatch('baseLanguageModule/editPageDataAction', {
+            pageName: 'languages',
+            editData: {
+              ...item,
+              state: item.state ? 0 : 1
+            }
+          })
+          .then((res) => {
+            handleResetClick()
+            successTip(res)
+          })
+          .catch((err) => {
+            errorTip(err)
+          })
+      })
+    }
     return {
       storeTypeInfo,
       contentTableConfig,
@@ -67,7 +99,8 @@ export default defineComponent({
       pageModalRef,
       defaultInfo,
       operationName,
-      otherInfo
+      otherInfo,
+      changeState
     }
   }
 })

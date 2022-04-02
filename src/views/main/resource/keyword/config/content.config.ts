@@ -15,6 +15,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'name', label: '关键词' },
     { prop: 'type', label: '关键词类型', slotName: 'isType' },
     { prop: 'num', label: '资源数量' },
+    { prop: 'status', label: '状态', slotName: 'isState' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
