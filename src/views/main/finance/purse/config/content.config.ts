@@ -14,7 +14,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'nickId', label: 'POFI ID', sortable: true },
     { prop: 'nickName', label: '用户昵称' },
     { prop: 'pb', label: 'P币余额', slotName: 'isPb' },
-    { prop: 'lv', label: '等级' },
+    { prop: 'lv', label: '等级', slotName: 'isLevel' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,

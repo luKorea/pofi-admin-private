@@ -28,7 +28,7 @@
         @editBtnClick="handleEditData"
       >
         <template #isLibrary="scope">
-          <span>{{ mapTitle(scope.row.library) }}</span>
+          <span>{{ scope.row.library && mapTitle(scope.row.library) }}</span>
         </template>
         <template #isState="scope">
           <span>{{ scope.row.state ? '显示' : '不显示' }}</span>

@@ -18,7 +18,7 @@ export default function registerProperties(app: App) {
       return formatUtcString(value)
     },
     formatMoney(value: number) {
-      return +value / 100
+      return (+value / 100).toFixed(2)
     }
   }
   console.log(APP, 'Vue全局配置')

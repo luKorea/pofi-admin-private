@@ -227,7 +227,7 @@ export default defineComponent({
               msId: res.data.msId,
               rids: res.data.rids
             }
-            areaIds.value = res?.data?.rids.split(',')
+            areaIds.value = res?.data?.rids.split(',').map((item: any) => +item)
             if (res.data.moldSeriesList && res.data.moldSeriesList.length > 0) {
               let result: any[] = []
               result = res?.data?.moldSeriesList.map((item: any) => {

@@ -31,8 +31,8 @@
       v-bind="searchFormConfig"
       v-model="formData"
       @changeInput="handleQueryClick"
-      @changeClear="handleQueryClick"
-      @changeSelect="handleQueryClick"
+      @changeClear="doIt"
+      @changeSelect="doIt"
       :class="
         !changeFormVisible
           ? 'animate__animated animate__fadeOut'
@@ -111,8 +111,11 @@ export default defineComponent({
     const handleQueryClick = () => {
       emit('queryBtnClick', formData.value)
     }
-
+    const doIt = () => {
+      console.log(1)
+    }
     return {
+      doIt,
       changeFormVisible,
       formData,
       handleResetClick,

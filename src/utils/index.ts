@@ -28,16 +28,16 @@ export function hideLoading() {
   loading?.close()
 }
 
-export const withInstall = <T>(component: T, alias?: string) => {
-  const comp = component as any
-  comp.install = (app: App) => {
-    app.component(comp.name || comp.displayName, component)
-    if (alias) {
-      app.config.globalProperties[alias] = component
-    }
-  }
-  return component as T & Plugin
-}
+// export const withInstall = <T>(component: T, alias?: string) => {
+//   const comp = component as any
+//   comp.install = (app: App) => {
+//     app.component(comp.name || comp.displayName, component)
+//     if (alias) {
+//       app.config.globalProperties[alias] = component
+//     }
+//   }
+//   return component as T & Plugin
+// }
 
 // 将用户传递的名字首字母大写处理
 export const firstToUpperCase = (name: string) => {
@@ -156,7 +156,11 @@ export function handleChangeEnv(env: number | string) {
  * @returns
  */
 export function mapSelectListTitle(selectValue: string | number, list: any[]) {
-  return list.find((item: any) => item.value === selectValue).title
+  return (
+    list &&
+    list.length > 0 &&
+    list.find((item: any) => item.value === selectValue).title
+  )
 }
 
 // 处理默认值

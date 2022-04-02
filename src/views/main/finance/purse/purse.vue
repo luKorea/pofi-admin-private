@@ -28,6 +28,7 @@
       <template #isPb="scope">
         <span>{{ $filters.formatMoney(scope.row.pb) }}</span>
       </template>
+      <template #isLevel="scope"> {{ scope.row.lv }}级 </template>
       <template #otherTableHandler="scope">
         <el-button
           size="mini"
