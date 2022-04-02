@@ -16,7 +16,13 @@ export function usePageList() {
   const getCountryList = () => {
     getCountrySelectList().then((res) => {
       if (res.state) {
-        countryList.value.push(...res.data.rows)
+        countryList.value.push(
+          {
+            name: '全选',
+            id: -1
+          },
+          ...res.data.rows
+        )
       } else errorTip(res.msg)
     })
   }

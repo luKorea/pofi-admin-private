@@ -364,10 +364,25 @@ export default defineComponent({
       }
     })
     // 监听多语言图片设置
-    const handleChangeCountry = (item: any) => {
-      otherInfo.value = {
-        ...otherInfo.value,
-        areaIds: item.toString()
+    const handleChangeCountry = (item: any[]) => {
+      const all: any[] = []
+      const check = item.find((i: any) => i === -1)
+      if (check === -1) {
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            all.push(item.id)
+          })
+        otherInfo.value = {
+          ...otherInfo.value,
+          areaIds: all.toString()
+        }
+        areaIds.value = all
+      } else {
+        otherInfo.value = {
+          ...otherInfo.value,
+          areaIds: item.toString()
+        }
       }
     }
     const searchFormConfigRef = computed(() => {

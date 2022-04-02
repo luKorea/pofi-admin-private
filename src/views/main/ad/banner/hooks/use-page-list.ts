@@ -58,10 +58,25 @@ export function useCountrySelect() {
   const [countryList] = usePageList()
   const otherInfo = ref<any>()
   const areaIds = ref<any>([])
-  const handleChangeCountry = (item: any) => {
-    otherInfo.value = {
-      ...otherInfo.value,
-      areaIds: item.toString()
+  const handleChangeCountry = (item: any[]) => {
+    const all: any[] = []
+    const check = item.find((i: any) => i === -1)
+    if (check === -1) {
+      countryList.value
+        .filter((i: any) => i.id !== -1)
+        .forEach((item: any) => {
+          all.push(item.id)
+        })
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: all.toString()
+      }
+      areaIds.value = all
+    } else {
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: item.toString()
+      }
     }
   }
   // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
@@ -144,7 +159,13 @@ export function usePageList() {
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
       if (res.state) {
-        countryList.value.push(...res.data.rows)
+        countryList.value.push(
+          {
+            name: '全部',
+            id: -1
+          },
+          ...res.data.rows
+        )
       } else errorTip(res.msg)
     })
   }

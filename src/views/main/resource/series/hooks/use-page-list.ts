@@ -81,7 +81,7 @@ export function usePageList() {
         countryList.value.push(
           {
             name: '全选',
-            id: undefined
+            id: -1
           },
           ...res.data.rows
         )

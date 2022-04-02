@@ -191,39 +191,24 @@ export default defineComponent({
     })
     const handleChangeCountry = (item: any[]) => {
       const all: any[] = []
-      const check = item.find((i: any) => i === undefined)
-      if (check === undefined) {
-        countryList.value.forEach((item: any) => {
-          all.push(item.id)
-        })
+      const check = item.find((i: any) => i === -1)
+      if (check === -1) {
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            all.push(item.id)
+          })
         otherInfo.value = {
           ...otherInfo.value,
           rids: all.toString()
         }
         areaIds.value = all
-        // areaIds.value = all.filter((i: any) => i !== undefined)
       } else {
         otherInfo.value = {
           ...otherInfo.value,
           rids: item.toString()
         }
-        areaIds.value = item
       }
-      // if (item === '') {
-      //   countryList.value.forEach((item: any) => {
-      //     all.push(item.id)
-      //   })
-      //   otherInfo.value = {
-      //     ...otherInfo.value,
-      //     rids: all.toString()
-      //   }
-      //   areaIds.value = all
-      // } else {
-      //   otherInfo.value = {
-      //     ...otherInfo.value,
-      //     rids: item.toString()
-      //   }
-      // }
     }
     const searchFormConfigRef = computed(() => {
       return searchFormConfig
