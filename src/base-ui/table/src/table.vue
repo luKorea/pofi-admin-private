@@ -325,4 +325,8 @@ export default defineComponent({
   max-width: 220px !important;
   line-height: 20px;
 }
+.expanded {
+  color: #f56c6c;
+  font-weight: 800;
+}
 </style>
