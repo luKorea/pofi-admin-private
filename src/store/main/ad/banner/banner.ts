@@ -95,23 +95,36 @@ const advertisementBannerModule: Module<IAadvertisementBannerType, IRootState> =
         return new Promise<any>(async (resolve, reject) => {
           // 1.创建数据的请求
           const { pageName, newData } = payload
-          const validData = JSON.parse(newData.sysConfigJson)[0]
-          if (mapObjectIsNull(['value'], validData)) {
-            const pageUrl = apiList[pageName] + 'add'
-            const data = await createPageData(pageUrl, {
-              ...newData,
-              subTitle: validData.subTitle
+          const pageUrl = apiList[pageName] + 'add'
+          const data = await createPageData(pageUrl, {
+            ...newData
+          })
+          if (data.result === 0) {
+            // 2.请求最新的数据
+            dispatch('getPageListAction', {
+              pageName,
+              queryInfo: queryInfo
             })
-            if (data.result === 0) {
-              // 2.请求最新的数据
-              dispatch('getPageListAction', {
-                pageName,
-                queryInfo: queryInfo
-              })
-              resolve(data.msg)
-            } else reject(data.msg)
-          } else errorTip('请确保带*号的字段填写完整')
+            resolve(data.msg)
+          } else reject(data.msg)
         })
+        //   const validData = JSON.parse(newData.sysConfigJson)[0]
+        //   if (mapObjectIsNull(['value'], validData)) {
+        //     const pageUrl = apiList[pageName] + 'add'
+        //     const data = await createPageData(pageUrl, {
+        //       ...newData,
+        //       subTitle: validData.subTitle
+        //     })
+        //     if (data.result === 0) {
+        //       // 2.请求最新的数据
+        //       dispatch('getPageListAction', {
+        //         pageName,
+        //         queryInfo: queryInfo
+        //       })
+        //       resolve(data.msg)
+        //     } else reject(data.msg)
+        //   } else errorTip('请确保带*号的字段填写完整')
+        // })
       },
 
       async editPageDataAction({ dispatch }, payload: any) {

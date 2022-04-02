@@ -129,13 +129,22 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 ></el-date-picker>
               </template>
+              <!-- 后续完善 -->
               <template v-else-if="item.type === 'editor'">
                 <el-col :span="24">
                   <hy-editor
-                    :model-value="modelValue[`${item.field}`]"
+                    v-bind="item.otherOptions"
+                    v-model:value="modelValue[`${item.field}`]"
                     @update:modelValue="handleValueChange($event, item.field)"
                   />
                 </el-col>
+              </template>
+              <template v-else-if="item.type === 'upload'">
+                <hy-upload
+                  v-bind="item.otherOptions"
+                  v-model:value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                />
               </template>
             </el-form-item>
           </el-col>
@@ -154,10 +163,12 @@ import { IFormItem } from '../types'
 import type { ElForm } from 'element-plus'
 
 import HyEditor from '@/base-ui/editor'
+import HyUpload from '@/base-ui/upload'
 
 export default defineComponent({
   components: {
-    HyEditor
+    HyEditor,
+    HyUpload
   },
   props: {
     modelValue: {
@@ -191,8 +202,10 @@ export default defineComponent({
   setup(props, { emit }) {
     type FormInstance = InstanceType<typeof ElForm>
     const formRef = ref<FormInstance>()
+    const otherFormRef = ref<FormInstance>()
     // 更新表单数据
     const handleValueChange = (value: any, field: string) => {
+      console.log(value, field)
       emit('update:modelValue', { ...props.modelValue, [field]: value })
     }
     // 事件处理
@@ -204,6 +217,7 @@ export default defineComponent({
     }
     return {
       formRef,
+      otherFormRef,
       handleValueChange,
       handleChangeSelect
     }
