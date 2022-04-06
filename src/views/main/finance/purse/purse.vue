@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 14:44:17
+ * @LastEditTime: 2022-04-06 16:52:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -24,6 +24,38 @@
     >
       <template #otherHandler>
         <el-button size="mini" @click="exportData">导出Excel</el-button>
+      </template>
+      <template #isPro="scope">
+        <div
+          v-if="scope.row.vipList && scope.row.vipList.length > 0"
+          class="hg-flex hg-flex-col"
+        >
+          <span>
+            {{ $filters.formatDate(scope.row.vipList[0].endTime) }}
+          </span>
+          <span
+            >({{ $filters.getExpiration(scope.row.vipList[0].endTime) }})</span
+          >
+        </div>
+        <div v-else>未开通</div>
+      </template>
+      <template #isPlus="scope">
+        <div
+          v-if="
+            scope.row.vipList &&
+            scope.row.vipList.length > 0 &&
+            scope.row.vipList[1]
+          "
+          class="hg-flex hg-flex-col"
+        >
+          <span>
+            {{ $filters.formatDate(scope.row.vipList[1].endTime) }}
+          </span>
+          <span
+            >({{ $filters.getExpiration(scope.row.vipList[1].endTime) }})</span
+          >
+        </div>
+        <div v-else>未开通</div>
       </template>
       <template #isPb="scope">
         <span>{{ $filters.formatMoney(scope.row.pb) }}</span>
@@ -124,8 +156,12 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
+      const beginDate = mapTimeToSearch(data.dateTime).start
+      const endDate = mapTimeToSearch(data.dateTime).end
       handleQueryClick({
-        ...data
+        ...data,
+        beginDate,
+        endDate
       })
     }
     const exportData = () => {
