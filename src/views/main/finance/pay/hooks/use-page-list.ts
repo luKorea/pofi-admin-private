@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 14:48:19
+ * @LastEditTime: 2022-04-06 17:00:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/hooks/use-page-list.ts
  */
@@ -24,10 +24,10 @@ import { getCommonSelectList } from '@/service/common'
 export function useMapFormConfigData() {
   const [userTypeList, countryList, regList] = useGetUserType()
   const searchFormConfigRef = computed(() => {
-    const real = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'real'
-    )
-    real!.options = realNameList
+    // const real = searchFormConfig.formItems.find(
+    //   (item: any) => item.field === 'real'
+    // )
+    // real!.options = realNameList
     const markId = searchFormConfig.formItems.find(
       (item: any) => item.field === 'markId'
     )
@@ -37,24 +37,24 @@ export function useMapFormConfigData() {
         value: item.type
       }
     })
-    const areasId = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'areasId'
-    )
-    areasId!.options = countryList.value.map((item: any) => ({
-      title: item.name,
-      value: item.id
-    }))
-    const accountStatus = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'accountStatus'
-    )
-    accountStatus!.options = accountTypeList
-    const register = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'register'
-    )
-    register!.options = regList.value.map((item: any) => ({
-      title: item.dec,
-      value: item.type
-    }))
+    // const areasId = searchFormConfig.formItems.find(
+    //   (item: any) => item.field === 'areasId'
+    // )
+    // areasId!.options = countryList.value.map((item: any) => ({
+    //   title: item.name,
+    //   value: item.id
+    // }))
+    // const accountStatus = searchFormConfig.formItems.find(
+    //   (item: any) => item.field === 'accountStatus'
+    // )
+    // accountStatus!.options = accountTypeList
+    // const register = searchFormConfig.formItems.find(
+    //   (item: any) => item.field === 'register'
+    // )
+    // register!.options = regList.value.map((item: any) => ({
+    //   title: item.dec,
+    //   value: item.type
+    // }))
     const order = searchFormConfig.formItems.find(
       (item: any) => item.field === 'state'
     )
