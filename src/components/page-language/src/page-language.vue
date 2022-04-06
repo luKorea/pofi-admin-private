@@ -82,7 +82,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .wrap {
-  width: 120px;
+  // width: 120px;
   display: flex;
   flex-direction: column;
   .item {
