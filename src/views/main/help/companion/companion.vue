@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-29 15:05:24
+ * @LastEditTime: 2022-04-06 15:05:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -55,9 +55,10 @@
               标题
             </div>
             <el-input
-              v-model="languageItem.title"
+              v-model.trim="languageItem.title"
               placeholder="请输入标题"
               required
+              clearable
             ></el-input>
           </div>
           <el-row :gutter="12">
@@ -124,7 +125,10 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      infoId,
+      mapIconState
     ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [imgLimit, imgList] = useImageUpload()
@@ -153,6 +157,11 @@ export default defineComponent({
             })
             languageList.value = result
             languageId.value = res?.data?.companionList[0].languageId
+            mapIconState(
+              res.data.companionList,
+              requiredField.value,
+              infoId.value
+            )
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

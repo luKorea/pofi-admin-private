@@ -44,6 +44,7 @@
               v-model="languageItem.title"
               placeholder="请输入问题标题"
               required
+              clearable
             ></el-input>
           </div>
           <div class="item-flex">
@@ -93,7 +94,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
@@ -136,6 +139,7 @@ export default defineComponent({
           if (res.data.questionList && res.data.questionList.length > 0) {
             languageList.value = res?.data?.questionList
             languageId.value = res?.data?.questionList[0].lid
+            mapIconState(res.data.questionList, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

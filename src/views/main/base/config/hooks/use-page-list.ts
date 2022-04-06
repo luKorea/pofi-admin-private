@@ -2,15 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 16:04:40
+ * @LastEditTime: 2022-04-06 15:22:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/hooks/use-page-list.ts
  */
-import { errorTip, warnTip } from '@/utils/tip-info'
-import { ref, computed, nextTick } from 'vue'
+import { errorTip } from '@/utils/tip-info'
+import { ref, computed, nextTick, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
-import { mapObjectIsNull } from '@/utils'
 
 export function usePageList() {
   // 国家地区
@@ -75,27 +74,38 @@ export function useOther() {
 
 export function useSetLanguage() {
   const editorRef = ref<any>()
-  const [languageList, languageId, resetLanguageList, languageBtnList] =
-    usePageLanguage({
+  const requiredField = ref<any>(['value'])
+  const fieldId = ref<any>('languageId')
+  const [
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    mapIconState,
+    mapItemIcon
+  ] = usePageLanguage(
+    {
       value: '',
       title: '',
       subTitle: ''
-    })
+    },
+    fieldId.value
+  )
   const languageItem = computed(() => {
     return languageList.value.find(
       (item: any) => item.languageId === languageId.value
     )
+  })
+  watchEffect(() => {
+    if (languageItem.value) {
+      mapItemIcon(requiredField.value, languageItem.value, fieldId.value)
+    }
   })
   // 改变多语言
   const handleChangeLanguage = async (id: any) => {
     languageId.value = id
     await nextTick()
     editorRef.value.setEditorValue()
-    // if (mapObjectIsNull(['value'], languageItem.value)) {
-    //   languageId.value = id
-    //   await nextTick()
-    //   editorRef.value.setEditorValue()
-    // } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
@@ -105,6 +115,9 @@ export function useSetLanguage() {
     resetLanguageList,
     languageBtnList,
     languageItem,
-    handleChangeLanguage
+    handleChangeLanguage,
+    requiredField,
+    fieldId,
+    mapIconState
   ]
 }

@@ -2,17 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 15:31:46
+ * @LastEditTime: 2022-04-06 14:45:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
 import { getSelectTitle } from '@/service/main/resource/classify'
-import { mapObjectIsNull } from '@/utils'
-import { warnTip } from '@/utils/tip-info'
 export function useMapSelectTitle(id: any) {
   const name = ref<string>('')
   getSelectTitle(id).then((res) => {
@@ -22,19 +20,26 @@ export function useMapSelectTitle(id: any) {
 }
 
 export function useSetLanguage() {
-  const [languageList, languageId, resetLanguageList, languageBtnList] =
-    usePageLanguage(
-      {
-        title: '',
-        desc: '',
-        tips: '',
-        proTag: '',
-        plusTag: '',
-        url: '',
-        icon: []
-      },
-      'lid'
-    )
+  const requiredField = ref<any>(['title', 'desc'])
+  const [
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    mapIconState,
+    mapItemIcon
+  ] = usePageLanguage(
+    {
+      title: undefined,
+      desc: undefined,
+      tips: undefined,
+      proTag: undefined,
+      plusTag: undefined,
+      url: undefined,
+      icon: []
+    },
+    'lid'
+  )
   // eslint-disable-next-line vue/return-in-computed-property
   const languageItem = computed(() => {
     if (languageList.value.length > 0) {
@@ -43,12 +48,14 @@ export function useSetLanguage() {
       )
     } else resetLanguageList()
   })
+  watchEffect(() => {
+    if (languageItem.value) {
+      mapItemIcon(requiredField.value, languageItem.value)
+    }
+  })
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
     languageId.value = id
-    // if (mapObjectIsNull(['name', 'subTitle', 'desc'], languageItem.value)) {
-    //   languageId.value = id
-    // } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
@@ -57,7 +64,9 @@ export function useSetLanguage() {
     resetLanguageList,
     languageBtnList,
     languageItem,
-    handleChangeLanguage
+    handleChangeLanguage,
+    mapIconState,
+    requiredField
   ]
 }
 

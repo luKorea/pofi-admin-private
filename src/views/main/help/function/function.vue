@@ -40,9 +40,10 @@
                   功能分类标题
                 </div>
                 <el-input
-                  v-model="languageItem.title"
+                  v-model.trim="languageItem.title"
                   placeholder="请输入功能分类标题"
                   required
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -53,8 +54,9 @@
                   描述
                 </span>
                 <el-input
-                  v-model="languageItem.desc"
+                  v-model.trim="languageItem.desc"
                   placeholder="请输入描述"
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -64,9 +66,10 @@
               <div class="item-flex">
                 <div class="item-title">Pro标签</div>
                 <el-input
-                  v-model="languageItem.proTag"
+                  v-model.trim="languageItem.proTag"
                   placeholder="请输入Pro标签"
                   required
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -74,8 +77,9 @@
               <div class="item-flex">
                 <span class="item-title"> Plus标签 </span>
                 <el-input
-                  v-model="languageItem.plusTag"
+                  v-model.trim="languageItem.plusTag"
                   placeholder="请输入Plus标签"
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -85,8 +89,9 @@
               <div class="item-flex">
                 <span class="item-title"> 小提示 </span>
                 <el-input
-                  v-model="languageItem.tips"
+                  v-model.trim="languageItem.tips"
                   placeholder="请输入描述"
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -138,7 +143,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      mapIconState,
+      requiredField
     ] = useSetLanguage()
     const [typeList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
@@ -219,6 +226,7 @@ export default defineComponent({
             languageList.value = result
             languageId.value = res?.data?.functionExplainList[0].lid
           }
+          mapIconState(res.data.functionExplainList, requiredField.value)
           handleEditData(res.data)
         } else errorTip(res.msg)
       })

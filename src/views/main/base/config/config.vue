@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 10:16:45
+ * @LastEditTime: 2022-04-06 15:23:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -142,7 +142,10 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      fieldId,
+      mapIconState
     ] = useSetLanguage()
     const store = useStore()
     const isAdmin = computed(() => store.state.login.isAdmin)
@@ -206,6 +209,11 @@ export default defineComponent({
           if (res.data.sysConfigVoList && res.data.sysConfigVoList.length > 0) {
             languageList.value = res?.data?.sysConfigVoList
             languageId.value = res?.data?.sysConfigVoList[0].languageId
+            mapIconState(
+              res?.data?.sysConfigVoList,
+              requiredField.value,
+              fieldId.value
+            )
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

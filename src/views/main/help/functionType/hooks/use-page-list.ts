@@ -2,35 +2,42 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 12:11:03
+ * @LastEditTime: 2022-04-06 14:55:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
-import { errorTip, warnTip } from '@/utils/tip-info'
-import { ref, computed } from 'vue'
+import { errorTip } from '@/utils/tip-info'
+import { ref, computed, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
-import { mapObjectIsNull } from '@/utils'
 
 export function useSetLanguage() {
-  const [languageList, languageId, resetLanguageList, languageBtnList] =
-    usePageLanguage(
-      {
-        title: '',
-        subTitle: ''
-      },
-      'lid'
-    )
+  const requiredField = ref<any>(['title'])
+  const [
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    mapIconState,
+    mapItemIcon
+  ] = usePageLanguage(
+    {
+      title: '',
+      subTitle: ''
+    },
+    'lid'
+  )
   const languageItem = computed(() => {
     return languageList.value.find((item: any) => item.lid === languageId.value)
   })
-  console.log(languageItem.value, 'la')
+  watchEffect(() => {
+    if (languageItem.value) {
+      mapItemIcon(requiredField.value, languageItem.value)
+    }
+  })
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
     languageId.value = id
-    // if (mapObjectIsNull(['title'], languageItem.value)) {
-    //   languageId.value = id
-    // } else warnTip('请确保多语言配置中带*号的字段已经填写')
   }
 
   return [
@@ -39,7 +46,9 @@ export function useSetLanguage() {
     resetLanguageList,
     languageBtnList,
     languageItem,
-    handleChangeLanguage
+    handleChangeLanguage,
+    requiredField,
+    mapIconState
   ]
 }
 

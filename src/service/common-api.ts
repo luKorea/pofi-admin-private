@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 10:47:48
+ * @LastEditTime: 2022-04-06 15:56:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -60,7 +60,8 @@ enum getItemUrl {
   companionItem = '/cms/companion/getCompanion', // 使用指南
   questionItem = '/cms/question/getQuestion', // 问题管理
   questionTypeItem = '/cms/question/type/getQuestionType', // 问题类型管理
-  topicItem = '/cms/topic/getTopic' // 专题管理
+  topicItem = '/cms/topic/getTopic', // 专题管理
+  bannerItem = '/cms/ad/banner/getBanner' //栏目广告
 }
 
 // 获取单行数据

@@ -140,6 +140,7 @@ export default defineComponent({
       if (!instance.value) return
       const editor: Editor = instance.value as Editor
       editor.config.uploadFileName = props.fileTypeName
+      editor.config.placeholder = '请输入内容'
       // 一次最多上传图片的数量
       // editor.config.uploadImgMaxLength = 1
       editor.config.customUploadImg = function (
@@ -174,7 +175,8 @@ export default defineComponent({
         content.html = newHtml
         content.text = editor.txt.text()
         if (!isInitContent.value) {
-          emit('update:value', `<div>${content.html}</div>`)
+          emit('update:value', content.html)
+          // emit('update:value', `<div>${content.html}</div>`)
         }
         isInitContent.value = false
       }
@@ -219,5 +221,11 @@ export default defineComponent({
 <style lang="less" scoped>
 .hy-editor {
   text-align: left;
+}
+</style>
+
+<style>
+.w-e-text-container .placeholder {
+  z-index: 1;
 }
 </style>

@@ -96,6 +96,7 @@
             <el-input
               v-model="languageItem.name"
               placeholder="请输入专题名称"
+              clearable
             ></el-input>
           </div>
           <div class="item-flex">
@@ -106,6 +107,7 @@
             <el-input
               v-model="languageItem.subTitle"
               placeholder="请输入副标题"
+              clearable
             ></el-input>
           </div>
 
@@ -243,7 +245,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [
       countryList,
@@ -286,6 +290,7 @@ export default defineComponent({
             })
             listData.value = info
             languageId.value = res?.data?.topicList[0].lid
+            mapIconState(res?.data?.topicList, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

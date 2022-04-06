@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 16:00:31
+ * @LastEditTime: 2022-04-06 14:48:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -94,6 +94,7 @@ const helpFunctionModule: Module<IHelpFunctionType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         console.log(newData)
+        // 校验必填项是否有填写
         const validData = JSON.parse(newData.functionExplainJson)[0]
         if (mapObjectIsNull(['title', 'desc'], validData)) {
           const pageUrl =
@@ -110,7 +111,7 @@ const helpFunctionModule: Module<IHelpFunctionType, IRootState> = {
             })
             resolve(data.msg)
           } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+        } else errorTip('请确保第一项必填项填写完整')
       })
     },
 

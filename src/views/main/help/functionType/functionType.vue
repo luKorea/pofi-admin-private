@@ -53,14 +53,15 @@
               v-model="languageItem.title"
               placeholder="请输入功能分类标题"
               required
+              clearable
             ></el-input>
           </div>
           <div class="item-flex">
             <span class="item-title">副标题 </span>
             <el-input
               v-model="languageItem.subTitle"
-              placeholder="副标题
-"
+              placeholder="副标题"
+              clearable
             ></el-input>
           </div>
         </template>
@@ -99,7 +100,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
@@ -155,6 +158,7 @@ export default defineComponent({
             languageList.value = res?.data?.functionExplainTypeList
             languageId.value = res?.data?.functionExplainTypeList[0].lid
           }
+          mapIconState(res.data.functionExplainTypeList, requiredField.value)
           handleEditData(res.data)
         } else errorTip(res.msg)
       })

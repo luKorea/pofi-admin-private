@@ -20,13 +20,15 @@
                 @click="handleChangeLanguage(item.id)"
               >
                 <!-- 后续完善 -->
-                <!-- <i
-                  :class="iconType"
+                <i
+                  :class="item.icon"
                   :style="{
                     color:
-                      iconType === 'el-icon-warning' ? 'rgb(230, 162, 60)' : ''
+                      item.icon === 'el-icon-warning'
+                        ? 'rgb(245, 108, 108)'
+                        : 'rgb(103, 194, 58)'
                   }"
-                ></i> -->
+                ></i>
                 {{ item.name }}
               </div>
             </template>
@@ -63,19 +65,10 @@ export default defineComponent({
     editorFileName: {
       type: String,
       default: 'base/'
-    },
-    iconType: {
-      type: String,
-      default: 'el-icon-warning'
     }
   },
   emits: ['changeLanguage'],
   setup(props, { emit }) {
-    // const languageItem = computed(() => {
-    //   return props.languageList.find(
-    //     (item: any) => item.languageId === props.languageId
-    //   )
-    // })
     const handleChangeLanguage = (item: any) => {
       emit('changeLanguage', item)
     }
@@ -93,8 +86,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   .item {
-    // display: flex;
-    // align-items: center;
+    display: flex;
+    align-items: center;
     height: 40px;
     line-height: 40px;
     width: 100%;

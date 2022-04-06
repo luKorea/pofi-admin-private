@@ -71,6 +71,7 @@
                   v-model="languageItem.name"
                   placeholder="请输入系列名称"
                   required
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -83,6 +84,7 @@
                 <el-input
                   v-model="languageItem.subTitle"
                   placeholder="请输入副标题(所属库)"
+                  clearable
                 ></el-input>
               </div>
             </el-col>
@@ -148,7 +150,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
@@ -254,6 +258,7 @@ export default defineComponent({
               console.log(result)
               languageList.value = result
               languageId.value = res?.data?.moldSeriesList[0].lid
+              mapIconState(res?.data?.moldSeriesList, requiredField.value)
             }
             handleEditData(res.data)
           } else errorTip(res.msg)

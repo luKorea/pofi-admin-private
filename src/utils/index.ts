@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 16:46:53
+ * @LastEditTime: 2022-04-06 14:35:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -180,18 +180,9 @@ export function mapImageToObject(url: string) {
   }
 }
 
-// 判断必填字段是否为
+// 判断必填字段是否为空
 export function mapObjectIsNull(params: any[], obj: any) {
-  let result = false
-  Object.keys(obj).map((key: any) => {
-    params.map((item: any) => {
-      if (key === item) {
-        if (!obj[key]) result = false
-        else result = true
-      }
-    })
-  })
-  return result
+  return params.filter((v) => obj[v]).length === params.length
 }
 
 //判断文件是图片

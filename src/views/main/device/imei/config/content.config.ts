@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 13:53:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-06 14:16:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/content.config.ts
  */
@@ -17,7 +17,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'mobileBrand', label: '设备品牌' },
     { prop: 'mobileVersion', label: '设备版本' },
     { prop: 'version', label: 'APP版本' },
-    { prop: 'uid', label: '用户ID' },
+    { prop: 'nickId', label: '用户ID' },
     { prop: 'ip', label: '客户端IP' },
     { prop: 'createTime', label: '最近登录', slotName: 'createAt' },
     { prop: 'loginTime', label: '首次登录', slotName: 'loginAt' },

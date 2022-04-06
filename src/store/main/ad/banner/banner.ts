@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 16:03:08
+ * @LastEditTime: 2022-04-06 16:12:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/config/config.ts
  */
@@ -74,11 +74,10 @@ const advertisementBannerModule: Module<IAadvertisementBannerType, IRootState> =
       async deletePageDataAction({ dispatch }, payload: any) {
         const pageName = payload.pageName
         const id = payload.queryInfo.id
-        const name = payload.queryInfo.name
-        const pageUrl = apiList[pageName] + 'delete'
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('delete', pageName)
         const data = await deletePageToQueryData(pageUrl, {
-          id: id,
-          name: name
+          id: id
         })
         if (data.result === 0) {
           // 3.重新请求最新的数据
@@ -95,49 +94,39 @@ const advertisementBannerModule: Module<IAadvertisementBannerType, IRootState> =
         return new Promise<any>(async (resolve, reject) => {
           // 1.创建数据的请求
           const { pageName, newData } = payload
-          const pageUrl = apiList[pageName] + 'add'
-          const data = await createPageData(pageUrl, {
-            ...newData
-          })
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+          console.log(newData.bannerJson)
+          const validData = JSON.parse(newData.bannerJson)[0]
+          console.log(validData)
+          if (mapObjectIsNull(['title', 'subTitle', 'cover'], validData)) {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('add', pageName)
+            const data = await createPageData(pageUrl, {
+              ...newData
             })
-            resolve(data.msg)
-          } else reject(data.msg)
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          } else errorTip('请确保带*号的字段填写完整')
         })
-        //   const validData = JSON.parse(newData.sysConfigJson)[0]
-        //   if (mapObjectIsNull(['value'], validData)) {
-        //     const pageUrl = apiList[pageName] + 'add'
-        //     const data = await createPageData(pageUrl, {
-        //       ...newData,
-        //       subTitle: validData.subTitle
-        //     })
-        //     if (data.result === 0) {
-        //       // 2.请求最新的数据
-        //       dispatch('getPageListAction', {
-        //         pageName,
-        //         queryInfo: queryInfo
-        //       })
-        //       resolve(data.msg)
-        //     } else reject(data.msg)
-        //   } else errorTip('请确保带*号的字段填写完整')
-        // })
       },
 
       async editPageDataAction({ dispatch }, payload: any) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<any>(async (resolve, reject) => {
-          // 1.编辑数据的请求
+          // 1.创建数据的请求
           const { pageName, editData } = payload
-          const validData = JSON.parse(editData.sysConfigJson)[0]
-          if (mapObjectIsNull(['value'], validData)) {
-            const pageUrl = apiList[pageName] + 'update'
+          console.log(editData)
+          const validData = JSON.parse(editData.bannerJson)[0]
+          if (mapObjectIsNull(['name', 'subTitle', 'cover'], validData)) {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('update', pageName)
             const data = await editPageData(pageUrl, {
-              ...editData,
-              subTitle: validData.subTitle
+              ...editData
             })
             if (data.result === 0) {
               // 2.请求最新的数据

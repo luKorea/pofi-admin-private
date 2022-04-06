@@ -57,6 +57,7 @@
               v-model="languageItem.name"
               placeholder="请输入分类名称"
               required
+              clearable
             ></el-input>
           </div>
           <div class="item-flex">
@@ -66,6 +67,7 @@
               :rows="3"
               v-model="languageItem.desc"
               placeholder="请输入描述"
+              clearable
             ></el-input>
           </div>
         </template>
@@ -107,7 +109,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [keyTypeList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
@@ -172,6 +176,7 @@ export default defineComponent({
             ) {
               languageList.value = res?.data?.moldCategoryList
               languageId.value = res?.data?.moldCategoryList[0].lid
+              mapIconState(res?.data?.moldCategoryList, requiredField.value)
             }
             handleEditData(res.data)
           } else errorTip(res.msg)

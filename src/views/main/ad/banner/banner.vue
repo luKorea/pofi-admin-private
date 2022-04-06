@@ -1,13 +1,5 @@
-<!--
- * @Author: korealu
- * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 15:35:46
- * @Description: 完成
- * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
--->
 <template>
-  <div class="hg-flex" v-if="0">
+  <div class="hg-flex">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -25,7 +17,7 @@
         :storeTypeInfo="storeTypeInfo"
         pageName="banners"
         @newBtnClick="handleNewData"
-        @editBtnClick="handleEditData"
+        @editBtnClick="handleEdit"
       >
         <template #isLibrary="scope">
           <span>{{ scope.row.library && mapTitle(scope.row.library) }}</span>
@@ -397,7 +389,7 @@
               <div class="item-flex">
                 <span class="item-title"> 标签 </span>
                 <el-input
-                  v-model="languageItem.title"
+                  v-model="languageItem.label"
                   placeholder="请输入标签"
                 ></el-input>
               </div>
@@ -406,7 +398,7 @@
               <div class="item-flex">
                 <span class="item-title"> 简述 </span>
                 <el-input
-                  v-model="languageItem.subTitle"
+                  v-model="languageItem.desc"
                   placeholder="请输入简述"
                 ></el-input>
               </div>
@@ -420,6 +412,7 @@
             <hy-upload
               v-model:value="languageItem.img"
               fileTypeName="banner/"
+              :limit="imgLimit"
             ></hy-upload>
           </div>
         </template>
@@ -429,7 +422,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -449,6 +442,7 @@ import { errorTip } from '@/utils/tip-info'
 import { _debounce, decryType } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
 import HyUpload from '@/base-ui/upload'
+import { getItemData } from '../../../../service/common-api'
 
 export default defineComponent({
   name: 'advertisementBanner',
@@ -461,14 +455,34 @@ export default defineComponent({
     const [countryList, jumpList, otherList] = usePageList()
     const [otherInfo, areaIds, handleChangeCountry] = useCountrySelect()
     const [
-      editorRef,
       languageList,
       languageId,
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.img.length > 0) {
+          languageItem.value.cover = languageItem.value.img[0].url
+          languageItem.value = {
+            ...languageItem.value,
+            cover: languageItem.value.img[0].url
+          }
+        } else {
+          languageItem.value.cover = undefined
+          languageItem.value.img = []
+        }
+      }
+      otherInfo.value = {
+        ...otherInfo.value,
+        bannerJson: JSON.stringify(languageList.value)
+      }
+    })
+    // bannerJson
     // 当前函数用来生成用户选择不同链接类型后生成不同跳转地址，需要做节流操作，避免用户快速输入重复发送请求
     const handleChangeLink = _debounce(
       () => {
@@ -491,6 +505,35 @@ export default defineComponent({
       areaIds.value = []
       otherInfo.value = {}
       resetLanguageList()
+    }
+    const getData = (id: any) => {
+      getItemData('bannerItem', {
+        id: id
+      }).then((res: any) => {
+        if (res.result === 0) {
+          areaIds.value = res.data.areaIds
+          otherInfo.value = {
+            id: res.data.id,
+            areaIds: res.data.areaIds.toString()
+          }
+          if (res.data.bannerList && res.data.bannerList.length > 0) {
+            let result: any[] = []
+            result = res?.data?.bannerList.map((item: any) => {
+              return {
+                ...item,
+                img: item.cover ? [mapImageToObject(item.cover)] : []
+              }
+            })
+            languageList.value = result
+            languageId.value = res?.data?.bannerList[0].lid
+            mapIconState(res?.data?.bannerList, requiredField.value)
+          }
+          handleEditData(res.data)
+        } else errorTip(res.msg)
+      })
+    }
+    const handleEdit = (item: any) => {
+      getData(item.id)
     }
     const editData = (item: any) => {
       otherInfo.value = {
@@ -518,7 +561,6 @@ export default defineComponent({
       ...useMapFormData(),
       ...useMapCountry(),
       // 多语言
-      editorRef,
       languageList,
       languageId,
       resetLanguageList,
@@ -540,7 +582,8 @@ export default defineComponent({
       countryList,
       areaIds,
       handleChangeCountry,
-      imgLimit
+      imgLimit,
+      handleEdit
     }
   }
 })

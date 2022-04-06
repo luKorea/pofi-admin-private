@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 17:16:18
+ * @LastEditTime: 2022-04-06 15:16:55
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/language/language.vue
 -->
@@ -57,6 +57,7 @@
               v-model="languageItem.name"
               placeholder="请输入多语言关键词"
               required
+              clearable
             ></el-input>
             <!-- <el-form :model="languageItem">
                 <el-form-item
@@ -80,6 +81,7 @@
               :rows="3"
               v-model="languageItem.desc"
               placeholder="请输入描述"
+              clearable
             ></el-input>
           </div>
         </template>
@@ -105,7 +107,7 @@ import {
 import { getItemData } from '@/service/common-api'
 import { errorTip, infoTipBox, successTip } from '@/utils/tip-info'
 import { useStore } from '@/store'
-import { updateKeywordState } from '../../../../service/main/resource/keywords'
+import { updateKeywordState } from '@/service/main/resource/keywords'
 export default defineComponent({
   name: 'resourceKeywords',
   setup() {
@@ -115,7 +117,9 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage
+      handleChangeLanguage,
+      requiredField,
+      mapIconState
     ] = useSetLanguage()
     const [keyTypeList] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
@@ -167,6 +171,7 @@ export default defineComponent({
           if (res.data.moldKeywordList && res.data.moldKeywordList.length > 0) {
             languageList.value = res?.data?.moldKeywordList
             languageId.value = res?.data?.moldKeywordList[0].lid
+            mapIconState(res?.data?.moldKeywordList, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

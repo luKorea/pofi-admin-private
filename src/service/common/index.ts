@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 16:01:41
+ * @LastEditTime: 2022-04-06 15:56:21
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
