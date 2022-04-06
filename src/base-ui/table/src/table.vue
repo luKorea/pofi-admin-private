@@ -335,8 +335,8 @@ export default defineComponent({
   max-width: 220px !important;
   line-height: 20px;
 }
-.expanded {
-  color: #f56c6c;
+.expanded .el-tooltip {
+  color: #4666f19d !important;
   font-weight: 800;
 }
 </style>

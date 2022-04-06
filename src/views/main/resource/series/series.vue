@@ -312,7 +312,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped module>
+<style scoped module lang="less">
 .red {
   color: red;
 }
