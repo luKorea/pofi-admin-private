@@ -2,12 +2,16 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 16:00:24
+ * @LastEditTime: 2022-04-07 10:51:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
+import {
+  cultureDifferentType,
+  firstToUpperCase,
+  validateParamsRules
+} from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IHelpFunctionTypeType } from './types'
@@ -19,7 +23,6 @@ import {
   deletePageToQueryData,
   sortPageTableData
 } from '@/service/common-api'
-import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   functionTypes: '/cms/function/type/',
@@ -29,6 +32,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+const requiredField = ['title']
 const helpFunctionTypeModule: Module<IHelpFunctionTypeType, IRootState> = {
   namespaced: true,
   state() {
@@ -93,21 +97,29 @@ const helpFunctionTypeModule: Module<IHelpFunctionTypeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        console.log(newData)
         const validData = JSON.parse(newData.functionExplainTypeJson)[0]
-        if (mapObjectIsNull(['title'], validData)) {
-          const pageUrl =
-            apiList[pageName] + cultureDifferentType('add', pageName)
-          const data = await createPageData(pageUrl, newData)
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(newData.functionExplainTypeJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('add', pageName)
+            const data = await createPageData(pageUrl, {
+              ...newData,
+              ...validData
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
 
@@ -117,19 +129,28 @@ const helpFunctionTypeModule: Module<IHelpFunctionTypeType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const validData = JSON.parse(editData.functionExplainTypeJson)[0]
-        if (mapObjectIsNull(['title'], validData)) {
-          const pageUrl =
-            apiList[pageName] + cultureDifferentType('update', pageName)
-          const data = await editPageData(pageUrl, editData)
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(editData.functionExplainTypeJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('update', pageName)
+            const data = await editPageData(pageUrl, {
+              ...editData,
+              ...validData
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {

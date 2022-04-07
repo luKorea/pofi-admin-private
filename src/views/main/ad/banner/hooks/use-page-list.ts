@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:42:47
+ * @LastEditTime: 2022-04-07 10:43:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/head/hooks/use-page-list.ts
  */
@@ -26,12 +26,12 @@ export function useSetLanguage() {
     mapItemIcon
   ] = usePageLanguage(
     {
-      desc: undefined,
-      title: undefined,
-      subTitle: undefined,
-      label: undefined,
+      desc: '',
+      title: '',
+      subTitle: '',
+      label: '',
       img: [],
-      cover: undefined
+      cover: ''
     },
     'lid'
   )

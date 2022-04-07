@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 14:35:58
+ * @LastEditTime: 2022-04-07 10:28:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -271,8 +271,8 @@ export function fileTypeIsImage(fileName: string) {
   if (result) {
     return 'radio'
   }
-  // 其他 文件类型
-  return 'other'
+  // 目前如果没有找到文件类型。默认返回图片类型
+  return 'image'
 }
 
 /**
@@ -387,4 +387,32 @@ export function decryType(type: any, otherInfo: any, res: any) {
     otherInfo.jumpKeyword = Base64.decode(res.data.word)
   }
   return otherInfo
+}
+
+/**
+ * @method validateParamsRules
+ * @description 校验多语言中，用户填写是否完整
+ * @param list 多语言数组
+ * @param defaultParams 默认语言
+ * @param field 需要校验的字段
+ */
+export function validateParamsRules(
+  list: any[],
+  defaultParams: any,
+  field: any[]
+) {
+  return new Promise((resolve, reject) => {
+    // 1. 先判断默认语言是否填写完整
+    // 2. 判断其他语言中是否填写了必填字段其中之一(目前暂不判断，后续加判断直接复用，无需改)
+    if (mapObjectIsNull(field, defaultParams)) {
+      // list.map((item: any) => {
+      //   if (mapObjectIsNull(field, item)) {
+      //     console.log(item)
+      //   } else {
+      //     console.log(item)
+      //   }
+      // })
+      resolve(true)
+    } else reject('请确保默认语言中必填字段填写完整')
+  })
 }

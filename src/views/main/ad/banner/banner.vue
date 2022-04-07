@@ -23,7 +23,7 @@
           <span>{{ scope.row.library && mapTitle(scope.row.library) }}</span>
         </template>
         <template #isState="scope">
-          <span>{{ scope.row.state ? '显示' : '不显示' }}</span>
+          <span>{{ scope.row.status ? '显示' : '不显示' }}</span>
         </template>
       </page-content>
     </div>

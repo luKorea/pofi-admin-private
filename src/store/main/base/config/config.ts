@@ -2,11 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 16:03:08
+ * @LastEditTime: 2022-04-07 11:01:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/config/config.ts
  */
-import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
+import {
+  cultureDifferentType,
+  firstToUpperCase,
+  validateParamsRules
+} from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IBaseConfigType } from './types'
@@ -18,7 +22,6 @@ import {
   editPageData
 } from '@/service/common-api'
 import { successTip, errorTip } from '@/utils/tip-info'
-import { mapObjectIsNull } from '@/utils'
 
 const apiList: any = {
   records: '/cms/config/'
@@ -27,6 +30,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+const requiredField = ['value']
 const baseConfigModule: Module<IBaseConfigType, IRootState> = {
   namespaced: true,
   state() {
@@ -90,21 +94,27 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         const validData = JSON.parse(newData.sysConfigJson)[0]
-        if (mapObjectIsNull(['value'], validData)) {
-          const pageUrl = apiList[pageName] + 'add'
-          const data = await createPageData(pageUrl, {
-            ...newData,
-            subTitle: validData.subTitle
-          })
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(newData.sysConfigJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'add'
+            const data = await createPageData(pageUrl, {
+              ...newData,
+              subTitle: validData.subTitle
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
 
@@ -114,21 +124,27 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const validData = JSON.parse(editData.sysConfigJson)[0]
-        if (mapObjectIsNull(['value'], validData)) {
-          const pageUrl = apiList[pageName] + 'update'
-          const data = await editPageData(pageUrl, {
-            ...editData,
-            subTitle: validData.subTitle
-          })
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(editData.sysConfigJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'update'
+            const data = await editPageData(pageUrl, {
+              ...editData,
+              subTitle: validData.subTitle
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     }
   }

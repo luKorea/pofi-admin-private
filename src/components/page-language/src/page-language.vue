@@ -7,11 +7,16 @@
     >
     )
   </el-divider>
-  <el-row>
-    <el-col :span="3">
+  <el-row :gutter="12">
+    <el-col :span="4">
       <div class="item-flex">
         <el-card>
-          <span class="item-title">多语言选择</span>
+          <el-tooltip
+            content="第一个选项为默认语言,请确保带*号字段填写完整"
+            placement="top"
+          >
+            <span class="item-title">多语言选择</span>
+          </el-tooltip>
           <div class="wrap">
             <template v-for="item in languageBtnList" :key="item.id">
               <div
@@ -19,7 +24,6 @@
                 :class="item.id === languageId && 'active'"
                 @click="handleChangeLanguage(item.id)"
               >
-                <!-- 后续完善 -->
                 <i
                   :class="item.icon"
                   :style="{
@@ -83,6 +87,7 @@ export default defineComponent({
 <style scoped lang="less">
 .wrap {
   // width: 120px;
+  min-width: 140px;
   display: flex;
   flex-direction: column;
   .item {

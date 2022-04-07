@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 10:17:20
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-07 11:22:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/head/config/modal.config.ts
  */
@@ -48,7 +48,7 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'state',
+      field: 'status',
       type: 'select',
       label: '状态',
       placeholder: '请选择状态',

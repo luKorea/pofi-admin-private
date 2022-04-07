@@ -2,11 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 13:42:08
+ * @LastEditTime: 2022-04-07 10:38:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/help/companion/companion.ts
  */
-import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
+import {
+  cultureDifferentType,
+  firstToUpperCase,
+  validateParamsRules
+} from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IHelpCompanionType } from './types'
@@ -29,6 +33,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+const requiredField = ['title']
 const helpCompanionModule: Module<IHelpCompanionType, IRootState> = {
   namespaced: true,
   state() {
@@ -83,52 +88,63 @@ const helpCompanionModule: Module<IHelpCompanionType, IRootState> = {
 
     createPageDataAction({ dispatch }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
-      return new Promise<any>(async (resolve, reject) => {
+      return new Promise<any>((resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        console.log(newData)
         const validData = JSON.parse(newData.CompanionJson)[0]
-        if (mapObjectIsNull(['title'], validData)) {
-          const pageUrl =
-            apiList[pageName] + cultureDifferentType('add', pageName)
-          const data = await createPageData(pageUrl, {
-            ...validData, // 获取一级数据，传递给后台
-            ...newData
-          })
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(newData.CompanionJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('add', pageName)
+            const data = await createPageData(pageUrl, {
+              ...validData, // 获取一级数据，传递给后台
+              ...newData
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
-      return new Promise<any>(async (resolve, reject) => {
+      return new Promise<any>((resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const validData = JSON.parse(editData.CompanionJson)[0]
-        if (mapObjectIsNull(['title'], validData)) {
-          const pageUrl =
-            apiList[pageName] + cultureDifferentType('update', pageName)
-          const data = await editPageData(pageUrl, {
-            ...validData,
-            ...editData
-          })
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
+        validateParamsRules(
+          JSON.parse(editData.CompanionJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl =
+              apiList[pageName] + cultureDifferentType('update', pageName)
+            const data = await editPageData(pageUrl, {
+              ...editData, // 获取一级数据，传递给后台
+              ...validData
             })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {

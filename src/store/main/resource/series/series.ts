@@ -2,12 +2,16 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 17:23:56
+ * @LastEditTime: 2022-04-07 11:11:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { cultureDifferentType, firstToUpperCase } from '@/utils/index'
+import {
+  cultureDifferentType,
+  firstToUpperCase,
+  validateParamsRules
+} from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IResourceSeriesType } from './types'
@@ -18,17 +22,18 @@ import {
   editPageData,
   deletePageToQueryData
 } from '@/service/common-api'
-import { sortTableList } from '@/service/main/base/head'
 import { warnTip } from '@/utils/tip-info'
-import { mapObjectIsNull } from '@/utils'
+import { sortPageTableData } from '@/service/common-api'
 
 const apiList: any = {
-  series: '/cms/series/'
+  series: '/cms/series/',
+  sort: '/cms/series/updateSeries'
 }
 let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+const requiredField = ['name', 'subTitle', 'desc']
 const resourceSeriesModule: Module<IResourceSeriesType, IRootState> = {
   namespaced: true,
   state() {
@@ -100,18 +105,24 @@ const resourceSeriesModule: Module<IResourceSeriesType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         const validData = JSON.parse(newData.moldSeriesJson)[0]
-        if (mapObjectIsNull(['name', 'subTitle', 'desc'], validData)) {
-          const pageUrl = apiList[pageName] + 'addSeries'
-          const data = await createPageData(pageUrl, newData)
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
-            })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+        validateParamsRules(
+          JSON.parse(newData.moldSeriesJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'addSeries'
+            const data = await createPageData(pageUrl, newData)
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
 
@@ -121,25 +132,31 @@ const resourceSeriesModule: Module<IResourceSeriesType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const validData = JSON.parse(editData.moldSeriesJson)[0]
-        if (mapObjectIsNull(['name', 'subTitle', 'desc'], validData)) {
-          const pageUrl = apiList[pageName] + 'updateSeries'
-          const data = await createPageData(pageUrl, editData)
-          if (data.result === 0) {
-            // 2.请求最新的数据
-            dispatch('getPageListAction', {
-              pageName,
-              queryInfo: queryInfo
-            })
-            resolve(data.msg)
-          } else reject(data.msg)
-        } else errorTip('请确保带*号的字段填写完整')
+        validateParamsRules(
+          JSON.parse(editData.moldSeriesJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'updateSeries'
+            const data = await editPageData(pageUrl, editData)
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
+          })
+          .catch((err) => errorTip(err))
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {
       const { pageName, sortData } = payload
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
-        const data = await sortTableList(sortData)
+        const data = await sortPageTableData(apiList.sort, sortData)
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
