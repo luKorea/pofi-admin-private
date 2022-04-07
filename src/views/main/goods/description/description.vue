@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 17:03:35
+ * @LastEditTime: 2022-04-07 11:35:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
-  <!-- TODO 暂时隐藏 -->
+  <!-- TODO 暂时隐藏， 多语言 -->
   <div class="recharges" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfig"
