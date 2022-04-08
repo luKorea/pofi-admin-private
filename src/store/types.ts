@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 10:00:04
+ * @LastEditTime: 2022-04-08 10:17:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -42,6 +42,7 @@ import { IHelpAccountType } from './main/help/account/types'
 import { IBaseJumpType } from './main/base/jump/types'
 import { IResourceCenterType } from './main/base/center/types'
 import { IAadvertisementBannerType } from './main/ad/banner/types'
+import { IBaseVersionType } from './main/base/version/types'
 
 export interface IRootState {
   name: string
@@ -61,6 +62,7 @@ export interface IRootWithModule {
   baseLanguageModule: IBaseLanguageType
   baseFusingModule: IBaseFusingType
   baseJumpModule: IBaseJumpType
+  baseVersionModule: IBaseVersionType
   // 问题反馈
   feedbackModule: IFeedbackType
   // 审核管理

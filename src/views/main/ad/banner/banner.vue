@@ -442,7 +442,7 @@ import { errorTip } from '@/utils/tip-info'
 import { _debounce, decryType } from '@/utils'
 import { decryptUrl } from '@/service/main/help/account'
 import HyUpload from '@/base-ui/upload'
-import { getItemData } from '../../../../service/common-api'
+import { getItemData } from '@/service/common-api'
 
 export default defineComponent({
   name: 'advertisementBanner',

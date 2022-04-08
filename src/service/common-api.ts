@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:56:33
+ * @LastEditTime: 2022-04-08 09:35:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -46,6 +46,14 @@ export function editPageData(url: string, editData: any) {
     data: editData
   })
 }
+// 排序列表
+export function sortPageTableData(url: string, sortData: any) {
+  return hyRequest.post<any>({
+    url: url,
+    data: sortData,
+    showLoading: false
+  })
+}
 
 enum getItemUrl {
   baseConfig = '/cms/config/get', // 基础配置
@@ -70,14 +78,5 @@ export const getItemData = (url: string, data: any) => {
     url: (getItemUrl as any)[url],
     data: data,
     showLoading: true
-  })
-}
-
-// 排序列表
-export function sortPageTableData(url: string, sortData: any) {
-  return hyRequest.post<any>({
-    url: url,
-    data: sortData,
-    showLoading: false
   })
 }

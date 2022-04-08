@@ -2,10 +2,33 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 15:57:53
+ * @LastEditTime: 2022-04-08 10:08:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 平台
+export const deviceList = [
+  { title: 'Android', value: 0 },
+  { title: 'iOS', value: 1 }
+]
+// 版本状态
+export const versionStateList = [
+  { title: '运营中', value: 0 },
+  { title: '预上线', value: 1 },
+  { title: '已停运', value: 2 }
+]
+// 服务器列表
+export const hostList = [
+  {
+    value: 'https://pure.pofiart.com',
+    title: '审核服'
+  },
+  {
+    value: 'https://api.pofiart.com',
+    title: '正式服'
+  }
+]
 
 // 用户账号状态
 export const accountTypeList = [

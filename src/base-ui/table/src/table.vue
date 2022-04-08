@@ -78,7 +78,7 @@
                       clearable
                     ></el-input>
                   </template>
-                  <template v-if="propItem.editInfo.type === 'textarea'">
+                  <template v-else-if="propItem.editInfo.type === 'textarea'">
                     <el-input
                       type="textarea"
                       clearable
@@ -87,6 +87,25 @@
                       :placeholder="propItem.editInfo.placeholder"
                       :disabled="propItem.editInfo.disabled"
                     ></el-input>
+                  </template>
+                  <template v-else-if="propItem.editInfo.type === 'select'">
+                    <el-select
+                      :placeholder="propItem.editInfo.placeholder"
+                      v-bind="propItem.editInfo.otherOptions"
+                      style="width: 100%"
+                      v-model="scope.row[propItem.prop]"
+                      clearable
+                      filterable
+                      :disabled="propItem.editInfo.disabled"
+                    >
+                      <el-option
+                        v-for="option in propItem.editInfo.options"
+                        :key="option.value"
+                        :value="option.value"
+                        :label="option.title"
+                        >{{ option.title }}</el-option
+                      >
+                    </el-select>
                   </template>
                   <template
                     v-else-if="

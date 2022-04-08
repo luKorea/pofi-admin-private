@@ -2,11 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 16:39:40
+ * @LastEditTime: 2022-04-08 10:24:06
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-properties.ts
  */
 import type { App } from 'vue'
+import { mapSelectListTitle } from '@/utils'
 
 import {
   formatUtcString,
@@ -29,6 +30,10 @@ export default function registerProperties(app: App) {
     },
     formatMoney(value: any) {
       return value ? (+value / 100).toFixed(2) + 'P币' : 0 + 'P币'
+    },
+    // 映射表格数据
+    formatSelectTitle(type: any, list: any) {
+      return mapSelectListTitle(type, list)
     }
   }
   console.log(APP, 'Vue全局配置')
