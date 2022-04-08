@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:44:32
+ * @LastEditTime: 2022-04-08 17:06:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
   <div class="tradeRecord">
     <page-search
-      :searchFormConfig="searchFormConfig"
+      :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryBtnClick"
     />
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 // import { Money } from '@element-plus/icons-vue'
 
 import { searchFormConfig } from './config/search.config'
@@ -63,6 +63,7 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
 import { mapTimeToSearch } from '@/utils'
+import { getCommonSelectList } from '@/service/common'
 
 export default defineComponent({
   name: 'financeTradeRecord',
@@ -102,7 +103,29 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
+    const userTypeList = ref<any>([])
+    const getType = () => {
+      getCommonSelectList('mark').then((res: any) => {
+        if (res.result === 0) {
+          userTypeList.value = res.data
+        }
+      })
+    }
+    getType()
+    const searchFormConfigRef = computed(() => {
+      const markId = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'markId'
+      )
+      markId!.options = userTypeList.value.map((item: any) => {
+        return {
+          title: item.dec,
+          value: item.type
+        }
+      })
+      return searchFormConfig
+    })
     return {
+      searchFormConfigRef,
       searchFormConfig,
       handleResetClick,
       handleQueryBtnClick,

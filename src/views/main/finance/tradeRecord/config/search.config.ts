@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 17:29:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-08 17:03:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -41,6 +41,19 @@ export const searchFormConfig: IForm = {
       type: 'input',
       label: '支付金额',
       placeholder: '请输入支付金额'
+    },
+    {
+      field: 'account',
+      type: 'input',
+      label: '登录账号',
+      placeholder: '请输入登录账号'
+    },
+    {
+      field: 'markId',
+      type: 'select',
+      label: '特殊标记',
+      placeholder: '请选择特殊标记',
+      options: []
     },
     {
       field: 'remark',

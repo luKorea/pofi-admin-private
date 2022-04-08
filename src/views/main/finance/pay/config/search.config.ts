@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 17:00:16
+ * @LastEditTime: 2022-04-08 17:02:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/search.config.ts
  */
@@ -55,6 +55,12 @@ export const searchFormConfig: IForm = {
     //   placeholder: '请选择是否实名',
     //   options: []
     // },
+    {
+      field: 'account',
+      type: 'input',
+      label: '登录账号',
+      placeholder: '请输入登录账号'
+    },
     {
       field: 'markId',
       type: 'select',
