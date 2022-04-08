@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 16:25:04
+ * @LastEditTime: 2022-04-08 17:38:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/search.config.ts
  */
@@ -46,7 +46,7 @@ export const searchFormConfig: IForm = {
       field: 'lv',
       type: 'input',
       label: '等级',
-      placeholder: '请输入等级'
+      placeholder: '请输入区间，用英文逗号隔开'
     },
     {
       field: 'pb',
