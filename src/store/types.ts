@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 10:17:20
+ * @LastEditTime: 2022-04-08 11:48:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -43,6 +43,7 @@ import { IBaseJumpType } from './main/base/jump/types'
 import { IResourceCenterType } from './main/base/center/types'
 import { IAadvertisementBannerType } from './main/ad/banner/types'
 import { IBaseVersionType } from './main/base/version/types'
+import { IResourceHomeType } from './main/resource/index/types'
 
 export interface IRootState {
   name: string
@@ -90,6 +91,7 @@ export interface IRootWithModule {
   resourceSeriesModule: IResourceSeriesType
   resourceTopicModule: IResourceTopicType
   resourceCenterModule: IResourceCenterType
+  resourceHomeModule: IResourceHomeType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

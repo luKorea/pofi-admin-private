@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 10:08:43
+ * @LastEditTime: 2022-04-08 11:17:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -21,7 +21,7 @@ export const versionStateList = [
 // 服务器列表
 export const hostList = [
   {
-    value: 'https://pure.pofiart.com',
+    value: 'https://pe.pofiart.com',
     title: '审核服'
   },
   {

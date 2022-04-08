@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex base-version">
+  <div class="hg-flex base-version" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -17,7 +17,7 @@
         :storeTypeInfo="storeTypeInfo"
         pageName="versions"
         @newBtnClick="handleNewData"
-        @editBtnClick="editData"
+        @editBtnClick="handleEditData"
       >
         <template #isHost="scope">
           {{ scope.row.host }}
