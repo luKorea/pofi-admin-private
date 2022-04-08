@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 17:38:04
+ * @LastEditTime: 2022-04-08 17:42:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/search.config.ts
  */
