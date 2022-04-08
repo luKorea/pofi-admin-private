@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 13:53:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-08 14:09:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/content.config.ts
  */
@@ -31,7 +31,7 @@ export const contentTableConfig: TableConfig = {
   showIndexColumn: false,
   showSelectColumn: true,
   permission: {
-    add: true,
+    add: false,
     update: false,
     delete: false
   }

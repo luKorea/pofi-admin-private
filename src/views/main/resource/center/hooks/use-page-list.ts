@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 12:43:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-08 14:27:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
@@ -18,19 +18,25 @@ import { searchFormConfig } from '../config/search.config'
 // 初始化高级检索值
 export function useMapFormConfigData() {
   const searchFormConfigData = computed(() => {
-    // searchFormConfig.formItems.map((item: any) => {
-    //   if (item.field === 'moType') item.options = resourceTypeList
-    //   if (item.field === 'open') item.options = resourceConditionList
-    //   if (item.field === 'state') item.options = resourceValueList
-    // })
+    searchFormConfig.formItems.map((item: any) => {
+      if (item.field === 'moType') item.options = resourceTypeList
+      if (item.field === 'open') item.options = resourceConditionList
+      if (item.field === 'state') item.options = resourceValueList
+      if (item.field === 'unityType')
+        item!.options = unityModalList.filter((i: any) => i.value !== undefined)
+    })
     return searchFormConfig
   })
+  const unityModalFilterList = unityModalList.filter(
+    (i: any) => i.value !== 7 && i.value !== 8 && i.value !== undefined
+  )
   return [
     searchFormConfigData,
     resourceTypeList,
     resourceConditionList,
     resourceValueList,
-    unityModalList
+    unityModalFilterList,
+    unityModalList.filter((i: any) => i.value !== undefined)
   ]
 }
 export function usePageFunction() {

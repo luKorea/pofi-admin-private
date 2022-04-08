@@ -61,7 +61,8 @@ import {
   ElBadge,
   ElProgress,
   ElTimeline,
-  ElTimelineItem
+  ElTimelineItem,
+  ElButtonGroup
 } from 'element-plus'
 
 const components = [
@@ -69,6 +70,7 @@ const components = [
   ElTimelineItem,
   ElProgress,
   ElLink,
+  ElButtonGroup,
   ElBadge,
   ElDescriptions,
   ElDescriptionsItem,

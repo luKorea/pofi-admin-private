@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex help-questionType">
+  <div class="hg-flex help-questionType" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"

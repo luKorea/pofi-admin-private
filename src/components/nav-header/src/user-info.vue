@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 17:48:17
+ * @LastEditTime: 2022-04-08 14:03:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
@@ -79,7 +79,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
 .el-dropdown-link {
   cursor: pointer;
   display: flex;
@@ -88,5 +88,9 @@ export default defineComponent({
 .user-info {
   display: flex;
   align-items: center;
+}
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #ecf5ff;
+  color: #79bbff;
 }
 </style>

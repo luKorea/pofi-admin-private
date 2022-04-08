@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-center" v-if="0">
+  <div class="resource-center" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"
@@ -30,32 +30,75 @@
         </div>
       </template>
       <template #otherHandler>
+        <!-- 流程图 -->
         <el-tooltip content="上传流程图" placement="top">
           <el-button
             size="mini"
             type="text"
             @click="openProcessDialog"
-            style="font-size: 20px; color: #ccc"
-            icon="el-icon-question"
+            style="font-size: 20px; color: #ccc; margin-right: 10px"
+            icon="el-icon-info"
           >
           </el-button>
         </el-tooltip>
-        <el-button size="mini" type="primary" @click="handleCloseOrOpen(0)"
-          >批量操作</el-button
+        <!-- 新增操作 -->
+        <el-dropdown trigger="click" style="margin-right: 10px">
+          <el-button
+            size="mini"
+            type="success"
+            plain
+            class="hg-flex hg-items-center"
+          >
+            新增资源<i class="el-icon-arrow-down hg-ml-1"></i>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <template v-for="item in unityModalFilterList" :key="item.value">
+                <el-dropdown-item @click="handleChangeState(item.value)">{{
+                  item.title
+                }}</el-dropdown-item>
+              </template>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-button type="danger" plain size="mini">新增Pose库</el-button>
+        <el-button type="primary" plain size="mini" style="margin-right: 10px"
+          >新增动画库</el-button
         >
+        <!-- 批量操作 -->
+        <el-dropdown trigger="click" style="margin-right: 4px">
+          <el-button
+            size="mini"
+            plain
+            type="danger"
+            class="hg-flex hg-items-center"
+          >
+            批量操作<i class="el-icon-arrow-down hg-ml-1"></i>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <template v-for="item in resourceValueList" :key="item.value">
+                <el-dropdown-item @click="handleChangeState(item.value)">{{
+                  item.title
+                }}</el-dropdown-item>
+              </template>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </template>
+      <!-- 表格操作 -->
       <template #otherTableHandler>
         <el-dropdown trigger="click">
-          <el-button size="mini" class="hg-flex hg-items-center">
+          <el-button size="mini" plain class="hg-flex hg-items-center">
             编辑<i class="el-icon-arrow-down hg-ml-1"></i>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item>类型属性</el-dropdown-item>
-              <el-dropdown-item divided>资源资料</el-dropdown-item>
-              <el-dropdown-item divided>U3D文件</el-dropdown-item>
-              <el-dropdown-item divided>相关关联</el-dropdown-item>
-              <el-dropdown-item divided>时间状态</el-dropdown-item>
+              <el-dropdown-item>资源资料</el-dropdown-item>
+              <el-dropdown-item>U3D文件</el-dropdown-item>
+              <el-dropdown-item>相关关联</el-dropdown-item>
+              <el-dropdown-item>时间状态</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -106,15 +149,16 @@ export default defineComponent({
       resourceTypeList,
       resourceConditionList,
       resourceValueList,
+      unityModalFilterList,
       unityModalList
     ] = useMapFormConfigData()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    // 多选全选操作
     const selectList = ref<any>([])
     const handleSelectData = (item: any) => {
       selectList.value = item
     }
-
     const mapSelectData = (selectList: any, state: number) => {
       const uids = selectList.value.map((item: any) => item.uid)
       const imeis = selectList.value.map((item: any) => item.imei)
@@ -126,7 +170,7 @@ export default defineComponent({
         state
       }
     }
-    const handleCloseOrOpen = (state: number) => {
+    const handleChangeState = (state: number) => {
       // 将state全部修改为0
       if (selectList.value.length === 0) {
         warnTip('至少选中一条数据')
@@ -152,6 +196,7 @@ export default defineComponent({
       resourceTypeList,
       resourceConditionList,
       resourceValueList,
+      unityModalFilterList,
       unityModalList,
       mapTitle,
       // 流程图
@@ -170,7 +215,7 @@ export default defineComponent({
       operationName,
       handleSelectData,
       selectList,
-      handleCloseOrOpen
+      handleChangeState
     }
   }
 })
