@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 14:37:42
+ * @LastEditTime: 2022-04-08 14:47:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */

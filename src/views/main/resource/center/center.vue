@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-center" v-if="1">
+  <div class="resource-center" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"
