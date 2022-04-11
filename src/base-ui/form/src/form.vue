@@ -74,9 +74,28 @@
                     :label="option.value"
                     :key="option.value"
                   >
-                    {{ option.label }}
+                    {{ option.title }}
                   </el-radio>
                 </el-radio-group>
+              </template>
+
+              <template v-else-if="item.type === 'checkbox'">
+                <el-checkbox-group
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                  class="hg-flex hg-flex-wrap"
+                >
+                  <el-checkbox
+                    v-for="option in item.options"
+                    :label="option.value"
+                    :key="option.value"
+                  >
+                    {{ option.title }}
+                  </el-checkbox>
+                </el-checkbox-group>
               </template>
 
               <template v-else-if="item.type === 'select'">
@@ -88,7 +107,7 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                   clearable
                   filterable
-                  @change="handleChangeSelect"
+                  @change="handleChangeSelect($event, item.field)"
                   @clear="handleClear"
                 >
                   <el-option
@@ -99,6 +118,19 @@
                     >{{ option.title }}</el-option
                   >
                 </el-select>
+              </template>
+
+              <template v-else-if="item.type === 'cascader'">
+                <el-cascader
+                  :options="item.options"
+                  :placeholder="item.placeholder"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  clearable
+                  filterable
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                ></el-cascader>
               </template>
 
               <template v-else-if="item.type === 'treeSelect'">
@@ -223,7 +255,11 @@ export default defineComponent({
     // 2. 监听用户enter回车事件
     const handleClear = () => emit('changeClear')
     // 3. 监听用户选中事件
-    const handleChangeSelect = () => emit('changeSelect')
+    const handleChangeSelect = (item: any, field: string) =>
+      emit('changeSelect', {
+        value: item,
+        field: field
+      })
     return {
       formRef,
       otherFormRef,

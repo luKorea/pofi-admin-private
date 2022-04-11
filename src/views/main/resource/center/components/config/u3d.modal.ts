@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 16:47:52
+ * @LastEditTime: 2022-04-11 17:52:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
 import { IForm } from '@/base-ui/form'
 
-export const modalConfig: IForm = {
-  title: '资源管理中心',
+export const u3dModalConfig: IForm = {
+  title: '编辑U3D文件',
   formItems: [
     {
       field: 'libraryName',

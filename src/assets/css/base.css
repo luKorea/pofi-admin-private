@@ -147,6 +147,11 @@ a {
 .item-flex .item-tip {
   color: #f56c6c;
 }
+.tip-title {
+  font-size: 14px;
+  color: #606266;
+  margin-right: 10px;
+}
 .page-country-wrap {
   width: 100%;
   margin-left: 160px;

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-07 17:50:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-11 17:40:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -21,14 +21,6 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <!-- 新增自定义按钮，用于单页面中操作走不同请求操作, 增加延展性 -->
-            <slot
-              name="otherModalHandler"
-              :row="{
-                data: formData,
-                ref: pageFormRef
-              }"
-            ></slot>
             <el-button size="mini" @click="dialogVisible = false">{{
               showCancelText
             }}</el-button>
@@ -40,6 +32,14 @@
             >
               确 定
             </el-button>
+            <!-- 新增自定义按钮，用于单页面中操作走不同请求操作, 增加延展性 -->
+            <slot
+              name="otherModalHandler"
+              :row="{
+                data: formData,
+                ref: pageFormRef
+              }"
+            ></slot>
           </span>
         </div>
       </template>
@@ -116,7 +116,9 @@ export default defineComponent({
       () => props.defaultInfo,
       (newValue) => {
         for (const item of props.modalConfig.formItems) {
-          formData.value[`${item.field}`] = newValue[`${item.field}`]
+          if (item.type === 'checkbox') {
+            formData.value[item.field] = []
+          } else formData.value[`${item.field}`] = newValue[`${item.field}`]
         }
       }
     )

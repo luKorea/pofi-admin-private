@@ -2,10 +2,37 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:17:31
+ * @LastEditTime: 2022-04-11 11:29:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 功能专属使用条件
+export const functionExclusiveUseConditionsList = [
+  { title: 'Pro专业版', value: 1 },
+  { title: 'Plus豪华版', value: 2 },
+  { title: 'MMD', value: 4 }
+]
+
+// 设备要求
+export const deviceLevelList = [
+  {
+    value: 1,
+    title: '低'
+  },
+  {
+    value: 2,
+    title: '中'
+  },
+  {
+    value: 3,
+    title: '高'
+  },
+  {
+    value: 4,
+    title: '旗舰'
+  }
+]
 
 // 平台
 export const deviceList = [
@@ -267,7 +294,7 @@ export const resourceTypeList = [
   },
   {
     value: 12,
-    title: '动画'
+    title: '动画库'
   }
 ]
 // 使用条件
@@ -294,6 +321,11 @@ export const resourceConditionList = [
   }
 ]
 
+// 资源文件类型
+export const resourceFileList = [
+  { title: '单个', value: 0 },
+  { title: '多个', value: 1 }
+]
 // 资源状态
 export const resourceValueList = [
   {
@@ -320,4 +352,38 @@ export const resourceValueList = [
     value: 6,
     title: '禁用'
   }
+]
+
+// 资源特色功能
+export const resourceFunction = [
+  { title: '表情', value: 1 },
+  { title: '发型', value: 2 },
+  { title: 'Pose', value: 3 },
+  { title: '动画', value: 4 },
+  { title: '结构', value: 5 },
+  { title: '特殊材质', value: 6 },
+  { title: '服饰', value: 7 },
+  { title: '手势', value: 8 },
+  { title: '场景', value: 9 },
+  { title: '道具', value: 10 }
+]
+// 资源特色 type 1. 重点功能  2. 模型精度 3. Pofi系列 4. 合作品牌IP
+export const resourceFeature = [
+  { title: '表情', value: 1, type: 1 },
+  { title: '服饰', value: 2, type: 1 },
+  { title: '风格', value: 3, type: 1 },
+  { title: '高精度', value: 4, type: 2 },
+  { title: '超高精度', value: 5, type: 2 },
+  { title: 'PofiZOO', value: 6, type: 3 },
+  { title: 'Pofi艺术馆', value: 7, type: 3 },
+  { title: 'Pofi兵人', value: 8, type: 3 },
+  { title: 'Pofi IP角色', value: 9, type: 3 },
+  { title: 'Pofi BJD系列', value: 10, type: 3 },
+  { title: 'Pofi体块人', value: 11, type: 3 },
+  { title: '全职高手', value: 12, type: 4 },
+  { title: '海贼王', value: 13, type: 4 },
+  { title: '一人之下', value: 14, type: 4 },
+  { title: '明日方舟', value: 15, type: 4 },
+  { title: '阴阳师', value: 16, type: 4 },
+  { title: '英雄联盟', value: 17, type: 4 }
 ]

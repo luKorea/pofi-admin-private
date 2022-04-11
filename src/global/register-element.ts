@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 14:47:28
+ * @LastEditTime: 2022-04-11 16:41:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -62,10 +62,12 @@ import {
   ElProgress,
   ElTimeline,
   ElTimelineItem,
-  ElButtonGroup
+  ElButtonGroup,
+  ElCascader
 } from 'element-plus'
 
 const components = [
+  ElCascader,
   ElTimeline,
   ElTimelineItem,
   ElProgress,
