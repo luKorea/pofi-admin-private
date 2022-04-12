@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-12 18:36:31
+ * @LastEditTime: 2022-04-12 19:17:14
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -16,8 +16,10 @@
     :otherInfo="otherInfo"
     @changeSelect="handleChangeSelect"
     :showConfigBtn="false"
+    :showCancelBtn="false"
   >
     <template #otherModalHandler="{ row }">
+      <el-button size="mini" @click="cancelData(row)">取消</el-button>
       <el-button size="mini" type="primary" @click="sendData(row)"
         >确定</el-button
       >
@@ -171,7 +173,7 @@ import {
 import { defineComponent } from 'vue'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
-import { errorTip } from '@/utils/tip-info'
+import { errorTip, infoTipBox } from '@/utils/tip-info'
 
 export default defineComponent({
   components: {
@@ -217,25 +219,43 @@ export default defineComponent({
         }
       }
     }
-    const sendData = (item: any) => {
+    const cancelData = (item: any) => {
+      infoTipBox({
+        title: '提示',
+        message: '是否保存当前编辑内容？'
+      })
+        .then(() => {
+          sendData(item, 'cancel')
+        })
+        .catch(() => {
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+          }
+        })
+    }
+    const sendData = (item: any, type = 'config') => {
       if (props.editType === 'add') {
         if (pageModalRef.value) {
-          pageModalRef.value.dialogVisible = false
+          if (type === 'cancel') {
+            pageModalRef.value.dialogVisible = false
+          } else {
+            pageModalRef.value.dialogVisible = false
+            emit('changePage', 'resource', { ...item })
+          }
         }
-        emit('changePage', 'resource', { moId: 1 })
       } else {
         console.log(item)
       }
     }
     const openStep = (step: any) => {
-      emit('openStep', step, props.params)
-      // if (props.editType === 'add' && !props.params.moId) {
-      //   errorTip('请先创建资源')
-      // } else emit('openStep', step, props.params)
+      if (props.editType === 'add' && !props.params.moId) {
+        errorTip('未完成资源创建，无法跳转步骤')
+      } else emit('openStep', step, props.params)
     }
     return {
       openStep,
       sendData,
+      cancelData,
       pageModalRef,
       defaultInfo,
       handleNewData,

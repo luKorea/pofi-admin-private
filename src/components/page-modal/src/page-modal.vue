@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 15:31:53
+ * @LastEditTime: 2022-04-12 19:03:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -21,9 +21,12 @@
         <div class="modal-title">
           <span>{{ modalConfig?.title }}</span>
           <span class="dialog-footer">
-            <el-button size="mini" @click="dialogVisible = false">{{
-              showCancelText
-            }}</el-button>
+            <el-button
+              size="mini"
+              v-if="showCancelBtn"
+              @click="dialogVisible = false"
+              >{{ showCancelText }}</el-button
+            >
             <el-button
               v-if="showConfigBtn"
               size="mini"
@@ -88,6 +91,10 @@ export default defineComponent({
     pageName: {
       type: String,
       require: true
+    },
+    showCancelBtn: {
+      type: Boolean,
+      default: true
     },
     // 公共化处理，传入不同的action名字，请求不用页面数据
     operationName: {

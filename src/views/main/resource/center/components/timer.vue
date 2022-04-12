@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-12 18:22:53
+ * @LastEditTime: 2022-04-12 19:26:25
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -13,6 +13,7 @@
     pageName="centers"
     :modalConfig="timerModalConfigRef"
     :showConfigBtn="false"
+    :showCancelBtn="false"
   >
     <template #titleWrapper>
       <step-component :active="4" @openStep="openStep"></step-component>
@@ -24,6 +25,7 @@
       <el-button size="mini" type="primary" @click="sendTimer(row)"
         >确定</el-button
       > -->
+      <el-button size="mini" @click="cancelData(row)">取消</el-button>
       <el-button size="mini" type="primary" @click="sendTimer(row)"
         >保存</el-button
       >
@@ -70,13 +72,33 @@ export default defineComponent({
       })
       return timerModalConfig
     })
-    const sendTimer = (item: any) => {
+    const cancelData = (item: any) => {
+      infoTipBox({
+        title: '提示',
+        message: '是否保存当前编辑内容？'
+      })
+        .then(() => {
+          sendTimer(item, 'cancel')
+        })
+        .catch(() => {
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+          }
+        })
+    }
+    const sendTimer = (item: any, type = 'config') => {
       const formRef = item.ref.formRef
       const data = item.data
       formRef?.validate((valid: any) => {
         if (valid) {
+          if (props.editType === 'add' && type === 'cancel') {
+            if (pageModalRef.value) {
+              pageModalRef.value.dialogVisible = false
+              emit('getData')
+            }
+          }
           if (props.editType === 'add') {
-            emit('changePage', 'timer', props.params)
+            console.log('其它操作')
           } else {
             infoTipBox({
               title: '更新时间状态',
@@ -112,6 +134,7 @@ export default defineComponent({
       emit('openStep', step, props.params)
     }
     return {
+      cancelData,
       openStep,
       timerModalConfigRef,
       pageModalRef,

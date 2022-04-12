@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-12 18:39:21
+ * @LastEditTime: 2022-04-12 19:21:29
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -13,6 +13,7 @@
     pageName="centers"
     :modalConfig="resourceModalConfig"
     :showConfigBtn="false"
+    :showCancelBtn="false"
   >
     <template #titleWrapper>
       <step-component :active="1" @openStep="openStep"></step-component>
@@ -201,6 +202,7 @@
       <!-- <el-button size="mini" type="primary" @click="sendTimer(row)">{{
         editType === 'edit' ? '确定' : '下一步'
       }}</el-button> -->
+      <el-button size="mini" @click="cancelData(row)">取消</el-button>
       <el-button size="mini" type="primary" @click="sendTimer(row)"
         >保存</el-button
       >
@@ -216,7 +218,7 @@ import { useSetLanguage } from '../hooks/use-page-list'
 import hyEditor from '@/base-ui/editor'
 import hyUpload from '@/base-ui/upload'
 import { resourceFileOperation } from '@/service/main/resource/center'
-import { successTip, errorTip } from '@/utils/tip-info'
+import { successTip, errorTip, infoTipBox } from '@/utils/tip-info'
 import stepComponent from './step.vue'
 
 export default defineComponent({
@@ -313,9 +315,32 @@ export default defineComponent({
       console.log('这里调用保存的接口')
       emit('openStep', step, props.params)
     }
-    const sendTimer = (item: any) => {
+    const cancelData = (item: any) => {
+      infoTipBox({
+        title: '提示',
+        message: '是否保存当前编辑内容？'
+      })
+        .then(() => {
+          sendTimer(item, 'cancel')
+        })
+        .catch(() => {
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+          }
+        })
+    }
+    const sendTimer = (item: any, type = 'config') => {
       if (props.editType === 'add') {
-        emit('changePage', 'u3d', props.params)
+        if (pageModalRef.value) {
+          if (type === 'cancel') {
+            pageModalRef.value.dialogVisible = false
+          } else {
+            pageModalRef.value.dialogVisible = false
+            emit('changePage', 'u3d', { ...item })
+          }
+        }
+      } else {
+        console.log(item)
       }
       // console.log(item)
       // const data = {
@@ -337,6 +362,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      cancelData,
       openStep,
       resourceModalConfig,
       pageModalRef,

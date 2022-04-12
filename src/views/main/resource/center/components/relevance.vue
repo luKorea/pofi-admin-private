@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-12 18:38:31
+ * @LastEditTime: 2022-04-12 19:20:54
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -21,6 +21,7 @@
     pageName="centers"
     :modalConfig="relevanceModalConfig"
     :showConfigBtn="false"
+    :showCancelBtn="false"
   >
     <template #titleWrapper>
       <step-component :active="3" @openStep="openStep"></step-component>
@@ -32,6 +33,7 @@
       <el-button size="mini" type="primary" @click="sendTimer(row)">{{
         editType === 'edit' ? '确定' : '下一步'
       }}</el-button> -->
+      <el-button size="mini" @click="cancelData(row)">取消</el-button>
       <el-button size="mini" type="primary" @click="sendTimer(row)"
         >保存</el-button
       >
@@ -44,6 +46,7 @@ import { defineComponent } from 'vue'
 import { relevanceModalConfig } from './config/relevance.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
+import { infoTipBox } from '@/utils/tip-info'
 export default defineComponent({
   components: {
     stepComponent
@@ -65,9 +68,32 @@ export default defineComponent({
         pageModalRef.value.dialogVisible = false
       }
     }
-    const sendTimer = (item: any) => {
+    const cancelData = (item: any) => {
+      infoTipBox({
+        title: '提示',
+        message: '是否保存当前编辑内容？'
+      })
+        .then(() => {
+          sendTimer(item, 'cancel')
+        })
+        .catch(() => {
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+          }
+        })
+    }
+    const sendTimer = (item: any, type = 'config') => {
       if (props.editType === 'add') {
-        emit('changePage', 'timer', props.params)
+        if (pageModalRef.value) {
+          if (type === 'cancel') {
+            pageModalRef.value.dialogVisible = false
+          } else {
+            pageModalRef.value.dialogVisible = false
+            emit('changePage', 'timer', { ...item })
+          }
+        }
+      } else {
+        console.log(item)
       }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -77,6 +103,7 @@ export default defineComponent({
     }
     return {
       openStep,
+      cancelData,
       relevanceModalConfig,
       pageModalRef,
       defaultInfo,

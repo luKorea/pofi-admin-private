@@ -55,10 +55,14 @@
               <template v-for="item in unityModalFilterList" :key="item.value">
                 <el-dropdown-item
                   @click="
-                    handleChangeNewData({
-                      title: '人偶库',
-                      value: item.value
-                    })
+                    handleChangeEditData(
+                      'property',
+                      {
+                        title: '人偶库',
+                        value: item.value
+                      },
+                      'add'
+                    )
                   "
                   >{{ item.title }}</el-dropdown-item
                 >
@@ -70,7 +74,13 @@
           type="danger"
           plain
           size="mini"
-          @click="handleChangeNewData({ title: 'Pose库', value: 7 })"
+          @click="
+            handleChangeEditData(
+              'property',
+              { title: 'Pose库', value: 7 },
+              'add'
+            )
+          "
           >新增Pose库</el-button
         >
         <el-button
@@ -78,7 +88,13 @@
           plain
           size="mini"
           style="margin-right: 10px"
-          @click="handleChangeNewData({ title: '动画库', value: 8 })"
+          @click="
+            handleChangeEditData(
+              'property',
+              { title: '动画库', value: 8 },
+              'add'
+            )
+          "
           >新增动画库</el-button
         >
         <!-- 批量操作 -->
@@ -335,29 +351,33 @@ export default defineComponent({
     }
     const params = ref<any>()
     const editData = ref<any>()
-    const handleChangeEditData = (type: any, row: any) => {
+    const handleChangeEditData = (type: any, row: any, checkType = 'edit') => {
       // 这里需要做函数抽离，明天完成
-      editType.value = 'edit'
+      editType.value = checkType
       params.value = {
         ...row
       }
       switch (type) {
         case 'property':
           hiddenPage()
-          getItemData('resourceCenterItem', {
-            moId: row.moId
-          }).then((res: any) => {
-            if (res.result === 0) {
-              otherInfo.value = {
-                ...otherInfo.value,
-                snId: row.snId,
-                open: row.open,
-                areaIds: res.data.areaIds.toString()
-              }
-              areaIds.value = res.data.areaIds
-              propertyRef.value.handleEditData(res.data)
-            } else errorTip(res.msg)
-          })
+          if (editType.value === 'add') {
+            propertyRef.value.handleEditData(row)
+          } else {
+            getItemData('resourceCenterItem', {
+              moId: row.moId
+            }).then((res: any) => {
+              if (res.result === 0) {
+                otherInfo.value = {
+                  ...otherInfo.value,
+                  snId: row.snId,
+                  open: row.open,
+                  areaIds: res.data.areaIds.toString()
+                }
+                areaIds.value = res.data.areaIds
+                propertyRef.value.handleEditData(res.data)
+              } else errorTip(res.msg)
+            })
+          }
           break
         case 'timer':
           hiddenPage()
@@ -375,17 +395,21 @@ export default defineComponent({
           break
         case 'resource':
           hiddenPage()
-          resourceFileOperation(
-            {
-              moId: row.moId
-            },
-            'get'
-          ).then((res: any) => {
-            if (res.result === 0) {
-              editData.value = res.data
-              resourceRef.value && resourceRef.value.handleEditData(row)
-            } else errorTip(res.msg)
-          })
+          if (editType.value === 'add') {
+            resourceRef.value && resourceRef.value.handleEditData(row)
+          } else {
+            resourceFileOperation(
+              {
+                moId: row.moId
+              },
+              'get'
+            ).then((res: any) => {
+              if (res.result === 0) {
+                editData.value = res.data
+                resourceRef.value && resourceRef.value.handleEditData(row)
+              } else errorTip(res.msg)
+            })
+          }
           break
         case 'relevance':
           hiddenPage()
@@ -394,11 +418,7 @@ export default defineComponent({
       }
     }
     const openStep = (item: any, data: any) => {
-      if (editType.value === 'edit') {
-        handleChangeEditData(item, data)
-      } else {
-        changePage(item, data)
-      }
+      handleChangeEditData(item, data)
     }
     const {
       propertyModalConfig,
