@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-12 14:36:01
+ * @LastEditTime: 2022-04-12 18:36:31
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -22,7 +22,13 @@
         >确定</el-button
       >
     </template>
-    <template #titleWrapper> <step-component></step-component> </template>
+    <template #titleWrapper>
+      <step-component
+        :active="0"
+        :editType="editType"
+        @openStep="openStep"
+      ></step-component>
+    </template>
     <!-- 使用条件 -->
     <el-row :gutter="12">
       <el-col
@@ -165,6 +171,7 @@ import {
 import { defineComponent } from 'vue'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   components: {
@@ -174,9 +181,13 @@ export default defineComponent({
     editType: {
       type: String,
       default: ''
+    },
+    params: {
+      type: Object,
+      default: () => ({})
     }
   },
-  emits: ['getData', 'changePage'],
+  emits: ['getData', 'changePage', 'openStep'],
   setup(props, { emit }) {
     const { goodsList } = usePageList()
     const [
@@ -211,12 +222,19 @@ export default defineComponent({
         if (pageModalRef.value) {
           pageModalRef.value.dialogVisible = false
         }
-        emit('changePage', 'resource')
+        emit('changePage', 'resource', { moId: 1 })
       } else {
         console.log(item)
       }
     }
+    const openStep = (step: any) => {
+      emit('openStep', step, props.params)
+      // if (props.editType === 'add' && !props.params.moId) {
+      //   errorTip('请先创建资源')
+      // } else emit('openStep', step, props.params)
+    }
     return {
+      openStep,
       sendData,
       pageModalRef,
       defaultInfo,

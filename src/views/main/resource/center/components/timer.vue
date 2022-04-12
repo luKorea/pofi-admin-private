@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-12 15:23:01
+ * @LastEditTime: 2022-04-12 18:22:53
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -15,14 +15,17 @@
     :showConfigBtn="false"
   >
     <template #titleWrapper>
-      <step-component :active="4"></step-component>
+      <step-component :active="4" @openStep="openStep"></step-component>
     </template>
     <template #otherModalHandler="{ row }">
-      <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
+      <!-- <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
         >上一步</el-button
       >
       <el-button size="mini" type="primary" @click="sendTimer(row)"
         >确定</el-button
+      > -->
+      <el-button size="mini" type="primary" @click="sendTimer(row)"
+        >保存</el-button
       >
     </template>
   </page-modal>
@@ -53,9 +56,13 @@ export default defineComponent({
     allData: {
       type: Object,
       default: () => ({})
+    },
+    params: {
+      type: Object,
+      default: () => ({})
     }
   },
-  emits: ['getData'],
+  emits: ['getData', 'openStep', 'changePage'],
   setup(props, { emit }) {
     const timerModalConfigRef = computed(() => {
       timerModalConfig.formItems.map((item: any) => {
@@ -69,11 +76,7 @@ export default defineComponent({
       formRef?.validate((valid: any) => {
         if (valid) {
           if (props.editType === 'add') {
-            console.log({
-              ...props.allData,
-              state: data.state,
-              onlineTime: data.onlineTime
-            })
+            emit('changePage', 'timer', props.params)
           } else {
             infoTipBox({
               title: '更新时间状态',
@@ -86,10 +89,11 @@ export default defineComponent({
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
-                  if (pageModalRef.value) {
-                    pageModalRef.value.dialogVisible = false
-                    emit('getData')
-                  }
+                  emit('getData')
+                  // if (pageModalRef.value) {
+                  //   pageModalRef.value.dialogVisible = false
+                  //   emit('getData')
+                  // }
                 } else errorTip(res.msg)
               })
             })
@@ -104,7 +108,11 @@ export default defineComponent({
         pageModalRef.value.dialogVisible = false
       }
     }
+    const openStep = (step: any) => {
+      emit('openStep', step, props.params)
+    }
     return {
+      openStep,
       timerModalConfigRef,
       pageModalRef,
       defaultInfo,

@@ -113,7 +113,7 @@
             <el-dropdown-menu>
               <template v-for="item in modalType" :key="item.type">
                 <el-dropdown-item
-                  @click="handleChangeEditData(row, item.type)"
+                  @click="handleChangeEditData(item.type, row)"
                   >{{ item.title }}</el-dropdown-item
                 >
               </template>
@@ -128,41 +128,54 @@
     <!-- 1. 属性组件 -->
     <property-component
       ref="propertyRef"
-      @getData="handleQueryClick"
-      @changePage="changePage"
+      :params="params"
       :edit-type="editType"
       :other-info="otherInfo"
+      @openStep="openStep"
+      @getData="handleQueryClick"
+      @changePage="changePage"
     ></property-component>
     <!-- 2. 资源资料 -->
     <resource-component
       ref="resourceRef"
+      :params="params"
       :edit-type="editType"
       :item-data="itemData"
+      :edit-data="editData"
       @changePage="changePage"
+      @openStep="openStep"
       @getData="handleQueryClick"
     ></resource-component>
     <!-- 3. U3D组件 -->
     <u3d-component
       ref="u3dRef"
-      @changePage="changePage"
+      :params="params"
+      :edit-data="editData"
       :edit-type="editType"
+      @changePage="changePage"
+      @openStep="openStep"
       @getData="handleQueryClick"
     ></u3d-component>
     <!-- 4. 相关关联 -->
     <relevance-component
       ref="relevanceRef"
+      :params="params"
       :edit-type="editType"
+      :edit-data="editData"
+      @openStep="openStep"
       @changePage="changePage"
       @getData="handleQueryClick"
     ></relevance-component>
     <!-- 5. 时间状态组件 -->
     <timer-component
       ref="timerRef"
+      :params="params"
       :edit-type="editType"
-      @changePage="changePage"
       :all-data="allData"
-      @getData="handleQueryClick"
       :resource-state-list="resourceValueList"
+      @changePage="changePage"
+      @openStep="openStep"
+      @getData="handleQueryClick"
     ></timer-component>
   </div>
 </template>
@@ -265,46 +278,72 @@ export default defineComponent({
     // 新增模态框
     const handleChangeNewData = (item: any) => {
       editType.value = 'add'
+      params.value = {}
       if (propertyRef.value) {
         propertyRef.value.handleNewData(item, true)
       }
     }
     // 参数说明
     // allData 用来存储用户新增时页面传递的数据
+
+    const hiddenPage = () => {
+      if (timerRef.value) {
+        timerRef.value.pageModalRef.dialogVisible = false
+      }
+      if (u3dRef.value) {
+        u3dRef.value.pageModalRef.dialogVisible = false
+      }
+      if (resourceRef.value) {
+        resourceRef.value.pageModalRef.dialogVisible = false
+      }
+      if (resourceRef.value) {
+        relevanceRef.value.pageModalRef.dialogVisible = false
+      }
+      if (propertyRef.value) {
+        propertyRef.value.pageModalRef.dialogVisible = false
+      }
+    }
     const allData = ref<any>()
     /**
      * @param item 页面类型
      * @param data 用户传递的数据
      * @param params 第一次页面传递的参数，新增类型属性时会带有
      */
-    const changePage = (item: any, data: any, params: any) => {
-      allData.value = {
-        ...allData.value,
-        ...data
-      }
+    const changePage = (item: any, params: any) => {
       switch (item) {
         case 'property':
+          hiddenPage()
           propertyRef.value && propertyRef.value.handleNewData(params)
           break
         case 'timer':
+          hiddenPage()
           timerRef.value && timerRef.value.handleNewData(params)
           break
         case 'u3d':
+          hiddenPage()
           u3dRef.value && u3dRef.value.handleNewData(params)
           break
         case 'resource':
+          hiddenPage()
           resourceRef.value && resourceRef.value.handleNewData(params)
           break
         case 'relevance':
+          hiddenPage()
           relevanceRef.value && relevanceRef.value.handleNewData(params)
           break
       }
     }
-    const handleChangeEditData = (row: any, item: any) => {
+    const params = ref<any>()
+    const editData = ref<any>()
+    const handleChangeEditData = (type: any, row: any) => {
       // 这里需要做函数抽离，明天完成
       editType.value = 'edit'
-      switch (item) {
+      params.value = {
+        ...row
+      }
+      switch (type) {
         case 'property':
+          hiddenPage()
           getItemData('resourceCenterItem', {
             moId: row.moId
           }).then((res: any) => {
@@ -321,12 +360,21 @@ export default defineComponent({
           })
           break
         case 'timer':
+          hiddenPage()
           timerRef.value && timerRef.value.handleEditData(row)
           break
         case 'u3d':
+          hiddenPage()
           u3dRef.value && u3dRef.value.handleEditData(row)
+          // getItemData('u3dItem', params.value).then((res: any) => {
+          //   if (res.result === 0) {
+          //     editData.value = res.data
+          //     u3dRef.value && u3dRef.value.handleEditData(res.data)
+          //   } else errorTip(res.msg)
+          // })
           break
         case 'resource':
+          hiddenPage()
           resourceFileOperation(
             {
               moId: row.moId
@@ -334,14 +382,22 @@ export default defineComponent({
             'get'
           ).then((res: any) => {
             if (res.result === 0) {
-              itemData.value = res.data.moldList
+              editData.value = res.data
               resourceRef.value && resourceRef.value.handleEditData(row)
             } else errorTip(res.msg)
           })
           break
         case 'relevance':
+          hiddenPage()
           relevanceRef.value && relevanceRef.value.handleEditData(row)
           break
+      }
+    }
+    const openStep = (item: any, data: any) => {
+      if (editType.value === 'edit') {
+        handleChangeEditData(item, data)
+      } else {
+        changePage(item, data)
       }
     }
     const {
@@ -366,6 +422,9 @@ export default defineComponent({
       allData,
       goodsList,
       editType,
+      params,
+      editData,
+      openStep,
       // 编辑模态框
       modalType,
       changePage,

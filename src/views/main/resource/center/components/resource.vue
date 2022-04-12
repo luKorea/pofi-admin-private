@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-12 15:25:49
+ * @LastEditTime: 2022-04-12 18:39:21
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -15,7 +15,7 @@
     :showConfigBtn="false"
   >
     <template #titleWrapper>
-      <step-component :active="1"></step-component>
+      <step-component :active="1" @openStep="openStep"></step-component>
     </template>
     <!-- 多语言 -->
     <page-language
@@ -198,9 +198,12 @@
       </template>
     </page-language>
     <template #otherModalHandler="{ row }">
-      <el-button size="mini" type="primary" @click="sendTimer(row)">{{
+      <!-- <el-button size="mini" type="primary" @click="sendTimer(row)">{{
         editType === 'edit' ? '确定' : '下一步'
-      }}</el-button>
+      }}</el-button> -->
+      <el-button size="mini" type="primary" @click="sendTimer(row)"
+        >保存</el-button
+      >
     </template>
   </page-modal>
 </template>
@@ -217,7 +220,7 @@ import { successTip, errorTip } from '@/utils/tip-info'
 import stepComponent from './step.vue'
 
 export default defineComponent({
-  emits: ['getData', 'changePage'],
+  emits: ['getData', 'changePage', 'openStep'],
   components: {
     hyEditor,
     hyUpload,
@@ -231,6 +234,10 @@ export default defineComponent({
     editType: {
       type: String,
       default: 'edit'
+    },
+    params: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props, { emit }) {
@@ -302,10 +309,14 @@ export default defineComponent({
         }
       }
     })
+    const openStep = (step: any) => {
+      console.log('这里调用保存的接口')
+      emit('openStep', step, props.params)
+    }
     const sendTimer = (item: any) => {
-      emit('changePage', 'u3d', {
-        moldJson: JSON.stringify(languageList.value)
-      })
+      if (props.editType === 'add') {
+        emit('changePage', 'u3d', props.params)
+      }
       // console.log(item)
       // const data = {
       //   moId: item.data.moId,
@@ -326,6 +337,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      openStep,
       resourceModalConfig,
       pageModalRef,
       defaultInfo,
