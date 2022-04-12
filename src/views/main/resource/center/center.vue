@@ -94,9 +94,10 @@
           <template #dropdown>
             <el-dropdown-menu>
               <template v-for="item in resourceValueList" :key="item.value">
-                <el-dropdown-item @click="handleChangeState(item.value)">{{
-                  item.title
-                }}</el-dropdown-item>
+                <el-dropdown-item
+                  @click="handleChangeState(item.value, item.title)"
+                  >{{ item.title }}</el-dropdown-item
+                >
               </template>
             </el-dropdown-menu>
           </template>
@@ -124,7 +125,7 @@
     <!-- 流程图组件 -->
     <process-component ref="processRef"></process-component>
     <!-- 当前模态框只展示类型属性，其他编辑在其他展示 -->
-    <!-- 属性组件 -->
+    <!-- 1. 属性组件 -->
     <property-component
       ref="propertyRef"
       @getData="handleQueryClick"
@@ -132,14 +133,7 @@
       :edit-type="editType"
       :other-info="otherInfo"
     ></property-component>
-    <!-- U3D组件 -->
-    <u3d-component
-      ref="u3dRef"
-      @changePage="changePage"
-      :edit-type="editType"
-      @getData="handleQueryClick"
-    ></u3d-component>
-    <!-- 资源资料 -->
+    <!-- 2. 资源资料 -->
     <resource-component
       ref="resourceRef"
       :edit-type="editType"
@@ -147,14 +141,21 @@
       @changePage="changePage"
       @getData="handleQueryClick"
     ></resource-component>
-    <!-- 相关关联 -->
+    <!-- 3. U3D组件 -->
+    <u3d-component
+      ref="u3dRef"
+      @changePage="changePage"
+      :edit-type="editType"
+      @getData="handleQueryClick"
+    ></u3d-component>
+    <!-- 4. 相关关联 -->
     <relevance-component
       ref="relevanceRef"
       :edit-type="editType"
       @changePage="changePage"
       @getData="handleQueryClick"
     ></relevance-component>
-    <!-- 时间状态组件 -->
+    <!-- 5. 时间状态组件 -->
     <timer-component
       ref="timerRef"
       :edit-type="editType"
@@ -184,8 +185,6 @@ import {
   usePageList
 } from './hooks/use-page-list'
 import { infoTipBox, warnTip, successTip, errorTip } from '@/utils/tip-info'
-import { selectImeiOperation } from '@/service/main/device/imei'
-
 import processComponent from './components/process.vue'
 import propertyComponent from './components/property.vue'
 import timerComponent from './components/timer.vue'
@@ -194,6 +193,7 @@ import resourceComponent from './components/resource.vue'
 import relevanceComponent from './components/relevance.vue'
 import { resourceFileOperation } from '@/service/main/resource/center'
 import { getItemData } from '@/service/common-api'
+import { selectResourceTypeOperation } from '@/service/main/resource/center'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -230,17 +230,13 @@ export default defineComponent({
       selectList.value = item
     }
     const mapSelectData = (selectList: any, state: number) => {
-      const uids = selectList.value.map((item: any) => item.uid)
-      const imeis = selectList.value.map((item: any) => item.imei)
       const ids = selectList.value.map((item: any) => item.id)
       return {
-        uids: uids.toString(),
-        imeis: imeis.toString(),
         ids: ids.toString(),
         state
       }
     }
-    const handleChangeState = (state: number) => {
+    const handleChangeState = (state: number, title: string) => {
       // 将state全部修改为0
       if (selectList.value.length === 0) {
         warnTip('至少选中一条数据')
@@ -248,10 +244,10 @@ export default defineComponent({
       }
       const data = mapSelectData(selectList, state)
       infoTipBox({
-        title: `批量${state ? '冻结' : '解冻'}设备状态`,
-        message: `您确定批量${state ? '冻结' : '解冻'}选中的设备状态吗`
+        title: `批量修改资源状态`,
+        message: `确认将资源状态批量修改为: ${title}?`
       }).then(() => {
-        selectImeiOperation(data).then((res: any) => {
+        selectResourceTypeOperation(data).then((res: any) => {
           if (res.result === 0) {
             handleResetClick()
             successTip(res.msg)
@@ -259,15 +255,6 @@ export default defineComponent({
         })
       })
     }
-    watchEffect(() => {
-      if (otherInfo.value) {
-        otherInfo.value = {
-          ...otherInfo.value,
-          vipList: otherInfo.value.vipList.toString(),
-          spList: otherInfo.value.spList.toString()
-        }
-      }
-    })
     // 模态框
     const propertyRef = ref<any>() // 类型属性
     const timerRef = ref<any>() // 时间状态框
@@ -282,27 +269,34 @@ export default defineComponent({
         propertyRef.value.handleNewData(item, true)
       }
     }
+    // 参数说明
+    // allData 用来存储用户新增时页面传递的数据
     const allData = ref<any>()
-    const changePage = (item: any, data: any) => {
+    /**
+     * @param item 页面类型
+     * @param data 用户传递的数据
+     * @param params 第一次页面传递的参数，新增类型属性时会带有
+     */
+    const changePage = (item: any, data: any, params: any) => {
       allData.value = {
         ...allData.value,
         ...data
       }
       switch (item) {
         case 'property':
-          propertyRef.value && propertyRef.value.handleNewData()
+          propertyRef.value && propertyRef.value.handleNewData(params)
           break
         case 'timer':
-          timerRef.value && timerRef.value.handleNewData()
+          timerRef.value && timerRef.value.handleNewData(params)
           break
         case 'u3d':
-          u3dRef.value && u3dRef.value.handleNewData()
+          u3dRef.value && u3dRef.value.handleNewData(params)
           break
         case 'resource':
-          resourceRef.value && resourceRef.value.handleNewData()
+          resourceRef.value && resourceRef.value.handleNewData(params)
           break
         case 'relevance':
-          relevanceRef.value && relevanceRef.value.handleNewData()
+          relevanceRef.value && relevanceRef.value.handleNewData(params)
           break
       }
     }

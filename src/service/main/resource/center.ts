@@ -16,3 +16,11 @@ export function resourceFileOperation(data: any, type: string) {
     data: data
   })
 }
+
+// 批量修改资源状态
+export function selectResourceTypeOperation(data: any) {
+  return hyRequest.post<any>({
+    url: '/cms/mold/updateBatch',
+    data: data
+  })
+}

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 15:27:22
+ * @LastEditTime: 2022-04-12 15:31:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -11,7 +11,7 @@
     <el-drawer
       v-model="dialogVisible"
       direction="rtl"
-      size="100%"
+      size="85%"
       :show-close="false"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
