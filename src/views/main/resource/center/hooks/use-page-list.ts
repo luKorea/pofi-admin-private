@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 17:30:01
+ * @LastEditTime: 2022-04-12 11:22:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, nextTick } from 'vue'
 import { mapSelectListTitle } from '@/utils'
 import {
   resourceTypeList,
@@ -23,6 +23,7 @@ import { searchFormConfig } from '../config/search.config'
 import { modalConfig } from '../config/modal.config'
 import { getCommonSelectList } from '@/service/common'
 import { errorTip } from '@/utils/tip-info'
+import { usePageLanguage } from '@/hooks/use-page-language'
 
 // 区分新增，编辑模态框展示，编辑时显示不同模态框
 export function useMapDifferentModal() {
@@ -219,4 +220,81 @@ export function useCountrySelect() {
     }
   })
   return [otherInfo, areaIds, handleChangeCountry]
+}
+
+// 资源资料多语言配置
+export function useSetLanguage() {
+  const editorRef = ref<any>()
+  const requiredField = ref<any>([
+    'name',
+    'intro',
+    'summary',
+    'cover',
+    'labelA',
+    'b0',
+    'gift'
+  ])
+  const [
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    mapIconState,
+    mapItemIcon
+  ] = usePageLanguage(
+    {
+      name: '', //资源名称 必填
+      intro: '', //资源简介 必填
+      summary: '', //介绍摘要 必填
+      info: '', //介绍详情 必填
+      labelA: '', //介绍标签 必填
+      labelB: '', //包含资源标签
+      showLabel: '', //d0简介
+      precision: '', //模型精度
+      side: '', //模型面数
+      // 单图上传
+      gift: '', //主图a0-gif(彩蛋)
+      giftList: [],
+      cover: '', //封面图 必填
+      coverList: [],
+      // 多图上传
+      b0List: [], //b0图(list) 必填
+      b0: [],
+      c0List: [], //c0图(list),
+      c0: [],
+      d0List: [], //d0图(list)
+      d0: []
+    },
+    'lid'
+  )
+  // eslint-disable-next-line vue/return-in-computed-property
+  const languageItem = computed(() => {
+    if (languageList.value.length > 0) {
+      return languageList.value.find(
+        (item: any) => item.lid === languageId.value
+      )
+    } else resetLanguageList()
+  })
+  watchEffect(() => {
+    if (languageItem.value) {
+      mapItemIcon(requiredField.value, languageItem.value)
+    }
+  })
+  // 改变多语言
+  const handleChangeLanguage = async (id: any) => {
+    languageId.value = id
+    await nextTick()
+    editorRef.value.setEditorValue()
+  }
+  return {
+    editorRef,
+    languageList,
+    languageId,
+    resetLanguageList,
+    languageBtnList,
+    languageItem,
+    handleChangeLanguage,
+    requiredField,
+    mapIconState
+  } as any
 }

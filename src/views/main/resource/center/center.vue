@@ -121,171 +121,53 @@
         </el-dropdown>
       </template>
     </page-content>
-    <!-- 当前模态框只展示类型属性，其他编辑在其他展示 -->
-    <page-modal
-      :defaultInfo="defaultInfo"
-      ref="pageModalRef"
-      pageName="centers"
-      :modalConfig="propertyModalConfig"
-      :operationName="operationName"
-      :otherInfo="otherInfo"
-      @changeSelect="handleChangeSelect"
-    >
-      <!-- 使用条件 -->
-      <el-row :gutter="12">
-        <el-col
-          v-bind="propertyModalConfig.colLayout"
-          v-if="otherInfo.open === 2 || editType === 'edit'"
-        >
-          <div class="item-flex">
-            <span class="item-title">商品编号</span>
-            <el-select
-              v-model="otherInfo.snId"
-              placeholder="商品编号"
-              style="width: 100%"
-              :disabled="
-                otherInfo.open === 2 && editType === 'add' ? true : false
-              "
-            >
-              <el-option
-                v-for="item in goodsList"
-                :key="item.value"
-                :label="item.title"
-                :value="item.value"
-                >{{ item.title }}</el-option
-              >
-            </el-select>
-          </div>
-        </el-col>
-        <el-col
-          v-bind="propertyModalConfig.colLayout"
-          v-if="otherInfo.open === 2"
-        >
-          <div class="item-flex">
-            <span class="item-title">销售价</span>
-            <el-input-number
-              min="0"
-              v-model="otherInfo.sale"
-              placeholder="请输入销售价"
-              style="width: 100%"
-            ></el-input-number>
-          </div>
-        </el-col>
-        <el-col
-          v-bind="propertyModalConfig.colLayout"
-          v-if="otherInfo.open === 4"
-        >
-          <div class="item-flex">
-            <span class="item-title">功能分类</span>
-            <el-checkbox-group v-model="otherInfo.vipList">
-              <el-checkbox
-                v-for="item in functionExclusiveUseConditionsList"
-                :key="item.value"
-                :label="item.value"
-                >{{ item.title }}</el-checkbox
-              >
-            </el-checkbox-group>
-          </div>
-        </el-col>
-      </el-row>
-      <!-- 国家地区 -->
-      <el-row :gutter="12">
-        <el-col v-bind="propertyModalConfig.colLayout">
-          <div class="item-flex">
-            <span class="item-title">地区</span>
-            <el-select
-              placeholder="请选择国家地区，不选默认全部"
-              style="width: 100%"
-              clearable
-              v-model="areaIds"
-              multiple
-              collapse-tags
-              @change="handleChangeCountry($event)"
-            >
-              <el-option
-                v-for="option in countryList"
-                :key="option.id"
-                :value="option.value"
-                :label="option.title"
-                >{{ option.title }}</el-option
-              >
-            </el-select>
-          </div>
-        </el-col>
-      </el-row>
-      <!-- 资源特色 -->
-      <el-tooltip content="最多只能选择三个" placement="top">
-        <el-divider>资源特色 </el-divider></el-tooltip
-      >
-      <el-checkbox-group v-model="otherInfo.spList" :max="3">
-        <el-row>
-          <div class="hg-flex hg-mb-3">
-            <span class="tip-title">重点功能：</span>
-            <template v-for="item in resourceFeature" :key="item.value">
-              <el-checkbox v-if="item.type === 1" :label="item.value">{{
-                item.title
-              }}</el-checkbox>
-            </template>
-          </div>
-        </el-row>
-        <el-row>
-          <div class="hg-flex hg-mb-3">
-            <span class="tip-title">模型精度：</span>
-            <template v-for="item in resourceFeature" :key="item.value">
-              <el-checkbox v-if="item.type === 2" :label="item.value">{{
-                item.title
-              }}</el-checkbox>
-            </template>
-          </div>
-        </el-row>
-        <el-row>
-          <div class="hg-flex hg-mb-3 hg-flex-wrap">
-            <span class="tip-title">POFI 系列：</span>
-            <template v-for="item in resourceFeature" :key="item.value">
-              <el-checkbox v-if="item.type === 3" :label="item.value">{{
-                item.title
-              }}</el-checkbox>
-            </template>
-          </div>
-        </el-row>
-        <el-row>
-          <div class="hg-flex hg-mb-3 hg-flex-wrap">
-            <span class="tip-title">合作品牌IP：</span>
-            <template v-for="item in resourceFeature" :key="item.value">
-              <el-checkbox v-if="item.type === 4" :label="item.value">{{
-                item.title
-              }}</el-checkbox>
-            </template>
-          </div>
-        </el-row>
-      </el-checkbox-group>
-    </page-modal>
-
     <!-- 流程图组件 -->
     <process-component ref="processRef"></process-component>
-    <!-- 时间状态组件 -->
-    <timer-component
-      ref="timerRef"
+    <!-- 当前模态框只展示类型属性，其他编辑在其他展示 -->
+    <!-- 属性组件 -->
+    <property-component
+      ref="propertyRef"
       @getData="handleQueryClick"
-      :resource-state-list="resourceValueList"
-    ></timer-component>
+      @changePage="changePage"
+      :edit-type="editType"
+      :other-info="otherInfo"
+    ></property-component>
     <!-- U3D组件 -->
-    <u3d-component ref="u3dRef" @getData="handleQueryClick"></u3d-component>
+    <u3d-component
+      ref="u3dRef"
+      @changePage="changePage"
+      :edit-type="editType"
+      @getData="handleQueryClick"
+    ></u3d-component>
     <!-- 资源资料 -->
     <resource-component
       ref="resourceRef"
+      :edit-type="editType"
+      :item-data="itemData"
+      @changePage="changePage"
       @getData="handleQueryClick"
     ></resource-component>
     <!-- 相关关联 -->
     <relevance-component
       ref="relevanceRef"
+      :edit-type="editType"
+      @changePage="changePage"
       @getData="handleQueryClick"
     ></relevance-component>
+    <!-- 时间状态组件 -->
+    <timer-component
+      ref="timerRef"
+      :edit-type="editType"
+      @changePage="changePage"
+      :all-data="allData"
+      @getData="handleQueryClick"
+      :resource-state-list="resourceValueList"
+    ></timer-component>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -305,21 +187,27 @@ import { infoTipBox, warnTip, successTip, errorTip } from '@/utils/tip-info'
 import { selectImeiOperation } from '@/service/main/device/imei'
 
 import processComponent from './components/process.vue'
+import propertyComponent from './components/property.vue'
 import timerComponent from './components/timer.vue'
 import u3dComponent from './components/u3d.vue'
 import resourceComponent from './components/resource.vue'
 import relevanceComponent from './components/relevance.vue'
+import { resourceFileOperation } from '@/service/main/resource/center'
+import { getItemData } from '@/service/common-api'
 
 export default defineComponent({
   name: 'resourceCenter',
   components: {
     processComponent,
+    propertyComponent,
     timerComponent,
     u3dComponent,
     resourceComponent,
     relevanceComponent
   },
   setup() {
+    // 控制步骤
+    const dataStep = ref<number>(0)
     const { goodsList } = usePageList()
     const editType = ref<any>('add')
     // 编辑模态框
@@ -371,36 +259,72 @@ export default defineComponent({
         })
       })
     }
-    // 新增模态框
-    const handleChangeNewData = (item: any) => {
-      item.libraryName = item.title
-      item.u3dType = +item.value
-      otherInfo.value = {
-        ...otherInfo.value,
-        snId: undefined,
-        open: undefined
+    watchEffect(() => {
+      if (otherInfo.value) {
+        otherInfo.value = {
+          ...otherInfo.value,
+          vipList: otherInfo.value.vipList.toString(),
+          spList: otherInfo.value.spList.toString()
+        }
       }
-      editType.value = 'add'
-      // item.funcList = []
-      handleNewData(item, true)
-    }
-    // 编辑模态框
+    })
+    // 模态框
+    const propertyRef = ref<any>() // 类型属性
     const timerRef = ref<any>() // 时间状态框
     const u3dRef = ref<any>() // u3d
     const resourceRef = ref<any>() // 资源资料
+    const itemData = ref<any>()
     const relevanceRef = ref<any>() // 相关关联
-    const handleChangeEditData = (row: any, item: any) => {
-      // 这里需要做函数抽离，明天完成
-      console.log(row)
+    // 新增模态框
+    const handleChangeNewData = (item: any) => {
+      editType.value = 'add'
+      if (propertyRef.value) {
+        propertyRef.value.handleNewData(item, true)
+      }
+    }
+    const allData = ref<any>()
+    const changePage = (item: any, data: any) => {
+      allData.value = {
+        ...allData.value,
+        ...data
+      }
       switch (item) {
         case 'property':
-          editType.value = 'edit'
-          otherInfo.value = {
-            ...otherInfo.value,
-            snId: row.snId,
-            open: row.open
-          }
-          handleEditData(row)
+          propertyRef.value && propertyRef.value.handleNewData()
+          break
+        case 'timer':
+          timerRef.value && timerRef.value.handleNewData()
+          break
+        case 'u3d':
+          u3dRef.value && u3dRef.value.handleNewData()
+          break
+        case 'resource':
+          resourceRef.value && resourceRef.value.handleNewData()
+          break
+        case 'relevance':
+          relevanceRef.value && relevanceRef.value.handleNewData()
+          break
+      }
+    }
+    const handleChangeEditData = (row: any, item: any) => {
+      // 这里需要做函数抽离，明天完成
+      editType.value = 'edit'
+      switch (item) {
+        case 'property':
+          getItemData('resourceCenterItem', {
+            moId: row.moId
+          }).then((res: any) => {
+            if (res.result === 0) {
+              otherInfo.value = {
+                ...otherInfo.value,
+                snId: row.snId,
+                open: row.open,
+                areaIds: res.data.areaIds.toString()
+              }
+              areaIds.value = res.data.areaIds
+              propertyRef.value.handleEditData(res.data)
+            } else errorTip(res.msg)
+          })
           break
         case 'timer':
           timerRef.value && timerRef.value.handleEditData(row)
@@ -409,7 +333,17 @@ export default defineComponent({
           u3dRef.value && u3dRef.value.handleEditData(row)
           break
         case 'resource':
-          resourceRef.value && resourceRef.value.handleEditData(row)
+          resourceFileOperation(
+            {
+              moId: row.moId
+            },
+            'get'
+          ).then((res: any) => {
+            if (res.result === 0) {
+              itemData.value = res.data.moldList
+              resourceRef.value && resourceRef.value.handleEditData(row)
+            } else errorTip(res.msg)
+          })
           break
         case 'relevance':
           relevanceRef.value && relevanceRef.value.handleEditData(row)
@@ -434,10 +368,13 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      dataStep,
+      allData,
       goodsList,
       editType,
       // 编辑模态框
       modalType,
+      changePage,
       // 新增模态框
       handleChangeNewData,
       handleChangeEditData,
@@ -447,6 +384,7 @@ export default defineComponent({
       functionExclusiveUseConditionsList,
       countryList,
       otherInfo,
+      itemData,
       // 国家下拉
       areaIds,
       handleChangeCountry,
@@ -460,6 +398,7 @@ export default defineComponent({
       mapTitle,
       // 流程图
       processRef,
+      propertyRef,
       timerRef,
       u3dRef,
       resourceRef,

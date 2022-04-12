@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:47:45
+ * @LastEditTime: 2022-04-12 13:16:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -34,7 +34,7 @@ import resourceKeywordModule from './main/resource/keyword/keyword'
 import resourceClassifyModule from './main/resource/classify/classify'
 import resourceSeriesModule from './main/resource/series/series'
 import resourceTopicModule from './main/resource/topic/topic'
-import resourceCenterModule from './main/base/center/center'
+import resourceCenterModule from './main/resource/center/center'
 import resourceHomeModule from './main/resource/index'
 
 // 财务中心

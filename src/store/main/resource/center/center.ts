@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 10:14:32
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-12 13:17:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/imei/imei.ts
  */
@@ -52,7 +52,7 @@ const resourceCenterModule: Module<IResourceCenterType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
-      queryInfo = payload.queryInfo
+      queryInfo = { ...payload.queryInfo, moId: 'M1806140' }
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, queryInfo)

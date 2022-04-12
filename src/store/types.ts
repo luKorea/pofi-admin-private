@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:48:23
+ * @LastEditTime: 2022-04-12 13:16:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -40,7 +40,7 @@ import { IUserModifyType } from './main/audit/userModify/types'
 import { IFeedbackType } from './main/feedback/types'
 import { IHelpAccountType } from './main/help/account/types'
 import { IBaseJumpType } from './main/base/jump/types'
-import { IResourceCenterType } from './main/base/center/types'
+import { IResourceCenterType } from './main/resource/center/types'
 import { IAadvertisementBannerType } from './main/ad/banner/types'
 import { IBaseVersionType } from './main/base/version/types'
 import { IResourceHomeType } from './main/resource/index/types'

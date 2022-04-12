@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 17:40:49
+ * @LastEditTime: 2022-04-12 15:27:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -11,7 +11,7 @@
     <el-drawer
       v-model="dialogVisible"
       direction="rtl"
-      size="80%"
+      size="100%"
       :show-close="false"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
@@ -45,6 +45,7 @@
       </template>
       <template #default>
         <div style="padding: 0 20px; margin-bottom: 40px">
+          <slot name="titleWrapper"></slot>
           <hy-form
             ref="pageFormRef"
             v-bind="modalConfig"

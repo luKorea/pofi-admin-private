@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-12 09:35:36
+ * @LastEditTime: 2022-04-12 15:12:08
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -14,10 +14,16 @@
     :modalConfig="u3dModalConfig"
     :showConfigBtn="false"
   >
+    <template #titleWrapper>
+      <step-component :active="2"></step-component>
+    </template>
     <template #otherModalHandler="{ row }">
-      <el-button size="mini" type="primary" @click="sendTimer(row)"
-        >确定</el-button
+      <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
+        >上一步</el-button
       >
+      <el-button size="mini" type="primary" @click="sendTimer(row)">{{
+        editType === 'edit' ? '确定' : '下一步'
+      }}</el-button>
     </template>
   </page-modal>
 </template>
@@ -26,11 +32,28 @@
 import { defineComponent } from 'vue'
 import { u3dModalConfig } from './config/u3d.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
+import stepComponent from './step.vue'
 
 export default defineComponent({
-  setup() {
+  props: {
+    editType: {
+      type: String,
+      default: 'edit'
+    }
+  },
+  components: {
+    stepComponent
+  },
+  emits: ['getData', 'changePage'],
+  setup(props, { emit }) {
+    const nextStep = () => {
+      if (pageModalRef.value) {
+        pageModalRef.value.dialogVisible = false
+      }
+    }
     const sendTimer = (item: any) => {
       console.log(item)
+      emit('changePage', 'relevance')
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
@@ -40,7 +63,8 @@ export default defineComponent({
       defaultInfo,
       handleNewData,
       handleEditData,
-      sendTimer
+      sendTimer,
+      nextStep
     }
   }
 })
