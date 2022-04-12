@@ -1,3 +1,4 @@
+<!-- /cms/mold/get -->
 <template>
   <div class="resource-center" v-if="1">
     <page-search
@@ -266,6 +267,7 @@
     <timer-component
       ref="timerRef"
       @getData="handleQueryClick"
+      :resource-state-list="resourceValueList"
     ></timer-component>
     <!-- U3D组件 -->
     <u3d-component ref="u3dRef" @getData="handleQueryClick"></u3d-component>

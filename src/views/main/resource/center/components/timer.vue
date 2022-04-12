@@ -1,9 +1,9 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-11 17:40:10
+ * @LastEditTime: 2022-04-12 10:05:54
  * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
 -->
 <template>
@@ -11,7 +11,7 @@
     :defaultInfo="defaultInfo"
     ref="pageModalRef"
     pageName="centers"
-    :modalConfig="timerModalConfig"
+    :modalConfig="timerModalConfigRef"
     :showConfigBtn="false"
   >
     <template #otherModalHandler="{ row }">
@@ -23,19 +23,57 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { timerModalConfig } from './config/timer.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
-
+import { infoTipBox, successTip } from '@/utils/tip-info'
+import { updateCenterTimer } from '@/service/main/resource/center'
+import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
-  setup() {
+  props: {
+    resourceStateList: {
+      type: Array,
+      default: () => []
+    }
+  },
+  emits: ['getData'],
+  setup(props, { emit }) {
+    const timerModalConfigRef = computed(() => {
+      timerModalConfig.formItems.map((item: any) => {
+        if (item.field === 'state') item!.options = props.resourceStateList
+      })
+      return timerModalConfig
+    })
     const sendTimer = (item: any) => {
-      console.log(item)
+      const formRef = item.ref.formRef
+      const data = item.data
+      formRef?.validate((valid: any) => {
+        if (valid) {
+          infoTipBox({
+            title: '更新时间状态',
+            message: `你确定更新模型 ${data.pname} 的时间状态吗`
+          }).then(() => {
+            updateCenterTimer({
+              moId: data.moId,
+              state: data.state,
+              onlineTime: data.onlineTime
+            }).then((res) => {
+              if (res.result === 0) {
+                successTip(res.msg)
+                if (pageModalRef.value) {
+                  pageModalRef.value.dialogVisible = false
+                  emit('getData')
+                }
+              } else errorTip(res.msg)
+            })
+          })
+        }
+      })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
-      timerModalConfig,
+      timerModalConfigRef,
       pageModalRef,
       defaultInfo,
       handleNewData,

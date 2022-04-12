@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 14:09:03
+ * @LastEditTime: 2022-04-12 10:04:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/content.config.ts
  */
@@ -24,8 +24,8 @@ export const contentTableConfig: TableConfig = {
       slotName: 'isVersion',
       align: 'left'
     },
-    { prop: 'onlineTime', label: '上线时间', slotName: 'createAt' },
-    { prop: 'updatedTime', label: '最后修改日期', slotName: 'createAt' },
+    { prop: 'onlineTime', label: '上线时间' },
+    { prop: 'updatedTime', label: '最后修改日期' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
