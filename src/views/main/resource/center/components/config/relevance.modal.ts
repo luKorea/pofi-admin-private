@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 17:52:15
+ * @LastEditTime: 2022-04-13 15:19:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -11,204 +11,165 @@ import { IForm } from '@/base-ui/form'
 export const relevanceModalConfig: IForm = {
   title: '编辑相关关联',
   formItems: [
+    // {
+    //   field: 'moId',
+    //   type: 'input',
+    //   label: '资源编号',
+    //   placeholder: '系统生成',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
-      field: 'libraryName',
-      type: 'input',
-      label: '当前所属库',
-      placeholder: '当前所属库',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'updatedTime',
-      type: 'input',
-      label: '上次编辑时间',
-      placeholder: '系统自动生成编辑时间',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'moId',
-      type: 'input',
-      label: '资源编号',
-      placeholder: '系统生成',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'nickId',
-      type: 'input',
-      label: '标注ID',
-      placeholder: '请输入标注ID',
-      rules: [
-        {
-          required: true,
-          message: '请输入标注ID',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'pname',
-      type: 'input',
-      label: '后管展示名字',
-      placeholder: '后管展示名字',
-      rules: [
-        {
-          required: true,
-          message: '请输入后管展示名字',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'sign',
-      type: 'input',
-      label: '版权信息',
-      placeholder: '请输入版权信息',
-      rules: [
-        {
-          required: true,
-          message: '请输入版权信息',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'resourceType',
-      type: 'select',
-      label: '资源类型',
-      placeholder: '请选择资源类型',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择资源类型',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'resourceFileType',
-      type: 'select',
-      label: '资源文件类型',
-      placeholder: '请选择资源文件类型',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择资源文件类型',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'u3dType',
-      type: 'select',
-      label: 'U3D类型',
-      placeholder: '请选择U3D类型',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择U3D类型',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'moType',
-      type: 'select',
-      label: '类型',
-      placeholder: '请选择类型',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择类型',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'device',
-      type: 'select',
-      label: '设备要求',
-      placeholder: '请选择设备要求',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择设备要求',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'msId',
+      field: 'cidList',
       type: 'cascader',
-      label: '所属系列',
-      placeholder: '请选择所属系列',
-      options: [],
       otherOptions: {
         props: {
-          value: 'msId',
+          value: 'id',
           label: 'name',
           isLeaf: 'leaf',
           children: 'children',
-          checkStrictly: true
+          checkStrictly: true,
+          multiple: true
         }
+      },
+      label: '所含分类',
+      placeholder: '请选择所含分类',
+      options: [],
+      rules: [
+        {
+          required: true,
+          message: '请选择所含分类',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'face',
+      type: 'select',
+      label: '外貌类型',
+      placeholder: '请选择外貌类型',
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
+    },
+    {
+      field: 'style',
+      type: 'select',
+      label: '风格主题',
+      placeholder: '请选择风格主题',
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
+    },
+    {
+      field: 'scene',
+      type: 'select',
+      label: '场景应用',
+      placeholder: '请选择场景应用',
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
+    },
+    {
+      field: 'other',
+      type: 'select',
+      label: '其他关联',
+      placeholder: '请选择其他关联',
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
+    },
+    {
+      field: 'hide',
+      type: 'select',
+      label: '隐藏标签',
+      placeholder: '请选择隐藏标签',
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
+    },
+    {
+      field: 'isPrep',
+      type: 'select',
+      label: '是否关联资源',
+      placeholder: '请选择是否关联资源',
+      options: [
+        {
+          title: '不关联',
+          value: 1
+        },
+        {
+          title: '关联',
+          value: 2
+        }
+      ],
+      rules: [
+        {
+          required: true,
+          message: '请选择是否关联资源',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'rel',
+      type: 'select',
+      label: '关联目的',
+      placeholder: '请选择关联目的',
+      isHidden: true,
+      options: [
+        {
+          value: 1,
+          title: '捆绑销售'
+        },
+        {
+          value: 2,
+          title: '附属主体(Pose库必选)'
+        }
+      ],
+      rules: [
+        {
+          required: true,
+          message: '请选择关联目的',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'prep',
+      type: 'select',
+      label: '主关联资源',
+      placeholder: '请选择主关联资源',
+      isHidden: true,
+      options: [],
+      otherOptions: {
+        multiple: true
       },
       rules: [
         {
           required: true,
-          message: '请选择所属系列',
+          message: '请选择主关联资源',
           trigger: 'blur'
         }
       ]
     },
     {
-      field: 'funcList',
-      type: 'checkbox',
-      label: '特色功能',
-      placeholder: '请选择特色功能',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择特色功能',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'open',
+      field: 'subPrep',
       type: 'select',
-      label: '使用条件',
-      placeholder: '请选择使用条件',
-      options: [],
-      rules: [
-        {
-          required: true,
-          message: '请选择使用条件',
-          trigger: 'blur'
-        }
-      ]
+      label: '副关联资源',
+      otherOptions: {
+        multiple: true
+      },
+      placeholder: '请选择副关联资源',
+      isHidden: true,
+      options: []
     }
-    // {
-    //   field: 'areaIds',
-    //   type: 'select',
-    //   label: '国家/地区',
-    //   placeholder: '不选默认全部',
-    //   options: [],
-    //   otherOptions: {
-    //     multiple: true,
-    //     collapseTags: true
-    //   }
-    // }
   ],
   colLayout: {
     xl: 12, // >1920px 4个

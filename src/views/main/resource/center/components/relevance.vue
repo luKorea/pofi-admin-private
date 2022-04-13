@@ -1,27 +1,20 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-12 19:20:54
+ * @LastEditTime: 2022-04-13 13:27:16
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
--->
-<!--
- * @Author: your name
- * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-11 17:40:10
- * @LastEditors: Please set LastEditors
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
 -->
 <template>
   <page-modal
     :defaultInfo="defaultInfo"
     ref="pageModalRef"
     pageName="centers"
-    :modalConfig="relevanceModalConfig"
+    :modalConfig="modalConfigRef"
     :showConfigBtn="false"
     :showCancelBtn="false"
+    @changeSelect="handleChangeSelect"
   >
     <template #titleWrapper>
       <step-component :active="3" @openStep="openStep"></step-component>
@@ -42,11 +35,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { relevanceModalConfig } from './config/relevance.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
 import { infoTipBox } from '@/utils/tip-info'
+import { otherList, classifyList, prpeList } from '../hooks/use-page-list'
+import { relevanceOperation } from '../../../../../service/main/resource/center'
+import { successTip, errorTip } from '../../../../../utils/tip-info'
 export default defineComponent({
   components: {
     stepComponent
@@ -63,10 +59,81 @@ export default defineComponent({
   },
   emits: ['getData', 'changePage', 'openStep'],
   setup(props, { emit }) {
+    const modalConfigRef = computed(() => {
+      relevanceModalConfig.formItems.map((i: any) => {
+        if (i.field === 'cidList') i!.options = classifyList?.value
+        if (i.field === 'face')
+          i!.options = otherList?.value?.faceList.map((c: any) => ({
+            title: c.name,
+            value: c.id
+          }))
+        if (i.field === 'style')
+          i!.options = otherList?.value?.styleList.map((c: any) => ({
+            title: c.name,
+            value: c.id
+          }))
+        if (i.field === 'scene')
+          i!.options = otherList?.value?.sceneList.map((c: any) => ({
+            title: c.name,
+            value: c.id
+          }))
+        if (i.field === 'other')
+          i!.options = otherList?.value?.otherList.map((c: any) => ({
+            title: c.name,
+            value: c.id
+          }))
+        if (i.field === 'hide')
+          i!.options = otherList?.value?.hideList?.map((c: any) => ({
+            title: c.name,
+            value: c.id
+          }))
+        if (i.field === 'prep')
+          i!.options = prpeList?.value?.map((c: any) => ({
+            title: c.pname,
+            value: c.moId
+          }))
+        if (i.field === 'subPrep')
+          i!.options = prpeList?.value?.map((c: any) => ({
+            title: c.pname,
+            value: c.moId
+          }))
+      })
+      return relevanceModalConfig
+    })
     const nextStep = () => {
       if (pageModalRef.value) {
         pageModalRef.value.dialogVisible = false
       }
+    }
+    let prpeEditList: any[] = []
+    const handleChangeSelect = (item: any) => {
+      if (item.value === 2 && item.field === 'isPrep') {
+        modalConfigRef.value.formItems.map((i: any) => {
+          if (i.field === 'rel') i!.isHidden = false
+          if (i.field === 'prep') i!.isHidden = false
+          if (i.field === 'subPrep') i!.isHidden = false
+        })
+      }
+      if (item.value === 1 && item.field === 'isPrep') {
+        modalConfigRef.value.formItems.map((i: any) => {
+          if (i.field === 'rel') i!.isHidden = true
+          if (i.field === 'prep') i!.isHidden = true
+          if (i.field === 'subPrep') i!.isHidden = true
+        })
+      }
+      // TODO 后续完善
+      // if (item.field === 'prep') {
+      //   if (item.value.length > 0) {
+      //     item.value.map((i: any) => {
+      //       prpeList.value.map((p: any) => {
+      //         if (i === p.moId) {
+      //           prpeEditList.push(p)
+      //         }
+      //       })
+      //     })
+      //   } else prpeEditList = []
+      //   console.log(prpeEditList, 'prpeEditList')
+      // }
     }
     const cancelData = (item: any) => {
       infoTipBox({
@@ -82,18 +149,43 @@ export default defineComponent({
           }
         })
     }
+    const addData = (item: any) => {
+      relevanceOperation({
+        ...item.data,
+        cidList: item.data.cidList.flat()
+      }).then((res) => {
+        if (res.result === 0) {
+          successTip(res.msg)
+          if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+          emit('changePage', 'timer', { ...item })
+        } else errorTip(res.msg)
+      })
+    }
+    const editData = (item: any) => {
+      relevanceOperation({
+        ...item.data,
+        cidList: item.data.cidList.flat()
+      }).then((res) => {
+        if (res.result === 0) {
+          successTip(res.msg)
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+            emit('getData')
+          }
+        } else errorTip(res.msg)
+      })
+    }
     const sendTimer = (item: any, type = 'config') => {
       if (props.editType === 'add') {
         if (pageModalRef.value) {
           if (type === 'cancel') {
             pageModalRef.value.dialogVisible = false
           } else {
-            pageModalRef.value.dialogVisible = false
-            emit('changePage', 'timer', { ...item })
+            addData(item)
           }
         }
       } else {
-        console.log(item)
+        editData(item)
       }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -102,9 +194,11 @@ export default defineComponent({
       emit('openStep', step, props.params)
     }
     return {
+      handleChangeSelect,
       openStep,
       cancelData,
       relevanceModalConfig,
+      modalConfigRef,
       pageModalRef,
       defaultInfo,
       handleNewData,

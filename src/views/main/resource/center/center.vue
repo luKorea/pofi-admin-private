@@ -197,7 +197,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, onMounted, computed, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -209,9 +209,7 @@ import {
   usePageFunction,
   useMapFormConfigData,
   useMapDifferentModal,
-  useMapPropertyData,
-  useCountrySelect,
-  usePageList
+  useCountrySelect
 } from './hooks/use-page-list'
 import { infoTipBox, warnTip, successTip, errorTip } from '@/utils/tip-info'
 import processComponent from './components/process.vue'
@@ -238,7 +236,6 @@ export default defineComponent({
   setup() {
     // 控制步骤
     const dataStep = ref<number>(0)
-    const { goodsList } = usePageList()
     const editType = ref<any>('add')
     // 编辑模态框
     const [modalType] = useMapDifferentModal()
@@ -251,7 +248,7 @@ export default defineComponent({
       unityModalFilterList,
       unityModalList
     ] = useMapFormConfigData()
-    const [otherInfo, areaIds, handleChangeCountry] = useCountrySelect()
+    const [otherInfo] = useCountrySelect(editType.value)
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     // 多选全选操作
@@ -330,28 +327,50 @@ export default defineComponent({
       switch (item) {
         case 'property':
           hiddenPage()
-          propertyRef.value && propertyRef.value.handleNewData(params)
+          handleChangeEditData(item, params, 'add')
           break
         case 'timer':
           hiddenPage()
-          timerRef.value && timerRef.value.handleNewData(params)
+          handleChangeEditData(item, params, 'add')
           break
         case 'u3d':
           hiddenPage()
-          u3dRef.value && u3dRef.value.handleNewData(params)
+          handleChangeEditData(item, params, 'add')
           break
         case 'resource':
           hiddenPage()
-          resourceRef.value && resourceRef.value.handleNewData(params)
+          handleChangeEditData(item, params, 'add')
           break
         case 'relevance':
           hiddenPage()
-          relevanceRef.value && relevanceRef.value.handleNewData(params)
+          handleChangeEditData(item, params, 'add')
           break
       }
     }
     const params = ref<any>()
     const editData = ref<any>()
+    const getU3d = (item: any) => {
+      getItemData('u3dItem', {
+        osType: item,
+        moId: params.value.moId
+      }).then((res: any) => {
+        if (res.result === 0) {
+          editData.value = res.data
+          u3dRef.value &&
+            u3dRef.value.handleEditData({
+              ...res.data,
+              ...params.value
+            })
+          const data = res.data
+          const value = u3dRef.value.otherInfo
+          if (item === 1) {
+            value.iosVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+          } else {
+            value.androidVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+          }
+        } else errorTip(res.msg)
+      })
+    }
     const handleChangeEditData = (type: any, row: any, checkType = 'edit') => {
       // 这里需要做函数抽离，明天完成
       editType.value = checkType
@@ -371,15 +390,17 @@ export default defineComponent({
               moId: row.moId
             }).then((res: any) => {
               if (res.result === 0) {
-                otherInfo.value = {
-                  ...otherInfo.value,
+                propertyRef.value.otherInfo = {
+                  ...propertyRef.value.otherInfo,
                   snId: row.snId,
                   open: row.open,
                   areaIds: res.data.areaIds.toString(),
                   specialIcon: res.data.specialIcon
                     ? res.data.specialIcon.split(',').map((i: any) => +i)
-                    : []
+                    : [],
+                  editType: 'edit'
                 }
+                console.log(propertyRef.value.otherInfo, 'other')
                 if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'
                 else if (res.data.unityType == 8)
                   res.data['libraryName'] = '动画库'
@@ -387,6 +408,7 @@ export default defineComponent({
                 res.data['keyFunc'] = res.data.keyFunc
                   .split(',')
                   .map((i: any) => +i)
+                console.log(res.data['keyFunc'])
                 propertyRef.value.handleEditData(res.data)
               } else errorTip(res.msg)
             })
@@ -401,15 +423,8 @@ export default defineComponent({
           if (editType.value === 'add') {
             u3dRef.value && u3dRef.value.handleEditData(row)
           } else {
-            getItemData('u3dItem', {
-              osType: 1,
-              moId: params.value.moId
-            }).then((res: any) => {
-              if (res.result === 0) {
-                editData.value = res.data
-                u3dRef.value && u3dRef.value.handleEditData(res.data)
-              } else errorTip(res.msg)
-            })
+            getU3d(1)
+            getU3d(0)
           }
           break
         case 'resource':
@@ -431,25 +446,42 @@ export default defineComponent({
                 ) {
                   let result: any[] = []
                   result = res?.data?.moldList.map((item: any) => {
+                    let b0List = []
+                    let c0List = []
+                    let d0List = []
+                    b0List =
+                      item.b0 &&
+                      item.b0.length > 0 &&
+                      item.b0.map((i: any) => {
+                        return mapImageToObject(i)
+                      })
+                    c0List =
+                      item.c0 &&
+                      item.c0.length > 0 &&
+                      item.c0.map((i: any) => {
+                        return mapImageToObject(i)
+                      })
+                    d0List =
+                      item.d0 &&
+                      item.d0.length > 0 &&
+                      item.d0.map((i: any) => {
+                        return mapImageToObject(i)
+                      })
+                    console.log(b0List)
                     return {
                       ...item,
                       coverList: item.cover
                         ? [mapImageToObject(item.cover)]
                         : [],
-                      giftList: item.gift ? [mapImageToObject(item.gift)] : []
+                      giftList: item.gift ? [mapImageToObject(item.gift)] : [],
+                      b0List,
+                      c0List,
+                      d0List
                     }
                   })
-                  // resourceRef.value.languageList = res.data.moldList
+                  resourceRef.value.languageList = result
                   resourceRef.value &&
-                    resourceRef.value.handleEditData({
-                      ...res.data,
-                      ...params.value
-                    }) // resourceRef.value.languageList = res.data.moldList
-                  resourceRef.value &&
-                    resourceRef.value.handleEditData({
-                      ...res.data,
-                      ...params.value
-                    })
+                    resourceRef.value.handleEditData(res.data)
                 } else
                   resourceRef.value && resourceRef.value.handleEditData(row)
               } else errorTip(res.msg)
@@ -458,34 +490,35 @@ export default defineComponent({
           break
         case 'relevance':
           hiddenPage()
-          relevanceRef.value && relevanceRef.value.handleEditData(row)
+          if (editType.value === 'add') {
+            relevanceRef.value && relevanceRef.value.handleEditData(row)
+          } else {
+            getItemData('relevanceItem', {
+              moId: params.value.moId
+            }).then((res: any) => {
+              if (res.result === 0) {
+                editData.value = res.data
+                relevanceRef.value &&
+                  relevanceRef.value.handleEditData({
+                    ...res.data,
+                    moId: params.value.moId,
+                    cidList: res.data.sortList,
+                    isPrep: params.value.isPrep
+                  })
+              } else errorTip(res.msg)
+            })
+          }
           break
       }
     }
     const openStep = (item: any, data: any) => {
       handleChangeEditData(item, data)
     }
-    const {
-      propertyModalConfig,
-      resourceFeature,
-      functionExclusiveUseConditionsList,
-      countryList
-    } = useMapPropertyData()
-    // 控制使用条件
-    const handleChangeSelect = (item: any) => {
-      if (item.field === 'open') {
-        otherInfo.value = {
-          ...otherInfo.value,
-          open: +item.value
-        }
-      }
-    }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
       dataStep,
       allData,
-      goodsList,
       editType,
       params,
       editData,
@@ -497,16 +530,8 @@ export default defineComponent({
       handleChangeNewData,
       handleChangeEditData,
       // 模态框表单数据
-      propertyModalConfig,
-      resourceFeature,
-      functionExclusiveUseConditionsList,
-      countryList,
       otherInfo,
       itemData,
-      // 国家下拉
-      areaIds,
-      handleChangeCountry,
-      handleChangeSelect,
       searchFormConfigData,
       resourceTypeList,
       resourceConditionList,

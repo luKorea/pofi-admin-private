@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 19:03:00
+ * @LastEditTime: 2022-04-13 10:36:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -13,7 +13,7 @@
       direction="rtl"
       size="85%"
       :show-close="false"
-      :close-on-click-modal="false"
+      :close-on-click-modal="true"
       :close-on-press-escape="false"
       destroy-on-close
     >

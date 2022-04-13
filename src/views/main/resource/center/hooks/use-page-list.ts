@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 23:02:33
+ * @LastEditTime: 2022-04-13 12:00:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
-import { ref, computed, watchEffect, nextTick } from 'vue'
+import { ref, computed, watchEffect, nextTick, onMounted } from 'vue'
 import { mapSelectListTitle } from '@/utils'
 import {
   resourceTypeList,
@@ -25,12 +25,31 @@ import { getCommonSelectList } from '@/service/common'
 import { errorTip } from '@/utils/tip-info'
 import { usePageLanguage } from '@/hooks/use-page-language'
 
-// 下拉数据
+export const resourceCenterList = ref<any>()
+export const countryList = ref<any>()
+export const seriesList = ref<any>()
+export const goodsList = ref<any>()
+export const otherList = ref<any>()
+export const classifyList = ref<any>()
+export const prpeList = ref<any>()
 export function usePageList() {
-  const resourceCenterList = ref<any>()
-  const countryList = ref<any>()
-  const seriesList = ref<any>()
-  const goodsList = ref<any>()
+  const getOther = () => {
+    getCommonSelectList('prpeType').then((res) => {
+      if (res.result === 0) {
+        prpeList.value = res.data
+      } else errorTip(res.msg)
+    })
+    getCommonSelectList('classifyType').then((res) => {
+      if (res.result === 0) {
+        classifyList.value = res.data
+      } else errorTip(res.msg)
+    })
+    getCommonSelectList('otherKeyType').then((res) => {
+      if (res.result === 0) {
+        otherList.value = res.data
+      } else errorTip(res.msg)
+    })
+  }
   const getCity = () => {
     getCommonSelectList('country').then((res) => {
       if (res.result === 0) {
@@ -78,15 +97,16 @@ export function usePageList() {
       } else errorTip(res.msg)
     })
   }
-  Promise.allSettled([getCity(), getGoods(), getResource(), getSeries()])
-  return {
-    resourceCenterList,
-    countryList,
-    seriesList,
-    goodsList
-  }
+  Promise.allSettled([
+    getOther(),
+    getCity(),
+    getGoods(),
+    getResource(),
+    getSeries()
+  ])
 }
 
+usePageList()
 // 区分新增，编辑模态框展示，编辑时显示不同模态框
 export function useMapDifferentModal() {
   const modalType = ref<any>([
@@ -101,8 +121,6 @@ export function useMapDifferentModal() {
 }
 // 初始化类型属性数据
 export function useMapPropertyData() {
-  const { resourceCenterList, countryList, seriesList } = usePageList()
-  console.log(seriesList.value)
   const propertyModalConfig = computed(() => {
     modalConfig.formItems.map((item: any) => {
       if (item.field === 'moType') item.options = resourceTypeList
@@ -184,11 +202,10 @@ export function useStoreName() {
   return [storeTypeInfo, operationName]
 }
 // 国家下拉
-export function useCountrySelect() {
-  const { countryList } = usePageList()
+export function useCountrySelect(editType: string) {
   const otherInfo = ref<any>({
     specialIcon: [], // 资源特色
-    vipList: [] // 功能专属使用
+    vipInt: [] // 功能专属使用
   })
   const areaIds = ref<any>([])
   const handleChangeCountry = (item: any[]) => {
@@ -214,6 +231,9 @@ export function useCountrySelect() {
   }
   // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
   watchEffect(() => {
+    otherInfo.value = {
+      ...otherInfo.value
+    }
     if (areaIds.value.length === 0 && countryList.value) {
       const region: any[] = []
       countryList.value

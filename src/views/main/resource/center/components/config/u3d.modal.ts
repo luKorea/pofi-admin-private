@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 15:59:52
+ * @LastEditTime: 2022-04-13 14:20:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -28,25 +28,25 @@ export const u3dModalConfig: IForm = {
       otherOptions: {
         disabled: true
       }
-    },
-    {
-      field: 'iosVersion',
-      type: 'input',
-      label: 'IOS版本号',
-      placeholder: '当前IOS版本号',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'androidVersion',
-      type: 'input',
-      label: 'Android版本号',
-      placeholder: '当前Android版本号',
-      otherOptions: {
-        disabled: true
-      }
     }
+    // {
+    //   field: 'iosVersion',
+    //   type: 'input',
+    //   label: 'IOS版本号',
+    //   placeholder: '当前IOS版本号',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
+    // {
+    //   field: 'androidVersion',
+    //   type: 'input',
+    //   label: 'Android版本号',
+    //   placeholder: '当前Android版本号',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // }
   ],
   colLayout: {
     xl: 12, // >1920px 4个

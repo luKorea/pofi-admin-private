@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 17:03:11
+ * @LastEditTime: 2022-04-13 09:00:25
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -38,9 +38,12 @@ export const searchFormConfig: IForm = {
     },
     {
       field: 'cost',
-      type: 'input',
+      type: 'inputNumber',
       label: '支付金额',
-      placeholder: '请输入支付金额'
+      placeholder: '请输入支付金额',
+      otherOptions: {
+        min: 0
+      }
     },
     {
       field: 'account',

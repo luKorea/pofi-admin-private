@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 22:22:51
+ * @LastEditTime: 2022-04-13 10:07:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/imei/imei.ts
  */
@@ -18,6 +18,7 @@ import {
   editPageData,
   deletePageToQueryData
 } from '@/service/common-api'
+import { getCommonSelectList } from '@/service/common'
 
 const apiList: any = {
   centers: '/cms/mold/'
@@ -31,7 +32,8 @@ const resourceCenterModule: Module<IResourceCenterType, IRootState> = {
   state() {
     return {
       centersCount: 0,
-      centersList: []
+      centersList: [],
+      selectData: {}
     }
   },
   mutations: {
@@ -40,6 +42,9 @@ const resourceCenterModule: Module<IResourceCenterType, IRootState> = {
     },
     changeCentersCount(state, centersCount: number) {
       state.centersCount = centersCount
+    },
+    changeSelectData(state, data: any) {
+      state.selectData = data
     }
   },
   getters: {
@@ -48,9 +53,18 @@ const resourceCenterModule: Module<IResourceCenterType, IRootState> = {
     },
     pageListCount(state) {
       return (pageName: string) => (state as any)[`${pageName}Count`]
+    },
+    pageSelectData(state) {
+      return state.selectData
     }
   },
   actions: {
+    async getSelectAction({ commit }) {
+      const country = await getCommonSelectList('country')
+      commit('changeSelectData', {
+        country: country.data.rows
+      })
+    },
     async getPageListAction({ commit }, payload: any) {
       // queryInfo = { ...payload.queryInfo, moId: 'M1806140' }
       queryInfo = { ...payload.queryInfo }

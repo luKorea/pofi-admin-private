@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 16:54:14
+ * @LastEditTime: 2022-04-13 12:00:49
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -30,7 +30,10 @@ enum commonAPI {
   styleType = '/cms/index/getTypes', // 样式类型
   resourceCenterType = '/cms/mold/getResourceType', // 动作资源类型
   seriesType = '/cms/series/getRecords', // 资源管理中心，所属系列
-  goodsType = '/cms/mold/getGoods' //获取商品下拉
+  classifyType = '/cms/classify/getRecords',
+  goodsType = '/cms/mold/getGoods', //获取商品下拉
+  otherKeyType = '/cms/mold/keywordList', //资源管理中心相关关联
+  prpeType = '/cms/mold/prepList'
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改

@@ -27,7 +27,22 @@ export function updateCenterTimer(data: any) {
 // 更新模型资源资料详情：/api/cms/mold/updatePic
 export function resourceFileOperation(data: any, type: string) {
   return hyRequest.post<any>({
-    url: type === 'get' ? '/cms/mold/getPic' : '/cms/mold/updatePic',
+    url: type === 'get' ? '/cms/mold/getPic' : '/cms/mold/addOrUpdatePic',
+    data: data
+  })
+}
+// U3d
+
+export function resourceU3dOperation(data: any, type: string) {
+  return hyRequest.post<any>({
+    url: type === 'add' ? '/cms/mold/add/source' : '/cms/mold/update/source',
+    data: data
+  })
+}
+
+export function relevanceOperation(data: any) {
+  return hyRequest.post<any>({
+    url: '/cms/mold/addOrUpdate/prep',
     data: data
   })
 }
@@ -36,6 +51,14 @@ export function resourceFileOperation(data: any, type: string) {
 export function selectResourceTypeOperation(data: any) {
   return hyRequest.post<any>({
     url: '/cms/mold/updateBatch',
+    data: data
+  })
+}
+
+// 获取U3D文件
+export function getU3dSourceList(data: any) {
+  return hyRequest.post<any>({
+    url: '/cms/mold/getSourceList',
     data: data
   })
 }

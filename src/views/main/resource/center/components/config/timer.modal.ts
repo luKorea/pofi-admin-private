@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 09:57:18
+ * @LastEditTime: 2022-04-13 15:20:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -11,24 +11,24 @@ import { IForm } from '@/base-ui/form'
 export const timerModalConfig: IForm = {
   title: '编辑时间状态',
   formItems: [
-    {
-      field: 'moId',
-      type: 'input',
-      label: '资源编号',
-      placeholder: '资源编号',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'pname',
-      type: 'input',
-      label: '模型名称',
-      placeholder: '模型名称',
-      otherOptions: {
-        disabled: true
-      }
-    },
+    // {
+    //   field: 'moId',
+    //   type: 'input',
+    //   label: '资源编号',
+    //   placeholder: '资源编号',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
+    // {
+    //   field: 'pname',
+    //   type: 'input',
+    //   label: '模型名称',
+    //   placeholder: '模型名称',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
       field: 'createdTime',
       type: 'datetime',
