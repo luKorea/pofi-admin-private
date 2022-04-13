@@ -1,5 +1,20 @@
 import hyRequest from '@/service'
 
+// 资源属性
+export function addProperty(data: any) {
+  return hyRequest.post<any>({
+    url: `/cms/mold/firstAdd`,
+    data: data
+  })
+}
+
+export function updateProperty(data: any) {
+  return hyRequest.post<any>({
+    url: `/cms/mold/update`,
+    data: data
+  })
+}
+
 // 更新时间状态
 export function updateCenterTimer(data: any) {
   return hyRequest.post<any>({

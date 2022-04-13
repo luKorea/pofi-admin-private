@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-12 19:21:29
+ * @LastEditTime: 2022-04-12 21:06:23
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -211,7 +211,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, onMounted } from 'vue'
+import { defineComponent, watchEffect, onMounted, nextTick } from 'vue'
 import { resourceModalConfig } from './config/resource.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { useSetLanguage } from '../hooks/use-page-list'
@@ -220,6 +220,7 @@ import hyUpload from '@/base-ui/upload'
 import { resourceFileOperation } from '@/service/main/resource/center'
 import { successTip, errorTip, infoTipBox } from '@/utils/tip-info'
 import stepComponent from './step.vue'
+import { validateParamsRules } from '../../../../../utils/index'
 
 export default defineComponent({
   emits: ['getData', 'changePage', 'openStep'],
@@ -229,9 +230,9 @@ export default defineComponent({
     stepComponent
   },
   props: {
-    itemData: {
-      type: Array,
-      default: () => []
+    editData: {
+      type: Object,
+      default: () => ({})
     },
     editType: {
       type: String,
@@ -254,11 +255,19 @@ export default defineComponent({
       requiredField,
       mapIconState
     } = useSetLanguage()
-    onMounted(() => {
-      if (props.editType === 'edit') {
-        languageList.value = props.itemData
-      }
+    nextTick(() => {
+      console.log(defaultInfo.value)
     })
+    // watchEffect(() => {
+    //   if (props.editType && props.editType === 'edit') {
+    //     resourceFileOperation(props.params, 'get').then((res) => {
+    //       if (res.result === 0) {
+    //         languageList.value = res.data.moldList
+    //         console.log(languageList.value)
+    //       } else errorTip(res.msg)
+    //     })
+    //   }
+    // })
     // 监听图片变化
     watchEffect(() => {
       if (languageItem.value && languageItem.value.giftList.length > 0) {
@@ -329,35 +338,46 @@ export default defineComponent({
           }
         })
     }
-    const sendTimer = (item: any, type = 'config') => {
-      if (props.editType === 'add') {
-        if (pageModalRef.value) {
-          if (type === 'cancel') {
-            pageModalRef.value.dialogVisible = false
-          } else {
-            pageModalRef.value.dialogVisible = false
-            emit('changePage', 'u3d', { ...item })
-          }
-        }
-      } else {
-        console.log(item)
+    const addData = () => {
+      console.log(1)
+    }
+    const editData = (item: any) => {
+      const data = {
+        moId: item.data.moId,
+        moldJson: JSON.stringify(languageList.value)
       }
-      // console.log(item)
-      // const data = {
-      //   moId: item.data.moId,
-      //   moldJson: JSON.stringify(languageList.value)
-      // }
-      // resourceFileOperation(data, 'update').then((res) => {
-      //   if (res.result === 0) {
-      //     successTip(res.msg)
-      //     if (pageModalRef.value) {
-      //       pageModalRef.value.dialogVisible = false
-      //       resetLanguageList()
-      //       emit('getData')
-      //       if (props.editType === 'add') emit('changePage', 'u3d')
-      //     }
-      //   } else errorTip(res.msg)
-      // })
+      resourceFileOperation(data, 'update').then((res) => {
+        if (res.result === 0) {
+          successTip(res.msg)
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+            resetLanguageList()
+            emit('getData')
+          }
+        } else errorTip(res.msg)
+      })
+    }
+    const sendTimer = (item: any, type = 'config') => {
+      validateParamsRules(
+        languageList.value,
+        languageList.value[0],
+        requiredField.value
+      )
+        .then(() => {
+          if (props.editType === 'add') {
+            if (pageModalRef.value) {
+              if (type === 'cancel') {
+                pageModalRef.value.dialogVisible = false
+              } else {
+                pageModalRef.value.dialogVisible = false
+                emit('changePage', 'u3d', { ...item })
+              }
+            }
+          } else {
+            editData(item)
+          }
+        })
+        .catch((err) => errorTip(err))
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()

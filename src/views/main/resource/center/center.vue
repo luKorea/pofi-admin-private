@@ -223,6 +223,7 @@ import relevanceComponent from './components/relevance.vue'
 import { resourceFileOperation } from '@/service/main/resource/center'
 import { getItemData } from '@/service/common-api'
 import { selectResourceTypeOperation } from '@/service/main/resource/center'
+import { mapImageToObject } from '@/utils/index'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -361,6 +362,9 @@ export default defineComponent({
         case 'property':
           hiddenPage()
           if (editType.value === 'add') {
+            console.log(row)
+            row.libraryName = row.title
+            row.unityType = +row.value
             propertyRef.value.handleEditData(row)
           } else {
             getItemData('resourceCenterItem', {
@@ -371,9 +375,18 @@ export default defineComponent({
                   ...otherInfo.value,
                   snId: row.snId,
                   open: row.open,
-                  areaIds: res.data.areaIds.toString()
+                  areaIds: res.data.areaIds.toString(),
+                  specialIcon: res.data.specialIcon
+                    ? res.data.specialIcon.split(',').map((i: any) => +i)
+                    : []
                 }
-                areaIds.value = res.data.areaIds
+                if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'
+                else if (res.data.unityType == 8)
+                  res.data['libraryName'] = '动画库'
+                else res.data['libraryName'] = '人偶库'
+                res.data['keyFunc'] = res.data.keyFunc
+                  .split(',')
+                  .map((i: any) => +i)
                 propertyRef.value.handleEditData(res.data)
               } else errorTip(res.msg)
             })
@@ -385,13 +398,19 @@ export default defineComponent({
           break
         case 'u3d':
           hiddenPage()
-          u3dRef.value && u3dRef.value.handleEditData(row)
-          // getItemData('u3dItem', params.value).then((res: any) => {
-          //   if (res.result === 0) {
-          //     editData.value = res.data
-          //     u3dRef.value && u3dRef.value.handleEditData(res.data)
-          //   } else errorTip(res.msg)
-          // })
+          if (editType.value === 'add') {
+            u3dRef.value && u3dRef.value.handleEditData(row)
+          } else {
+            getItemData('u3dItem', {
+              osType: 1,
+              moId: params.value.moId
+            }).then((res: any) => {
+              if (res.result === 0) {
+                editData.value = res.data
+                u3dRef.value && u3dRef.value.handleEditData(res.data)
+              } else errorTip(res.msg)
+            })
+          }
           break
         case 'resource':
           hiddenPage()
@@ -405,8 +424,34 @@ export default defineComponent({
               'get'
             ).then((res: any) => {
               if (res.result === 0) {
-                editData.value = res.data
-                resourceRef.value && resourceRef.value.handleEditData(row)
+                if (
+                  res.data &&
+                  res.data.moldList &&
+                  res.data.moldList.length > 0
+                ) {
+                  let result: any[] = []
+                  result = res?.data?.moldList.map((item: any) => {
+                    return {
+                      ...item,
+                      coverList: item.cover
+                        ? [mapImageToObject(item.cover)]
+                        : [],
+                      giftList: item.gift ? [mapImageToObject(item.gift)] : []
+                    }
+                  })
+                  // resourceRef.value.languageList = res.data.moldList
+                  resourceRef.value &&
+                    resourceRef.value.handleEditData({
+                      ...res.data,
+                      ...params.value
+                    }) // resourceRef.value.languageList = res.data.moldList
+                  resourceRef.value &&
+                    resourceRef.value.handleEditData({
+                      ...res.data,
+                      ...params.value
+                    })
+                } else
+                  resourceRef.value && resourceRef.value.handleEditData(row)
               } else errorTip(res.msg)
             })
           }

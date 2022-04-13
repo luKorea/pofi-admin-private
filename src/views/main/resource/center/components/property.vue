@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-12 19:17:14
+ * @LastEditTime: 2022-04-12 22:59:49
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -117,7 +117,7 @@
     <el-tooltip content="最多只能选择三个" placement="top">
       <el-divider>资源特色 </el-divider></el-tooltip
     >
-    <el-checkbox-group v-model="otherInfo.spList" :max="3">
+    <el-checkbox-group v-model="otherInfo.specialIcon" :max="3">
       <el-row>
         <div class="hg-flex hg-mb-3">
           <span class="tip-title">重点功能：</span>
@@ -170,10 +170,11 @@ import {
   useCountrySelect,
   usePageList
 } from '../hooks/use-page-list'
-import { defineComponent } from 'vue'
+import { defineComponent, watchEffect, onMounted, nextTick } from 'vue'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
-import { errorTip, infoTipBox } from '@/utils/tip-info'
+import { errorTip, infoTipBox, successTip } from '@/utils/tip-info'
+import { addProperty, updateProperty } from '@/service/main/resource/center'
 
 export default defineComponent({
   components: {
@@ -219,6 +220,9 @@ export default defineComponent({
         }
       }
     }
+    // if (props.editType === 'edit') {
+    //   areaIds.value = props.params.areaIds
+    // }
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
@@ -233,19 +237,68 @@ export default defineComponent({
           }
         })
     }
+    const addData = (item: any) => {
+      const data = {
+        ...item,
+        ...otherInfo.value,
+        keyFunc: item.keyFunc.toString(),
+        vipList: otherInfo.value.vipList
+          ? otherInfo.value.vipList.toString()
+          : [],
+        specialIcon: otherInfo.value.specialIcon
+          ? otherInfo.value.specialIcon.toString()
+          : [],
+        msId: item.msId.toString()
+      }
+      console.log(data)
+      addProperty(data).then((res: any) => {
+        if (res.result === 0) {
+          successTip('保存成功')
+          if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+          emit('changePage', 'resource', { ...item, moId: res.data })
+        } else errorTip(res.msg)
+      })
+    }
+    const editData = (item: any) => {
+      const data = {
+        ...item,
+        ...otherInfo.value,
+        keyFunc: item.keyFunc.toString(),
+        vipList: otherInfo.value.vipList
+          ? otherInfo.value.vipList.toString()
+          : [],
+        specialIcon: otherInfo.value.specialIcon
+          ? otherInfo.value.specialIcon.toString()
+          : [],
+        msId: item.msId.toString()
+      }
+      console.log(data)
+      updateProperty(data).then((res: any) => {
+        if (res.result === 0) {
+          successTip('保存成功')
+          // if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+        } else errorTip(res.msg)
+      })
+    }
     const sendData = (item: any, type = 'config') => {
-      if (props.editType === 'add') {
-        if (pageModalRef.value) {
-          if (type === 'cancel') {
-            pageModalRef.value.dialogVisible = false
+      const formRef = item.ref.formRef
+      const data = item.data
+      formRef?.validate((valid: any) => {
+        if (valid) {
+          if (props.editType === 'add') {
+            if (pageModalRef.value) {
+              if (type === 'cancel') {
+                pageModalRef.value.dialogVisible = false
+              } else {
+                addData(data)
+              }
+            }
           } else {
-            pageModalRef.value.dialogVisible = false
-            emit('changePage', 'resource', { ...item })
+            debugger
+            editData(item)
           }
         }
-      } else {
-        console.log(item)
-      }
+      })
     }
     const openStep = (step: any) => {
       if (props.editType === 'add' && !props.params.moId) {

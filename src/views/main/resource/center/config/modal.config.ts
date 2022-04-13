@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 16:47:52
+ * @LastEditTime: 2022-04-12 21:57:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -106,7 +106,7 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'u3dType',
+      field: 'unityType',
       type: 'select',
       label: 'U3D类型',
       placeholder: '请选择U3D类型',
@@ -171,7 +171,7 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'funcList',
+      field: 'keyFunc',
       type: 'checkbox',
       label: '特色功能',
       placeholder: '请选择特色功能',

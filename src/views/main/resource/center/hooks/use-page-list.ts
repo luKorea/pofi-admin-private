@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 11:22:50
+ * @LastEditTime: 2022-04-12 23:02:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
@@ -25,6 +25,68 @@ import { getCommonSelectList } from '@/service/common'
 import { errorTip } from '@/utils/tip-info'
 import { usePageLanguage } from '@/hooks/use-page-language'
 
+// 下拉数据
+export function usePageList() {
+  const resourceCenterList = ref<any>()
+  const countryList = ref<any>()
+  const seriesList = ref<any>()
+  const goodsList = ref<any>()
+  const getCity = () => {
+    getCommonSelectList('country').then((res) => {
+      if (res.result === 0) {
+        countryList.value = [
+          {
+            title: '全部',
+            value: -1
+          },
+          ...res.data.rows.map((item: any) => ({
+            title: item.name,
+            value: item.id
+          }))
+        ]
+      } else errorTip(res.msg)
+    })
+  }
+  const getResource = () => {
+    getCommonSelectList('resourceCenterType').then((res) => {
+      if (res.result === 0) {
+        resourceCenterList.value = res.data.map((item: any) => {
+          return {
+            title: item.dec,
+            value: item.type
+          }
+        })
+      } else errorTip(res.msg)
+    })
+  }
+  const getSeries = () => {
+    getCommonSelectList('seriesType').then((res) => {
+      if (res.result === 0) {
+        seriesList.value = res.data
+      } else errorTip(res.msg)
+    })
+  }
+  const getGoods = () => {
+    getCommonSelectList('goodsType').then((res) => {
+      if (res.result === 0) {
+        goodsList.value = res.data.map((item: any) => {
+          return {
+            title: item.name,
+            value: item.snId
+          }
+        })
+      } else errorTip(res.msg)
+    })
+  }
+  Promise.allSettled([getCity(), getGoods(), getResource(), getSeries()])
+  return {
+    resourceCenterList,
+    countryList,
+    seriesList,
+    goodsList
+  }
+}
+
 // 区分新增，编辑模态框展示，编辑时显示不同模态框
 export function useMapDifferentModal() {
   const modalType = ref<any>([
@@ -44,14 +106,14 @@ export function useMapPropertyData() {
   const propertyModalConfig = computed(() => {
     modalConfig.formItems.map((item: any) => {
       if (item.field === 'moType') item.options = resourceTypeList
-      if (item.field === 'u3dType')
+      if (item.field === 'unityType')
         item!.options = unityModalList.filter((i: any) => i.value !== undefined)
       if (item.field === 'device') item!.options = deviceLevelList
       if (item.field === 'resourceType')
         item!.options = resourceCenterList.value
       if (item.field === 'resourceFileType') item!.options = resourceFileList
-      if (item.field === 'funcList') item!.options = resourceFunction
-      if (item.field === 'spList') item!.options = resourceFeature
+      if (item.field === 'keyFunc') item!.options = resourceFunction
+      // if (item.field === 'spList') item!.options = resourceFeature
       if (item.field === 'open') item!.options = resourceConditionList
       if (item.field === 'areaIds') item!.options = countryList.value
       if (item.field === 'msId') item!.options = seriesList.value
@@ -121,67 +183,11 @@ export function useStoreName() {
   })
   return [storeTypeInfo, operationName]
 }
-
-// 下拉数据
-export function usePageList() {
-  const resourceCenterList = ref<any>()
-  const countryList = ref<any>([
-    {
-      title: '全部',
-      value: -1
-    }
-  ])
-  const seriesList = ref<any>()
-  const goodsList = ref<any>()
-  getCommonSelectList('resourceCenterType').then((res) => {
-    if (res.result === 0) {
-      resourceCenterList.value = res.data.map((item: any) => {
-        return {
-          title: item.dec,
-          value: item.type
-        }
-      })
-    } else errorTip(res.msg)
-  })
-  getCommonSelectList('country').then((res) => {
-    if (res.result === 0) {
-      countryList.value.push(
-        ...res.data.rows.map((item: any) => ({
-          title: item.name,
-          value: item.id
-        }))
-      )
-    } else errorTip(res.msg)
-  })
-
-  getCommonSelectList('seriesType').then((res) => {
-    if (res.result === 0) {
-      seriesList.value = res.data
-    } else errorTip(res.msg)
-  })
-  getCommonSelectList('goodsType').then((res) => {
-    if (res.result === 0) {
-      goodsList.value = res.data.map((item: any) => {
-        return {
-          title: item.name,
-          value: item.snId
-        }
-      })
-    } else errorTip(res.msg)
-  })
-  return {
-    resourceCenterList,
-    countryList,
-    seriesList,
-    goodsList
-  }
-}
-
 // 国家下拉
 export function useCountrySelect() {
   const { countryList } = usePageList()
   const otherInfo = ref<any>({
-    spList: [], // 资源特色
+    specialIcon: [], // 资源特色
     vipList: [] // 功能专属使用
   })
   const areaIds = ref<any>([])
@@ -208,15 +214,20 @@ export function useCountrySelect() {
   }
   // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
   watchEffect(() => {
-    if (areaIds.value.length === 0) {
+    if (areaIds.value.length === 0 && countryList.value) {
       const region: any[] = []
-      countryList.value.forEach((item: any) => {
-        region.push(item.id)
-      })
+      countryList.value
+        .filter((i: any) => i.value !== -1)
+        .forEach((item: any) => {
+          region.push(item.value)
+        })
       otherInfo.value = {
         ...otherInfo.value,
         areaIds: region.toString()
       }
+    }
+    if (otherInfo.value.areaIds) {
+      areaIds.value = otherInfo.value.areaIds.split(',').map((i: any) => +i)
     }
   })
   return [otherInfo, areaIds, handleChangeCountry]
