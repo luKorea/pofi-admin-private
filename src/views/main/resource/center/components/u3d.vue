@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-13 16:18:53
+ * @LastEditTime: 2022-04-13 18:53:59
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -302,7 +302,7 @@ export default defineComponent({
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-          emit('changePage', 'relevance', { ...item })
+          emit('changePage', 'relevance', { moId: props.params.moId })
         } else errorTip(res.msg)
       })
     }

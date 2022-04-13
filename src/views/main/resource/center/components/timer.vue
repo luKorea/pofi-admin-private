@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-13 16:13:08
+ * @LastEditTime: 2022-04-13 19:02:01
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -98,7 +98,19 @@ export default defineComponent({
             }
           }
           if (props.editType === 'add') {
-            console.log('其它操作')
+            updateCenterTimer({
+              moId: props.params.moId,
+              state: data.state,
+              onlineTime: data.onlineTime
+            }).then((res) => {
+              if (res.result === 0) {
+                successTip(res.msg)
+                if (pageModalRef.value) {
+                  pageModalRef.value.dialogVisible = false
+                  emit('getData')
+                }
+              } else errorTip(res.msg)
+            })
           } else {
             infoTipBox({
               title: '更新时间状态',
@@ -113,8 +125,8 @@ export default defineComponent({
                   successTip(res.msg)
                   // emit('getData')
                   if (pageModalRef.value) {
-                    // pageModalRef.value.dialogVisible = false
-                    // emit('getData')
+                    pageModalRef.value.dialogVisible = false
+                    emit('getData')
                   }
                 } else errorTip(res.msg)
               })

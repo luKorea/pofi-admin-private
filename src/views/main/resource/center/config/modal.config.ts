@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 21:57:44
+ * @LastEditTime: 2022-04-13 18:27:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -172,10 +172,13 @@ export const modalConfig: IForm = {
     },
     {
       field: 'keyFunc',
-      type: 'checkbox',
+      type: 'select',
       label: '特色功能',
       placeholder: '请选择特色功能',
       options: [],
+      otherOptions: {
+        multiple: true
+      },
       rules: [
         {
           required: true,

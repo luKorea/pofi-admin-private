@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-13 16:56:29
+ * @LastEditTime: 2022-04-13 19:02:56
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -78,14 +78,15 @@
         >
           <div class="item-flex">
             <span class="item-title">功能分类</span>
-            <el-checkbox-group v-model="otherInfo.vipInt">
-              <el-checkbox
+            <el-select v-model="otherInfo.vipInt" multiple style="width: 100%">
+              <el-option
                 v-for="item in functionExclusiveUseConditionsList"
                 :key="item.value"
-                :label="item.value"
-                >{{ item.title }}</el-checkbox
+                :label="item.title"
+                :value="item.value"
+                >{{ item.title }}</el-option
               >
-            </el-checkbox-group>
+            </el-select>
           </div>
         </el-col>
       </el-row>
@@ -244,12 +245,18 @@ export default defineComponent({
     const addData = (item: any) => {
       const { title } = props.params
       const value = otherInfo.value
+      let vipInt = 0
+      if (value.vipInt.length > 0) {
+        value.vipInt.forEach((item: any) => {
+          vipInt += parseInt(item)
+        })
+      }
       const data = {
         ...item,
         ...value,
         library: title === '人偶库' ? 1 : title === 'Pose库' ? 2 : 3,
         keyFunc: item.keyFunc.toString(),
-        vipInt: value.vipInt ? value.vipInt.toString() : [],
+        vipInt,
         specialIcon: value.specialIcon ? value.specialIcon.toString() : [],
         msId: item.msId.toString(),
         state: 5
@@ -258,28 +265,35 @@ export default defineComponent({
         if (res.result === 0) {
           successTip('保存成功')
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-          emit('changePage', 'resource', { ...item, moId: res.data })
+          emit('changePage', 'resource', { moId: res.data })
         } else errorTip(res.msg)
       })
     }
     const editData = (item: any) => {
-      debugger
-      console.log(item)
       const value = otherInfo.value
+      let vipInt = 0
+      if (value.vipInt.length > 0) {
+        value.vipInt.forEach((item: any) => {
+          vipInt += parseInt(item)
+        })
+      }
       const data = {
         ...props.params,
         updatedTime: undefined,
         createdTime: undefined,
         ...otherInfo.value,
         keyFunc: item.keyFunc.toString(),
-        vipInt: value.vipInt ? value.vipInt.toString() : [],
+        vipInt,
         specialIcon: value.specialIcon ? value.specialIcon.toString() : [],
         msId: item.msId.toString()
       }
       updateProperty(data).then((res: any) => {
         if (res.result === 0) {
           successTip('保存成功')
-          // if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+          if (pageModalRef.value) {
+            pageModalRef.value.dialogVisible = false
+            emit('getData')
+          }
         } else errorTip(res.msg)
       })
     }

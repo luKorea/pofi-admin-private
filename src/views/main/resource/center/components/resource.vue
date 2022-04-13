@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-13 16:17:58
+ * @LastEditTime: 2022-04-13 19:08:24
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -124,6 +124,8 @@
                 v-model="languageItem.summary"
                 placeholder="最多三行文字"
                 clearable
+                type="textarea"
+                :rows="3"
               ></el-input>
             </div>
           </el-col>
@@ -347,8 +349,9 @@ export default defineComponent({
       resourceFileOperation(data, 'update').then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
+          resetLanguageList()
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-          emit('changePage', 'u3d', { ...item })
+          emit('changePage', 'u3d', { moId: props.params.moId })
         } else errorTip(res.msg)
       })
     }
@@ -363,9 +366,9 @@ export default defineComponent({
           successTip(res.msg)
           if (pageModalRef.value) {
             successTip(res.msg)
-            // pageModalRef.value.dialogVisible = false
-            // resetLanguageList()
-            // emit('getData')
+            pageModalRef.value.dialogVisible = false
+            resetLanguageList()
+            emit('getData')
           }
         } else errorTip(res.msg)
       })

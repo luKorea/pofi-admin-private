@@ -398,7 +398,11 @@ export default defineComponent({
                   specialIcon: res.data.specialIcon
                     ? res.data.specialIcon.split(',').map((i: any) => +i)
                     : [],
-                  editType: 'edit'
+                  editType: 'edit',
+                  vipInt:
+                    res.data.vipList && res.data.vipList.length > 0
+                      ? res.data.vipList.map((i: any) => +i)
+                      : []
                 }
                 console.log(propertyRef.value.otherInfo, 'other')
                 if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'

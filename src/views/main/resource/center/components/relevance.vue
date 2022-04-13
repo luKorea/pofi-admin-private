@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-13 16:18:24
+ * @LastEditTime: 2022-04-13 19:02:36
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -158,7 +158,7 @@ export default defineComponent({
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-          emit('changePage', 'timer', { ...item })
+          emit('changePage', 'timer', { moId: props.params.moId })
         } else errorTip(res.msg)
       })
     }
@@ -171,8 +171,8 @@ export default defineComponent({
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) {
-            // pageModalRef.value.dialogVisible = false
-            // emit('getData')
+            pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         } else errorTip(res.msg)
       })
