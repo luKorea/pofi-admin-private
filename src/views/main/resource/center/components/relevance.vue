@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-13 13:27:16
+ * @LastEditTime: 2022-04-13 16:18:24
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -152,6 +152,7 @@ export default defineComponent({
     const addData = (item: any) => {
       relevanceOperation({
         ...item.data,
+        moId: props.params.moId,
         cidList: item.data.cidList.flat()
       }).then((res) => {
         if (res.result === 0) {
@@ -164,13 +165,14 @@ export default defineComponent({
     const editData = (item: any) => {
       relevanceOperation({
         ...item.data,
+        moId: props.params.moId,
         cidList: item.data.cidList.flat()
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
-            emit('getData')
+            // pageModalRef.value.dialogVisible = false
+            // emit('getData')
           }
         } else errorTip(res.msg)
       })

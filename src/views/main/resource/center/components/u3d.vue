@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-13 15:05:12
+ * @LastEditTime: 2022-04-13 16:18:53
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -294,7 +294,7 @@ export default defineComponent({
     }
     const addData = (item: any) => {
       const data = {
-        moId: item.data.moId,
+        moId: props.params.moId,
         ...otherInfo.value.iosChose[0],
         ...otherInfo.value.androidChose[0]
       }
@@ -308,7 +308,7 @@ export default defineComponent({
     }
     const editData = (item: any) => {
       const data = {
-        moId: item.data.moId,
+        moId: props.params.moId,
         ...otherInfo.value.iosChose[0],
         ...otherInfo.value.androidChose[0]
       }
@@ -319,7 +319,7 @@ export default defineComponent({
             successTip(res.msg)
             // pageModalRef.value.dialogVisible = false
             // resetLanguageList()
-            emit('getData')
+            // emit('getData')
           }
         } else errorTip(res.msg)
       })

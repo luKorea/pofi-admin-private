@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-13 14:13:36
+ * @LastEditTime: 2022-04-13 16:56:29
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -254,7 +254,6 @@ export default defineComponent({
         msId: item.msId.toString(),
         state: 5
       }
-      console.log(data)
       addProperty(data).then((res: any) => {
         if (res.result === 0) {
           successTip('保存成功')
@@ -264,9 +263,13 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
+      debugger
+      console.log(item)
       const value = otherInfo.value
       const data = {
-        ...item,
+        ...props.params,
+        updatedTime: undefined,
+        createdTime: undefined,
         ...otherInfo.value,
         keyFunc: item.keyFunc.toString(),
         vipInt: value.vipInt ? value.vipInt.toString() : [],
@@ -294,8 +297,7 @@ export default defineComponent({
               }
             }
           } else {
-            editData(item)
-            debugger
+            editData(data)
           }
         }
       })

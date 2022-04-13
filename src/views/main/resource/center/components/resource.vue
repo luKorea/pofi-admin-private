@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-13 15:54:28
+ * @LastEditTime: 2022-04-13 16:17:58
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -341,7 +341,7 @@ export default defineComponent({
     }
     const addData = (item: any) => {
       const data = {
-        moId: item.data.moId,
+        moId: props.params.moId,
         moldJson: JSON.stringify(languageList.value)
       }
       resourceFileOperation(data, 'update').then((res) => {
@@ -365,7 +365,7 @@ export default defineComponent({
             successTip(res.msg)
             // pageModalRef.value.dialogVisible = false
             // resetLanguageList()
-            emit('getData')
+            // emit('getData')
           }
         } else errorTip(res.msg)
       })

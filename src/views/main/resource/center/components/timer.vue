@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-12 19:26:25
+ * @LastEditTime: 2022-04-13 16:13:08
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -102,20 +102,20 @@ export default defineComponent({
           } else {
             infoTipBox({
               title: '更新时间状态',
-              message: `你确定更新模型 ${data.pname} 的时间状态吗`
+              message: `你确定更新时间状态吗`
             }).then(() => {
               updateCenterTimer({
-                moId: data.moId,
+                moId: props.params.moId,
                 state: data.state,
                 onlineTime: data.onlineTime
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
-                  emit('getData')
-                  // if (pageModalRef.value) {
-                  //   pageModalRef.value.dialogVisible = false
-                  //   emit('getData')
-                  // }
+                  // emit('getData')
+                  if (pageModalRef.value) {
+                    // pageModalRef.value.dialogVisible = false
+                    // emit('getData')
+                  }
                 } else errorTip(res.msg)
               })
             })
