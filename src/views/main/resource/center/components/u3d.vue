@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-14 14:31:55
+ * @LastEditTime: 2022-04-14 16:28:37
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -103,8 +103,17 @@
     </page-modal>
 
     <page-dialog ref="fileRef" title="模型文件版本管理" showWidth="60%">
-      <el-table :data="fileData" @selection-change="handleSelectChange">
-        <el-table-column type="selection" align="center"> </el-table-column>
+      <el-table :data="fileData">
+        <el-table-column align="center" label="选择文件">
+          <template v-slot="scope">
+            <el-radio
+              v-model="radio"
+              :label="scope.$index"
+              @change="handleChange(scope.row)"
+              >&nbsp;</el-radio
+            >
+          </template>
+        </el-table-column>
         <el-table-column
           prop="version"
           align="center"
@@ -231,14 +240,15 @@ export default defineComponent({
         androidList: [],
         androidVersion: '',
         iosVersion: '',
-        iosChose: [],
-        androidChose: [],
+        iosChose: {},
+        androidChose: {},
         type: 'ios'
       }
       fileInfo.value = {}
     }
     const fileInfo = ref<any>()
     const fileData = ref<any>()
+    const radio = ref<any>()
     const getOtherData = (data: any, type: number) => {
       if (type === 1) {
         fileInfo.value = {
@@ -300,20 +310,18 @@ export default defineComponent({
       })
     }
     // 表格操作
-    const handleSelectChange = (item: any) => {
+    const handleChange = (item: any) => {
       if (otherInfo.value.type === 'ios') {
         otherInfo.value.iosChose = item
       } else otherInfo.value.androidChose = item
     }
     const closeDialog = () => {
       let { type, iosChose, androidChose } = otherInfo.value
-      if (type === 'ios' && iosChose.length > 0) {
-        const item = iosChose[0]
-        mapFileInfo(item, 1)
+      if (type === 'ios') {
+        mapFileInfo(iosChose, 1)
         fileRef.value.dialogVisible = false
-      } else if (type === 'android' && androidChose.length > 0) {
-        const item = androidChose[0]
-        mapFileInfo(item, 0)
+      } else if (type === 'android') {
+        mapFileInfo(androidChose, 0)
         fileRef.value.dialogVisible = false
       } else errorTip('请选择文件')
     }
@@ -393,7 +401,9 @@ export default defineComponent({
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
-        message: '是否保存当前编辑内容？'
+        message: '是否保存当前编辑内容？',
+        cancelButtonText: '丢弃',
+        confirmButtonText: '保存'
       })
         .then(() => {
           sendTimer(item, 'cancel')
@@ -402,7 +412,6 @@ export default defineComponent({
           if (pageModalRef.value) {
             resetData()
             pageModalRef.value.dialogVisible = false
-            emit('getData')
           }
         })
     }
@@ -411,14 +420,14 @@ export default defineComponent({
         moId: props.params.moId,
         iosSourceUrl: otherInfo.value.iosSourceUrl,
         androidSourceUrl: otherInfo.value.androidSourceUrl,
-        ...otherInfo.value.iosChose[0],
-        ...otherInfo.value.androidChose[0],
+        ...otherInfo.value.iosChose,
+        ...otherInfo.value.androidChose,
         ...fileInfo.value
       }
       resourceU3dOperation(data, 'add').then((res) => {
         if (res.result === 0) {
-          successTip(res.msg)
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+          resetData()
           emit('changePage', 'relevance', { moId: props.params.moId })
         } else errorTip(res.msg)
       })
@@ -428,16 +437,15 @@ export default defineComponent({
         moId: props.params.moId,
         iosSourceUrl: otherInfo.value.iosSourceUrl,
         androidSourceUrl: otherInfo.value.androidSourceUrl,
-        ...otherInfo.value.iosChose[0],
-        ...otherInfo.value.androidChose[0],
+        ...otherInfo.value.iosChose,
+        ...otherInfo.value.androidChose,
         ...fileInfo.value
       }
       resourceU3dOperation(data, 'update').then((res) => {
         if (res.result === 0) {
-          successTip(res.msg)
           if (pageModalRef.value) {
-            successTip(res.msg)
             pageModalRef.value.dialogVisible = false
+            resetData()
             emit('getData')
           }
         } else errorTip(res.msg)
@@ -464,8 +472,8 @@ export default defineComponent({
           moId: props.params.moId,
           iosSourceUrl: otherInfo.value.iosSourceUrl,
           androidSourceUrl: otherInfo.value.androidSourceUrl,
-          ...otherInfo.value.iosChose[0],
-          ...otherInfo.value.androidChose[0],
+          ...otherInfo.value.iosChose,
+          ...otherInfo.value.androidChose,
           ...fileInfo.value
         }
         if (props.editType === 'add') {
@@ -509,12 +517,13 @@ export default defineComponent({
       fileRef,
       getSourceData,
       fileData,
-      handleSelectChange,
+      handleChange,
       down,
       handleDelete,
       handleForcedUpdate2,
       handleForcedUpdate,
-      closeDialog
+      closeDialog,
+      radio
     }
   }
 })

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-14 14:35:54
+ * @LastEditTime: 2022-04-14 16:29:11
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -225,7 +225,7 @@ import hyUpload from '@/base-ui/upload'
 import { resourceFileOperation } from '@/service/main/resource/center'
 import { successTip, errorTip, infoTipBox } from '@/utils/tip-info'
 import stepComponent from './step.vue'
-import { validateParamsRules } from '../../../../../utils/index'
+import { validateParamsRules } from '@/utils/index'
 
 export default defineComponent({
   emits: ['getData', 'changePage', 'openStep'],
@@ -267,7 +267,8 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          gift: undefined
+          gift: undefined,
+          giftList: []
         }
       }
       if (languageItem.value && languageItem.value.coverList.length > 0) {
@@ -275,7 +276,8 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          gift: undefined
+          cover: undefined,
+          coverList: []
         }
       }
       if (languageItem.value && languageItem.value.b0List.length > 0) {
@@ -286,7 +288,8 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          b0: undefined
+          b0: undefined,
+          b0List: []
         }
       }
       if (languageItem.value && languageItem.value.c0List.length > 0) {
@@ -297,7 +300,8 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          c0: undefined
+          c0: undefined,
+          c0List: []
         }
       }
       if (languageItem.value && languageItem.value.d0List.length > 0) {
@@ -308,7 +312,8 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          d0: undefined
+          d0: undefined,
+          d0List: []
         }
       }
     })
@@ -325,7 +330,7 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
-            emit('getData')
+            // emit('getData')
           }
         })
     }
@@ -336,7 +341,6 @@ export default defineComponent({
       }
       resourceFileOperation(data, 'update').then((res) => {
         if (res.result === 0) {
-          successTip(res.msg)
           resetLanguageList()
           if (pageModalRef.value) pageModalRef.value.dialogVisible = false
           emit('changePage', 'u3d', { moId: props.params.moId })
@@ -353,9 +357,8 @@ export default defineComponent({
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) {
-            successTip(res.msg)
-            pageModalRef.value.dialogVisible = false
             resetLanguageList()
+            pageModalRef.value.dialogVisible = false
             emit('getData')
           }
         } else errorTip(res.msg)

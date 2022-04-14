@@ -463,23 +463,23 @@ export default defineComponent({
                     let c0List = []
                     let d0List = []
                     b0List =
-                      item.b0 &&
-                      item.b0.length > 0 &&
-                      item.b0.map((i: any) => {
-                        return mapImageToObject(i)
-                      })
+                      item.b0 && item.b0.length > 0
+                        ? item.b0.map((i: any) => {
+                            return mapImageToObject(i)
+                          })
+                        : []
                     c0List =
-                      item.c0 &&
-                      item.c0.length > 0 &&
-                      item.c0.map((i: any) => {
-                        return mapImageToObject(i)
-                      })
+                      item.c0 && item.c0.length > 0
+                        ? item.c0.map((i: any) => {
+                            return mapImageToObject(i)
+                          })
+                        : []
                     d0List =
-                      item.d0 &&
-                      item.d0.length > 0 &&
-                      item.d0.map((i: any) => {
-                        return mapImageToObject(i)
-                      })
+                      item.d0 && item.d0.length > 0
+                        ? item.d0.map((i: any) => {
+                            return mapImageToObject(i)
+                          })
+                        : []
                     console.log(b0List)
                     return {
                       ...item,

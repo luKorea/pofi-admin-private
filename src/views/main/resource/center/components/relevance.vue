@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-14 14:38:54
+ * @LastEditTime: 2022-04-14 16:50:51
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -151,7 +151,6 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
-            emit('getData')
           }
         })
     }
@@ -184,49 +183,60 @@ export default defineComponent({
       })
     }
     const sendTimer = (item: any, type = 'config') => {
-      if (props.editType === 'add') {
-        if (pageModalRef.value) {
-          if (type === 'cancel') {
-            pageModalRef.value.dialogVisible = false
+      const formRef = item.ref.formRef
+      formRef?.validate((valid: any) => {
+        if (valid) {
+          if (props.editType === 'add') {
+            if (pageModalRef.value) {
+              if (type === 'cancel') {
+                pageModalRef.value.dialogVisible = false
+              } else {
+                addData(item)
+              }
+            }
           } else {
-            addData(item)
+            editData(item)
           }
         }
-      } else {
-        editData(item)
-      }
+      })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     const openStep = (step: any, item: any) => {
       if (step.save) {
-        if (props.editType === 'add') {
-          relevanceOperation({
-            ...item.data,
-            moId: props.params.moId,
-            cidList: item.data.cidList.flat()
-          }).then((res) => {
-            if (res.result === 0) {
-              successTip(res.msg)
-              if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-              emit('openStep', step.step, props.params)
-            } else errorTip(res.msg)
-          })
-        } else {
-          relevanceOperation({
-            ...item.data,
-            moId: props.params.moId,
-            cidList: item.data.cidList.flat()
-          }).then((res) => {
-            if (res.result === 0) {
-              successTip(res.msg)
-              if (pageModalRef.value) {
-                pageModalRef.value.dialogVisible = false
-                emit('openStep', step.step, props.params)
-              }
-            } else errorTip(res.msg)
-          })
-        }
+        const formRef = item.ref.formRef
+        formRef?.validate((valid: any) => {
+          if (valid) {
+            if (props.editType === 'add') {
+              relevanceOperation({
+                ...item.data,
+                moId: props.params.moId,
+                cidList: item.data.cidList.flat()
+              }).then((res) => {
+                if (res.result === 0) {
+                  successTip(res.msg)
+                  if (pageModalRef.value)
+                    pageModalRef.value.dialogVisible = false
+                  emit('openStep', step.step, props.params)
+                } else errorTip(res.msg)
+              })
+            } else {
+              relevanceOperation({
+                ...item.data,
+                moId: props.params.moId,
+                cidList: item.data.cidList.flat()
+              }).then((res) => {
+                if (res.result === 0) {
+                  successTip(res.msg)
+                  if (pageModalRef.value) {
+                    pageModalRef.value.dialogVisible = false
+                    emit('openStep', step.step, props.params)
+                  }
+                } else errorTip(res.msg)
+              })
+            }
+          }
+        })
       } else emit('openStep', step.step, props.params)
     }
     return {
