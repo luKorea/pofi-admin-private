@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-14 16:28:37
+ * @LastEditTime: 2022-04-14 18:28:15
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -412,6 +412,7 @@ export default defineComponent({
           if (pageModalRef.value) {
             resetData()
             pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         })
     }

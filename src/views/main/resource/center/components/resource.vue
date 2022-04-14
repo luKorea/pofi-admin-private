@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-14 16:29:11
+ * @LastEditTime: 2022-04-14 18:27:35
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -264,45 +264,21 @@ export default defineComponent({
     watchEffect(() => {
       if (languageItem.value && languageItem.value.giftList.length > 0) {
         languageItem.value.gift = languageItem.value.giftList[0].url
-      } else {
-        languageItem.value = {
-          ...languageItem.value,
-          gift: undefined,
-          giftList: []
-        }
       }
       if (languageItem.value && languageItem.value.coverList.length > 0) {
         languageItem.value.cover = languageItem.value.coverList[0].url
-      } else {
-        languageItem.value = {
-          ...languageItem.value,
-          cover: undefined,
-          coverList: []
-        }
       }
       if (languageItem.value && languageItem.value.b0List.length > 0) {
         const list = languageItem.value.b0List
         languageItem.value.b0 = list.map((i: any) => {
           return i.url
         })
-      } else {
-        languageItem.value = {
-          ...languageItem.value,
-          b0: undefined,
-          b0List: []
-        }
       }
       if (languageItem.value && languageItem.value.c0List.length > 0) {
         const list = languageItem.value.c0List
         languageItem.value.c0 = list.map((i: any) => {
           return i.url
         })
-      } else {
-        languageItem.value = {
-          ...languageItem.value,
-          c0: undefined,
-          c0List: []
-        }
       }
       if (languageItem.value && languageItem.value.d0List.length > 0) {
         const list = languageItem.value.d0List
@@ -312,8 +288,16 @@ export default defineComponent({
       } else {
         languageItem.value = {
           ...languageItem.value,
-          d0: undefined,
-          d0List: []
+          gift: undefined,
+          giftList: [],
+          coverList: [],
+          cover: undefined,
+          d0List: [],
+          d0: [],
+          c0List: [],
+          c0: [],
+          b0: [],
+          b0List: []
         }
       }
     })
@@ -330,7 +314,7 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
-            // emit('getData')
+            emit('getData')
           }
         })
     }

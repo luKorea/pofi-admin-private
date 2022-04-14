@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-14 16:29:01
+ * @LastEditTime: 2022-04-14 18:28:05
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -88,6 +88,7 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         })
     }

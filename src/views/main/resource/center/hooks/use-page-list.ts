@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-14 10:25:38
+ * @LastEditTime: 2022-04-14 18:24:06
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
@@ -307,6 +307,7 @@ export function useSetLanguage() {
     } else resetLanguageList()
   })
   watchEffect(() => {
+    mapIconState(languageList.value, requiredField.value)
     if (languageItem.value) {
       mapItemIcon(requiredField.value, languageItem.value)
     }

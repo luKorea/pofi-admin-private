@@ -197,7 +197,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -209,7 +209,8 @@ import {
   usePageFunction,
   useMapFormConfigData,
   useMapDifferentModal,
-  useCountrySelect
+  useCountrySelect,
+  useSetLanguage
 } from './hooks/use-page-list'
 import { infoTipBox, warnTip, successTip, errorTip } from '@/utils/tip-info'
 import processComponent from './components/process.vue'
@@ -237,6 +238,7 @@ export default defineComponent({
     // 控制步骤
     const dataStep = ref<number>(0)
     const editType = ref<any>('add')
+    const { requiredField, mapIconState, languageId } = useSetLanguage()
     // 编辑模态框
     const [modalType] = useMapDifferentModal()
     const [processRef, openProcessDialog, mapTitle] = usePageFunction()
@@ -410,7 +412,8 @@ export default defineComponent({
                   vipInt:
                     res.data.vipList && res.data.vipList.length > 0
                       ? res.data.vipList.map((i: any) => +i)
-                      : []
+                      : [],
+                  sale: res.data.sale
                 }
                 console.log(propertyRef.value.otherInfo, 'other')
                 if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'
@@ -493,8 +496,8 @@ export default defineComponent({
                     }
                   })
                   resourceRef.value.languageList = result
-                  resourceRef.value &&
-                    resourceRef.value.handleEditData(res.data)
+                  languageId.value = result[0].lid
+                  resourceRef.value && resourceRef.value.handleEditData(result)
                 } else {
                   if (resourceRef.value) {
                     resourceRef.value.resetLanguageList()
