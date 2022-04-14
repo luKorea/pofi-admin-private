@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-13 19:02:56
+ * @LastEditTime: 2022-04-14 14:42:49
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -231,7 +231,9 @@ export default defineComponent({
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
-        message: '是否保存当前编辑内容？'
+        message: '是否保存当前编辑内容？',
+        cancelButtonText: '丢弃',
+        confirmButtonText: '保存'
       })
         .then(() => {
           sendData(item, 'cancel')
@@ -258,7 +260,7 @@ export default defineComponent({
         keyFunc: item.keyFunc.toString(),
         vipInt,
         specialIcon: value.specialIcon ? value.specialIcon.toString() : [],
-        msId: item.msId.toString(),
+        msId: item.msId.at(-1),
         state: 5
       }
       addProperty(data).then((res: any) => {
@@ -285,7 +287,7 @@ export default defineComponent({
         keyFunc: item.keyFunc.toString(),
         vipInt,
         specialIcon: value.specialIcon ? value.specialIcon.toString() : [],
-        msId: item.msId.toString()
+        msId: item.msId.at(-1)
       }
       updateProperty(data).then((res: any) => {
         if (res.result === 0) {
@@ -316,10 +318,76 @@ export default defineComponent({
         }
       })
     }
-    const openStep = (step: any) => {
+    const openStep = (step: any, item: any) => {
       if (props.editType === 'add' && !props.params.moId) {
         errorTip('未完成资源创建，无法跳转步骤')
-      } else emit('openStep', step, props.params)
+      } else if (step.save) {
+        const formRef = item.ref.formRef
+        const info = item.data
+        formRef?.validate((valid: any) => {
+          if (valid) {
+            if (props.editType === 'add') {
+              const { title } = props.params
+              const value = otherInfo.value
+              let vipInt = 0
+              if (value.vipInt.length > 0) {
+                value.vipInt.forEach((item: any) => {
+                  vipInt += parseInt(item)
+                })
+              }
+              const data = {
+                ...item,
+                ...value,
+                library: title === '人偶库' ? 1 : title === 'Pose库' ? 2 : 3,
+                keyFunc: info.keyFunc.toString(),
+                vipInt,
+                specialIcon: value.specialIcon
+                  ? value.specialIcon.toString()
+                  : [],
+                msId: info.msId.at(-1),
+                state: 5
+              }
+              addProperty(data).then((res: any) => {
+                if (res.result === 0) {
+                  successTip('保存成功')
+                  if (pageModalRef.value)
+                    pageModalRef.value.dialogVisible = false
+                  emit('openStep', step.step, props.params)
+                } else errorTip(res.msg)
+              })
+            } else {
+              const value = otherInfo.value
+              let vipInt = 0
+              if (value.vipInt.length > 0) {
+                value.vipInt.forEach((item: any) => {
+                  vipInt += parseInt(item)
+                })
+              }
+              const data = {
+                ...props.params,
+                updatedTime: undefined,
+                createdTime: undefined,
+                ...otherInfo.value,
+                keyFunc: info.keyFunc.toString(),
+                vipInt,
+                specialIcon: value.specialIcon
+                  ? value.specialIcon.toString()
+                  : [],
+                msId: info.msId.at(-1)
+              }
+              updateProperty(data).then((res: any) => {
+                if (res.result === 0) {
+                  successTip('保存成功')
+                  if (pageModalRef.value) {
+                    pageModalRef.value.dialogVisible = false
+                    emit('openStep', step.step, props.params)
+                  }
+                } else errorTip(res.msg)
+              })
+            }
+          }
+        })
+      } else emit('openStep', step.step, props.params)
     }
     return {
       openStep,

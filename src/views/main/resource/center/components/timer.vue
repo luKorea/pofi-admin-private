@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-13 19:02:01
+ * @LastEditTime: 2022-04-14 14:28:16
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -15,8 +15,11 @@
     :showConfigBtn="false"
     :showCancelBtn="false"
   >
-    <template #titleWrapper>
-      <step-component :active="4" @openStep="openStep"></step-component>
+    <template #titleWrapper="{ row }">
+      <step-component
+        :active="4"
+        @openStep="openStep($event, row)"
+      ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
       <!-- <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
@@ -34,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, nextTick } from 'vue'
 import { timerModalConfig } from './config/timer.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { infoTipBox, successTip } from '@/utils/tip-info'
@@ -75,13 +78,16 @@ export default defineComponent({
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
-        message: '是否保存当前编辑内容？'
+        message: '是否保存当前编辑内容？',
+        cancelButtonText: '丢弃',
+        confirmButtonText: '保存'
       })
         .then(() => {
           sendTimer(item, 'cancel')
         })
         .catch(() => {
           if (pageModalRef.value) {
+            emit('getData')
             pageModalRef.value.dialogVisible = false
           }
         })
@@ -142,8 +148,45 @@ export default defineComponent({
         pageModalRef.value.dialogVisible = false
       }
     }
-    const openStep = (step: any) => {
-      emit('openStep', step, props.params)
+    const openStep = async (item: any, res: any) => {
+      if (item.save) {
+        const formRef = res.ref.formRef
+        const data = res.data
+        formRef?.validate((valid: any) => {
+          if (valid) {
+            if (props.editType === 'add') {
+              updateCenterTimer({
+                moId: props.params.moId,
+                state: data.state,
+                onlineTime: data.onlineTime
+              }).then((res) => {
+                if (res.result === 0) {
+                  successTip(res.msg)
+                  emit('openStep', item.step, props.params)
+                } else errorTip(res.msg)
+              })
+            } else {
+              infoTipBox({
+                title: '更新时间状态',
+                message: `你确定更新时间状态吗`
+              }).then(() => {
+                updateCenterTimer({
+                  moId: props.params.moId,
+                  state: data.state,
+                  onlineTime: data.onlineTime
+                }).then((res) => {
+                  if (res.result === 0) {
+                    successTip(res.msg)
+                    emit('openStep', item.step, props.params)
+                  } else errorTip(res.msg)
+                })
+              })
+            }
+          }
+        })
+      } else {
+        emit('openStep', item.step, props.params)
+      }
     }
     return {
       cancelData,

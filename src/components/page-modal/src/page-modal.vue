@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 10:36:32
+ * @LastEditTime: 2022-04-14 14:13:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -13,9 +13,9 @@
       direction="rtl"
       size="85%"
       :show-close="false"
-      :close-on-click-modal="true"
+      :close-on-click-modal="false"
       :close-on-press-escape="false"
-      destroy-on-close
+      :destroy-on-close="true"
     >
       <template #title>
         <div class="modal-title">
@@ -46,9 +46,15 @@
           </span>
         </div>
       </template>
-      <template #default>
+      <template #default v-if="dialogVisible">
         <div style="padding: 0 20px; margin-bottom: 40px">
-          <slot name="titleWrapper"></slot>
+          <slot
+            name="titleWrapper"
+            :row="{
+              data: formData,
+              ref: pageFormRef
+            }"
+          ></slot>
           <hy-form
             ref="pageFormRef"
             v-bind="modalConfig"

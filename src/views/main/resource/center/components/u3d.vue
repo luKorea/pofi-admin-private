@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-13 18:53:59
+ * @LastEditTime: 2022-04-14 14:31:55
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -48,6 +48,7 @@
               iOS文件
             </span>
             <hy-upload
+              @sendOtherValue="getOtherData($event, 1)"
               v-model:value="otherInfo.iosList"
               fileTypeName="resourceU3dIos/"
               :limit="1"
@@ -67,6 +68,7 @@
               Android文件
             </span>
             <hy-upload
+              @sendOtherValue="getOtherData($event, 0)"
               v-model:value="otherInfo.androidList"
               fileTypeName="resourceU3dAndroid/"
               :limit="1"
@@ -80,8 +82,11 @@
           </div>
         </el-col>
       </el-row>
-      <template #titleWrapper>
-        <step-component :active="2" @openStep="openStep"></step-component>
+      <template #titleWrapper="{ row }">
+        <step-component
+          :active="2"
+          @openStep="openStep($event, row)"
+        ></step-component>
       </template>
       <template #otherModalHandler="{ row }">
         <!-- <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
@@ -138,7 +143,7 @@
               <el-button
                 size="mini"
                 type="text"
-                @click="handleDelete(scope.row)"
+                @click="handleDelete(scope.row.id)"
                 >删除</el-button
               ><br />
               <el-button size="mini" type="text" @click="down(scope.row)"
@@ -148,14 +153,14 @@
                 size="mini"
                 type="text"
                 v-if="scope.row.forcedUpdate == 1"
-                @click="handleForcedUpdate2(scope.row)"
+                @click="handleForcedUpdate2(scope.row.id)"
                 >取消强制更新</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 v-if="scope.row.forcedUpdate == 0"
-                @click="handleForcedUpdate(scope.row)"
+                @click="handleForcedUpdate(scope.row.id)"
                 >强制更新</el-button
               >
             </div>
@@ -175,10 +180,13 @@ import { u3dModalConfig } from './config/u3d.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
 import { infoTipBox, errorTip } from '@/utils/tip-info'
-import hyUpload from '@/base-ui/upload'
+import hyUpload from '@/base-ui/upload/src/uploadFile.vue'
 import { getU3dSourceList } from '@/service/main/resource/center'
-import { resourceU3dOperation } from '../../../../../service/main/resource/center'
-import { successTip } from '../../../../../utils/tip-info'
+import {
+  resourceU3dOperation,
+  u3dFileOperation
+} from '@/service/main/resource/center'
+import { successTip } from '@/utils/tip-info'
 
 export default defineComponent({
   props: {
@@ -215,7 +223,68 @@ export default defineComponent({
       androidChose: [],
       type: 'ios'
     })
+    const resetData = () => {
+      otherInfo.value = {
+        iosSourceUrl: '',
+        iosList: [],
+        androidSourceUrl: '',
+        androidList: [],
+        androidVersion: '',
+        iosVersion: '',
+        iosChose: [],
+        androidChose: [],
+        type: 'ios'
+      }
+      fileInfo.value = {}
+    }
+    const fileInfo = ref<any>()
     const fileData = ref<any>()
+    const getOtherData = (data: any, type: number) => {
+      if (type === 1) {
+        fileInfo.value = {
+          ...fileInfo.value,
+          iosSourceMd5: data.md5,
+          iosName: data.name,
+          iosSize: data.size + 'M',
+          sizeIos: data.size
+        }
+        // mapFileInfo(
+        //   {
+        //     ...data,
+        //     size: data.size + 'M'
+        //   },
+        //   type
+        // )
+      } else {
+        fileInfo.value = {
+          ...fileInfo.value,
+          androidSourceMd5: data.md5,
+          androidName: data.name,
+          androidSize: data.size + 'M',
+          sizeAd: data.size
+        }
+        // mapFileInfo(
+        //   {
+        //     ...data,
+        //     size: data.size + 'M'
+        //   },
+        //   type
+        // )
+      }
+    }
+    const mapFileInfo = (item: any, type: any) => {
+      if (type === 1) {
+        otherInfo.value.iosVersion = `版本号：${
+          item.version ?? '系统生成'
+        } 名字: ${item.name} 文件大小: ${item.size} 更新时间：${
+          item.createTime ?? '系统生成'
+        }`
+      } else {
+        otherInfo.value.androidVersion = `版本号：${item.version ?? ''} 名字: ${
+          item.name
+        } 文件大小: ${item.size} 更新时间：${item.createTime ?? ''}`
+      }
+    }
     const getSourceData = (type: any) => {
       otherInfo.value.type = type === 1 ? 'ios' : 'android'
       getU3dSourceList({
@@ -240,25 +309,68 @@ export default defineComponent({
       let { type, iosChose, androidChose } = otherInfo.value
       if (type === 'ios' && iosChose.length > 0) {
         const item = iosChose[0]
-        otherInfo.value.iosVersion = `版本号：${item.version} 名字: ${item.name} 文件大小: ${item.size} 更新时间：${item.createTime}`
+        mapFileInfo(item, 1)
         fileRef.value.dialogVisible = false
       } else if (type === 'android' && androidChose.length > 0) {
         const item = androidChose[0]
-        otherInfo.value.androidVersion = `版本号：${item.version} 名字: ${item.name} 文件大小: ${item.size} 更新时间：${item.createTime}`
+        mapFileInfo(item, 0)
         fileRef.value.dialogVisible = false
       } else errorTip('请选择文件')
     }
-    const handleDelete = (item: any) => {
-      console.log(item)
+    const handleDelete = (id: any) => {
+      const type = otherInfo.value.type === 'ios' ? 0 : 1
+      infoTipBox({
+        title: '删除文件',
+        message: '确定删除文件吗'
+      }).then(() => {
+        u3dFileOperation('/cms/mold/delete', {
+          id: id
+        }).then((res) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            getSourceData(type)
+          } else errorTip(res.msg)
+        })
+      })
     }
     const down = (item: any) => {
       window.open(item.sourceUrl)
     }
-    const handleForcedUpdate2 = (item: any) => {
-      console.log(item)
+    const handleForcedUpdate2 = (id: any) => {
+      const type = otherInfo.value.type === 'ios' ? 0 : 1
+      infoTipBox({
+        title: '取消强制更新',
+        message: '是否取消强制更新?'
+      }).then(() => {
+        u3dFileOperation('/cms/mold/forcedUpdate/cancel', {
+          id: id,
+          forcedUpdate: 0,
+          osType: type
+        }).then((res) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            getSourceData(type)
+          } else errorTip(res.msg)
+        })
+      })
     }
-    const handleForcedUpdate = (item: any) => {
-      console.log(item)
+    const handleForcedUpdate = (id: any) => {
+      const type = otherInfo.value.type === 'ios' ? 0 : 1
+      infoTipBox({
+        title: '强制更新',
+        message: '是否强制更新?'
+      }).then(() => {
+        u3dFileOperation('/cms/mold/forcedUpdate', {
+          id: id,
+          forcedUpdate: 1,
+          osType: type
+        }).then((res) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            getSourceData(type)
+          } else errorTip(res.msg)
+        })
+      })
     }
     watchEffect(() => {
       if (otherInfo.value && otherInfo.value.iosList.length > 0) {
@@ -288,15 +400,20 @@ export default defineComponent({
         })
         .catch(() => {
           if (pageModalRef.value) {
+            resetData()
             pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         })
     }
     const addData = (item: any) => {
-      const data = {
+      let data = {
         moId: props.params.moId,
+        iosSourceUrl: otherInfo.value.iosSourceUrl,
+        androidSourceUrl: otherInfo.value.androidSourceUrl,
         ...otherInfo.value.iosChose[0],
-        ...otherInfo.value.androidChose[0]
+        ...otherInfo.value.androidChose[0],
+        ...fileInfo.value
       }
       resourceU3dOperation(data, 'add').then((res) => {
         if (res.result === 0) {
@@ -307,19 +424,21 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
-      const data = {
+      let data = {
         moId: props.params.moId,
+        iosSourceUrl: otherInfo.value.iosSourceUrl,
+        androidSourceUrl: otherInfo.value.androidSourceUrl,
         ...otherInfo.value.iosChose[0],
-        ...otherInfo.value.androidChose[0]
+        ...otherInfo.value.androidChose[0],
+        ...fileInfo.value
       }
       resourceU3dOperation(data, 'update').then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) {
             successTip(res.msg)
-            // pageModalRef.value.dialogVisible = false
-            // resetLanguageList()
-            // emit('getData')
+            pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         } else errorTip(res.msg)
       })
@@ -339,10 +458,43 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
-    const openStep = (step: any) => {
-      emit('openStep', step, props.params)
+    const openStep = async (item: any, res: any) => {
+      if (item.save) {
+        let data = {
+          moId: props.params.moId,
+          iosSourceUrl: otherInfo.value.iosSourceUrl,
+          androidSourceUrl: otherInfo.value.androidSourceUrl,
+          ...otherInfo.value.iosChose[0],
+          ...otherInfo.value.androidChose[0],
+          ...fileInfo.value
+        }
+        if (props.editType === 'add') {
+          resourceU3dOperation(data, 'add').then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+              emit('openStep', item.step, props.params)
+            } else errorTip(res.msg)
+          })
+        } else {
+          resourceU3dOperation(data, 'update').then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              if (pageModalRef.value) {
+                successTip(res.msg)
+                pageModalRef.value.dialogVisible = false
+                emit('openStep', item.step, props.params)
+              }
+            } else errorTip(res.msg)
+          })
+        }
+      } else {
+        emit('openStep', item.step, props.params)
+      }
     }
     return {
+      fileInfo,
+      getOtherData,
       cancelData,
       openStep,
       u3dModalConfig,

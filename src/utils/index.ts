@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 10:28:52
+ * @LastEditTime: 2022-04-14 10:09:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -194,6 +194,7 @@ export function fileTypeIsImage(fileName: string) {
   try {
     const flieArr = fileName.split('.')
     suffix = flieArr[flieArr.length - 1]
+    console.log(suffix)
   } catch (err) {
     suffix = ''
   }
@@ -272,7 +273,7 @@ export function fileTypeIsImage(fileName: string) {
     return 'radio'
   }
   // 目前如果没有找到文件类型。默认返回图片类型
-  return 'image'
+  return 'other'
 }
 
 /**

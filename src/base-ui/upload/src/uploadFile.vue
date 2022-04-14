@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2022-04-14 09:47:24
+ * @LastEditTime: 2022-04-14 11:23:15
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: /pofi-admin-private/src/base-ui/upload/src/upload copy.vue
+-->
 <template>
   <div class="uploadWrapper">
     <Vuedraggable
@@ -81,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, watch, toRefs, onMounted, defineComponent } from 'vue'
+import { ref, computed, watch, onMounted, defineComponent } from 'vue'
 import Vuedraggable from 'vuedraggable'
 import { useOSSConfig } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
@@ -92,6 +100,9 @@ import {
   createUniqueString
 } from '@/utils/index'
 import { errorTip, infoTipBox, warnTip } from '@/utils/tip-info'
+import BMF from 'browser-md5-file'
+const bmf = new BMF()
+console.log(bmf)
 
 export default defineComponent({
   props: {
@@ -161,12 +172,13 @@ export default defineComponent({
   components: {
     Vuedraggable
   },
-  emits: ['update:value'],
+  emits: ['update:value', 'sendOtherValue'],
   setup(props, { emit }) {
     let client = ref<any>()
     const isUploading = ref(false) // 正在上传状态
     const isFirstMount = ref(true) // 控制防止重复回显
     const uploadRef = ref<any>(null)
+
     const openNewWindow = (url: string) => {
       console.log(url, 'url')
       window.open(url, '_blank')
@@ -182,6 +194,7 @@ export default defineComponent({
               name = item.name.split('?')[0]
             }
             item['type'] = fileTypeIsImage(name)
+            console.log(name, item.type, '文件类型')
           })
         }
         return props.value
@@ -251,16 +264,27 @@ export default defineComponent({
           .catch((err) => reject(err))
       })
     }
+    const otherValue = ref<any>()
     const httpRequest = (options: any) => {
       async function uploadImage() {
         if (client.value !== null) {
           isFirstMount.value = false
           const file = options.file
+          bmf.md5(file, (err: any, data: any) => {
+            if (!err) {
+              otherValue.value = {
+                size: (file.size / 1024 / 1024).toFixed(2),
+                md5: data,
+                name: file.name
+              }
+            }
+          })
           const suffix = '.' + file.type.split('/')[1]
           const name =
             props.fileTypeName + client.value.options.fileName + suffix
           client.value.multipartUpload(name, file).then((res: any) => {
             const url = `${OSSURL}/${res.name}`
+            emit('sendOtherValue', otherValue.value)
             emit('update:value', [
               ...props.value,
               {

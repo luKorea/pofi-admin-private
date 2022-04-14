@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-13 19:02:36
+ * @LastEditTime: 2022-04-14 14:38:54
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPrep
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -16,8 +16,11 @@
     :showCancelBtn="false"
     @changeSelect="handleChangeSelect"
   >
-    <template #titleWrapper>
-      <step-component :active="3" @openStep="openStep"></step-component>
+    <template #titleWrapper="{ row }">
+      <step-component
+        :active="3"
+        @openStep="openStep($event, row)"
+      ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
       <!-- <el-button plain size="mini" v-if="editType === 'add'" @click="nextStep"
@@ -41,8 +44,8 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
 import { infoTipBox } from '@/utils/tip-info'
 import { otherList, classifyList, prpeList } from '../hooks/use-page-list'
-import { relevanceOperation } from '../../../../../service/main/resource/center'
-import { successTip, errorTip } from '../../../../../utils/tip-info'
+import { relevanceOperation } from '@/service/main/resource/center'
+import { successTip, errorTip } from '@/utils/tip-info'
 export default defineComponent({
   components: {
     stepComponent
@@ -138,7 +141,9 @@ export default defineComponent({
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
-        message: '是否保存当前编辑内容？'
+        message: '是否保存当前编辑内容？',
+        cancelButtonText: '丢弃',
+        confirmButtonText: '保存'
       })
         .then(() => {
           sendTimer(item, 'cancel')
@@ -146,6 +151,7 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         })
     }
@@ -192,8 +198,36 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
-    const openStep = (step: any) => {
-      emit('openStep', step, props.params)
+    const openStep = (step: any, item: any) => {
+      if (step.save) {
+        if (props.editType === 'add') {
+          relevanceOperation({
+            ...item.data,
+            moId: props.params.moId,
+            cidList: item.data.cidList.flat()
+          }).then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+              emit('openStep', step.step, props.params)
+            } else errorTip(res.msg)
+          })
+        } else {
+          relevanceOperation({
+            ...item.data,
+            moId: props.params.moId,
+            cidList: item.data.cidList.flat()
+          }).then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              if (pageModalRef.value) {
+                pageModalRef.value.dialogVisible = false
+                emit('openStep', step.step, props.params)
+              }
+            } else errorTip(res.msg)
+          })
+        }
+      } else emit('openStep', step.step, props.params)
     }
     return {
       handleChangeSelect,

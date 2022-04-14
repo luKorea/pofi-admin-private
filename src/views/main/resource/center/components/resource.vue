@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-13 19:08:24
+ * @LastEditTime: 2022-04-14 14:35:54
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -15,8 +15,11 @@
     :showConfigBtn="false"
     :showCancelBtn="false"
   >
-    <template #titleWrapper>
-      <step-component :active="1" @openStep="openStep"></step-component>
+    <template #titleWrapper="{ row }">
+      <step-component
+        :active="1"
+        @openStep="openStep($event, row)"
+      ></step-component>
     </template>
     <!-- 多语言 -->
     <page-language
@@ -257,20 +260,6 @@ export default defineComponent({
       requiredField,
       mapIconState
     } = useSetLanguage()
-    nextTick(() => {
-      console.log(defaultInfo.value)
-    })
-    resetLanguageList()
-    // watchEffect(() => {
-    //   if (props.editType && props.editType === 'edit') {
-    //     resourceFileOperation(props.params, 'get').then((res) => {
-    //       if (res.result === 0) {
-    //         languageList.value = res.data.moldList
-    //         console.log(languageList.value)
-    //       } else errorTip(res.msg)
-    //     })
-    //   }
-    // })
     // 监听图片变化
     watchEffect(() => {
       if (languageItem.value && languageItem.value.giftList.length > 0) {
@@ -323,14 +312,12 @@ export default defineComponent({
         }
       }
     })
-    const openStep = (step: any) => {
-      console.log('这里调用保存的接口')
-      emit('openStep', step, props.params)
-    }
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
-        message: '是否保存当前编辑内容？'
+        message: '是否保存当前编辑内容？',
+        cancelButtonText: '丢弃',
+        confirmButtonText: '保存'
       })
         .then(() => {
           sendTimer(item, 'cancel')
@@ -338,6 +325,7 @@ export default defineComponent({
         .catch(() => {
           if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = false
+            emit('getData')
           }
         })
     }
@@ -393,6 +381,46 @@ export default defineComponent({
           }
         })
         .catch((err) => errorTip(err))
+    }
+    const openStep = (step: any) => {
+      if (step.save) {
+        validateParamsRules(
+          languageList.value,
+          languageList.value[0],
+          requiredField.value
+        )
+          .then(() => {
+            const data = {
+              moId: props.params.moId,
+              moldJson: JSON.stringify(languageList.value)
+            }
+            if (props.editType === 'add') {
+              resourceFileOperation(data, 'update').then((res) => {
+                if (res.result === 0) {
+                  successTip(res.msg)
+                  resetLanguageList()
+                  if (pageModalRef.value) {
+                    pageModalRef.value.dialogVisible = false
+                    emit('openStep', step.step, props.params)
+                  }
+                } else errorTip(res.msg)
+              })
+            } else {
+              resourceFileOperation(data, 'update').then((res) => {
+                if (res.result === 0) {
+                  successTip(res.msg)
+                  if (pageModalRef.value) {
+                    successTip(res.msg)
+                    pageModalRef.value.dialogVisible = false
+                    resetLanguageList()
+                    emit('openStep', step.step, props.params)
+                  }
+                } else errorTip(res.msg)
+              })
+            }
+          })
+          .catch((err) => errorTip(err))
+      } else emit('openStep', step.step, props.params)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()

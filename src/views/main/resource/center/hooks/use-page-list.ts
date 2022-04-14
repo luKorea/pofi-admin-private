@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 12:00:39
+ * @LastEditTime: 2022-04-14 10:25:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
-import { ref, computed, watchEffect, nextTick, onMounted } from 'vue'
+import { ref, computed, watchEffect, nextTick } from 'vue'
 import { mapSelectListTitle } from '@/utils'
 import {
   resourceTypeList,

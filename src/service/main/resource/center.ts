@@ -40,6 +40,14 @@ export function resourceU3dOperation(data: any, type: string) {
   })
 }
 
+// u3d文件操作
+export function u3dFileOperation(url: string, data: any) {
+  return hyRequest.post<any>({
+    url: url,
+    data: data
+  })
+}
+
 export function relevanceOperation(data: any) {
   return hyRequest.post<any>({
     url: '/cms/mold/addOrUpdate/prep',

@@ -197,7 +197,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, computed, nextTick } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -363,10 +363,12 @@ export default defineComponent({
             })
           const data = res.data
           const value = u3dRef.value.otherInfo
-          if (item === 1) {
-            value.iosVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
-          } else {
-            value.androidVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+          if (data) {
+            if (item === 1) {
+              value.iosVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+            } else {
+              value.androidVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+            }
           }
         } else errorTip(res.msg)
       })
@@ -384,6 +386,12 @@ export default defineComponent({
             console.log(row)
             row.libraryName = row.title
             row.unityType = +row.value
+            propertyRef.value.otherInfo = {
+              ...propertyRef.value.otherInfo,
+              open: undefined,
+              specialIcon: [],
+              vipInt: []
+            }
             propertyRef.value.handleEditData(row)
           } else {
             getItemData('resourceCenterItem', {
@@ -420,6 +428,7 @@ export default defineComponent({
           break
         case 'timer':
           hiddenPage()
+          editData.value = row
           timerRef.value && timerRef.value.handleEditData(row)
           break
         case 'u3d':
@@ -486,8 +495,12 @@ export default defineComponent({
                   resourceRef.value.languageList = result
                   resourceRef.value &&
                     resourceRef.value.handleEditData(res.data)
-                } else
-                  resourceRef.value && resourceRef.value.handleEditData(row)
+                } else {
+                  if (resourceRef.value) {
+                    resourceRef.value.resetLanguageList()
+                    resourceRef.value.handleEditData(row)
+                  }
+                }
               } else errorTip(res.msg)
             })
           }
