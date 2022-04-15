@@ -569,6 +569,12 @@ export default defineComponent({
         case 'relevance':
           hiddenPage()
           if (editType.value === 'add') {
+            relevanceRef.value.showEditTable = false
+            relevanceRef.value.modalConfigRef.formItems.map((i: any) => {
+              if (i.field === 'rel') i!.isHidden = true
+              if (i.field === 'prep') i!.isHidden = true
+              if (i.field === 'subPrep') i!.isHidden = true
+            })
             relevanceRef.value.prepEditList = []
             relevanceRef.value.subPrepEditList = []
             relevanceRef.value && relevanceRef.value.handleEditData(row)
