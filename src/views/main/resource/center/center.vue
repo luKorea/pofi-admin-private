@@ -569,6 +569,8 @@ export default defineComponent({
         case 'relevance':
           hiddenPage()
           if (editType.value === 'add') {
+            relevanceRef.value.prepEditList = []
+            relevanceRef.value.subPrepEditList = []
             relevanceRef.value && relevanceRef.value.handleEditData(row)
           } else {
             getRelevance()
