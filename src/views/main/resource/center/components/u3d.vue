@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-14 18:28:15
+ * @LastEditTime: 2022-04-15 17:24:06
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -482,6 +482,7 @@ export default defineComponent({
             if (res.result === 0) {
               successTip(res.msg)
               if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+              resetData()
               emit('openStep', item.step, props.params)
             } else errorTip(res.msg)
           })
@@ -492,6 +493,7 @@ export default defineComponent({
               if (pageModalRef.value) {
                 successTip(res.msg)
                 pageModalRef.value.dialogVisible = false
+                resetData()
                 emit('openStep', item.step, props.params)
               }
             } else errorTip(res.msg)

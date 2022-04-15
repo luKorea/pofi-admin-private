@@ -552,8 +552,32 @@ export default defineComponent({
         case 'u3d':
           hiddenPage()
           if (editType.value === 'add') {
+            u3dRef.value.otherInfo.value = {
+              iosSourceUrl: '',
+              iosList: [],
+              androidSourceUrl: '',
+              androidList: [],
+              androidVersion: '',
+              iosVersion: '',
+              iosChose: {},
+              androidChose: {},
+              type: 'ios'
+            }
+            u3dRef.value.fileInfo.value = {}
             u3dRef.value && u3dRef.value.handleEditData(row)
           } else {
+            u3dRef.value.otherInfo.value = {
+              iosSourceUrl: '',
+              iosList: [],
+              androidSourceUrl: '',
+              androidList: [],
+              androidVersion: '',
+              iosVersion: '',
+              iosChose: {},
+              androidChose: {},
+              type: 'ios'
+            }
+            u3dRef.value.fileInfo.value = {}
             getU3d(1)
             getU3d(0)
           }
