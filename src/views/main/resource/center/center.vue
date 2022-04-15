@@ -552,7 +552,7 @@ export default defineComponent({
         case 'u3d':
           hiddenPage()
           if (editType.value === 'add') {
-            u3dRef.value.otherInfo.value = {
+            u3dRef.value.otherInfo = {
               iosSourceUrl: '',
               iosList: [],
               androidSourceUrl: '',
@@ -563,10 +563,10 @@ export default defineComponent({
               androidChose: {},
               type: 'ios'
             }
-            u3dRef.value.fileInfo.value = {}
+            u3dRef.value.fileInfo = {}
             u3dRef.value && u3dRef.value.handleEditData(row)
           } else {
-            u3dRef.value.otherInfo.value = {
+            u3dRef.value.otherInfo = {
               iosSourceUrl: '',
               iosList: [],
               androidSourceUrl: '',
@@ -577,7 +577,7 @@ export default defineComponent({
               androidChose: {},
               type: 'ios'
             }
-            u3dRef.value.fileInfo.value = {}
+            u3dRef.value.fileInfo = {}
             getU3d(1)
             getU3d(0)
           }
