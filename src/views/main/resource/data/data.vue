@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 18:21:45
+ * @LastEditTime: 2022-04-15 15:21:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -129,13 +129,13 @@ export default defineComponent({
     }
     const otherInfo = ref<any>()
     const editData = (item: any) => {
-      if (!isNaN(+item.download + +item.downloadShow / 1000))
-        item.frontShow = +item.download + +item.downloadShow / 1000 + 'K'
-      else item.frontShow = 0 + 'K'
       otherInfo.value = {
         downloadShow: item.downloadShow,
         download: item.download
       }
+      if (!isNaN(+item.download + +item.downloadShow / 1000))
+        item.frontShow = +item.download + +item.downloadShow / 1000 + 'K'
+      else item.frontShow = 0 + 'K'
     }
     const handleChangeNumber = () => {
       // if (!isNaN(otherInfo.value.downloadShow / 1000)) {
