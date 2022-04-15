@@ -101,14 +101,14 @@
 
               <template v-else-if="item.type === 'select'">
                 <el-select
+                  clearable
+                  filterable
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
                   style="width: 100%"
                   :model-value="modelValue[`${item.field}`]"
                   @update:modelValue="handleValueChange($event, item.field)"
-                  clearable
-                  filterable
-                  @change="handleChangeSelect($event, item.field)"
+                  @change="handleChangeSelect($event, item.field, item.options)"
                   @clear="handleClear"
                 >
                   <el-option
@@ -256,10 +256,16 @@ export default defineComponent({
     // 2. 监听用户enter回车事件
     const handleClear = () => emit('changeClear')
     // 3. 监听用户选中事件
-    const handleChangeSelect = (item: any, field: string) =>
+    /**
+     * @param item 当前行数据
+     * @param field 用户点击的下拉框
+     * @param data 当前行的数据
+     */
+    const handleChangeSelect = (item: any, field: string, data: any) =>
       emit('changeSelect', {
         value: item,
-        field: field
+        field: field,
+        data: data
       })
     return {
       formRef,

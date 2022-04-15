@@ -316,8 +316,6 @@ export default defineComponent({
       getResourceList(keyword)
     }
     const handleChangeResourceItemData = (tempMid: any) => {
-      console.log(resourceList.value)
-      debugger
       const selectItem = resourceList.value.find(
         (item: any) => item.moId === tempMid
       )
@@ -333,8 +331,6 @@ export default defineComponent({
         tempMid: selectItem.moId,
         url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
       })
-      // listData.value = result
-      console.log(listData.value, index, 'value')
     }
     // 下拉地区
     const areaIds = ref<any>([])

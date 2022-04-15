@@ -78,6 +78,18 @@
                       clearable
                     ></el-input>
                   </template>
+                  <template
+                    v-else-if="propItem.editInfo.type === 'inputNumber'"
+                  >
+                    <el-input-number
+                      v-model="scope.row[propItem.prop]"
+                      :placeholder="propItem.editInfo.placeholder"
+                      :disabled="propItem.editInfo.disabled"
+                      clearable
+                      style="width: 100%"
+                      v-bind="propItem.editInfo.otherOptions"
+                    ></el-input-number>
+                  </template>
                   <template v-else-if="propItem.editInfo.type === 'textarea'">
                     <el-input
                       type="textarea"

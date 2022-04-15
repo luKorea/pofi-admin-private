@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2022-04-11 17:42:43
- * @LastEditTime: 2022-04-14 18:27:49
- * @LastEditors: Please set LastEditors
- * @Description: /cms/mold/getPrep
- * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
--->
 <template>
   <page-modal
     :defaultInfo="defaultInfo"
@@ -34,6 +26,39 @@
         >保存</el-button
       >
     </template>
+    <template v-if="showEditTable">
+      <el-divider
+        >主副资源表格管理（选择对应资源后请填写对应的字段）</el-divider
+      >
+      <el-row>
+        <!-- 主关联可编辑表格 -->
+        <el-col :span="24">
+          <div class="item-flex">
+            <span class="item-title">主关联资源表格</span>
+            <editor-table
+              :listData="prepEditList"
+              v-bind="prepModalConfig"
+              :showHeader="false"
+              style="width: 100%"
+            ></editor-table>
+          </div>
+        </el-col>
+      </el-row>
+      <!-- 副关联可编辑表格 -->
+      <el-row>
+        <el-col :span="24">
+          <div class="item-flex">
+            <span class="item-title">副关联表格</span>
+            <editor-table
+              :listData="subPrepEditList"
+              v-bind="prepModalConfig"
+              :showHeader="false"
+              style="width: 100%"
+            ></editor-table>
+          </div>
+        </el-col>
+      </el-row>
+    </template>
   </page-modal>
 </template>
 
@@ -46,9 +71,14 @@ import { infoTipBox } from '@/utils/tip-info'
 import { otherList, classifyList, prpeList } from '../hooks/use-page-list'
 import { relevanceOperation } from '@/service/main/resource/center'
 import { successTip, errorTip } from '@/utils/tip-info'
+import editorTable from '@/base-ui/table'
+import { prepModalConfig } from './config/relevance-prep-edit-modal'
+import { mapSelectListTitle } from '@/utils'
+import { resourceConditionList } from '@/utils/select-list/map-resource-list'
 export default defineComponent({
   components: {
-    stepComponent
+    stepComponent,
+    editorTable
   },
   props: {
     editType: {
@@ -108,16 +138,21 @@ export default defineComponent({
         pageModalRef.value.dialogVisible = false
       }
     }
-    let prpeEditList: any[] = []
+    const prepEditList = ref<any>([]) // 主关联资源
+    const subPrepEditList = ref<any>([]) // 副关联资源
+    const showEditTable = ref<boolean>(false) // 是否展示可编辑表格
     const handleChangeSelect = (item: any) => {
-      if (item.value === 2 && item.field === 'isPrep') {
+      const { field, value } = item
+      if (value === 2 && field === 'isPrep') {
+        showEditTable.value = true
         modalConfigRef.value.formItems.map((i: any) => {
           if (i.field === 'rel') i!.isHidden = false
           if (i.field === 'prep') i!.isHidden = false
           if (i.field === 'subPrep') i!.isHidden = false
         })
       }
-      if (item.value === 1 && item.field === 'isPrep') {
+      if (value === 1 && field === 'isPrep') {
+        showEditTable.value = false
         modalConfigRef.value.formItems.map((i: any) => {
           if (i.field === 'rel') i!.isHidden = true
           if (i.field === 'prep') i!.isHidden = true
@@ -125,19 +160,54 @@ export default defineComponent({
         })
       }
       // TODO 后续完善
-      // if (item.field === 'prep') {
-      //   if (item.value.length > 0) {
-      //     item.value.map((i: any) => {
-      //       prpeList.value.map((p: any) => {
-      //         if (i === p.moId) {
-      //           prpeEditList.push(p)
-      //         }
-      //       })
-      //     })
-      //   } else prpeEditList = []
-      //   console.log(prpeEditList, 'prpeEditList')
-      // }
+      if (field === 'prep') {
+        const set = new Set()
+        if (value.length > 0) {
+          value.map((i: any) => {
+            prpeList.value.map((d: any) => {
+              if (i === d.moId) {
+                prepEditList.value = Array.from(
+                  set.add({
+                    moId: d.moId,
+                    pname: d.pname,
+                    nickId: d.nickId,
+                    sale: d.sale,
+                    open: d.open,
+                    openType: mapSelectListTitle(d.open, resourceConditionList),
+                    snId: '',
+                    endTime: ''
+                  })
+                )
+              }
+            })
+          })
+        } else prepEditList.value = []
+      }
+      if (field === 'subPrep') {
+        const set = new Set()
+        if (value.length > 0) {
+          value.map((i: any) => {
+            prpeList.value.map((d: any) => {
+              if (i === d.moId) {
+                subPrepEditList.value = Array.from(
+                  set.add({
+                    moId: d.moId,
+                    pname: d.pname,
+                    nickId: d.nickId,
+                    sale: d.sale,
+                    open: d.open,
+                    openType: mapSelectListTitle(d.open, resourceConditionList),
+                    snId: '',
+                    endTime: ''
+                  })
+                )
+              }
+            })
+          })
+        } else subPrepEditList.value = []
+      }
     }
+    // 表单操作
     const cancelData = (item: any) => {
       infoTipBox({
         title: '提示',
@@ -159,7 +229,9 @@ export default defineComponent({
       relevanceOperation({
         ...item.data,
         moId: props.params.moId,
-        cidList: item.data.cidList.flat()
+        cidList: item.data.cidList.flat(),
+        chief: JSON.stringify(prepEditList.value),
+        noChief: JSON.stringify(subPrepEditList.value)
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -172,7 +244,9 @@ export default defineComponent({
       relevanceOperation({
         ...item.data,
         moId: props.params.moId,
-        cidList: item.data.cidList.flat()
+        cidList: item.data.cidList.flat(),
+        chief: JSON.stringify(prepEditList.value),
+        noChief: JSON.stringify(subPrepEditList.value)
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -212,7 +286,9 @@ export default defineComponent({
               relevanceOperation({
                 ...item.data,
                 moId: props.params.moId,
-                cidList: item.data.cidList.flat()
+                cidList: item.data.cidList.flat(),
+                chief: JSON.stringify(prepEditList.value),
+                noChief: JSON.stringify(subPrepEditList.value)
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
@@ -225,7 +301,9 @@ export default defineComponent({
               relevanceOperation({
                 ...item.data,
                 moId: props.params.moId,
-                cidList: item.data.cidList.flat()
+                cidList: item.data.cidList.flat(),
+                chief: JSON.stringify(prepEditList.value),
+                noChief: JSON.stringify(subPrepEditList.value)
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
@@ -251,7 +329,12 @@ export default defineComponent({
       handleNewData,
       handleEditData,
       sendTimer,
-      nextStep
+      nextStep,
+      // 可编辑表格
+      prepEditList,
+      prepModalConfig,
+      subPrepEditList,
+      showEditTable
     }
   }
 })

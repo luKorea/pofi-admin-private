@@ -223,6 +223,7 @@ import { resourceFileOperation } from '@/service/main/resource/center'
 import { getItemData } from '@/service/common-api'
 import { selectResourceTypeOperation } from '@/service/main/resource/center'
 import { mapImageToObject } from '@/utils/index'
+import { mapSelectListTitle } from '@/utils'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -351,6 +352,38 @@ export default defineComponent({
     }
     const params = ref<any>()
     const editData = ref<any>()
+    // 获取资源属性
+    const getProperty = (row: any) => {
+      getItemData('resourceCenterItem', {
+        moId: row.moId
+      }).then((res: any) => {
+        if (res.result === 0) {
+          propertyRef.value.otherInfo = {
+            ...propertyRef.value.otherInfo,
+            snId: row.snId,
+            open: row.open,
+            areaIds: res.data.areaIds.toString(),
+            specialIcon: res.data.specialIcon
+              ? res.data.specialIcon.split(',').map((i: any) => +i)
+              : [],
+            editType: 'edit',
+            vipInt:
+              res.data.vipList && res.data.vipList.length > 0
+                ? res.data.vipList.map((i: any) => +i)
+                : [],
+            sale: res.data.sale
+          }
+          console.log(propertyRef.value.otherInfo, 'other')
+          if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'
+          else if (res.data.unityType == 8) res.data['libraryName'] = '动画库'
+          else res.data['libraryName'] = '人偶库'
+          res.data['keyFunc'] = res.data.keyFunc.split(',').map((i: any) => +i)
+          console.log(res.data['keyFunc'])
+          propertyRef.value.handleEditData(res.data)
+        } else errorTip(res.msg)
+      })
+    }
+    // 获取U3d资源
     const getU3d = (item: any) => {
       getItemData('u3dItem', {
         osType: item,
@@ -370,6 +403,108 @@ export default defineComponent({
               value.iosVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
             } else {
               value.androidVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+            }
+          }
+        } else errorTip(res.msg)
+      })
+    }
+    // 获取相关关联
+    const getRelevance = () => {
+      getItemData('relevanceItem', {
+        moId: params.value.moId
+      }).then((res: any) => {
+        if (res.result === 0) {
+          editData.value = res.data
+          if (+params.value.isPrep === 2) {
+            relevanceRef.value.showEditTable = true
+            console.log(relevanceRef.value.modalConfigRef.formItems)
+            relevanceRef.value.modalConfigRef.formItems.map((i: any) => {
+              if (i.field === 'rel') i!.isHidden = false
+              if (i.field === 'prep') i!.isHidden = false
+              if (i.field === 'subPrep') i!.isHidden = false
+            })
+            relevanceRef.value.prepEditList = res.data.chief.map((i: any) => {
+              return {
+                ...i,
+                openType: mapSelectListTitle(
+                  i.open,
+                  resourceConditionList as any
+                )
+              }
+            })
+            relevanceRef.value.subPrepEditList = res.data.nochief.map(
+              (i: any) => {
+                return {
+                  ...i,
+                  openType: mapSelectListTitle(
+                    i.open,
+                    resourceConditionList as any
+                  )
+                }
+              }
+            )
+          }
+          relevanceRef.value &&
+            relevanceRef.value.handleEditData({
+              ...res.data,
+              moId: params.value.moId,
+              cidList: res.data.sortList,
+              isPrep: params.value.isPrep,
+              rel: params.value.rel
+            })
+        } else errorTip(res.msg)
+      })
+    }
+    // 获取资源资料
+    const getResource = (row: any) => {
+      resourceFileOperation(
+        {
+          moId: params.value.moId
+        },
+        'get'
+      ).then((res: any) => {
+        if (res.result === 0) {
+          if (res.data && res.data.moldList && res.data.moldList.length > 0) {
+            let result: any[] = []
+            result = res?.data?.moldList.map((item: any) => {
+              let b0List = []
+              let c0List = []
+              let d0List = []
+              b0List =
+                item.b0 && item.b0.length > 0
+                  ? item.b0.map((i: any) => {
+                      return mapImageToObject(i)
+                    })
+                  : []
+              c0List =
+                item.c0 && item.c0.length > 0
+                  ? item.c0.map((i: any) => {
+                      return mapImageToObject(i)
+                    })
+                  : []
+              d0List =
+                item.d0 && item.d0.length > 0
+                  ? item.d0.map((i: any) => {
+                      return mapImageToObject(i)
+                    })
+                  : []
+              console.log(b0List)
+              return {
+                ...item,
+                coverList: item.cover ? [mapImageToObject(item.cover)] : [],
+                giftList: item.gift ? [mapImageToObject(item.gift)] : [],
+                b0List,
+                c0List,
+                d0List
+              }
+            })
+            resourceRef.value.languageList = result
+            languageId.value = result[0].lid
+            resourceRef.value && resourceRef.value.handleEditData(result)
+          } else {
+            if (resourceRef.value) {
+              resourceRef.value.resetLanguageList()
+              resourceRef.value.handleEditData(row)
             }
           }
         } else errorTip(res.msg)
@@ -396,37 +531,7 @@ export default defineComponent({
             }
             propertyRef.value.handleEditData(row)
           } else {
-            getItemData('resourceCenterItem', {
-              moId: row.moId
-            }).then((res: any) => {
-              if (res.result === 0) {
-                propertyRef.value.otherInfo = {
-                  ...propertyRef.value.otherInfo,
-                  snId: row.snId,
-                  open: row.open,
-                  areaIds: res.data.areaIds.toString(),
-                  specialIcon: res.data.specialIcon
-                    ? res.data.specialIcon.split(',').map((i: any) => +i)
-                    : [],
-                  editType: 'edit',
-                  vipInt:
-                    res.data.vipList && res.data.vipList.length > 0
-                      ? res.data.vipList.map((i: any) => +i)
-                      : [],
-                  sale: res.data.sale
-                }
-                console.log(propertyRef.value.otherInfo, 'other')
-                if (res.data.unityType == 7) res.data['libraryName'] = 'Pose库'
-                else if (res.data.unityType == 8)
-                  res.data['libraryName'] = '动画库'
-                else res.data['libraryName'] = '人偶库'
-                res.data['keyFunc'] = res.data.keyFunc
-                  .split(',')
-                  .map((i: any) => +i)
-                console.log(res.data['keyFunc'])
-                propertyRef.value.handleEditData(res.data)
-              } else errorTip(res.msg)
-            })
+            getProperty(row)
           }
           break
         case 'timer':
@@ -448,64 +553,7 @@ export default defineComponent({
           if (editType.value === 'add') {
             resourceRef.value && resourceRef.value.handleEditData(row)
           } else {
-            resourceFileOperation(
-              {
-                moId: row.moId
-              },
-              'get'
-            ).then((res: any) => {
-              if (res.result === 0) {
-                if (
-                  res.data &&
-                  res.data.moldList &&
-                  res.data.moldList.length > 0
-                ) {
-                  let result: any[] = []
-                  result = res?.data?.moldList.map((item: any) => {
-                    let b0List = []
-                    let c0List = []
-                    let d0List = []
-                    b0List =
-                      item.b0 && item.b0.length > 0
-                        ? item.b0.map((i: any) => {
-                            return mapImageToObject(i)
-                          })
-                        : []
-                    c0List =
-                      item.c0 && item.c0.length > 0
-                        ? item.c0.map((i: any) => {
-                            return mapImageToObject(i)
-                          })
-                        : []
-                    d0List =
-                      item.d0 && item.d0.length > 0
-                        ? item.d0.map((i: any) => {
-                            return mapImageToObject(i)
-                          })
-                        : []
-                    console.log(b0List)
-                    return {
-                      ...item,
-                      coverList: item.cover
-                        ? [mapImageToObject(item.cover)]
-                        : [],
-                      giftList: item.gift ? [mapImageToObject(item.gift)] : [],
-                      b0List,
-                      c0List,
-                      d0List
-                    }
-                  })
-                  resourceRef.value.languageList = result
-                  languageId.value = result[0].lid
-                  resourceRef.value && resourceRef.value.handleEditData(result)
-                } else {
-                  if (resourceRef.value) {
-                    resourceRef.value.resetLanguageList()
-                    resourceRef.value.handleEditData(row)
-                  }
-                }
-              } else errorTip(res.msg)
-            })
+            getResource(row)
           }
           break
         case 'relevance':
@@ -513,20 +561,7 @@ export default defineComponent({
           if (editType.value === 'add') {
             relevanceRef.value && relevanceRef.value.handleEditData(row)
           } else {
-            getItemData('relevanceItem', {
-              moId: params.value.moId
-            }).then((res: any) => {
-              if (res.result === 0) {
-                editData.value = res.data
-                relevanceRef.value &&
-                  relevanceRef.value.handleEditData({
-                    ...res.data,
-                    moId: params.value.moId,
-                    cidList: res.data.sortList,
-                    isPrep: params.value.isPrep
-                  })
-              } else errorTip(res.msg)
-            })
+            getRelevance()
           }
           break
       }

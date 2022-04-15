@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 15:19:47
+ * @LastEditTime: 2022-04-15 11:24:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -149,7 +149,8 @@ export const relevanceModalConfig: IForm = {
       isHidden: true,
       options: [],
       otherOptions: {
-        multiple: true
+        multiple: true,
+        clearable: false
       },
       rules: [
         {
@@ -164,7 +165,8 @@ export const relevanceModalConfig: IForm = {
       type: 'select',
       label: '副关联资源',
       otherOptions: {
-        multiple: true
+        multiple: true,
+        clearable: false
       },
       placeholder: '请选择副关联资源',
       isHidden: true,
