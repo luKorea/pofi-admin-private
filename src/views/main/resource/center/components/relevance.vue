@@ -161,49 +161,59 @@ export default defineComponent({
       }
       // TODO 后续完善
       if (field === 'prep') {
-        const set = new Set()
         if (value.length > 0) {
-          value.map((i: any) => {
-            prpeList.value.map((d: any) => {
-              if (i === d.moId) {
-                prepEditList.value = Array.from(
-                  set.add({
-                    moId: d.moId,
-                    pname: d.pname,
-                    nickId: d.nickId,
-                    sale: d.sale,
-                    open: d.open,
-                    openType: mapSelectListTitle(d.open, resourceConditionList),
-                    snId: '',
-                    endTime: ''
-                  })
-                )
-              }
-            })
+          let prpObj: any = {}
+          let prepEditObj: any = {}
+          let prepEditList2: any = []
+          prpeList.value.map((v: any) => {
+            prpObj[v.moId] = v
           })
+          prepEditList.value.map((v: any) => {
+            prepEditObj[v.moId] = v
+          })
+          value.map((v: any) => {
+            if (prepEditObj[v]) {
+              prepEditList2.push(prepEditObj[v])
+            } else if (prpObj[v]) {
+              let d = prpObj[v]
+              prepEditList2.push({
+                ...d,
+                openType: mapSelectListTitle(d.open, resourceConditionList),
+                snId: '',
+                endTime: ''
+              })
+            }
+            prepEditObj[v] = v
+          })
+          prepEditList.value = prepEditList2
         } else prepEditList.value = []
       }
       if (field === 'subPrep') {
-        const set = new Set()
         if (value.length > 0) {
-          value.map((i: any) => {
-            prpeList.value.map((d: any) => {
-              if (i === d.moId) {
-                subPrepEditList.value = Array.from(
-                  set.add({
-                    moId: d.moId,
-                    pname: d.pname,
-                    nickId: d.nickId,
-                    sale: d.sale,
-                    open: d.open,
-                    openType: mapSelectListTitle(d.open, resourceConditionList),
-                    snId: '',
-                    endTime: ''
-                  })
-                )
-              }
-            })
+          let prpObj: any = {}
+          let prepEditObj: any = {}
+          let prepEditList2: any = []
+          prpeList.value.map((v: any) => {
+            prpObj[v.moId] = v
           })
+          subPrepEditList.value.map((v: any) => {
+            prepEditObj[v.moId] = v
+          })
+          value.map((v: any) => {
+            if (prepEditObj[v]) {
+              prepEditList2.push(prepEditObj[v])
+            } else if (prpObj[v]) {
+              let d = prpObj[v]
+              prepEditList2.push({
+                ...d,
+                openType: mapSelectListTitle(d.open, resourceConditionList),
+                snId: '',
+                endTime: ''
+              })
+            }
+            prepEditObj[v] = v
+          })
+          subPrepEditList.value = prepEditList2
         } else subPrepEditList.value = []
       }
     }
@@ -230,8 +240,8 @@ export default defineComponent({
         ...item.data,
         moId: props.params.moId,
         cidList: item.data.cidList.flat(),
-        chief: JSON.stringify(prepEditList.value),
-        noChief: JSON.stringify(subPrepEditList.value)
+        chiefJson: JSON.stringify(prepEditList.value),
+        noChiefJson: JSON.stringify(subPrepEditList.value)
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -245,8 +255,8 @@ export default defineComponent({
         ...item.data,
         moId: props.params.moId,
         cidList: item.data.cidList.flat(),
-        chief: JSON.stringify(prepEditList.value),
-        noChief: JSON.stringify(subPrepEditList.value)
+        chiefJson: JSON.stringify(prepEditList.value),
+        noChiefJson: JSON.stringify(subPrepEditList.value)
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -287,8 +297,8 @@ export default defineComponent({
                 ...item.data,
                 moId: props.params.moId,
                 cidList: item.data.cidList.flat(),
-                chief: JSON.stringify(prepEditList.value),
-                noChief: JSON.stringify(subPrepEditList.value)
+                chiefJson: JSON.stringify(prepEditList.value),
+                noChiefJson: JSON.stringify(subPrepEditList.value)
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
@@ -302,8 +312,8 @@ export default defineComponent({
                 ...item.data,
                 moId: props.params.moId,
                 cidList: item.data.cidList.flat(),
-                chief: JSON.stringify(prepEditList.value),
-                noChief: JSON.stringify(subPrepEditList.value)
+                chiefJson: JSON.stringify(prepEditList.value),
+                noChiefJson: JSON.stringify(subPrepEditList.value)
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)

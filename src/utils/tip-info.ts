@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-14 09:33:54
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 11:32:49
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-15 13:48:54
  * @Description: 封装公用文字提示
  * @FilePath: /pofi-admin/src/utils/tip-info.ts
  */
@@ -47,7 +47,8 @@ export const infoTipBox = (info: MessageInfo) => {
       cancelButtonText: info.cancelButtonText ?? '取消',
       type: info.iconType ?? 'warning',
       closeOnClickModal: false,
-      closeOnPressEscape: false
+      closeOnPressEscape: false,
+      showClose: false
     })
       .then(() => resolve())
       .catch(() => reject('用户取消操作'))

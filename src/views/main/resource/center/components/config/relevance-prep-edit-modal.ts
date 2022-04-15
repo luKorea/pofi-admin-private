@@ -30,7 +30,7 @@ export const prepModalConfig: TableConfig = {
       prop: 'snId',
       label: '商品ID(折扣)',
       editInfo: {
-        type: 'inputNumber',
+        type: 'input',
         placeholder: '商品ID(折扣)',
         disabled: false
       }

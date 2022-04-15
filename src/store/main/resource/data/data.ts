@@ -2,8 +2,8 @@ import { cultureDifferentType } from '@/utils/index'
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 10:01:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-15 15:18:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/resource/data/data.ts
  */
@@ -112,8 +112,7 @@ const resourceDataModule: Module<IResourceDataType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
+        const pageUrl = apiList[pageName] + 'updateDownload'
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据
