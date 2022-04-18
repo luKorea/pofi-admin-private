@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:51:04
+ * @LastEditTime: 2022-04-18 16:29:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/content.config.ts
  */
@@ -14,8 +14,8 @@ export const contentTableConfig: TableConfig = {
     { prop: 'rank', label: '排序序号' },
     { prop: 'id', label: '编号' },
     { prop: 'remark', label: '内容' },
-    { prop: 'title', label: '所属库', slotName: 'isTitle' },
-    { prop: 'category', label: '所属分类页', slotName: 'isComponent' },
+    { prop: 'library', label: '所属库', slotName: 'isLibrary' },
+    { prop: 'category', label: '所属分类页', slotName: 'isCategory' },
     { prop: 'type', label: '样式类型', slotName: 'isType' },
     { prop: 'rid', label: '国家/地区', slotName: 'isCountry' },
     { prop: 'status', label: '状态', slotName: 'isStatus' },

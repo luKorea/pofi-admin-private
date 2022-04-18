@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:29:16
+ * @LastEditTime: 2022-04-18 16:07:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/search.config.ts
  */
@@ -15,13 +15,13 @@ export const searchFormConfig: IForm = {
   },
   formItems: [
     {
-      field: 'mtId',
+      field: 'id',
       type: 'input',
       label: '编号',
       placeholder: '请输入编号'
     },
     {
-      field: 'pname',
+      field: 'remark',
       type: 'input',
       label: '内容名称',
       placeholder: '请输入内容名称'
@@ -29,8 +29,8 @@ export const searchFormConfig: IForm = {
     {
       field: 'type',
       type: 'select',
-      label: '内容类型',
-      placeholder: '请选择内容类型',
+      label: '样式类型',
+      placeholder: '请选择样式类型',
       options: []
     },
     {

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 11:09:18
+ * @LastEditTime: 2022-04-18 15:43:32
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/content.config.ts
  */
@@ -16,8 +16,8 @@ export const contentTableConfig: TableConfig = {
     { prop: 'name', label: '套餐名称' },
     { prop: 'sale', label: '销售价' },
     { prop: 'original', label: '原价' },
-    { prop: 'version', label: '说明文字' },
-    { prop: 'labelShow', label: '备注' },
+    { prop: 'labelShow', label: '说明文字' },
+    // { prop: 'labelShow', label: '备注' },
     { prop: 'rank', label: '排序序号' },
     { prop: 'developed', label: '发达国家', slotName: 'isDeveloped' },
     { prop: 'show', label: '套餐状态', slotName: 'isState' },

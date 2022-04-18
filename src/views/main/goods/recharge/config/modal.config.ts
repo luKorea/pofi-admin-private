@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:50:08
+ * @LastEditTime: 2022-04-18 10:05:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -82,22 +82,22 @@ export const modalConfig: IForm = {
         min: 0
       }
     },
-    {
-      field: 'rank',
-      type: 'inputNumber',
-      label: '套餐排序',
-      placeholder: '请输入套餐排序序号',
-      otherOptions: {
-        min: 0
-      },
-      rules: [
-        {
-          required: true,
-          message: '请输入套餐排序序号',
-          trigger: 'blur'
-        }
-      ]
-    },
+    // {
+    //   field: 'rank',
+    //   type: 'inputNumber',
+    //   label: '套餐排序',
+    //   placeholder: '请输入套餐排序序号',
+    //   otherOptions: {
+    //     min: 0
+    //   },
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请输入套餐排序序号',
+    //       trigger: 'blur'
+    //     }
+    //   ]
+    // },
     {
       field: 'developed',
       type: 'select',
@@ -126,6 +126,13 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '商品状态',
       placeholder: '请选择商品状态',
+      rules: [
+        {
+          required: true,
+          message: '请选择商品状态',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           title: '上架',

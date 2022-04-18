@@ -2,13 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 11:34:31
+ * @LastEditTime: 2022-04-18 15:30:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
-  <!-- TODO 暂时隐藏 -->
-  <div class="goodsFunction" v-if="0">
+  <div class="goodsFunction" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
@@ -21,7 +20,6 @@
       pageName="functions"
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
-      @selectAllBtnClick="handleSelectData"
     >
       <template #otherHandler>
         <el-button size="mini" @click="exportData">导出Excel</el-button>
@@ -45,6 +43,7 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
+      @changeSelect="handleChangeSelect"
     >
     </page-modal>
   </div>
@@ -62,6 +61,9 @@ import { usePageModal } from '@/hooks/use-page-modal'
 
 import { useStoreName } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
+import { unityModalList } from '@/utils/select-list/map-resource-list'
+import { mapResourceInfo } from '../../../../service/main/goods/function'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'goodsFunction',
@@ -107,7 +109,38 @@ export default defineComponent({
           return '未知'
       }
     }
-    const modalConfigRef = computed(() => modalConfig)
+    const modalConfigRef = computed(() => {
+      modalConfig.formItems.map((i: any) => {
+        if (i.field === 'modeType')
+          i!.options = unityModalList.filter(
+            (item: any) => item.value !== undefined
+          )
+      })
+      return modalConfig
+    })
+    const mapResourceName = (unityType: any) => {
+      mapResourceInfo(unityType).then((res) => {
+        if (res.result === 0) {
+          modalConfig.formItems.map((i: any) => {
+            if (i.field === 'moId')
+              i!.options = res.data.map((item: any) => {
+                return {
+                  title: item.pname,
+                  value: item.moId
+                }
+              })
+          })
+        } else errorTip(res.msg)
+      })
+    }
+    const handleChangeSelect = (item: any) => {
+      if (item.field === 'modeType') {
+        modalConfig.formItems.map((i: any) => {
+          if (i.field === 'moId') i!.options = []
+        })
+        mapResourceName(item.value)
+      }
+    }
     return {
       searchFormConfig,
       handleResetClick,
@@ -123,7 +156,8 @@ export default defineComponent({
       operationName,
       exportData,
       formatDeveloped,
-      otherInfo
+      otherInfo,
+      handleChangeSelect
     }
   }
 })

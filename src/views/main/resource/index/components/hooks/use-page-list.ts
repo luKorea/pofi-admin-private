@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 17:11:09
+ * @LastEditTime: 2022-04-18 13:35:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -10,53 +10,18 @@ import { errorTip } from '@/utils/tip-info'
 import { ref, computed, nextTick, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
-
-export function mapFormConfigData() {
-  const contentList = ref<any>([]) // 样式类型
-  const categoryList = ref<any>([]) // 所属分类
-  getCommonSelectList('styleType').then((res) => {
-    if (res.result === 0) {
-      contentList.value = res.data.map((item: any) => {
-        return {
-          title: item.dec,
-          value: item.type
-        }
-      })
-    }
+import { getSelectTitle } from '@/service/main/resource/classify'
+export function useMapSelectTitle(id: any) {
+  const name = ref<string>('')
+  getSelectTitle(id).then((res) => {
+    console.log(res)
   })
-  const getCategoryList = () => {
-    getCommonSelectList('categoryType').then((res) => {
-      if (res.result === 0) {
-        categoryList.value = res.data.map((item: any) => {
-          return {
-            title: item.name,
-            value: item.id,
-            ...item
-          }
-        })
-      } else errorTip(res.msg)
-    })
-  }
-  getCategoryList()
-  return [contentList, categoryList]
-}
-
-export function useEditTableData() {
-  const listData = ref<any>([])
-  const newTableData = (field: any) => {
-    listData.value.push(field)
-  }
-  const deleteTableData = (id: any) => {
-    const index = listData.value.findIndex((res: any) => res.id === id)
-    listData.value.splice(index, 1)
-  }
-
-  return [listData, newTableData, deleteTableData]
+  return [name]
 }
 
 export function useSetLanguage() {
   const editorRef = ref<any>()
-  const requiredField = ref<any>(['name', 'subTitle', 'desc'])
+  const requiredField = ref<any>(['name'])
   const [
     languageList,
     languageId,
@@ -66,11 +31,7 @@ export function useSetLanguage() {
     mapItemIcon
   ] = usePageLanguage(
     {
-      name: '',
-      subTitle: '',
-      url: [],
-      cover: '',
-      desc: ''
+      name: ''
     },
     'lid'
   )
@@ -88,10 +49,8 @@ export function useSetLanguage() {
     }
   })
   // 改变多语言
-  const handleChangeLanguage = async (id: any) => {
+  const handleChangeLanguage = (id: any) => {
     languageId.value = id
-    await nextTick()
-    editorRef.value.setEditorValue()
   }
 
   return [
@@ -108,7 +67,14 @@ export function useSetLanguage() {
 }
 
 export function usePageList() {
-  // 国家地区
+  const keyTypeList = ref<any>([])
+  const getKeyTypeList = () => {
+    getCommonSelectList('keywords').then((res) => {
+      if (res.state) {
+        keyTypeList.value.push(...res.data)
+      } else errorTip(res.msg)
+    })
+  }
   const countryList = ref<any>([])
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
@@ -124,20 +90,20 @@ export function usePageList() {
     })
   }
   getCountryList()
-  return [countryList]
+  getKeyTypeList()
+  return [keyTypeList, countryList]
 }
 
 export function useStoreName() {
   const storeTypeInfo = ref({
-    actionName: 'resourceHomeModule/getPageListAction',
-    actionListName: 'resourceHomeModule/pageListData',
-    actionCountName: 'resourceHomeModule/pageListCount',
-    deleteAction: 'resourceHomeModule/deletePageDataAction',
-    sortAction: 'resourceHomeModule/sortPageDataAction'
+    actionName: 'resourceIndexSeriesModule/getPageListAction',
+    actionListName: 'resourceIndexSeriesModule/pageListData',
+    actionCountName: 'resourceIndexSeriesModule/pageListCount',
+    deleteAction: 'resourceIndexSeriesModule/deletePageDataAction'
   })
   const operationName = ref({
-    editName: 'resourceHomeModule/editPageDataAction',
-    createName: 'resourceHomeModule/createPageDataAction'
+    editName: 'resourceIndexSeriesModule/editPageDataAction',
+    createName: 'resourceIndexSeriesModule/createPageDataAction'
   })
   return [storeTypeInfo, operationName]
 }

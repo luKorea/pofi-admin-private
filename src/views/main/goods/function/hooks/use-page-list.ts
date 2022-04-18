@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:57:46
+ * @LastEditTime: 2022-04-18 14:50:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -22,3 +22,5 @@ export function useStoreName() {
   })
   return [storeTypeInfo, operationName]
 }
+
+export const u3dList = ref<any>()

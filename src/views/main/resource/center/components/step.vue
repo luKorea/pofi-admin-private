@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 14:00:23
- * @LastEditTime: 2022-04-14 14:18:30
+ * @LastEditTime: 2022-04-18 16:50:15
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/step.vue
@@ -38,7 +38,7 @@ export default defineComponent({
     const list = ref<any>([
       {
         id: 'property',
-        step: '步骤一',
+        step: '创建',
         content: '填写类型属性',
         color: '#ABDCFF'
       },

@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-14 10:09:52
+ * @LastEditTime: 2022-04-18 17:04:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -156,11 +156,15 @@ export function handleChangeEnv(env: number | string) {
  * @returns
  */
 export function mapSelectListTitle(selectValue: string | number, list: any[]) {
-  return (
-    list &&
-    list.length > 0 &&
-    list.find((item: any) => item.value === selectValue).title
-  )
+  let title = ''
+  if (list && list.length > 0) {
+    let item
+    item = list.find((item: any) => item.value === +selectValue)
+    if (item) {
+      title = item.title
+    } else title = ''
+  }
+  return title
 }
 
 // 处理默认值
