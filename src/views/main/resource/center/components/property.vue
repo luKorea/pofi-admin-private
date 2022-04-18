@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-18 17:32:14
+ * @LastEditTime: 2022-04-18 20:16:08
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -238,10 +238,12 @@ export default defineComponent({
         .then(() => {
           sendData(item, 'cancel')
         })
-        .catch(() => {
-          if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
-            emit('getData')
+        .catch((action: any) => {
+          if (action === 'cancel') {
+            if (pageModalRef.value) {
+              pageModalRef.value.dialogVisible = false
+              emit('getData')
+            }
           }
         })
     }

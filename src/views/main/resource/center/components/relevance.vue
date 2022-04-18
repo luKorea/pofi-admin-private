@@ -228,10 +228,12 @@ export default defineComponent({
         .then(() => {
           sendTimer(item, 'cancel')
         })
-        .catch(() => {
-          if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
-            emit('getData')
+        .catch((action: any) => {
+          if (action === 'cancel') {
+            if (pageModalRef.value) {
+              pageModalRef.value.dialogVisible = false
+              emit('getData')
+            }
           }
         })
     }

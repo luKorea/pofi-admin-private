@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-18 17:31:48
+ * @LastEditTime: 2022-04-18 20:15:24
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -311,10 +311,12 @@ export default defineComponent({
         .then(() => {
           sendTimer(item, 'cancel')
         })
-        .catch(() => {
-          if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
-            emit('getData')
+        .catch((action: any) => {
+          if (action === 'cancel') {
+            if (pageModalRef.value) {
+              pageModalRef.value.dialogVisible = false
+              emit('getData')
+            }
           }
         })
     }
