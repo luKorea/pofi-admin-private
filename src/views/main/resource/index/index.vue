@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex help-questionType" v-if="0">
+  <div class="hg-flex help-questionType">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -8,11 +8,7 @@
     <div class="page-country-wrap">
       <el-row :gutter="12">
         <el-col :span="12">
-          <page-search
-            :searchFormConfig="searchFormConfigRef"
-            @resetBtnClick="handleResetBtnClick"
-            @queryBtnClick="handleQueryBtnClick"
-          />
+          <seriesComponent @nodeClick="nodeClick"></seriesComponent>
         </el-col>
         <el-col :span="12">
           <page-search
@@ -33,6 +29,18 @@
         <template #isStatus="scope">
           {{ scope.row.status == 1 ? '显示' : '不显示' }}
         </template>
+        <template #isLibrary="scope">
+          {{ scope.row.library == 1 ? '人偶库' : 'pose库' }}
+        </template>
+        <template #isType="scope">
+          {{ $filters.formatSelectTitle(scope.row.type, contentList) }}
+        </template>
+        <template #isCountry="scope">
+          {{ $filters.formatSelectTitle(scope.row.rid, countryListMap) }}
+        </template>
+        <template #isCategory="scope">
+          {{ $filters.formatSelectTitle(scope.row.category, categoryList) }}
+        </template>
       </page-content>
     </div>
     <page-modal
@@ -42,6 +50,7 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
+      @changeSelect="handleChangeSelect"
     >
       <el-row :gutter="12">
         <el-col v-bind="modalConfigRef.colLayout">
@@ -66,30 +75,6 @@
             </el-select>
           </div>
         </el-col>
-        <el-col v-bind="modalConfigRef.colLayout">
-          <div class="item-flex">
-            <span class="item-title">作者</span>
-            <el-select
-              placeholder="请输入Pofi ID或昵称"
-              style="width: 100%"
-              filterable
-              remote
-              reserve-keyword
-              clearable
-              :remote-method="getAuthorList"
-              :loading="loading"
-              v-model="author"
-            >
-              <el-option
-                v-for="option in authorList"
-                :key="option.nickName"
-                :value="option.nickName"
-                :label="option.nickName"
-                >{{ option.nickName }}</el-option
-              >
-            </el-select>
-          </div>
-        </el-col>
       </el-row>
       <!-- 多语言 -->
       <page-language
@@ -110,30 +95,38 @@
               clearable
             ></el-input>
           </div>
+          <!-- 可编辑表格 -->
+          <editor-table
+            :listData="listData"
+            v-bind="contentTableEditConfigRef"
+            :handleDraw="operationType === 'add' ? false : true"
+            :editTableDraw="operationType === 'add' ? false : true"
+            @drawTable="handleDrawTable"
+          >
+            <template #otherHandler>
+              <el-button type="primary" size="mini" @click="handleNewTableData"
+                >新增</el-button
+              >
+            </template>
+            <template #other="{ row }">
+              <el-button
+                type="primary"
+                size="mini"
+                @click="handleChangeEditTableBtn(row)"
+                >显示</el-button
+              >
+            </template>
+            <template #handler="{ row }">
+              <el-button
+                type="danger"
+                size="mini"
+                @click="handleDeleteEditTableData(row.id)"
+                >删除</el-button
+              >
+            </template>
+          </editor-table>
         </template>
       </page-language>
-      <!-- 可编辑表格 -->
-      <editor-table
-        :listData="listData"
-        v-bind="contentTableEditConfig"
-        :handleDraw="operationType === 'add' ? false : true"
-        :editTableDraw="operationType === 'add' ? false : true"
-        @drawTable="handleDrawTable"
-      >
-        <template #otherHandler>
-          <el-button type="primary" size="mini" @click="handleNewTableData"
-            >新增</el-button
-          >
-        </template>
-        <template #handler="{ row }">
-          <el-button
-            type="danger"
-            size="mini"
-            @click="handleDeleteEditTableData(row.id)"
-            >删除</el-button
-          >
-        </template>
-      </editor-table>
     </page-modal>
   </div>
 </template>
@@ -153,28 +146,49 @@ import {
   useSetLanguage,
   usePageList,
   useImageUpload,
-  useEditTableData
+  useEditTableData,
+  mapFormConfigData
 } from './hooks/use-page-list'
 import { getItemData, sortPageTableData } from '@/service/common-api'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { successTip, errorTip } from '@/utils/tip-info'
+import seriesComponent from './components/indexSeries.vue'
 export default defineComponent({
   name: 'resourceHome',
   components: {
-    editorTable
+    editorTable,
+    seriesComponent
   },
   setup() {
+    const {
+      pageContentRef,
+      handleCountryList,
+      countryRef,
+      selectCountryClick,
+      selectNodeClick,
+      handleQueryBtnClick,
+      handleResetBtnClick
+    } = useMapCountry()
+    const nodeClick = (data: any) => {
+      selectNodeClick(data)
+    }
+    // 下拉数据
+    const [contentList, categoryList] = mapFormConfigData()
     // 编辑表格
     const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
       newTableData({
-        id: '',
-        rank: '',
-        mid: '',
+        title: '',
         subTitle: '',
-        url: [],
-        cover: ''
+        cover: '',
+        coverList: [],
+        gift: '',
+        giftList: [],
+        state: '',
+        tid: '',
+        shape: '', // shape 0:无,1:大横矩形,2:小横矩形
+        jump: ''
       })
     }
     const handleDeleteEditTableData = (item: any) => {
@@ -189,7 +203,14 @@ export default defineComponent({
       listData.value = listData.value.map((item: any) => {
         return {
           ...item,
-          cover: item.url && item.cover.length > 0 ? item.cover[0].url : ''
+          cover:
+            item.coverList && item.coverList.length > 0
+              ? item.coverList[0].url
+              : '',
+          gift:
+            item.giftList && item.giftList.length > 0
+              ? item.giftList[0].url
+              : ''
         }
       })
     })
@@ -205,52 +226,18 @@ export default defineComponent({
       requiredField,
       mapIconState
     ] = useSetLanguage()
-    const [
-      countryList,
-      authorList,
-      getAuthorList,
-      resourceList,
-      getResourceList,
-      loading
-    ] = usePageList()
-    const [storeTypeInfo, operationName] = useStoreName()
-    const getData = (mtId: any) => {
-      getItemData('topicItem', {
-        mtId: mtId
-      }).then((res: any) => {
-        if (res.result === 0) {
-          author.value = res.data.author
-          areaIds.value = res.data.areaIds
-          otherInfo.value = {
-            mtId: res.data.mtId,
-            author: res.data.author,
-            areaIds: res.data.areaIds.toString()
-          }
-          if (res.data.topicList && res.data.topicList.length > 0) {
-            let result: any[] = []
-            result = res?.data?.topicList.map((item: any) => {
-              return {
-                ...item,
-                url: item.cover ? [mapImageToObject(item.cover)] : []
-              }
-            })
-            console.log(result)
-            languageList.value = result
-            let info: any[] = []
-            info = res?.data?.childList.map((item: any) => {
-              return {
-                ...item,
-                tempMid: `${item.mid} : ${item.title}`,
-                url: item.cover ? [mapImageToObject(item.cover)] : []
-              }
-            })
-            listData.value = info
-            languageId.value = res?.data?.topicList[0].lid
-            mapIconState(res?.data?.topicList, requiredField.value)
-          }
-          handleEditData(res.data)
-        } else errorTip(res.msg)
+    const [countryList] = usePageList()
+    const countryListMap = computed(() => {
+      return countryList.value.map((item: any) => {
+        return {
+          title: item.name,
+          value: item.id
+        }
       })
+    })
+    const [storeTypeInfo, operationName] = useStoreName()
+    const getData = (id: any) => {
+      console.log(id)
     }
     const handleDrawTable = (data: any) => {
       const idList = data.map((item: any) => item.id)
@@ -259,7 +246,7 @@ export default defineComponent({
       }).then((res: any) => {
         if (res.result === 0) {
           successTip(res.msg)
-          getData(otherInfo.value.mtId)
+          getData(otherInfo.value.id)
         } else errorTip(res.msg)
       })
     }
@@ -267,31 +254,6 @@ export default defineComponent({
     const author = ref<any>()
     const otherInfo = ref<any>({})
     const operationType = ref<string>('add')
-    // 资源管理
-    const handleChangeResourceData = (keyword: string) => {
-      getResourceList(keyword)
-    }
-    const handleChangeResourceItemData = (tempMid: any) => {
-      console.log(resourceList.value)
-      debugger
-      const selectItem = resourceList.value.find(
-        (item: any) => item.moId === tempMid
-      )
-      const index = listData.value.findIndex(
-        (item: any) => item.tempMid === tempMid
-      )
-      listData.value.splice(index, 1, {
-        id: selectItem.id,
-        cover: selectItem.cover,
-        title: selectItem.name,
-        subTitle: selectItem.seriesName,
-        mid: selectItem.moId,
-        tempMid: selectItem.moId,
-        url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
-      })
-      // listData.value = result
-      console.log(listData.value, index, 'value')
-    }
     // 下拉地区
     const areaIds = ref<any>([])
     watchEffect(() => {
@@ -305,26 +267,13 @@ export default defineComponent({
           areaIds: region.toString()
         }
       }
-      if (languageItem.value) {
-        if (languageItem.value.url.length > 0) {
-          languageItem.value.cover = languageItem.value.url[0].url
-          languageItem.value = {
-            ...languageItem.value,
-            cover: languageItem.value.url[0].url
-          }
-        } else {
-          languageItem.value.cover = undefined
-          languageItem.value.url = []
-        }
-      }
       otherInfo.value = {
         ...otherInfo.value,
         author: author.value,
-        topicJson: JSON.stringify(languageList.value),
+        indexJson: JSON.stringify(languageList.value),
         childListStr: JSON.stringify(listData.value)
       }
     })
-    // 监听多语言图片设置
     const handleChangeCountry = (item: any[]) => {
       const all: any[] = []
       const check = item.find((i: any) => i === -1)
@@ -347,26 +296,131 @@ export default defineComponent({
       }
     }
     const searchFormConfigRef = computed(() => {
+      searchFormConfig.formItems.map((item: any) => {
+        if (item.field === 'type') item!.options = contentList.value
+      })
       return searchFormConfig
     })
     const modalConfigRef = computed(() => {
+      modalConfig.formItems.map((item: any) => {
+        if (item.field === 'type') item!.options = contentList.value
+      })
       return modalConfig
     })
+    const contentTableEditConfigRef = computed(() => {
+      return contentTableEditConfig
+    })
+    // 下拉数据搜索
+    const editTableType = ref<any>(undefined)
+    const mapDiffParams = () => {
+      if (editTableType.value !== undefined) {
+        listData.value = []
+        if (editTableType.value === 1) {
+          contentTableEditConfig.propList.map((item: any) => {
+            if (item.prop === 'title' && item.label === '按钮名称')
+              item!.isHidden = false
+            if (item.prop === 'shape') item!.isHidden = true
+            if (item.prop === 'tid') item!.isHidden = true
+            if (item.prop === 'title' && item.label === '标题')
+              item!.isHidden = true
+            if (item.prop === 'subTitle') item!.isHidden = true
+            if (item.prop === 'giftList') item!.isHidden = true
+            if (item.prop === 'jump') item!.isHidden = false
+          })
+        } else if (editTableType.value === 8) {
+          contentTableEditConfigRef.value.propList.map((item: any) => {
+            if (item.prop === 'title' && item.label === '按钮名称')
+              item!.isHidden = true
+            if (item.prop === 'shape') item!.isHidden = false
+            if (item.prop === 'tid') item!.isHidden = false
+            if (item.prop === 'title' && item.label === '标题')
+              item!.isHidden = false
+            if (item.prop === 'subTitle') item!.isHidden = false
+            if (item.prop === 'jump') item!.isHidden = true
+            if (item.prop === 'giftList') item!.isHidden = false
+          })
+        } else {
+          contentTableEditConfigRef.value.propList.map((item: any) => {
+            if (item.prop === 'title' && item.label === '按钮名称')
+              item!.isHidden = true
+            if (item.prop === 'shape') item!.isHidden = true
+            if (item.prop === 'tid') item!.isHidden = false
+            if (item.prop === 'title' && item.label === '标题')
+              item!.isHidden = false
+            if (item.prop === 'subTitle') item!.isHidden = false
+            if (item.prop === 'jump') item!.isHidden = true
+            if (item.prop === 'giftList') item!.isHidden = false
+          })
+        }
+      }
+    }
+    const handleChangeSelect = (data: any) => {
+      if (data.field === 'library' && +data.value === 2) {
+        modalConfig.formItems.map((item: any) => {
+          if (item.field === 'category') {
+            item!.options = []
+          }
+        })
+        modalConfig.formItems.map((item: any) => {
+          if (item.field === 'category') {
+            categoryList.value.map((i: any) => {
+              if (i.parent === data.value) {
+                item!.options.push({
+                  title: i.title,
+                  value: i.value
+                })
+              }
+            })
+          }
+        })
+      }
+      if (data.field === 'library' && +data.value === 1) {
+        modalConfig.formItems.map((item: any) => {
+          if (item.field === 'category') {
+            item!.options = []
+          }
+        })
+        modalConfig.formItems.map((item: any) => {
+          if (item.field === 'category') {
+            categoryList.value.map((i: any) => {
+              if (i.parent === data.value) {
+                item!.options.push({
+                  title: i.title,
+                  value: i.value
+                })
+              }
+            })
+          }
+        })
+      }
+      if (data.field === 'type') {
+        editTableType.value = +data.value
+        mapDiffParams()
+      }
+    }
     const newData = () => {
       author.value = null
       operationType.value = 'add'
       areaIds.value = []
       listData.value = []
+      editTableType.value = undefined
       resetLanguageList()
     }
 
     const editData = (item: any) => {
       operationType.value = 'edit'
-      getData(item.mtId)
+      editTableType.value = +item.type
+      mapDiffParams()
+      // getData(item.mtId)
+      handleEditData(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     return {
+      nodeClick,
+      contentList,
+      categoryList,
+      handleChangeSelect,
       // 编辑表格
       operationType,
       contentTableEditConfig,
@@ -376,19 +430,17 @@ export default defineComponent({
       deleteTableData,
       handleDrawTable,
       // 侧边国家
-      ...useMapCountry(),
+      pageContentRef,
+      handleCountryList,
+      countryRef,
+      selectCountryClick,
+      handleQueryBtnClick,
+      handleResetBtnClick,
       // 下拉框数据
       areaIds,
-      author,
       countryList,
+      countryListMap,
       handleChangeCountry,
-      authorList,
-      getAuthorList,
-      resourceList,
-      getResourceList,
-      handleChangeResourceData,
-      handleChangeResourceItemData,
-      loading,
       // 多语言编辑
       imgLimit,
       editorRef,
@@ -407,7 +459,8 @@ export default defineComponent({
       pageModalRef,
       defaultInfo,
       operationName,
-      otherInfo
+      otherInfo,
+      contentTableEditConfigRef
     }
   }
 })

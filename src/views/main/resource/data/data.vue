@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-15 16:57:13
+ * @LastEditTime: 2022-04-18 10:17:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
 <template>
   <!-- TODO 暂时隐藏 -->
-  <div class="resourceData" v-if="0">
+  <div class="resourceData">
     <page-search
       :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"
@@ -56,7 +56,7 @@
       <div class="item-flex">
         <span class="item-title">编辑数据</span>
         <el-input
-          v-model="otherInfo.downloadShow"
+          v-model="otherInfo.num"
           placeholder="请输入值"
           type="number"
           @input="handleChangeNumber"
@@ -114,7 +114,6 @@ export default defineComponent({
       return mapSelectListTitle(value, list)
     }
     const handleQueryBtnClick = (data: any) => {
-      console.log(data, 'data')
       const begin = mapTimeToSearch(data.dateTime).start
       const end = mapTimeToSearch(data.dateTime).end
       const onlineTimeBegin = mapTimeToSearch(data.lineTime).start
@@ -130,17 +129,20 @@ export default defineComponent({
     const otherInfo = ref<any>()
     const editData = (item: any) => {
       otherInfo.value = {
-        downloadShow: item.downloadShow,
+        id: item.id,
+        num: item.downloadShow,
         download: item.download
       }
-      if (!isNaN(+item.download + +item.downloadShow / 1000))
-        item.frontShow = +item.download + +item.downloadShow / 1000 + 'K'
-      else item.frontShow = 0 + 'K'
+      if (item.downloadShow) {
+        if (item.downloadShow / 1000 < 1) {
+          item.showNum = 0 + 'K'
+        } else item.showNum = +item.downloadShow / 1000 + 'K'
+      }
     }
     const handleChangeNumber = () => {
-      // if (!isNaN(otherInfo.value.downloadShow / 1000)) {
-      //   otherInfo.value.downloadShow = otherInfo.value.downloadShow / 1000
-      // } else otherInfo.value.downloadShow = 0
+      // if (isNaN(otherInfo.value.num)) {
+      //   otherInfo.value.num = 0
+      // }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(undefined, editData)

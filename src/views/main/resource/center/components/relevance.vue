@@ -261,7 +261,8 @@ export default defineComponent({
         if (res.result === 0) {
           successTip(res.msg)
           if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
+            successTip(res.msg)
+            // pageModalRef.value.dialogVisible = false
             emit('getData')
           }
         } else errorTip(res.msg)

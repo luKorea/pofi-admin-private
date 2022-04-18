@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:10:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-18 18:14:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -30,8 +30,18 @@ export const contentTableEditConfig: TableConfig = {
       }
     },
     {
-      prop: 'tempMid',
+      prop: 'title',
+      label: '按钮名称',
+      editInfo: {
+        type: 'input',
+        placeholder: '请输入按钮名称',
+        disabled: false
+      }
+    },
+    {
+      prop: 'tid',
       label: '资源名称',
+      isHidden: true,
       editInfo: {
         type: 'other',
         placeholder: '请输入资源名称',
@@ -39,20 +49,68 @@ export const contentTableEditConfig: TableConfig = {
       }
     },
     {
+      prop: 'title',
+      label: '标题',
+      isHidden: true,
+      editInfo: {
+        type: 'input',
+        placeholder: '请输入标题'
+      }
+    },
+    {
       prop: 'subTitle',
       label: '副标题',
+      isHidden: true,
       editInfo: {
         type: 'input',
         placeholder: '请输入副标题'
       }
     },
     {
-      prop: 'url',
+      prop: 'coverList',
       label: '图片',
       width: '100px',
       editInfo: {
         type: 'upload',
-        fileTypeName: 'resourceTopic/'
+        fileTypeName: 'resourceIndex/'
+      }
+    },
+    {
+      prop: 'giftList',
+      label: '彩蛋图',
+      width: '100px',
+      isHidden: true,
+      editInfo: {
+        type: 'upload',
+        fileTypeName: 'resourceIndex/'
+      }
+    },
+    {
+      prop: 'jump',
+      label: '跳转地址',
+      editInfo: {
+        type: 'textarea',
+        placeholder: '请输入跳转地址',
+        otherOptions: {
+          rows: 3
+        }
+      }
+    },
+    {
+      prop: 'status',
+      label: '状态',
+      width: '100px',
+      editInfo: {
+        type: 'other'
+      }
+    },
+    {
+      prop: 'shape',
+      label: '是否大横矩形',
+      width: '100px',
+      isHidden: true,
+      editInfo: {
+        type: 'other'
       }
     },
     // {

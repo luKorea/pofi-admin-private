@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:25:14
+ * @LastEditTime: 2022-04-18 16:00:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -12,7 +12,7 @@ export const modalConfig: IForm = {
   title: '首页管理操作',
   formItems: [
     {
-      field: 'mtId',
+      field: 'id',
       type: 'input',
       label: '编号',
       placeholder: '系统生成',
@@ -21,39 +21,85 @@ export const modalConfig: IForm = {
       }
     },
     {
-      field: 'pname',
+      field: 'remark',
       type: 'input',
-      label: '名称',
-      placeholder: '请输入名称',
+      label: '内容',
+      placeholder: '请输入内容',
       rules: [
         {
           required: true,
-          message: '请输入名称',
+          message: '请输入内容',
           trigger: 'blur'
         }
       ]
     },
     {
-      field: 'color',
+      field: 'library',
       type: 'select',
-      label: '标题颜色',
-      placeholder: '请选择标题颜色',
+      label: '所属库',
+      placeholder: '请选择所属库',
       rules: [
         {
           required: true,
-          message: '请选择标题颜色',
+          message: '请选择所属库',
           trigger: 'blur'
         }
       ],
       options: [
         {
-          title: '深色',
+          title: '人偶库',
           value: 1
         },
         {
-          title: '浅色',
-          value: 0
+          title: 'pose库',
+          value: 2
         }
+      ]
+    },
+    {
+      field: 'category',
+      type: 'select',
+      label: '所属分类页',
+      placeholder: '请选择所属分类页',
+      rules: [
+        {
+          required: true,
+          message: '请选择所属分类页',
+          trigger: 'blur'
+        }
+      ],
+      options: []
+    },
+    {
+      field: 'type',
+      type: 'select',
+      label: '样式类型',
+      placeholder: '请选择样式类型',
+      rules: [
+        {
+          required: true,
+          message: '请选择样式类型',
+          trigger: 'blur'
+        }
+      ],
+      options: []
+    },
+    {
+      field: 'childType',
+      type: 'select',
+      label: '专栏内容类型',
+      placeholder: '请选择专栏内容类型',
+      rules: [
+        {
+          required: true,
+          message: '请选择专栏内容类型',
+          trigger: 'blur'
+        }
+      ],
+      options: [
+        { title: '资源', value: 1 },
+        { title: '专题', value: 2 },
+        { title: '图标按钮', value: 4 }
       ]
     },
     {
@@ -70,14 +116,20 @@ export const modalConfig: IForm = {
       ],
       options: [
         {
-          title: '有效',
+          title: '显示',
           value: 1
         },
         {
-          title: '失效',
+          title: '不显示',
           value: 0
         }
       ]
+    },
+    {
+      field: 'remark2',
+      type: 'input',
+      label: '备注',
+      placeholder: '请输入备注'
     }
   ],
   colLayout: {

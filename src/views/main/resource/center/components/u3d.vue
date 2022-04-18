@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-15 17:24:06
+ * @LastEditTime: 2022-04-18 17:31:32
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -258,13 +258,13 @@ export default defineComponent({
           iosSize: data.size + 'M',
           sizeIos: data.size
         }
-        // mapFileInfo(
-        //   {
-        //     ...data,
-        //     size: data.size + 'M'
-        //   },
-        //   type
-        // )
+        mapFileInfo(
+          {
+            ...data,
+            size: data.size + 'M'
+          },
+          type
+        )
       } else {
         fileInfo.value = {
           ...fileInfo.value,
@@ -273,13 +273,13 @@ export default defineComponent({
           androidSize: data.size + 'M',
           sizeAd: data.size
         }
-        // mapFileInfo(
-        //   {
-        //     ...data,
-        //     size: data.size + 'M'
-        //   },
-        //   type
-        // )
+        mapFileInfo(
+          {
+            ...data,
+            size: data.size + 'M'
+          },
+          type
+        )
       }
     }
     const mapFileInfo = (item: any, type: any) => {
@@ -445,8 +445,9 @@ export default defineComponent({
       resourceU3dOperation(data, 'update').then((res) => {
         if (res.result === 0) {
           if (pageModalRef.value) {
-            pageModalRef.value.dialogVisible = false
-            resetData()
+            successTip(res.msg)
+            // pageModalRef.value.dialogVisible = false
+            // resetData()
             emit('getData')
           }
         } else errorTip(res.msg)
@@ -468,39 +469,41 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     const openStep = async (item: any, res: any) => {
-      if (item.save) {
-        let data = {
-          moId: props.params.moId,
-          iosSourceUrl: otherInfo.value.iosSourceUrl,
-          androidSourceUrl: otherInfo.value.androidSourceUrl,
-          ...otherInfo.value.iosChose,
-          ...otherInfo.value.androidChose,
-          ...fileInfo.value
-        }
-        if (props.editType === 'add') {
-          resourceU3dOperation(data, 'add').then((res) => {
-            if (res.result === 0) {
-              successTip(res.msg)
-              if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-              resetData()
-              emit('openStep', item.step, props.params)
-            } else errorTip(res.msg)
-          })
-        } else {
-          resourceU3dOperation(data, 'update').then((res) => {
-            if (res.result === 0) {
-              successTip(res.msg)
-              if (pageModalRef.value) {
+      if (item.step !== 2) {
+        if (item.save) {
+          let data = {
+            moId: props.params.moId,
+            iosSourceUrl: otherInfo.value.iosSourceUrl,
+            androidSourceUrl: otherInfo.value.androidSourceUrl,
+            ...otherInfo.value.iosChose,
+            ...otherInfo.value.androidChose,
+            ...fileInfo.value
+          }
+          if (props.editType === 'add') {
+            resourceU3dOperation(data, 'add').then((res) => {
+              if (res.result === 0) {
                 successTip(res.msg)
-                pageModalRef.value.dialogVisible = false
+                if (pageModalRef.value) pageModalRef.value.dialogVisible = false
                 resetData()
                 emit('openStep', item.step, props.params)
-              }
-            } else errorTip(res.msg)
-          })
+              } else errorTip(res.msg)
+            })
+          } else {
+            resourceU3dOperation(data, 'update').then((res) => {
+              if (res.result === 0) {
+                successTip(res.msg)
+                if (pageModalRef.value) {
+                  successTip(res.msg)
+                  pageModalRef.value.dialogVisible = false
+                  resetData()
+                  emit('openStep', item.step, props.params)
+                }
+              } else errorTip(res.msg)
+            })
+          }
+        } else {
+          emit('openStep', item.step, props.params)
         }
-      } else {
-        emit('openStep', item.step, props.params)
       }
     }
     return {

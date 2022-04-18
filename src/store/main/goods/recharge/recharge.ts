@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:46:35
+ * @LastEditTime: 2022-04-18 10:04:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -86,7 +86,10 @@ const goodsRechargeModule: Module<IGoodsRechargeType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         const pageUrl = apiList[pageName] + 'add'
-        const data = await createPageData(pageUrl, newData)
+        const data = await createPageData(pageUrl, {
+          ...newData,
+          type: 3
+        })
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 13:16:46
+ * @LastEditTime: 2022-04-18 11:08:13
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -31,6 +31,7 @@ import { IGoodsDescriptionType } from './main/goods/description/types'
 import { IResourceClassifyType } from './main/resource/classify/types'
 import { IResourceSeriesType } from './main/resource/series/types'
 import { IResourceTopicType } from './main/resource/topic/types'
+import { IResourceHomeSeriesType } from './main/resource/index/series/types'
 import { IHelpFunctionTypeType } from './main/help/functionType/types'
 import { IHelpCompanionType } from './main/help/companion/types'
 import { IHelpFunctionType } from './main/help/function/types'
@@ -92,6 +93,7 @@ export interface IRootWithModule {
   resourceTopicModule: IResourceTopicType
   resourceCenterModule: IResourceCenterType
   resourceHomeModule: IResourceHomeType
+  resourceIndexSeriesModule: IResourceHomeSeriesType
   // 系统管理
   oaRouterModule: IRouterState
   oaUserModule: IUserState

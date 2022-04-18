@@ -62,6 +62,7 @@
             v-bind="propItem"
             :align="propItem.align ? propItem.align : 'center'"
             show-overflow-tooltip
+            v-if="!propItem.isHidden"
           >
             <template #default="scope">
               <!-- 动态插槽，动态作用域插槽 -->

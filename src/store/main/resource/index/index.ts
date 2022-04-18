@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:47:05
+ * @LastEditTime: 2022-04-18 10:20:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -26,7 +26,7 @@ import { sortPageTableData } from '@/service/common-api'
 
 const apiList: any = {
   resourceHomes: '/cms/index/',
-  sort: '/cms/topic/updateSort'
+  sort: '/cms/index/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -61,7 +61,7 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       queryInfo = payload.queryInfo
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + 'getAllRecord'
+      const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
         rid: queryInfo.rid ?? -999
@@ -104,8 +104,7 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
           requiredField
         )
           .then(async () => {
-            const pageUrl =
-              apiList[pageName] + cultureDifferentType('add', pageName)
+            const pageUrl = apiList[pageName] + 'addIndex'
             const data = await createPageData(pageUrl, {
               ...newData
             })
@@ -134,8 +133,7 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
           requiredField
         )
           .then(async () => {
-            const pageUrl =
-              apiList[pageName] + cultureDifferentType('update', pageName)
+            const pageUrl = apiList[pageName] + 'updateIndex'
             const data = await editPageData(pageUrl, {
               ...editData
             })

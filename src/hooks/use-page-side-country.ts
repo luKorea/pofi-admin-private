@@ -31,6 +31,7 @@ export function useMapCountry() {
   })
   // 侧边国家
   const countryID = ref<any>(-999)
+  const nodeInfo = ref<any>()
   const countryRef = ref()
   const copyQueryInfo = ref({})
   const selectCountryClick = (item: any) => {
@@ -40,10 +41,18 @@ export function useMapCountry() {
       rid: countryID.value
     })
   }
+  const selectNodeClick = (item: any) => {
+    nodeInfo.value = item
+    handleQueryClick({
+      ...copyQueryInfo.value,
+      ...nodeInfo.value
+    })
+  }
   const handleQueryBtnClick = (queryInfo: any) => {
     copyQueryInfo.value = queryInfo
     handleQueryClick({
       ...queryInfo,
+      ...nodeInfo.value,
       rid: countryID.value
     })
   }
@@ -51,6 +60,7 @@ export function useMapCountry() {
   const handleResetBtnClick = () => {
     countryRef.value.currentIndex = 0
     countryID.value = '-999'
+    nodeInfo.value = {}
     handleResetClick()
   }
   return {
@@ -59,6 +69,7 @@ export function useMapCountry() {
     countryRef,
     selectCountryClick,
     handleQueryBtnClick,
-    handleResetBtnClick
+    handleResetBtnClick,
+    selectNodeClick
   }
 }

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 11:17:56
+ * @LastEditTime: 2022-04-18 15:08:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -47,8 +47,8 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'name',
-      type: 'input',
+      field: 'day',
+      type: 'inputNumber',
       label: '套餐天数',
       placeholder: '请输入套餐天数'
     },
@@ -79,24 +79,24 @@ export const modalConfig: IForm = {
         min: 0
       }
     },
+    // {
+    //   field: 'rank',
+    //   type: 'inputNumber',
+    //   label: '套餐排序',
+    //   placeholder: '请输入套餐排序序号',
+    //   otherOptions: {
+    //     min: 0
+    //   },
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请输入套餐排序序号',
+    //       trigger: 'blur'
+    //     }
+    //   ]
+    // },
     {
-      field: 'rank',
-      type: 'inputNumber',
-      label: '套餐排序',
-      placeholder: '请输入套餐排序序号',
-      otherOptions: {
-        min: 0
-      },
-      rules: [
-        {
-          required: true,
-          message: '请输入套餐排序序号',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'show',
+      field: 'funcType',
       type: 'select',
       label: '是否订阅',
       placeholder: '请选择是否订阅',
@@ -112,7 +112,7 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'show',
+      field: 'func',
       type: 'select',
       label: '功能内容',
       placeholder: '请选择功能内容',
@@ -128,36 +128,21 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'func',
+      field: 'modeType',
       type: 'select',
-      label: '资源内容',
-      placeholder: '请选择资源内容',
-      options: [
-        {
-          title: 'Pro专业版',
-          value: 1
-        },
-        {
-          title: 'Plus豪华版',
-          value: 2
-        }
-      ]
+      label: '资源类型',
+      placeholder: '请选择资源类型',
+      options: []
     },
     {
-      field: 'func',
+      field: 'moId',
       type: 'select',
       label: '资源名字',
       placeholder: '请选择资源名字',
-      options: [
-        {
-          title: 'Pro专业版',
-          value: 1
-        },
-        {
-          title: 'Plus豪华版',
-          value: 2
-        }
-      ]
+      options: [],
+      otherOptions: {
+        multiple: true
+      }
     },
     {
       field: 'developed',
@@ -187,6 +172,13 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '套餐状态',
       placeholder: '请选择套餐状态',
+      rules: [
+        {
+          required: true,
+          message: '请选择套餐状态',
+          trigger: 'blur'
+        }
+      ],
       options: [
         {
           title: '上架',

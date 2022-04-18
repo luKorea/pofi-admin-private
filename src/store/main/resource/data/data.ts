@@ -3,7 +3,7 @@ import { cultureDifferentType } from '@/utils/index'
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-15 15:18:11
+ * @LastEditTime: 2022-04-18 09:29:27
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/resource/data/data.ts
  */
@@ -113,7 +113,16 @@ const resourceDataModule: Module<IResourceDataType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const pageUrl = apiList[pageName] + 'updateDownload'
-        const data = await editPageData(pageUrl, editData)
+        console.log(editData)
+        const result = {
+          state: editData.downloadState,
+          showNum: editData.num / 1000,
+          id: editData.id,
+          num: editData.num,
+          moId: editData.moId
+        }
+        console.log(result)
+        const data = await editPageData(pageUrl, result)
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {

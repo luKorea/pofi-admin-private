@@ -2,16 +2,15 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 15:11:17
+ * @LastEditTime: 2022-04-18 13:38:43
  * @Description: file content
- * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
+ * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { firstToUpperCase, cultureDifferentType } from '@/utils/index'
+import { firstToUpperCase, validateParamsRules } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
-import { IGoodsFunctionType } from './types'
-import { sortPageTableData } from '@/service/common-api'
+import { IResourceHomeSeriesType } from './types'
 
 import {
   getPageListData,
@@ -19,29 +18,31 @@ import {
   editPageData,
   deletePageToQueryData
 } from '@/service/common-api'
+import { sortPageTableData } from '@/service/common-api'
 
 const apiList: any = {
-  functions: '/cms/function/',
-  sort: '/cms/function/updateSort'
+  indexSeries: '/cms/index/',
+  sort: '/cms/index/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
+const requiredField = ['name']
+const resourceIndexSeriesModule: Module<IResourceHomeSeriesType, IRootState> = {
   namespaced: true,
   state() {
     return {
-      functionsCount: 0,
-      functionsList: []
+      indexSeriesCount: 0,
+      indexSeriesList: []
     }
   },
   mutations: {
-    changeFunctionsList(state, functionsList: any[]) {
-      state.functionsList = functionsList
+    changeIndexSeriesList(state, indexSeriesList: any[]) {
+      state.indexSeriesList = indexSeriesList
     },
-    changeFunctionsCount(state, functionsCount: number) {
-      state.functionsCount = functionsCount
+    changeIndexSeriesCount(state, indexSeriesCount: number) {
+      state.indexSeriesCount = indexSeriesCount
     }
   },
   getters: {
@@ -56,21 +57,24 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       queryInfo = payload.queryInfo
       const pageName = payload.pageName
-      const pageUrl = apiList[pageName] + 'getRecords'
-      const pageResult = await getPageListData(pageUrl, queryInfo)
+      const pageUrl = apiList[pageName] + 'routers'
+      const pageResult = await getPageListData(pageUrl, {
+        ...queryInfo
+      })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)
-        commit(`change${changePageName}List`, rows)
+        commit(`change${changePageName}List`, pageResult.data)
         commit(`change${changePageName}Count`, total)
       } else errorTip(pageResult.msg)
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('delete', pageName)
-      const data = await deletePageToQueryData(pageUrl, { id: id })
+      const pageUrl = apiList[pageName] + 'delRouter'
+      const data = await deletePageToQueryData(pageUrl, {
+        id: id
+      })
       if (data.result === 0) {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
@@ -86,21 +90,28 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('add', pageName)
-        const data = await createPageData(pageUrl, {
-          ...newData,
-          moId: newData.moId.toString(),
-          type: 3
-        })
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        console.log(newData)
+        const validData = JSON.parse(newData.classifyJson)[0]
+        validateParamsRules(
+          JSON.parse(newData.classifyJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'addRouter'
+            const data = await createPageData(pageUrl, {
+              ...newData
+            })
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          .catch((err) => errorTip(err))
       })
     },
 
@@ -109,17 +120,27 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl =
-          apiList[pageName] + cultureDifferentType('update', pageName)
-        const data = await editPageData(pageUrl, editData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        const validData = JSON.parse(editData.classifyJson)[0]
+        validateParamsRules(
+          JSON.parse(editData.classifyJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'updateRouter'
+            const data = await editPageData(pageUrl, {
+              ...editData
+            })
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          .catch((err) => errorTip(err))
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {
@@ -140,4 +161,4 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
   }
 }
 
-export default goodsFunctionModule
+export default resourceIndexSeriesModule
