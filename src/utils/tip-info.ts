@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 09:33:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 17:07:10
+ * @LastEditTime: 2022-04-18 20:13:23
  * @Description: 封装公用文字提示
  * @FilePath: /pofi-admin/src/utils/tip-info.ts
  */
@@ -48,9 +48,10 @@ export const infoTipBox = (info: MessageInfo) => {
       type: info.iconType ?? 'warning',
       closeOnClickModal: true,
       closeOnPressEscape: false,
-      showClose: false
+      showClose: false,
+      distinguishCancelAndClose: true
     })
       .then(() => resolve())
-      .catch(() => reject('用户取消操作'))
+      .catch((action: any) => reject(action))
   })
 }
