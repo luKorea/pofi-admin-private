@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-18 20:15:24
+ * @LastEditTime: 2022-04-19 14:47:21
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -263,28 +263,37 @@ export default defineComponent({
     // 监听图片变化
     watchEffect(() => {
       if (languageItem.value && languageItem.value.giftList.length > 0) {
-        languageItem.value.gift = languageItem.value.giftList[0].url
+        languageItem.value.gift = [...languageItem.value.giftList[0].url]
       }
       if (languageItem.value && languageItem.value.coverList.length > 0) {
-        languageItem.value.cover = languageItem.value.coverList[0].url
+        languageItem.value.cover = [...languageItem.value.coverList[0].url]
       }
       if (languageItem.value && languageItem.value.b0List.length > 0) {
         const list = languageItem.value.b0List
-        languageItem.value.b0 = list.map((i: any) => {
-          return i.url
-        })
+        languageItem.value.b0 = [
+          ...languageItem.value.b0,
+          list.map((i: any) => {
+            return i.url
+          })
+        ]
       }
       if (languageItem.value && languageItem.value.c0List.length > 0) {
         const list = languageItem.value.c0List
-        languageItem.value.c0 = list.map((i: any) => {
-          return i.url
-        })
+        languageItem.value.c0 = [
+          ...languageItem.value.c0,
+          list.map((i: any) => {
+            return i.url
+          })
+        ]
       }
       if (languageItem.value && languageItem.value.d0List.length > 0) {
         const list = languageItem.value.d0List
-        languageItem.value.d0 = list.map((i: any) => {
-          return i.url
-        })
+        languageItem.value.d0 = [
+          ...languageItem.value.d0,
+          list.map((i: any) => {
+            return i.url
+          })
+        ]
       } else {
         languageItem.value = {
           ...languageItem.value,

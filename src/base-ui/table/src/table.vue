@@ -73,8 +73,8 @@
                 <template v-else>
                   <template v-if="propItem.editInfo.type === 'input'">
                     <el-input
+                      :placeholder="propItem.placeholder"
                       v-model="scope.row[propItem.prop]"
-                      :placeholder="propItem.editInfo.placeholder"
                       :disabled="propItem.editInfo.disabled"
                       clearable
                     ></el-input>
@@ -84,7 +84,7 @@
                   >
                     <el-input-number
                       v-model="scope.row[propItem.prop]"
-                      :placeholder="propItem.editInfo.placeholder"
+                      :placeholder="propItem.placeholder"
                       :disabled="propItem.editInfo.disabled"
                       clearable
                       style="width: 100%"
@@ -97,13 +97,13 @@
                       clearable
                       v-bind="propItem.editInfo.otherOptions"
                       v-model="scope.row[propItem.prop]"
-                      :placeholder="propItem.editInfo.placeholder"
+                      :placeholder="propItem.placeholder"
                       :disabled="propItem.editInfo.disabled"
                     ></el-input>
                   </template>
                   <template v-else-if="propItem.editInfo.type === 'select'">
                     <el-select
-                      :placeholder="propItem.editInfo.placeholder"
+                      :placeholder="propItems.placeholder"
                       v-bind="propItem.editInfo.otherOptions"
                       style="width: 100%"
                       v-model="scope.row[propItem.prop]"
@@ -148,7 +148,10 @@
                     <slot name="handler" :row="scope.row"></slot>
                   </template>
                   <template v-else-if="propItem.editInfo.type === 'other'">
-                    <slot name="other" :row="scope.row"></slot>
+                    <slot
+                      :name="propItem.editInfo.slotName"
+                      :row="scope.row"
+                    ></slot>
                   </template>
                 </template>
               </slot>
