@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 17:11:09
+ * @LastEditTime: 2022-04-19 15:55:33
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -10,6 +10,7 @@ import { errorTip } from '@/utils/tip-info'
 import { ref, computed, nextTick, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
+import { _debounce } from '@/utils'
 
 export function mapFormConfigData() {
   const contentList = ref<any>([]) // 样式类型
@@ -56,7 +57,7 @@ export function useEditTableData() {
 
 export function useSetLanguage() {
   const editorRef = ref<any>()
-  const requiredField = ref<any>(['name', 'subTitle', 'desc'])
+  const requiredField = ref<any>(['title'])
   const [
     languageList,
     languageId,
@@ -66,11 +67,8 @@ export function useSetLanguage() {
     mapItemIcon
   ] = usePageLanguage(
     {
-      name: '',
-      subTitle: '',
-      url: [],
-      cover: '',
-      desc: ''
+      title: '',
+      childListStr: []
     },
     'lid'
   )
@@ -88,10 +86,8 @@ export function useSetLanguage() {
     }
   })
   // 改变多语言
-  const handleChangeLanguage = async (id: any) => {
+  const handleChangeLanguage = (id: any) => {
     languageId.value = id
-    await nextTick()
-    editorRef.value.setEditorValue()
   }
 
   return [
@@ -110,6 +106,9 @@ export function useSetLanguage() {
 export function usePageList() {
   // 国家地区
   const countryList = ref<any>([])
+  // 资源
+  const resourceList = ref<any>([])
+  const loading = ref<boolean>(false)
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
       if (res.state) {
@@ -123,8 +122,22 @@ export function usePageList() {
       } else errorTip(res.msg)
     })
   }
+  const getResourceList = _debounce(
+    (keyword: string, lid: string) => {
+      loading.value = true
+      getCommonSelectList('resourceType', { keyword: keyword, lid: lid }, false)
+        .then((res) => {
+          if (res.state) {
+            resourceList.value = res.data
+          } else errorTip(res.msg)
+        })
+        .finally(() => (loading.value = false))
+    },
+    300,
+    true
+  )
   getCountryList()
-  return [countryList]
+  return [countryList, resourceList, getResourceList, loading]
 }
 
 export function useStoreName() {

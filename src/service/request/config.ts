@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:49
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-10 15:45:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-19 14:57:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/request/config.ts
  */
@@ -22,7 +22,7 @@
 // 测试环境: test
 
 let BASE_URL = ''
-const TIME_OUT = 10000
+const TIME_OUT = 50000
 const QINIU = 'http://up.qiniu.com'
 const OSSURL = 'http://f3.pofiart.com' // 图片视频上传地址
 const IMG_URL = 'https://f3.pofiart.com'

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 18:14:59
+ * @LastEditTime: 2022-04-19 15:49:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -14,18 +14,20 @@ export const contentTableEditConfig: TableConfig = {
     {
       prop: 'id',
       label: '序号',
+      width: '80',
+      placeholder: '系统生成',
       editInfo: {
         type: 'input',
-        placeholder: '系统生成',
         disabled: true
       }
     },
     {
       prop: 'rank',
       label: '排序序号',
+      width: '100',
+      placeholder: '系统生成',
       editInfo: {
         type: 'input',
-        placeholder: '系统生成',
         disabled: true
       }
     },
@@ -44,6 +46,7 @@ export const contentTableEditConfig: TableConfig = {
       isHidden: true,
       editInfo: {
         type: 'other',
+        slotName: 'isSelect',
         placeholder: '请输入资源名称',
         disabled: false
       }
@@ -72,7 +75,8 @@ export const contentTableEditConfig: TableConfig = {
       width: '100px',
       editInfo: {
         type: 'upload',
-        fileTypeName: 'resourceIndex/'
+        fileTypeName: 'resourceIndex/',
+        limit: 1
       }
     },
     {
@@ -82,7 +86,8 @@ export const contentTableEditConfig: TableConfig = {
       isHidden: true,
       editInfo: {
         type: 'upload',
-        fileTypeName: 'resourceIndex/'
+        fileTypeName: 'resourceIndex/',
+        limit: 1
       }
     },
     {
@@ -101,7 +106,8 @@ export const contentTableEditConfig: TableConfig = {
       label: '状态',
       width: '100px',
       editInfo: {
-        type: 'other'
+        type: 'other',
+        slotName: 'isStatus'
       }
     },
     {
@@ -110,7 +116,8 @@ export const contentTableEditConfig: TableConfig = {
       width: '100px',
       isHidden: true,
       editInfo: {
-        type: 'other'
+        type: 'other',
+        slotName: 'isShare'
       }
     },
     // {
@@ -127,6 +134,7 @@ export const contentTableEditConfig: TableConfig = {
     // },
     {
       label: '操作',
+      width: '100',
       editInfo: {
         type: 'handler'
       }

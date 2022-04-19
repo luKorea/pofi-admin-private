@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 16:00:33
+ * @LastEditTime: 2022-04-19 11:39:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -60,7 +60,7 @@ export const modalConfig: IForm = {
       field: 'category',
       type: 'select',
       label: '所属分类页',
-      placeholder: '请选择所属分类页',
+      placeholder: '请先选择所属库',
       rules: [
         {
           required: true,
@@ -125,6 +125,19 @@ export const modalConfig: IForm = {
         }
       ]
     },
+    // {
+    //   field: 'rid',
+    //   type: 'select',
+    //   label: '地区',
+    //   placeholder: '请选择国家/地区',
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请选择国家/地区',
+    //       trigger: 'blur'
+    //     }
+    //   ]
+    // },
     {
       field: 'remark2',
       type: 'input',

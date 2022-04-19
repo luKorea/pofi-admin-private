@@ -90,14 +90,14 @@
               内容标题
             </span>
             <el-input
-              v-model="languageItem.name"
+              v-model="languageItem.title"
               placeholder="请输入内容标题"
               clearable
             ></el-input>
           </div>
           <!-- 可编辑表格 -->
           <editor-table
-            :listData="listData"
+            :listData="languageItem.childListStr"
             v-bind="contentTableEditConfigRef"
             :handleDraw="operationType === 'add' ? false : true"
             :editTableDraw="operationType === 'add' ? false : true"
@@ -108,7 +108,15 @@
                 >新增</el-button
               >
             </template>
-            <template #other="{ row }">
+            <template #isShare="{ row }">
+              <el-button
+                type="text"
+                size="mini"
+                @click="handleChangeEditTableBtn(row)"
+                >大小矩形</el-button
+              >
+            </template>
+            <template #isStatus="{ row }">
               <el-button
                 type="primary"
                 size="mini"
@@ -116,11 +124,32 @@
                 >显示</el-button
               >
             </template>
+            <template #isSelect="{ row }">
+              <el-select
+                placeholder="资源搜索"
+                style="width: 100%"
+                filterable
+                remote
+                reserve-keyword
+                :loading="loading"
+                :remote-method="handleChangeResourceData"
+                @change="handleChangeResourceItemData(row.tid)"
+                v-model="row.tid"
+                clearable
+              >
+                <el-option
+                  v-for="option in resourceList"
+                  :key="option.moId"
+                  :value="option.moId"
+                  :label="option.pname"
+                ></el-option>
+              </el-select>
+            </template>
             <template #handler="{ row }">
               <el-button
                 type="danger"
                 size="mini"
-                @click="handleDeleteEditTableData(row.id)"
+                @click="handleDeleteEditTableData(row.tempId)"
                 >删除</el-button
               >
             </template>
@@ -152,8 +181,9 @@ import {
 import { getItemData, sortPageTableData } from '@/service/common-api'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
-import { successTip, errorTip } from '@/utils/tip-info'
+import { successTip, errorTip, warnTip } from '@/utils/tip-info'
 import seriesComponent from './components/indexSeries.vue'
+import { uid } from 'uid'
 export default defineComponent({
   name: 'resourceHome',
   components: {
@@ -161,6 +191,51 @@ export default defineComponent({
     seriesComponent
   },
   setup() {
+    // 变量声明
+    const [imgLimit] = useImageUpload()
+    const otherInfo = ref<any>({})
+    const operationType = ref<string>('add')
+    // 下拉地区
+    const areaIds = ref<any>([])
+    const searchFormConfigRef = computed(() => {
+      searchFormConfig.formItems.map((item: any) => {
+        if (item.field === 'type') item!.options = contentList.value
+      })
+      return searchFormConfig
+    })
+    const modalConfigRef = computed(() => {
+      modalConfig.formItems.map((item: any) => {
+        if (item.field === 'type') item!.options = contentList.value
+      })
+      return modalConfig
+    })
+    const contentTableEditConfigRef = computed(() => {
+      return contentTableEditConfig
+    })
+    // 资源搜索下拉
+    // 资源管理
+    const handleChangeResourceData = (keyword: string) => {
+      getResourceList(keyword, languageItem.value.lid)
+    }
+    const handleChangeResourceItemData = (tid: any) => {
+      const listData = languageItem.value.childListStr
+      const selectItem = resourceList.value.find(
+        (item: any) => item.moId === tid
+      )
+      const index = listData.findIndex((item: any) => item.tid === tid)
+      console.log(index, selectItem)
+      listData.splice(index, 1, {
+        id: selectItem.id,
+        cover: selectItem.cover,
+        title: selectItem.name,
+        subTitle: selectItem.seriesName,
+        tid: selectItem.moId,
+        coverList: selectItem.cover ? [mapImageToObject(selectItem.cover)] : [],
+        giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : []
+      })
+    }
+    // 下拉数据搜索
+    const editTableType = ref<any>(undefined)
     const {
       pageContentRef,
       handleCountryList,
@@ -178,42 +253,42 @@ export default defineComponent({
     // 编辑表格
     const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
-      newTableData({
-        title: '',
-        subTitle: '',
-        cover: '',
-        coverList: [],
-        gift: '',
-        giftList: [],
-        state: '',
-        tid: '',
-        shape: '', // shape 0:无,1:大横矩形,2:小横矩形
-        jump: ''
-      })
+      if (editTableType.value) {
+        let res = []
+        res.push({
+          title: '',
+          subTitle: '',
+          cover: '',
+          coverList: [],
+          gift: '',
+          giftList: [],
+          state: 1, // 1. 显示 0. 不显示
+          tid: '',
+          shape: 0, // shape 0:无,1:大横矩形,2:小横矩形
+          jump: '',
+          lid: languageItem.value.lid,
+          tempId: uid(8)
+        })
+        languageItem.value.childListStr = [
+          ...languageItem.value.childListStr,
+          ...res
+        ]
+        console.log(languageItem.value.childListStr, 'deom')
+      } else warnTip('请先选择样式类型')
     }
-    const handleDeleteEditTableData = (item: any) => {
-      deleteTableData(item)
+    const handleDeleteEditTableData = (tempId: any) => {
+      if (operationType.value === 'add') {
+        const index = languageItem.value.childListStr.findIndex(
+          (res: any) => res.tempId === tempId
+        )
+        languageItem.value.childListStr.splice(index, 1)
+      }
       // 暂时不做处理
       // if (operationType.value === 'add') deleteTableData(item)
       // else {
       //   console.log(1111)
       // }
     }
-    watch(listData.value, () => {
-      listData.value = listData.value.map((item: any) => {
-        return {
-          ...item,
-          cover:
-            item.coverList && item.coverList.length > 0
-              ? item.coverList[0].url
-              : '',
-          gift:
-            item.giftList && item.giftList.length > 0
-              ? item.giftList[0].url
-              : ''
-        }
-      })
-    })
     // 多语言
     const [
       editorRef,
@@ -226,7 +301,31 @@ export default defineComponent({
       requiredField,
       mapIconState
     ] = useSetLanguage()
-    const [countryList] = usePageList()
+    watchEffect(() => {
+      if (
+        languageItem.value &&
+        languageItem.value.childListStr &&
+        languageItem.value.childListStr.length > 0
+      ) {
+        languageItem.value.childListStr = languageItem.value.childListStr.map(
+          (item: any) => {
+            return {
+              ...item,
+              cover:
+                item.coverList && item.coverList.length > 0
+                  ? item.coverList[0].url
+                  : '',
+              gift:
+                item.giftList && item.giftList.length > 0
+                  ? item.giftList[0].url
+                  : ''
+            }
+          }
+        )
+        console.log(languageItem.value.childListStr, 'demo')
+      }
+    })
+    const [countryList, resourceList, getResourceList, loading] = usePageList()
     const countryListMap = computed(() => {
       return countryList.value.map((item: any) => {
         return {
@@ -250,28 +349,28 @@ export default defineComponent({
         } else errorTip(res.msg)
       })
     }
-    const [imgLimit] = useImageUpload()
-    const author = ref<any>()
-    const otherInfo = ref<any>({})
-    const operationType = ref<string>('add')
-    // 下拉地区
-    const areaIds = ref<any>([])
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {
         const region: any[] = []
-        countryList.value.forEach((item: any) => {
-          region.push(item.id)
-        })
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            region.push(item.id)
+          })
         otherInfo.value = {
           ...otherInfo.value,
           areaIds: region.toString()
         }
       }
+      const indexJSON = languageList.value.map((i: any) => {
+        return {
+          ...i,
+          childListStr: JSON.stringify(i.childListStr)
+        }
+      })
       otherInfo.value = {
         ...otherInfo.value,
-        author: author.value,
-        indexJson: JSON.stringify(languageList.value),
-        childListStr: JSON.stringify(listData.value)
+        indexJson: JSON.stringify(indexJSON)
       }
     })
     const handleChangeCountry = (item: any[]) => {
@@ -295,26 +394,10 @@ export default defineComponent({
         }
       }
     }
-    const searchFormConfigRef = computed(() => {
-      searchFormConfig.formItems.map((item: any) => {
-        if (item.field === 'type') item!.options = contentList.value
-      })
-      return searchFormConfig
-    })
-    const modalConfigRef = computed(() => {
-      modalConfig.formItems.map((item: any) => {
-        if (item.field === 'type') item!.options = contentList.value
-      })
-      return modalConfig
-    })
-    const contentTableEditConfigRef = computed(() => {
-      return contentTableEditConfig
-    })
-    // 下拉数据搜索
-    const editTableType = ref<any>(undefined)
+    // 映射可编辑表格数据
     const mapDiffParams = () => {
       if (editTableType.value !== undefined) {
-        listData.value = []
+        languageItem.value.childListStr = []
         if (editTableType.value === 1) {
           contentTableEditConfig.propList.map((item: any) => {
             if (item.prop === 'title' && item.label === '按钮名称')
@@ -354,44 +437,32 @@ export default defineComponent({
         }
       }
     }
+    // 映射分类数据
+    const mapCategoryList = (value: any) => {
+      modalConfig.formItems.map((item: any) => {
+        if (item.field === 'category') {
+          item!.options = []
+        }
+      })
+      modalConfig.formItems.map((item: any) => {
+        if (item.field === 'category') {
+          categoryList.value.map((i: any) => {
+            if (i.parent === value) {
+              item!.options.push({
+                title: i.title,
+                value: i.value
+              })
+            }
+          })
+        }
+      })
+    }
     const handleChangeSelect = (data: any) => {
       if (data.field === 'library' && +data.value === 2) {
-        modalConfig.formItems.map((item: any) => {
-          if (item.field === 'category') {
-            item!.options = []
-          }
-        })
-        modalConfig.formItems.map((item: any) => {
-          if (item.field === 'category') {
-            categoryList.value.map((i: any) => {
-              if (i.parent === data.value) {
-                item!.options.push({
-                  title: i.title,
-                  value: i.value
-                })
-              }
-            })
-          }
-        })
+        mapCategoryList(data.value)
       }
       if (data.field === 'library' && +data.value === 1) {
-        modalConfig.formItems.map((item: any) => {
-          if (item.field === 'category') {
-            item!.options = []
-          }
-        })
-        modalConfig.formItems.map((item: any) => {
-          if (item.field === 'category') {
-            categoryList.value.map((i: any) => {
-              if (i.parent === data.value) {
-                item!.options.push({
-                  title: i.title,
-                  value: i.value
-                })
-              }
-            })
-          }
-        })
+        mapCategoryList(data.value)
       }
       if (data.field === 'type') {
         editTableType.value = +data.value
@@ -399,19 +470,57 @@ export default defineComponent({
       }
     }
     const newData = () => {
-      author.value = null
+      // 清空原有数据
       operationType.value = 'add'
       areaIds.value = []
       listData.value = []
       editTableType.value = undefined
+      mapDiffParams()
+      mapCategoryList(undefined)
       resetLanguageList()
     }
-
+    const getItem = (item: any) => {
+      getItemData('homeIndexItem', {
+        id: item.id,
+        rid: item.rid
+      }).then((res) => {
+        if (res.result === 0) {
+          const data = res.data
+          // 国家地区
+          areaIds.value = data.index.areaList
+          // 多语言
+          languageList.value = data.index.indexList.map((i: any) => {
+            return {
+              ...i,
+              childListStr: i.childList
+            }
+          })
+          languageId.value = data?.index?.indexList[0].lid
+          mapIconState(data?.index?.indexList, requiredField.value)
+          // 可编辑表格
+          // if (data.childList && data.childList.length > 0) {
+          //   listData.value = data.childList.map((i: any) => {
+          //     return {
+          //       ...i,
+          //       giftList: i.gift ? [mapImageToObject(i.gift)] : [],
+          //       coverList: i.cover ? [mapImageToObject(i.cover)] : []
+          //     }
+          //   })
+          // }
+          otherInfo.value = {
+            ...otherInfo.value,
+            areaIds: data.index.areaList.toString()
+          }
+        } else errorTip(res.msg)
+      })
+    }
     const editData = (item: any) => {
       operationType.value = 'edit'
       editTableType.value = +item.type
+      resetLanguageList()
       mapDiffParams()
-      // getData(item.mtId)
+      mapCategoryList(item.library)
+      getItem(item)
       handleEditData(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
@@ -420,7 +529,12 @@ export default defineComponent({
       nodeClick,
       contentList,
       categoryList,
+      resourceList,
+      getResourceList,
+      loading,
       handleChangeSelect,
+      handleChangeResourceData,
+      handleChangeResourceItemData,
       // 编辑表格
       operationType,
       contentTableEditConfig,

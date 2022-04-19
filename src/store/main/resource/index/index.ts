@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 10:20:42
+ * @LastEditTime: 2022-04-19 11:21:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -32,7 +32,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const requiredField = ['name', 'subTitle', 'desc']
+const requiredField = ['title']
 const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
   namespaced: true,
   state() {
@@ -75,11 +75,10 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const mtId = payload.queryInfo.mtId
-      const pageUrl =
-        apiList[pageName] + cultureDifferentType('delete', pageName)
+      const id = payload.queryInfo.id
+      const pageUrl = apiList[pageName] + 'delIndex'
       const data = await deletePageToQueryData(pageUrl, {
-        mtId: mtId
+        id: id
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -97,9 +96,9 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         console.log(newData)
-        const validData = JSON.parse(newData.topicJson)[0]
+        const validData = JSON.parse(newData.indexJson)[0]
         validateParamsRules(
-          JSON.parse(newData.topicJson),
+          JSON.parse(newData.indexJson),
           validData,
           requiredField
         )
@@ -126,9 +125,9 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.topicJson)[0]
+        const validData = JSON.parse(editData.indexJson)[0]
         validateParamsRules(
-          JSON.parse(editData.topicJson),
+          JSON.parse(editData.indexJson),
           validData,
           requiredField
         )

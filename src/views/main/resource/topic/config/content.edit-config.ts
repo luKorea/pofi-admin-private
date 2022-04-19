@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-16 17:10:55
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-19 11:43:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -35,6 +35,7 @@ export const contentTableEditConfig: TableConfig = {
       editInfo: {
         type: 'other',
         placeholder: '请输入资源名称',
+        slotName: 'isMid',
         disabled: false
       }
     },
