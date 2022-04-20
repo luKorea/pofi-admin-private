@@ -361,7 +361,7 @@ export default defineComponent({
     })
     const [storeTypeInfo, operationName] = useStoreName()
     const handleDrawTable = (data: any) => {
-      const idList = data.map((item: any) => item.id)
+      const idList = data.map((item: any) => +item.id)
       sortPageTableData('/cms/index/updateSort', {
         idList: JSON.stringify(idList)
       }).then((res: any) => {
