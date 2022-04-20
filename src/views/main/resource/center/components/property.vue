@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-18 20:16:08
+ * @LastEditTime: 2022-04-20 14:17:48
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -25,11 +25,11 @@
           >确定</el-button
         >
       </template>
-      <template #titleWrapper>
+      <template #titleWrapper="{ row }">
         <step-component
           :active="0"
           :editType="editType"
-          @openStep="openStep"
+          @openStep="openStep($event, row)"
         ></step-component>
       </template>
       <!-- 使用条件 -->
@@ -327,6 +327,7 @@ export default defineComponent({
       } else if (step.save) {
         const formRef = item.ref.formRef
         const info = item.data
+        debugger
         formRef?.validate((valid: any) => {
           if (valid) {
             if (props.editType === 'add') {
