@@ -4,7 +4,7 @@
     <page-search
       :searchFormConfig="searchFormConfigData"
       @resetBtnClick="handleResetClick"
-      @queryBtnClick="handleQueryClick"
+      @queryBtnClick="handleQueryBtnClick"
     />
     <page-content
       ref="pageContentRef"
@@ -224,6 +224,7 @@ import { getItemData } from '@/service/common-api'
 import { selectResourceTypeOperation } from '@/service/main/resource/center'
 import { mapImageToObject } from '@/utils/index'
 import { mapSelectListTitle } from '@/utils'
+import { mapTimeToSearch } from '../../../../utils/index'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -254,6 +255,22 @@ export default defineComponent({
     const [otherInfo] = useCountrySelect(editType.value)
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    const handleQueryBtnClick = (data: any) => {
+      console.log(data, 'data')
+      const begin = mapTimeToSearch(data.dateTime).start
+      const end = mapTimeToSearch(data.dateTime).end
+      const onlineBegin = mapTimeToSearch(data.onlineTime).start
+      const onlineEnd = mapTimeToSearch(data.onlineTime).end
+      handleQueryClick({
+        ...data,
+        onlineTime: undefined,
+        dateTime: undefined,
+        begin,
+        end,
+        onlineBegin,
+        onlineEnd
+      })
+    }
     // 多选全选操作
     const selectList = ref<any>([])
     const handleSelectData = (item: any) => {
@@ -646,6 +663,7 @@ export default defineComponent({
       openProcessDialog,
       handleResetClick,
       handleQueryClick,
+      handleQueryBtnClick,
       storeTypeInfo,
       contentTableConfig,
       pageContentRef,

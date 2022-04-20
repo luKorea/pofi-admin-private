@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-19 14:47:21
+ * @LastEditTime: 2022-04-20 12:15:43
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -260,53 +260,64 @@ export default defineComponent({
       requiredField,
       mapIconState
     } = useSetLanguage()
-    // 监听图片变化
+    // 监听gift
     watchEffect(() => {
-      if (languageItem.value && languageItem.value.giftList.length > 0) {
-        languageItem.value.gift = [...languageItem.value.giftList[0].url]
+      if (languageItem.value) {
+        if (languageItem.value.giftList.length > 0) {
+          languageItem.value.gift = languageItem.value.giftList[0].url
+        } else {
+          languageItem.value.gift = undefined
+          languageItem.value.giftList = []
+        }
       }
-      if (languageItem.value && languageItem.value.coverList.length > 0) {
-        languageItem.value.cover = [...languageItem.value.coverList[0].url]
+    })
+    // 监听cover
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.coverList.length > 0) {
+          languageItem.value.cover = languageItem.value.coverList[0].url
+        } else {
+          languageItem.value.cover = undefined
+          languageItem.value.coverList = []
+        }
       }
-      if (languageItem.value && languageItem.value.b0List.length > 0) {
-        const list = languageItem.value.b0List
-        languageItem.value.b0 = [
-          ...languageItem.value.b0,
-          list.map((i: any) => {
-            return i.url
+    })
+    // 监听b0
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.b0List.length > 0) {
+          languageItem.value.b0 = languageItem.value.b0List.map((item: any) => {
+            return item.url
           })
-        ]
+        } else {
+          languageItem.value.b0 = []
+          languageItem.value.b0List = []
+        }
       }
-      if (languageItem.value && languageItem.value.c0List.length > 0) {
-        const list = languageItem.value.c0List
-        languageItem.value.c0 = [
-          ...languageItem.value.c0,
-          list.map((i: any) => {
-            return i.url
+    })
+    // 监听c0
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.c0List.length > 0) {
+          languageItem.value.c0 = languageItem.value.c0List.map((item: any) => {
+            return item.url
           })
-        ]
+        } else {
+          languageItem.value.c0 = []
+          languageItem.value.c0List = []
+        }
       }
-      if (languageItem.value && languageItem.value.d0List.length > 0) {
-        const list = languageItem.value.d0List
-        languageItem.value.d0 = [
-          ...languageItem.value.d0,
-          list.map((i: any) => {
-            return i.url
+    })
+    // 监听d0
+    watchEffect(() => {
+      if (languageItem.value) {
+        if (languageItem.value.d0List.length > 0) {
+          languageItem.value.d0 = languageItem.value.d0List.map((item: any) => {
+            return item.url
           })
-        ]
-      } else {
-        languageItem.value = {
-          ...languageItem.value,
-          gift: undefined,
-          giftList: [],
-          coverList: [],
-          cover: undefined,
-          d0List: [],
-          d0: [],
-          c0List: [],
-          c0: [],
-          b0: [],
-          b0List: []
+        } else {
+          languageItem.value.d0 = []
+          languageItem.value.d0List = []
         }
       }
     })
