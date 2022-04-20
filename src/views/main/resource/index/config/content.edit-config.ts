@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 11:21:55
+ * @LastEditTime: 2022-04-20 11:29:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -152,6 +152,6 @@ export const contentTableEditConfig: TableConfig = {
     delete: false,
     columnAdd: true,
     columnDelete: true,
-    drawTable: true
+    drawTable: false
   }
 }

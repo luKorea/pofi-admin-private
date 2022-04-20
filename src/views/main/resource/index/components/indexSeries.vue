@@ -54,14 +54,14 @@
           </span>
         </template>
       </el-tree>
-      <page-content
+      <!-- <page-content
         v-show="false"
         ref="pageContentRef"
         :contentTableConfig="contentTableConfig"
         :storeTypeInfo="storeTypeInfo"
         pageName="indexSeries"
       >
-      </page-content>
+      </page-content> -->
     </hy-card>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -105,7 +105,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, watchEffect } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  watchEffect,
+  onMounted
+} from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 import { modalConfig } from './config/modal.config'
@@ -146,6 +153,11 @@ export default defineComponent({
       }
     })
     const store = useStore()
+    onMounted(() => {
+      store.dispatch('resourceIndexSeriesModule/getPageListAction', {
+        pageName: 'indexSeries'
+      })
+    })
     const dataList = computed(() => {
       return store.getters['resourceIndexSeriesModule/pageListData'](
         'indexSeries'
