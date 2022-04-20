@@ -314,7 +314,8 @@ export default defineComponent({
     // TODO 处理用户拖动表格后更新数据, 后续更改为通过用户传递action处理
     const router = useRouter()
     const drawTable = (data: any) => {
-      const idList = data.map((item: any) => item.id)
+      const idList = data.map((item: any) => +item.id)
+      console.log(idList, 'idList')
       store
         .dispatch(props.storeTypeInfo.sortAction, {
           pageName: props.pageName,
