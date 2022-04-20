@@ -443,6 +443,12 @@ export default defineComponent({
           editData.value = res.data
           if (+params.value.isPrep === 2) {
             relevanceRef.value.showEditTable = true
+            console.log(relevanceRef.value.modalConfigRef.formItems)
+            relevanceRef.value.modalConfigRef.formItems.map((i: any) => {
+              if (i.field === 'rel') i!.isHidden = false
+              if (i.field === 'prep') i!.isHidden = false
+              if (i.field === 'subPrep') i!.isHidden = false
+            })
             relevanceRef.value.prepEditList = res.data.chief.map((i: any) => {
               return {
                 ...i,
@@ -465,6 +471,12 @@ export default defineComponent({
             )
           } else {
             relevanceRef.value.showEditTable = false
+            console.log(relevanceRef.value.modalConfigRef.formItems)
+            relevanceRef.value.modalConfigRef.formItems.map((i: any) => {
+              if (i.field === 'rel') i!.isHidden = true
+              if (i.field === 'prep') i!.isHidden = true
+              if (i.field === 'subPrep') i!.isHidden = true
+            })
             relevanceRef.value.prepEditList = []
             relevanceRef.value.subPrepEditList = []
           }
