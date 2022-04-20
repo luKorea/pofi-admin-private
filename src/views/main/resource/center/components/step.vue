@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 14:00:23
- * @LastEditTime: 2022-04-18 20:18:29
+ * @LastEditTime: 2022-04-20 14:26:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/step.vue
@@ -22,6 +22,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { infoTipBox } from '@/utils/tip-info'
+import { errorTip } from '../../../../../utils/tip-info'
 export default defineComponent({
   props: {
     active: {
@@ -31,6 +32,10 @@ export default defineComponent({
     editType: {
       type: String,
       default: 'edit'
+    },
+    params: {
+      type: Object,
+      default: () => ({})
     }
   },
   emits: ['openStep'],
@@ -74,26 +79,30 @@ export default defineComponent({
     ])
     const openDifferentStep = (step: any, index: any) => {
       if (+index === props.active) return
-      infoTipBox({
-        title: '提示',
-        message: '是否保存当前编辑内容',
-        cancelButtonText: '丢弃',
-        confirmButtonText: '保存'
-      })
-        .then(() => {
-          emit('openStep', {
-            step: step,
-            save: true
-          })
+      if (props.editType === 'add' && !props.params.moId) {
+        errorTip('未完成资源创建，无法跳转步骤')
+      } else {
+        infoTipBox({
+          title: '提示',
+          message: '是否保存当前编辑内容',
+          cancelButtonText: '丢弃',
+          confirmButtonText: '保存'
         })
-        .catch((action: any) => {
-          if (action === 'cancel') {
+          .then(() => {
             emit('openStep', {
               step: step,
-              save: false
+              save: true
             })
-          }
-        })
+          })
+          .catch((action: any) => {
+            if (action === 'cancel') {
+              emit('openStep', {
+                step: step,
+                save: false
+              })
+            }
+          })
+      }
     }
     return {
       list,

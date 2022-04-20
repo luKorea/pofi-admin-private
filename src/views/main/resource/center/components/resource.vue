@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-20 12:15:43
+ * @LastEditTime: 2022-04-20 14:30:28
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -19,6 +19,7 @@
       <step-component
         :active="1"
         @openStep="openStep($event, row)"
+        :params="params"
       ></step-component>
     </template>
     <!-- 多语言 -->

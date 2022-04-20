@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-18 20:14:24
+ * @LastEditTime: 2022-04-20 14:33:51
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -19,6 +19,7 @@
       <step-component
         :active="4"
         @openStep="openStep($event, row)"
+        :params="params"
       ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
@@ -113,7 +114,8 @@ export default defineComponent({
             }).then((res) => {
               if (res.result === 0) {
                 if (pageModalRef.value) {
-                  pageModalRef.value.dialogVisible = false
+                  successTip('保存成功')
+                  // pageModalRef.value.dialogVisible = false
                   emit('getData')
                 }
               } else errorTip(res.msg)

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-18 20:14:57
+ * @LastEditTime: 2022-04-20 14:30:42
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -86,6 +86,7 @@
         <step-component
           :active="2"
           @openStep="openStep($event, row)"
+          :params="params"
         ></step-component>
       </template>
       <template #otherModalHandler="{ row }">

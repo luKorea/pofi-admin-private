@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-20 14:17:48
+ * @LastEditTime: 2022-04-20 14:27:16
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -30,6 +30,7 @@
           :active="0"
           :editType="editType"
           @openStep="openStep($event, row)"
+          :params="params"
         ></step-component>
       </template>
       <!-- 使用条件 -->
@@ -322,12 +323,9 @@ export default defineComponent({
       })
     }
     const openStep = (step: any, item: any) => {
-      if (props.editType === 'add' && !props.params.moId) {
-        errorTip('未完成资源创建，无法跳转步骤')
-      } else if (step.save) {
+      if (step.save) {
         const formRef = item.ref.formRef
         const info = item.data
-        debugger
         formRef?.validate((valid: any) => {
           if (valid) {
             if (props.editType === 'add') {

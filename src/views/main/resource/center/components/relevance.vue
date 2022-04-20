@@ -3,7 +3,7 @@
     :defaultInfo="defaultInfo"
     ref="pageModalRef"
     pageName="centers"
-    :modalConfig="modalConfigRef"
+    :modal-config="modalConfigRef"
     :showConfigBtn="false"
     :showCancelBtn="false"
     @changeSelect="handleChangeSelect"
@@ -12,6 +12,7 @@
       <step-component
         :active="3"
         @openStep="openStep($event, row)"
+        :params="params"
       ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
@@ -63,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, computed, ref, nextTick, watchEffect } from 'vue'
 import { relevanceModalConfig } from './config/relevance.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import stepComponent from './step.vue'
@@ -143,7 +144,7 @@ export default defineComponent({
     const showEditTable = ref<boolean>(false) // 是否展示可编辑表格
     const handleChangeSelect = (item: any) => {
       const { field, value } = item
-      if (value === 2 && field === 'isPrep') {
+      if (field === 'isPrep' && +value === 2) {
         showEditTable.value = true
         modalConfigRef.value.formItems.map((i: any) => {
           if (i.field === 'rel') i!.isHidden = false
@@ -151,7 +152,7 @@ export default defineComponent({
           if (i.field === 'subPrep') i!.isHidden = false
         })
       }
-      if (value === 1 && field === 'isPrep') {
+      if (+value === 1 && field === 'isPrep') {
         showEditTable.value = false
         modalConfigRef.value.formItems.map((i: any) => {
           if (i.field === 'rel') i!.isHidden = true
