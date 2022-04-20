@@ -99,8 +99,8 @@
           <editor-table
             :listData="languageItem.childListStr"
             v-bind="contentTableEditConfigRef"
-            :handleDraw="operationType === 'add' ? false : true"
-            :editTableDraw="operationType === 'add' ? false : true"
+            :handleDraw="operationType == 'add' ? false : true"
+            :editTableDraw="operationType == 'add' ? false : true"
             @drawTable="handleDrawTable"
           >
             <template #otherHandler>
@@ -112,16 +112,22 @@
               <el-button
                 type="text"
                 size="mini"
-                @click="handleChangeEditTableBtn(row)"
-                >大小矩形</el-button
+                @click="handleChangeEditTableShape(row)"
+                >{{
+                  +row.shape === 1
+                    ? '大横矩形'
+                    : +row.shape === 2
+                    ? '小横矩形'
+                    : '无'
+                }}</el-button
               >
             </template>
             <template #isStatus="{ row }">
               <el-button
                 type="primary"
                 size="mini"
-                @click="handleChangeEditTableBtn(row)"
-                >显示</el-button
+                @click="handleChangeEditTableStatus(row)"
+                >{{ +row.state === 1 ? '显示' : '隐藏' }}</el-button
               >
             </template>
             <template #isSelect="{ row }">
@@ -149,7 +155,7 @@
               <el-button
                 type="danger"
                 size="mini"
-                @click="handleDeleteEditTableData(row.tempId)"
+                @click="handleDeleteEditTableData(row.tempId, row)"
                 >删除</el-button
               >
             </template>
@@ -161,7 +167,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect, watch } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watchEffect,
+  watch,
+  nextTick
+} from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -214,8 +227,10 @@ export default defineComponent({
     })
     // 资源搜索下拉
     // 资源管理
-    const handleChangeResourceData = (keyword: string) => {
+    const handleChangeResourceData = async (keyword: string) => {
       getResourceList(keyword, languageItem.value.lid)
+      await nextTick()
+      resourceList.value = []
     }
     const handleChangeResourceItemData = (tid: any) => {
       const listData = languageItem.value.childListStr
@@ -225,13 +240,16 @@ export default defineComponent({
       const index = listData.findIndex((item: any) => item.tid === tid)
       console.log(index, selectItem)
       listData.splice(index, 1, {
-        id: selectItem.id,
         cover: selectItem.cover,
+        gift: selectItem.gift,
         title: selectItem.name,
         subTitle: selectItem.seriesName,
         tid: selectItem.moId,
         coverList: selectItem.cover ? [mapImageToObject(selectItem.cover)] : [],
-        giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : []
+        giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : [],
+        state: 1,
+        lid: languageItem.value.lid,
+        tempId: uid(8)
       })
     }
     // 下拉数据搜索
@@ -264,7 +282,7 @@ export default defineComponent({
           giftList: [],
           state: 1, // 1. 显示 0. 不显示
           tid: '',
-          shape: 0, // shape 0:无,1:大横矩形,2:小横矩形
+          shape: editTableType.value === 8 ? 1 : 0, // shape 0:无,1:大横矩形,2:小横矩形
           jump: '',
           lid: languageItem.value.lid,
           tempId: uid(8)
@@ -276,12 +294,19 @@ export default defineComponent({
         console.log(languageItem.value.childListStr, 'deom')
       } else warnTip('请先选择样式类型')
     }
-    const handleDeleteEditTableData = (tempId: any) => {
+    const handleDeleteEditTableData = (tempId: any, row: any) => {
       if (operationType.value === 'add') {
         const index = languageItem.value.childListStr.findIndex(
           (res: any) => res.tempId === tempId
         )
         languageItem.value.childListStr.splice(index, 1)
+      } else {
+        if (row.id) {
+          const index = languageItem.value.childListStr.findIndex(
+            (res: any) => res.id === row.id
+          )
+          languageItem.value.childListStr.splice(index, 1)
+        }
       }
       // 暂时不做处理
       // if (operationType.value === 'add') deleteTableData(item)
@@ -335,17 +360,14 @@ export default defineComponent({
       })
     })
     const [storeTypeInfo, operationName] = useStoreName()
-    const getData = (id: any) => {
-      console.log(id)
-    }
     const handleDrawTable = (data: any) => {
       const idList = data.map((item: any) => item.id)
-      sortPageTableData('/cms/topic/updateSort', {
+      sortPageTableData('/cms/index/updateSort', {
         idList: JSON.stringify(idList)
       }).then((res: any) => {
         if (res.result === 0) {
           successTip(res.msg)
-          getData(otherInfo.value.id)
+          getItem(otherInfo.value)
         } else errorTip(res.msg)
       })
     }
@@ -469,6 +491,16 @@ export default defineComponent({
         mapDiffParams()
       }
     }
+    // 可编辑表格改变矩形以及状态
+    const handleChangeEditTableShape = (row: any) => {
+      if (row.shape === 1) {
+        row.shape = 2
+      } else if (row.shape === 2) row.shape = 1
+      console.log(row.shape)
+    }
+    const handleChangeEditTableStatus = (row: any) => {
+      row.state = row.state === 1 ? 0 : 1
+    }
     const newData = () => {
       // 清空原有数据
       operationType.value = 'add'
@@ -488,25 +520,27 @@ export default defineComponent({
           const data = res.data
           // 国家地区
           areaIds.value = data.index.areaList
-          // 多语言
-          languageList.value = data.index.indexList.map((i: any) => {
-            return {
-              ...i,
-              childListStr: i.childList
-            }
-          })
           languageId.value = data?.index?.indexList[0].lid
           mapIconState(data?.index?.indexList, requiredField.value)
-          // 可编辑表格
-          // if (data.childList && data.childList.length > 0) {
-          //   listData.value = data.childList.map((i: any) => {
-          //     return {
-          //       ...i,
-          //       giftList: i.gift ? [mapImageToObject(i.gift)] : [],
-          //       coverList: i.cover ? [mapImageToObject(i.cover)] : []
-          //     }
-          //   })
-          // }
+          if (data?.index?.indexList) {
+            languageList.value = data.index.indexList.map((item: any) => {
+              if (item.childList) {
+                item['childListStr'] = []
+                item.childList.map((i: any) => {
+                  item.childListStr.push({
+                    ...i,
+                    giftList: i.gift ? [mapImageToObject(i.gift)] : [],
+                    coverList: i.cover ? [mapImageToObject(i.cover)] : []
+                  })
+                })
+                return item
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+          }
           otherInfo.value = {
             ...otherInfo.value,
             areaIds: data.index.areaList.toString()
@@ -517,6 +551,11 @@ export default defineComponent({
     const editData = (item: any) => {
       operationType.value = 'edit'
       editTableType.value = +item.type
+      otherInfo.value = {
+        ...otherInfo.value,
+        id: item.id,
+        rid: item.rid
+      }
       resetLanguageList()
       mapDiffParams()
       mapCategoryList(item.library)
@@ -540,6 +579,8 @@ export default defineComponent({
       contentTableEditConfig,
       handleNewTableData,
       handleDeleteEditTableData,
+      handleChangeEditTableShape,
+      handleChangeEditTableStatus,
       listData,
       deleteTableData,
       handleDrawTable,
