@@ -178,18 +178,10 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  onMounted,
-  ref,
-  computed,
-  watchEffect,
-  watch
-} from 'vue'
+import { defineComponent, onMounted, ref, computed } from 'vue'
 import SortTable from 'sortablejs'
 import { ElTable } from 'element-plus'
 import hyUpload from '@/base-ui/upload'
-import { nextTick } from 'vue'
 
 export default defineComponent({
   components: {
@@ -260,8 +252,8 @@ export default defineComponent({
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
-    const randomId = computed(() => {
-      return Math.random()
+    const tableData = computed(() => {
+      return props.listData
     })
     const HyTableRef = ref()
     const tableRef = ref<InstanceType<typeof ElTable>>()
@@ -355,7 +347,7 @@ export default defineComponent({
       handleCurrentChange,
       handleSizeChange,
       tableRef,
-      randomId
+      tableData
     }
   }
 })
