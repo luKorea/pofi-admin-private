@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:05:19
+ * @LastEditTime: 2022-04-20 17:35:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -113,7 +113,7 @@ import { mapImageToObject } from '@/utils/index'
 import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
-  name: 'companion',
+  name: 'helpCompanion',
   components: {
     HyUpload,
     PreviewVideo

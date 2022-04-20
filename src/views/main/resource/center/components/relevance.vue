@@ -284,6 +284,13 @@ export default defineComponent({
       const { field, value } = item
       if (field === 'isPrep' && +value === 2) {
         showEditTable.value = true
+        // prepEditList.value = []
+        // subPrepEditList.value = []
+        // otherInfo.value = {
+        //   rel: '',
+        //   prep: [],
+        //   subPrep: []
+        // }
         // modalConfigRef.value.formItems.map((i: any) => {
         //   if (i.field === 'rel') i!.isHidden = false
         //   if (i.field === 'prep') i!.isHidden = false
@@ -292,6 +299,13 @@ export default defineComponent({
       }
       if (+value === 1 && field === 'isPrep') {
         showEditTable.value = false
+        // prepEditList.value = []
+        // subPrepEditList.value = []
+        // otherInfo.value = {
+        //   rel: '',
+        //   prep: [],
+        //   subPrep: []
+        // }
         // modalConfigRef.value.formItems.map((i: any) => {
         //   if (i.field === 'rel') i!.isHidden = true
         //   if (i.field === 'prep') i!.isHidden = true

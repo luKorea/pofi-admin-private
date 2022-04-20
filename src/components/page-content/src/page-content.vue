@@ -154,6 +154,7 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 // import { usePermission } from '@/hooks/use-permission'
 
 import HyTable from '@/base-ui/table'
@@ -311,8 +312,8 @@ export default defineComponent({
         .catch(() => console.log('用户取消操作'))
     }
     // TODO 处理用户拖动表格后更新数据, 后续更改为通过用户传递action处理
+    const router = useRouter()
     const drawTable = (data: any) => {
-      // emit('drawBtnClick', data)
       const idList = data.map((item: any) => item.id)
       store
         .dispatch(props.storeTypeInfo.sortAction, {
@@ -323,6 +324,7 @@ export default defineComponent({
         })
         .then((res: any) => {
           successTip(res)
+          console.log(router, 'router')
         })
         .catch((err: any) => errorTip(err))
     }
