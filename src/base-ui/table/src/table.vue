@@ -189,6 +189,7 @@ import {
 import SortTable from 'sortablejs'
 import { ElTable } from 'element-plus'
 import hyUpload from '@/base-ui/upload'
+import { nextTick } from 'vue'
 
 export default defineComponent({
   components: {
@@ -259,6 +260,9 @@ export default defineComponent({
   },
   emits: ['selectionChange', 'update:page', 'drawTable'],
   setup(props, { emit }) {
+    const randomId = computed(() => {
+      return Math.random()
+    })
     const HyTableRef = ref()
     const tableRef = ref<InstanceType<typeof ElTable>>()
     const search = ref('')
@@ -325,9 +329,8 @@ export default defineComponent({
       } else {
         tableSort.value = element[0]
       }
-      console.log(tableSort.value, 'table')
       new SortTable(tableSort.value, {
-        animation: 500,
+        animation: 300,
         onEnd(evt: any) {
           let data = [...props.listData]
           data.splice(evt.newIndex, 0, data.splice(evt.oldIndex, 1)[0])
@@ -351,7 +354,8 @@ export default defineComponent({
       handleSelectionChange,
       handleCurrentChange,
       handleSizeChange,
-      tableRef
+      tableRef,
+      randomId
     }
   }
 })

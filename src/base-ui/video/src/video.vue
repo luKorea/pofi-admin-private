@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-17 15:46:44
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-17 17:30:32
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-20 17:30:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/video/src/video.vue
 -->
@@ -50,7 +50,6 @@ export default defineComponent({
         })
       }
     )
-    console.log(videoRef.value)
     const closeDialog = () => {
       emit('close')
     }
