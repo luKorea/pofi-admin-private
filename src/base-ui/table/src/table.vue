@@ -320,6 +320,7 @@ export default defineComponent({
     const handleSortTable = () => {
       const element = document.getElementsByTagName('tbody')
       const tableSort = ref<HTMLElement | null>()
+      debugger
       if (props.editTableDraw) {
         tableSort.value = element[1]
       } else {

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-19 15:49:41
+ * @LastEditTime: 2022-04-20 11:21:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -15,21 +15,21 @@ export const contentTableEditConfig: TableConfig = {
       prop: 'id',
       label: '序号',
       width: '80',
-      placeholder: '系统生成',
-      editInfo: {
-        type: 'input',
-        disabled: true
-      }
+      placeholder: '系统生成'
+      // editInfo: {
+      //   type: 'input',
+      //   disabled: true
+      // }
     },
     {
       prop: 'rank',
       label: '排序序号',
       width: '100',
-      placeholder: '系统生成',
-      editInfo: {
-        type: 'input',
-        disabled: true
-      }
+      placeholder: '系统生成'
+      // editInfo: {
+      //   type: 'input',
+      //   disabled: true
+      // }
     },
     {
       prop: 'title',
