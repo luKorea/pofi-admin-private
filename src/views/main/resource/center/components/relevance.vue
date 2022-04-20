@@ -7,6 +7,7 @@
     :showConfigBtn="false"
     :showCancelBtn="false"
     @changeSelect="handleChangeSelect"
+    :otherInfo="otherInfo"
   >
     <template #titleWrapper="{ row }">
       <step-component
@@ -28,6 +29,71 @@
       >
     </template>
     <template v-if="showEditTable">
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              主关联资源
+            </span>
+            <el-select
+              style="width: 100%"
+              v-model="otherInfo.prep"
+              placeholder="请选择主关联资源"
+              multiple
+              @change="handleChangePrep"
+            >
+              <el-option
+                v-for="item in prpeList"
+                :label="item.pname"
+                :value="item.moId"
+                :key="item.moId"
+                >{{ item.pname }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title"> 副关联资源 </span>
+            <el-select
+              style="width: 100%"
+              v-model="otherInfo.subPrep"
+              multiple
+              placeholder="请选择副关联资源"
+              @change="handleChangeSubPrep"
+            >
+              <el-option
+                v-for="item in prpeList"
+                :label="item.pname"
+                :value="item.moId"
+                :key="item.moId"
+                >{{ item.pname }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">关联目的</span>
+            <el-select
+              style="width: 100%"
+              v-model="otherInfo.rel"
+              placeholder="请选择关联目的"
+            >
+              <el-option
+                v-for="item in relList"
+                :label="item.title"
+                :value="item.value"
+                :key="item.value"
+                >{{ item.title }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+      </el-row>
       <el-divider
         >主副资源表格管理（选择对应资源后请填写对应的字段）</el-divider
       >
@@ -121,16 +187,16 @@ export default defineComponent({
             title: c.name,
             value: c.id
           }))
-        if (i.field === 'prep')
-          i!.options = prpeList?.value?.map((c: any) => ({
-            title: c.pname,
-            value: c.moId
-          }))
-        if (i.field === 'subPrep')
-          i!.options = prpeList?.value?.map((c: any) => ({
-            title: c.pname,
-            value: c.moId
-          }))
+        // if (i.field === 'prep')
+        //   i!.options = prpeList?.value?.map((c: any) => ({
+        //     title: c.pname,
+        //     value: c.moId
+        //   }))
+        // if (i.field === 'subPrep')
+        //   i!.options = prpeList?.value?.map((c: any) => ({
+        //     title: c.pname,
+        //     value: c.moId
+        //   }))
       })
       return relevanceModalConfig
     })
@@ -139,84 +205,156 @@ export default defineComponent({
         pageModalRef.value.dialogVisible = false
       }
     }
+    const otherInfo = ref<any>({
+      rel: '',
+      prep: [],
+      subPrep: []
+    })
+    const relList = ref<any>([
+      {
+        value: 1,
+        title: '捆绑销售'
+      },
+      {
+        value: 2,
+        title: '附属主体(Pose库必选)'
+      }
+    ])
     const prepEditList = ref<any>([]) // 主关联资源
     const subPrepEditList = ref<any>([]) // 副关联资源
     const showEditTable = ref<boolean>(false) // 是否展示可编辑表格
+    const handleChangePrep = (value: any) => {
+      if (value.length > 0) {
+        let prpObj: any = {}
+        let prepEditObj: any = {}
+        let prepEditList2: any = []
+        prpeList.value.map((v: any) => {
+          prpObj[v.moId] = v
+        })
+        prepEditList.value.map((v: any) => {
+          prepEditObj[v.moId] = v
+        })
+        value.map((v: any) => {
+          if (prepEditObj[v]) {
+            prepEditList2.push(prepEditObj[v])
+          } else if (prpObj[v]) {
+            let d = prpObj[v]
+            prepEditList2.push({
+              ...d,
+              openType: mapSelectListTitle(d.open, resourceConditionList),
+              snId: '',
+              endTime: ''
+            })
+          }
+          prepEditObj[v] = v
+        })
+        prepEditList.value = prepEditList2
+      } else prepEditList.value = []
+    }
+    const handleChangeSubPrep = (value: any) => {
+      if (value.length > 0) {
+        let prpObj: any = {}
+        let prepEditObj: any = {}
+        let prepEditList2: any = []
+        prpeList.value.map((v: any) => {
+          prpObj[v.moId] = v
+        })
+        subPrepEditList.value.map((v: any) => {
+          prepEditObj[v.moId] = v
+        })
+        value.map((v: any) => {
+          if (prepEditObj[v]) {
+            prepEditList2.push(prepEditObj[v])
+          } else if (prpObj[v]) {
+            let d = prpObj[v]
+            prepEditList2.push({
+              ...d,
+              openType: mapSelectListTitle(d.open, resourceConditionList),
+              snId: '',
+              endTime: ''
+            })
+          }
+          prepEditObj[v] = v
+        })
+        subPrepEditList.value = prepEditList2
+      } else subPrepEditList.value = []
+    }
+    // 暂时不用这里的逻辑
     const handleChangeSelect = (item: any) => {
       const { field, value } = item
       if (field === 'isPrep' && +value === 2) {
         showEditTable.value = true
-        modalConfigRef.value.formItems.map((i: any) => {
-          if (i.field === 'rel') i!.isHidden = false
-          if (i.field === 'prep') i!.isHidden = false
-          if (i.field === 'subPrep') i!.isHidden = false
-        })
+        // modalConfigRef.value.formItems.map((i: any) => {
+        //   if (i.field === 'rel') i!.isHidden = false
+        //   if (i.field === 'prep') i!.isHidden = false
+        //   if (i.field === 'subPrep') i!.isHidden = false
+        // })
       }
       if (+value === 1 && field === 'isPrep') {
         showEditTable.value = false
-        modalConfigRef.value.formItems.map((i: any) => {
-          if (i.field === 'rel') i!.isHidden = true
-          if (i.field === 'prep') i!.isHidden = true
-          if (i.field === 'subPrep') i!.isHidden = true
-        })
+        // modalConfigRef.value.formItems.map((i: any) => {
+        //   if (i.field === 'rel') i!.isHidden = true
+        //   if (i.field === 'prep') i!.isHidden = true
+        //   if (i.field === 'subPrep') i!.isHidden = true
+        // })
       }
       // TODO 后续完善
-      if (field === 'prep') {
-        if (value.length > 0) {
-          let prpObj: any = {}
-          let prepEditObj: any = {}
-          let prepEditList2: any = []
-          prpeList.value.map((v: any) => {
-            prpObj[v.moId] = v
-          })
-          prepEditList.value.map((v: any) => {
-            prepEditObj[v.moId] = v
-          })
-          value.map((v: any) => {
-            if (prepEditObj[v]) {
-              prepEditList2.push(prepEditObj[v])
-            } else if (prpObj[v]) {
-              let d = prpObj[v]
-              prepEditList2.push({
-                ...d,
-                openType: mapSelectListTitle(d.open, resourceConditionList),
-                snId: '',
-                endTime: ''
-              })
-            }
-            prepEditObj[v] = v
-          })
-          prepEditList.value = prepEditList2
-        } else prepEditList.value = []
-      }
-      if (field === 'subPrep') {
-        if (value.length > 0) {
-          let prpObj: any = {}
-          let prepEditObj: any = {}
-          let prepEditList2: any = []
-          prpeList.value.map((v: any) => {
-            prpObj[v.moId] = v
-          })
-          subPrepEditList.value.map((v: any) => {
-            prepEditObj[v.moId] = v
-          })
-          value.map((v: any) => {
-            if (prepEditObj[v]) {
-              prepEditList2.push(prepEditObj[v])
-            } else if (prpObj[v]) {
-              let d = prpObj[v]
-              prepEditList2.push({
-                ...d,
-                openType: mapSelectListTitle(d.open, resourceConditionList),
-                snId: '',
-                endTime: ''
-              })
-            }
-            prepEditObj[v] = v
-          })
-          subPrepEditList.value = prepEditList2
-        } else subPrepEditList.value = []
-      }
+      // if (field === 'prep') {
+      //   if (value.length > 0) {
+      //     let prpObj: any = {}
+      //     let prepEditObj: any = {}
+      //     let prepEditList2: any = []
+      //     prpeList.value.map((v: any) => {
+      //       prpObj[v.moId] = v
+      //     })
+      //     prepEditList.value.map((v: any) => {
+      //       prepEditObj[v.moId] = v
+      //     })
+      //     value.map((v: any) => {
+      //       if (prepEditObj[v]) {
+      //         prepEditList2.push(prepEditObj[v])
+      //       } else if (prpObj[v]) {
+      //         let d = prpObj[v]
+      //         prepEditList2.push({
+      //           ...d,
+      //           openType: mapSelectListTitle(d.open, resourceConditionList),
+      //           snId: '',
+      //           endTime: ''
+      //         })
+      //       }
+      //       prepEditObj[v] = v
+      //     })
+      //     prepEditList.value = prepEditList2
+      //   } else prepEditList.value = []
+      // }
+      // if (field === 'subPrep') {
+      //   if (value.length > 0) {
+      //     let prpObj: any = {}
+      //     let prepEditObj: any = {}
+      //     let prepEditList2: any = []
+      //     prpeList.value.map((v: any) => {
+      //       prpObj[v.moId] = v
+      //     })
+      //     subPrepEditList.value.map((v: any) => {
+      //       prepEditObj[v.moId] = v
+      //     })
+      //     value.map((v: any) => {
+      //       if (prepEditObj[v]) {
+      //         prepEditList2.push(prepEditObj[v])
+      //       } else if (prpObj[v]) {
+      //         let d = prpObj[v]
+      //         prepEditList2.push({
+      //           ...d,
+      //           openType: mapSelectListTitle(d.open, resourceConditionList),
+      //           snId: '',
+      //           endTime: ''
+      //         })
+      //       }
+      //       prepEditObj[v] = v
+      //     })
+      //     subPrepEditList.value = prepEditList2
+      //   } else subPrepEditList.value = []
+      // }
     }
     // 表单操作
     const cancelData = (item: any) => {
@@ -244,7 +382,8 @@ export default defineComponent({
         moId: props.params.moId,
         cidList: item.data.cidList.flat(),
         chiefJson: JSON.stringify(prepEditList.value),
-        noChiefJson: JSON.stringify(subPrepEditList.value)
+        noChiefJson: JSON.stringify(subPrepEditList.value),
+        ...otherInfo.value
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -259,7 +398,8 @@ export default defineComponent({
         moId: props.params.moId,
         cidList: item.data.cidList.flat(),
         chiefJson: JSON.stringify(prepEditList.value),
-        noChiefJson: JSON.stringify(subPrepEditList.value)
+        noChiefJson: JSON.stringify(subPrepEditList.value),
+        ...otherInfo.value
       }).then((res) => {
         if (res.result === 0) {
           successTip(res.msg)
@@ -302,7 +442,8 @@ export default defineComponent({
                 moId: props.params.moId,
                 cidList: item.data.cidList.flat(),
                 chiefJson: JSON.stringify(prepEditList.value),
-                noChiefJson: JSON.stringify(subPrepEditList.value)
+                noChiefJson: JSON.stringify(subPrepEditList.value),
+                ...otherInfo.value
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
@@ -317,7 +458,8 @@ export default defineComponent({
                 moId: props.params.moId,
                 cidList: item.data.cidList.flat(),
                 chiefJson: JSON.stringify(prepEditList.value),
-                noChiefJson: JSON.stringify(subPrepEditList.value)
+                noChiefJson: JSON.stringify(subPrepEditList.value),
+                ...otherInfo.value
               }).then((res) => {
                 if (res.result === 0) {
                   successTip(res.msg)
@@ -334,6 +476,8 @@ export default defineComponent({
     }
     return {
       handleChangeSelect,
+      handleChangePrep,
+      handleChangeSubPrep,
       openStep,
       cancelData,
       relevanceModalConfig,
@@ -348,7 +492,10 @@ export default defineComponent({
       prepEditList,
       prepModalConfig,
       subPrepEditList,
-      showEditTable
+      showEditTable,
+      otherInfo,
+      relList,
+      prpeList
     }
   }
 })

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 14:49:48
+ * @LastEditTime: 2022-04-20 16:20:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -11,15 +11,15 @@ import { IForm } from '@/base-ui/form'
 export const relevanceModalConfig: IForm = {
   title: '编辑相关关联',
   formItems: [
-    // {
-    //   field: 'moId',
-    //   type: 'input',
-    //   label: '资源编号',
-    //   placeholder: '系统生成',
-    //   otherOptions: {
-    //     disabled: true
-    //   }
-    // },
+    {
+      field: 'moId',
+      type: 'input',
+      label: '资源编号',
+      placeholder: '系统生成',
+      otherOptions: {
+        disabled: true
+      }
+    },
     {
       field: 'cidList',
       type: 'cascader',
@@ -116,62 +116,62 @@ export const relevanceModalConfig: IForm = {
           trigger: 'blur'
         }
       ]
-    },
-    {
-      field: 'rel',
-      type: 'select',
-      label: '关联目的',
-      placeholder: '请选择关联目的',
-      isHidden: true,
-      options: [
-        {
-          value: 1,
-          title: '捆绑销售'
-        },
-        {
-          value: 2,
-          title: '附属主体(Pose库必选)'
-        }
-      ],
-      rules: [
-        {
-          required: true,
-          message: '请选择关联目的',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'prep',
-      type: 'select',
-      label: '主关联资源',
-      placeholder: '请选择主关联资源',
-      isHidden: true,
-      options: [],
-      otherOptions: {
-        multiple: true,
-        clearable: false
-      },
-      rules: [
-        {
-          required: true,
-          message: '请选择主关联资源',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'subPrep',
-      type: 'select',
-      label: '副关联资源',
-      otherOptions: {
-        multiple: true,
-        clearable: false
-      },
-      placeholder: '请选择副关联资源',
-      isHidden: true,
-      options: []
     }
+    // {
+    //   field: 'rel',
+    //   type: 'select',
+    //   label: '关联目的',
+    //   placeholder: '请选择关联目的',
+    //   isHidden: true,
+    //   options: [
+    //     {
+    //       value: 1,
+    //       title: '捆绑销售'
+    //     },
+    //     {
+    //       value: 2,
+    //       title: '附属主体(Pose库必选)'
+    //     }
+    //   ],
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请选择关联目的',
+    //       trigger: 'blur'
+    //     }
+    //   ]
+    // },
+    // {
+    //   field: 'prep',
+    //   type: 'select',
+    //   label: '主关联资源',
+    //   placeholder: '请选择主关联资源',
+    //   isHidden: true,
+    //   options: [],
+    //   otherOptions: {
+    //     multiple: true,
+    //     clearable: false
+    //   },
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请选择主关联资源',
+    //       trigger: 'blur'
+    //     }
+    //   ]
+    // },
+    // {
+    //   field: 'subPrep',
+    //   type: 'select',
+    //   label: '副关联资源',
+    //   otherOptions: {
+    //     multiple: true,
+    //     clearable: false
+    //   },
+    //   placeholder: '请选择副关联资源',
+    //   isHidden: true,
+    //   options: []
+    // }
   ],
   colLayout: {
     xl: 12, // >1920px 4个
