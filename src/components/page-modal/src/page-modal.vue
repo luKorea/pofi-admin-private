@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-14 14:13:45
+ * @LastEditTime: 2022-04-20 15:33:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -46,7 +46,7 @@
           </span>
         </div>
       </template>
-      <template #default v-if="dialogVisible">
+      <template #default>
         <div style="padding: 0 20px; margin-bottom: 40px">
           <slot
             name="titleWrapper"
@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import { successTip, errorTip } from '@/utils/tip-info'
 

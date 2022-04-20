@@ -261,12 +261,14 @@ export default defineComponent({
      * @param field 用户点击的下拉框
      * @param data 当前行的数据
      */
-    const handleChangeSelect = (item: any, field: string, data: any) =>
+    const handleChangeSelect = (item: any, field: string, data: any) => {
       emit('changeSelect', {
         value: item,
         field: field,
         data: data
       })
+    }
+
     return {
       formRef,
       otherFormRef,
