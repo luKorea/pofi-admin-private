@@ -148,7 +148,7 @@
       :edit-type="editType"
       :other-info="otherInfo"
       @openStep="openStep"
-      @getData="handleQueryClick"
+      @getData="getTableData"
       @changePage="changePage"
     ></property-component>
     <!-- 2. 资源资料 -->
@@ -160,7 +160,7 @@
       :edit-data="editData"
       @changePage="changePage"
       @openStep="openStep"
-      @getData="handleQueryClick"
+      @getData="getTableData"
     ></resource-component>
     <!-- 3. U3D组件 -->
     <u3d-component
@@ -170,7 +170,7 @@
       :edit-type="editType"
       @changePage="changePage"
       @openStep="openStep"
-      @getData="handleQueryClick"
+      @getData="getTableData"
     ></u3d-component>
     <!-- 4. 相关关联 -->
     <relevance-component
@@ -180,7 +180,7 @@
       :edit-data="editData"
       @openStep="openStep"
       @changePage="changePage"
-      @getData="handleQueryClick"
+      @getData="getTableData"
     ></relevance-component>
     <!-- 5. 时间状态组件 -->
     <timer-component
@@ -191,7 +191,7 @@
       :resource-state-list="resourceValueList"
       @changePage="changePage"
       @openStep="openStep"
-      @getData="handleQueryClick"
+      @getData="getTableData"
     ></timer-component>
   </div>
 </template>
@@ -225,6 +225,7 @@ import { selectResourceTypeOperation } from '@/service/main/resource/center'
 import { mapImageToObject } from '@/utils/index'
 import { mapSelectListTitle } from '@/utils'
 import { mapTimeToSearch } from '../../../../utils/index'
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -255,8 +256,8 @@ export default defineComponent({
     const [otherInfo] = useCountrySelect(editType.value)
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    // 查询操作
     const handleQueryBtnClick = (data: any) => {
-      console.log(data, 'data')
       const begin = mapTimeToSearch(data.dateTime).start
       const end = mapTimeToSearch(data.dateTime).end
       const onlineBegin = mapTimeToSearch(data.onlineTime).start
@@ -269,6 +270,14 @@ export default defineComponent({
         end,
         onlineBegin,
         onlineEnd
+      })
+    }
+    // 获取表格数据
+    const store = useStore()
+    const getTableData = () => {
+      store.dispatch('resourceCenterModule/getPageListAction', {
+        pageName: 'centers',
+        queryInfo: store.state.resourceCenterModule.queryInfo
       })
     }
     // 多选全选操作
@@ -631,6 +640,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      getTableData,
       dataStep,
       allData,
       editType,
