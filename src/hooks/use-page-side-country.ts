@@ -16,17 +16,24 @@ export function useCountryList() {
   return [countryList]
 }
 
-export function useMapCountry() {
+/**
+ *
+ * @param showAll 用来判断当前侧边栏是否需要显示全选
+ * @returns
+ */
+export function useMapCountry(showAll = true) {
   const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
   const [countryList] = useCountryList()
   const handleCountryList = computed(() => {
-    const list = [
-      {
-        name: '全部',
-        id: -999
-      },
-      ...countryList.value
-    ]
+    const list = showAll
+      ? [
+          {
+            name: '全部',
+            id: -999
+          },
+          ...countryList.value
+        ]
+      : countryList.value
     return list
   })
   // 侧边国家

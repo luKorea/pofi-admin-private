@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 10:49:04
+ * @LastEditTime: 2022-04-21 18:00:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -23,6 +23,7 @@ import {
   deletePageToQueryData
 } from '@/service/common-api'
 import { sortPageTableData } from '@/service/common-api'
+import { useMapCountry } from '@/hooks/use-page-side-country'
 
 const apiList: any = {
   resourceHomes: '/cms/index/',
@@ -32,6 +33,8 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 const requiredField = ['title']
 const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
   namespaced: true,
@@ -64,7 +67,7 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
-        rid: queryInfo.rid ?? -999
+        rid: queryInfo.rid ?? handleCountryList.value[0].id
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
@@ -152,7 +155,10 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       const { pageName, sortData } = payload
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
-        const data = await sortPageTableData(apiList.sort, sortData)
+        const data = await sortPageTableData(apiList.sort, {
+          ...sortData,
+          rid: queryInfo.rid
+        })
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
