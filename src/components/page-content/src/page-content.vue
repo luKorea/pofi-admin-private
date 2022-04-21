@@ -315,7 +315,6 @@ export default defineComponent({
     const router = useRouter()
     const drawTable = (data: any) => {
       const idList = data.map((item: any) => +item.id)
-      console.log(idList, 'idList')
       store
         .dispatch(props.storeTypeInfo.sortAction, {
           pageName: props.pageName,

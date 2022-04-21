@@ -262,7 +262,7 @@ export default defineComponent({
       selectNodeClick,
       handleQueryBtnClick,
       handleResetBtnClick
-    } = useMapCountry()
+    } = useMapCountry(false)
     const nodeClick = (data: any) => {
       selectNodeClick(data)
     }
@@ -362,8 +362,12 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const handleDrawTable = (data: any) => {
       const idList = data.map((item: any) => +item.id)
-      sortPageTableData('/cms/index/updateSort', {
-        idList: JSON.stringify(idList)
+      const lid = data[0].lid
+      sortPageTableData('/cms/index/child/updateSort', {
+        idList: JSON.stringify(idList),
+        rid: otherInfo.value.rid,
+        parent: otherInfo.value.id,
+        lid: lid
       }).then((res: any) => {
         if (res.result === 0) {
           successTip(res.msg)
