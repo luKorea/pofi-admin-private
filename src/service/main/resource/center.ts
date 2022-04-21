@@ -70,3 +70,10 @@ export function getU3dSourceList(data: any) {
     data: data
   })
 }
+
+// 判断步骤是否填写完整
+export function stepIsOk(moId: any) {
+  return hyRequest.post<any>({
+    url: `/cms/mold/getStep?moId=${moId}`
+  })
+}

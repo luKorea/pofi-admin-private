@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:21:57
- * @LastEditTime: 2022-04-20 14:33:51
+ * @LastEditTime: 2022-04-21 16:34:21
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/update/state
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer.vue
@@ -20,6 +20,7 @@
         :active="4"
         @openStep="openStep($event, row)"
         :params="params"
+        :write-data="writeData"
       ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
@@ -66,9 +67,13 @@ export default defineComponent({
     params: {
       type: Object,
       default: () => ({})
+    },
+    writeData: {
+      type: Array,
+      default: () => []
     }
   },
-  emits: ['getData', 'openStep', 'changePage'],
+  emits: ['getData', 'openStep', 'changePage', 'changeStepIcon'],
   setup(props, { emit }) {
     const timerModalConfigRef = computed(() => {
       timerModalConfig.formItems.map((item: any) => {
@@ -136,6 +141,7 @@ export default defineComponent({
                   if (pageModalRef.value) {
                     // pageModalRef.value.dialogVisible = false
                     emit('getData')
+                    emit('changeStepIcon', props.params.moId)
                   }
                 } else errorTip(res.msg)
               })

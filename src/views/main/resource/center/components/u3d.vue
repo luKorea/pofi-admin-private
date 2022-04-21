@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-20 14:30:42
+ * @LastEditTime: 2022-04-21 16:36:32
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -87,6 +87,7 @@
           :active="2"
           @openStep="openStep($event, row)"
           :params="params"
+          :write-data="writeData"
         ></step-component>
       </template>
       <template #otherModalHandler="{ row }">
@@ -207,13 +208,17 @@ export default defineComponent({
     params: {
       type: Object,
       default: () => ({})
+    },
+    writeData: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
     stepComponent,
     hyUpload
   },
-  emits: ['getData', 'changePage', 'openStep'],
+  emits: ['getData', 'changePage', 'openStep', 'changeStepIcon'],
   setup(props, { emit }) {
     const nextStep = () => {
       if (pageModalRef.value) {
@@ -452,6 +457,7 @@ export default defineComponent({
             // pageModalRef.value.dialogVisible = false
             // resetData()
             emit('getData')
+            emit('changeStepIcon', props.params.moId)
           }
         } else errorTip(res.msg)
       })

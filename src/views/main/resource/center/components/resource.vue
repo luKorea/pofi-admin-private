@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-20 14:30:28
+ * @LastEditTime: 2022-04-21 16:42:01
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -20,6 +20,7 @@
         :active="1"
         @openStep="openStep($event, row)"
         :params="params"
+        :write-data="writeData"
       ></step-component>
     </template>
     <!-- 多语言 -->
@@ -229,7 +230,7 @@ import stepComponent from './step.vue'
 import { validateParamsRules } from '@/utils/index'
 
 export default defineComponent({
-  emits: ['getData', 'changePage', 'openStep'],
+  emits: ['getData', 'changePage', 'openStep', 'changeStepIcon'],
   components: {
     hyEditor,
     hyUpload,
@@ -247,6 +248,10 @@ export default defineComponent({
     params: {
       type: Object,
       default: () => ({})
+    },
+    writeData: {
+      type: Array,
+      default: () => []
     }
   },
   setup(props, { emit }) {
@@ -336,6 +341,7 @@ export default defineComponent({
           if (action === 'cancel') {
             if (pageModalRef.value) {
               pageModalRef.value.dialogVisible = false
+              resetLanguageList()
               emit('getData')
             }
           }
@@ -368,6 +374,7 @@ export default defineComponent({
             successTip(res.msg)
             // pageModalRef.value.dialogVisible = false
             emit('getData')
+            emit('changeStepIcon', props.params.moId)
           }
         } else errorTip(res.msg)
       })
