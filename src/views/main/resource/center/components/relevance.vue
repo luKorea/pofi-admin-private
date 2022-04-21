@@ -14,6 +14,7 @@
         :active="3"
         @openStep="openStep($event, row)"
         :params="params"
+        :write-data="writeData"
       ></step-component>
     </template>
     <template #otherModalHandler="{ row }">
@@ -155,9 +156,13 @@ export default defineComponent({
     params: {
       type: Object,
       default: () => ({})
+    },
+    writeData: {
+      type: Array,
+      default: () => []
     }
   },
-  emits: ['getData', 'changePage', 'openStep'],
+  emits: ['getData', 'changePage', 'openStep', 'changeStepIcon'],
   setup(props, { emit }) {
     const modalConfigRef = computed(() => {
       relevanceModalConfig.formItems.map((i: any) => {
@@ -421,6 +426,7 @@ export default defineComponent({
             successTip(res.msg)
             // pageModalRef.value.dialogVisible = false
             emit('getData')
+            emit('changeStepIcon', props.params.moId)
           }
         } else errorTip(res.msg)
       })

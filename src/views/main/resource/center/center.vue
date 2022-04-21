@@ -147,9 +147,11 @@
       :params="params"
       :edit-type="editType"
       :other-info="otherInfo"
+      :write-data="writeData"
       @openStep="openStep"
       @getData="getTableData"
       @changePage="changePage"
+      @changeStepIcon="hasStepIsOK"
     ></property-component>
     <!-- 2. 资源资料 -->
     <resource-component
@@ -158,9 +160,11 @@
       :edit-type="editType"
       :item-data="itemData"
       :edit-data="editData"
+      :write-data="writeData"
       @changePage="changePage"
       @openStep="openStep"
       @getData="getTableData"
+      @changeStepIcon="hasStepIsOK"
     ></resource-component>
     <!-- 3. U3D组件 -->
     <u3d-component
@@ -168,9 +172,11 @@
       :params="params"
       :edit-data="editData"
       :edit-type="editType"
+      :write-data="writeData"
       @changePage="changePage"
       @openStep="openStep"
       @getData="getTableData"
+      @changeStepIcon="hasStepIsOK"
     ></u3d-component>
     <!-- 4. 相关关联 -->
     <relevance-component
@@ -178,9 +184,11 @@
       :params="params"
       :edit-type="editType"
       :edit-data="editData"
+      :write-data="writeData"
       @openStep="openStep"
       @changePage="changePage"
       @getData="getTableData"
+      @changeStepIcon="hasStepIsOK"
     ></relevance-component>
     <!-- 5. 时间状态组件 -->
     <timer-component
@@ -188,10 +196,12 @@
       :params="params"
       :edit-type="editType"
       :all-data="allData"
+      :write-data="writeData"
       :resource-state-list="resourceValueList"
       @changePage="changePage"
       @openStep="openStep"
       @getData="getTableData"
+      @changeStepIcon="hasStepIsOK"
     ></timer-component>
   </div>
 </template>
@@ -226,6 +236,7 @@ import { mapImageToObject } from '@/utils/index'
 import { mapSelectListTitle } from '@/utils'
 import { mapTimeToSearch } from '../../../../utils/index'
 import { useStore } from '@/store'
+import { stepIsOk } from '../../../../service/main/resource/center'
 
 export default defineComponent({
   name: 'resourceCenter',
@@ -556,9 +567,20 @@ export default defineComponent({
         } else errorTip(res.msg)
       })
     }
+
+    // 判断步骤是否已经填写
+    const writeData = ref<any>()
+    const hasStepIsOK = (moId: any) => {
+      stepIsOk(moId).then((res) => {
+        if (res.result === 0) {
+          writeData.value = res.data
+        } else errorTip(res.msg)
+      })
+    }
     const handleChangeEditData = (type: any, row: any, checkType = 'edit') => {
       // 这里需要做函数抽离，明天完成
       editType.value = checkType
+      writeData.value = []
       params.value = {
         ...row
       }
@@ -577,11 +599,13 @@ export default defineComponent({
             }
             propertyRef.value.handleEditData(row)
           } else {
+            hasStepIsOK(row.moId)
             getProperty(row)
           }
           break
         case 'timer':
           hiddenPage()
+          if (editType.value === 'edit') hasStepIsOK(row.moId)
           editData.value = row
           timerRef.value && timerRef.value.handleEditData(row)
           break
@@ -614,6 +638,7 @@ export default defineComponent({
               type: 'ios'
             }
             u3dRef.value.fileInfo = {}
+            hasStepIsOK(row.moId)
             getU3d(1)
             getU3d(0)
           }
@@ -623,6 +648,7 @@ export default defineComponent({
           if (editType.value === 'add') {
             resourceRef.value && resourceRef.value.handleEditData(row)
           } else {
+            hasStepIsOK(row.moId)
             getResource(row)
           }
           break
@@ -639,6 +665,7 @@ export default defineComponent({
             relevanceRef.value.subPrepEditList = []
             relevanceRef.value && relevanceRef.value.handleEditData(row)
           } else {
+            hasStepIsOK(row.moId)
             getRelevance()
           }
           break
@@ -694,7 +721,9 @@ export default defineComponent({
       operationName,
       handleSelectData,
       selectList,
-      handleChangeState
+      handleChangeState,
+      writeData,
+      hasStepIsOK
     }
   }
 })

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-20 14:27:16
+ * @LastEditTime: 2022-04-21 16:38:09
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -31,6 +31,7 @@
           :editType="editType"
           @openStep="openStep($event, row)"
           :params="params"
+          :write-data="writeData"
         ></step-component>
       </template>
       <!-- 使用条件 -->
@@ -192,9 +193,13 @@ export default defineComponent({
     params: {
       type: Object,
       default: () => ({})
+    },
+    writeData: {
+      type: Array,
+      default: () => []
     }
   },
-  emits: ['getData', 'changePage', 'openStep'],
+  emits: ['getData', 'changePage', 'openStep', 'changeStepIcon'],
   setup(props, { emit }) {
     const propRef = ref<any>()
     const [
@@ -299,6 +304,7 @@ export default defineComponent({
           if (pageModalRef.value) {
             // pageModalRef.value.dialogVisible = false
             emit('getData')
+            emit('changeStepIcon', props.params.moId)
           }
         } else errorTip(res.msg)
       })
