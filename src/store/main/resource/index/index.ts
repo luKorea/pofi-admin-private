@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-21 18:00:59
+ * @LastEditTime: 2022-04-21 18:26:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -29,12 +29,12 @@ const apiList: any = {
   resourceHomes: '/cms/index/',
   sort: '/cms/index/updateSort'
 }
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-// 这里获取第一位数据
-const { handleCountryList } = useMapCountry(false)
 const requiredField = ['title']
 const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
   namespaced: true,
@@ -155,9 +155,9 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       const { pageName, sortData } = payload
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
+        console.log(queryInfo, 'info')
         const data = await sortPageTableData(apiList.sort, {
-          ...sortData,
-          rid: queryInfo.rid
+          ...sortData
         })
         if (data.result === 0) {
           // 2.请求最新的数据
