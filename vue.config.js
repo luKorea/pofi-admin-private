@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 12:13:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-22 11:36:11
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -57,7 +57,8 @@ module.exports = {
     }
     ;(config.resolve.alias = {
       '@': path.resolve(__dirname, 'src'),
-      components: '@/components'
+      components: '@/components',
+      baseUI: '@/base-ui'
     }),
       (config.optimization.splitChunks = {
         // 打包优化

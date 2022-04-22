@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 17:42:18
+ * @LastEditTime: 2022-04-22 15:08:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/search.config.ts
  */
@@ -44,21 +44,24 @@ export const searchFormConfig: IForm = {
     },
     {
       field: 'lv',
-      type: 'input',
-      label: '等级',
-      placeholder: '请输入区间，用英文逗号隔开'
+      type: 'inputRange',
+      startValue: 'startLvValue',
+      endValue: 'endLvValue',
+      label: '等级'
     },
     {
       field: 'pb',
-      type: 'input',
-      label: 'P币余额',
-      placeholder: '请输入区间，用英文逗号隔开'
+      type: 'inputRange',
+      startValue: 'startPbValue',
+      endValue: 'endPbValue',
+      label: 'P币余额'
     },
     {
-      field: 'pb',
-      type: 'input',
-      label: '积分',
-      placeholder: '请输入区间，用英文逗号隔开'
+      field: 'number',
+      type: 'inputRange',
+      startValue: 'startNumberValue',
+      endValue: 'endNumberValue',
+      label: '积分'
     },
     {
       field: 'proState',
