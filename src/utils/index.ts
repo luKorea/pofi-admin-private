@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 15:32:09
+ * @LastEditTime: 2022-04-22 16:28:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -180,7 +180,7 @@ export function mapSelectListTitle(selectValue: string | number, list: any[]) {
   let title = ''
   if (list && list.length > 0) {
     let item
-    item = list.find((item: any) => item.value === +selectValue)
+    item = list.find((item: any) => item.value == selectValue)
     if (item) {
       title = item.title
     } else title = ''

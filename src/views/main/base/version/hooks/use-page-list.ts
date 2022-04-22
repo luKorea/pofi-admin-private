@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 11:05:04
+ * @LastEditTime: 2022-04-22 16:24:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -53,7 +53,8 @@ export function useMapFormData() {
     modalConfigRef,
     modalConfig,
     contentTableEditConfigRef,
-    contentTableEditConfig
+    contentTableEditConfig,
+    hostList
   }
 }
 
@@ -130,13 +131,14 @@ export function usePageList() {
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
       if (res.state) {
-        countryList.value.push(
-          {
-            name: '全选',
-            id: -1
-          },
-          ...res.data.rows
-        )
+        // countryList.value.push(
+        //   {
+        //     name: '全选',
+        //     id: -1
+        //   },
+        //   ...res.data.rows
+        // )
+        countryList.value.push(...res.data.rows)
       } else errorTip(res.msg)
     })
   }

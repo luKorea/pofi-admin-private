@@ -37,7 +37,7 @@ export function useMapCountry(showAll = true) {
     return list
   })
   // 侧边国家
-  const countryID = ref<any>(-999)
+  const countryID = ref<any>()
   const nodeInfo = ref<any>()
   const countryRef = ref()
   const copyQueryInfo = ref({})
@@ -66,7 +66,7 @@ export function useMapCountry(showAll = true) {
   // 刷新时重新选择第一条数据
   const handleResetBtnClick = () => {
     countryRef.value.currentIndex = 0
-    countryID.value = '-999'
+    countryID.value = showAll ? '-999' : countryList.value[0].id
     nodeInfo.value = {}
     handleResetClick()
   }

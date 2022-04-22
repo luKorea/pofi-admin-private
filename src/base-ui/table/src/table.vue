@@ -103,7 +103,6 @@
                   </template>
                   <template v-else-if="propItem.editInfo.type === 'select'">
                     <el-select
-                      :placeholder="propItems.placeholder"
                       v-bind="propItem.editInfo.otherOptions"
                       style="width: 100%"
                       v-model="scope.row[propItem.prop]"
