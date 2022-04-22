@@ -20,6 +20,7 @@
               showHeight="100%"
               showWidth="100%"
               style="border-radius: 8px"
+              :lazy="true"
             ></page-image>
             <template #footer>
               <el-button type="text" size="mini" @click="handleEdit(item)"
@@ -94,7 +95,7 @@ import HyCard from '@/base-ui/card/index'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { modalConfig } from './config/modal.config'
 import { checkUserModify, batchAdopt } from '@/service/main/audit/userModify'
-import { successTip, errorTip } from '@/utils/tip-info'
+import { successTip, errorTip, infoTipBox } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'auditUserModify',
@@ -175,12 +176,19 @@ export default defineComponent({
     })
     // 批量通过
     const batchAdoptData = () => {
-      batchAdopt({ uids: JSON.stringify(uids.value) }).then((res) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          getData()
-        } else errorTip(res.msg)
+      infoTipBox({
+        title: '批量通过',
+        message: '你确定批量通过审核吗'
       })
+        .then(() => {
+          batchAdopt({ uids: JSON.stringify(uids.value) }).then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              getData()
+            } else errorTip(res.msg)
+          })
+        })
+        .catch((err) => console.log(err))
     }
     return {
       storeTypeInfo,
