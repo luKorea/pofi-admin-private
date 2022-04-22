@@ -188,6 +188,31 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                 />
               </template>
+              <template v-if="item.type === 'inputRange'">
+                <el-input
+                  clearable
+                  placeholder="请输入起始值"
+                  v-bind="item.otherOptions"
+                  :model-value="modelValue[`${item.startValue}`]"
+                  @update:modelValue="
+                    handleValueChange($event, item.startValue)
+                  "
+                  @keyup.enter="handleKeyUp"
+                  @clear="handleClear"
+                  style="width: 49%"
+                />
+                <span style="margin: 0 1px">-</span>
+                <el-input
+                  clearable
+                  placeholder="请输入结束值"
+                  v-bind="item.otherOptions"
+                  :model-value="modelValue[`${item.endValue}`]"
+                  @update:modelValue="handleValueChange($event, item.endValue)"
+                  @keyup.enter="handleKeyUp"
+                  @clear="handleClear"
+                  style="width: 49%"
+                />
+              </template>
             </el-form-item>
           </el-col>
         </template>

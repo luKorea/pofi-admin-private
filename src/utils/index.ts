@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 17:04:08
+ * @LastEditTime: 2022-04-22 15:32:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -116,6 +116,27 @@ export function mapTimeToSearch(date: any) {
     start,
     end
   }
+}
+export function mapRangeToSearch(start: any, end: any) {
+  let result = []
+  if (start) {
+    result[0] = start
+  }
+  if (end) {
+    result[1] = end
+  }
+  if (!start) {
+    result[0] = end
+    result[1] = undefined
+  }
+  if (!end) {
+    result[0] = end
+    result[1] = undefined
+  }
+  if (!start && !end) {
+    result = []
+  }
+  return result.join(',')
 }
 // 处理当前系统环境
 export function handleChangeEnv(env: number | string) {

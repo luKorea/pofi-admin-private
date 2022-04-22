@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 16:52:02
+ * @LastEditTime: 2022-04-22 15:33:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -145,6 +145,7 @@ import VipComponent from './components/vip.vue'
 import { mapTimeToSearch } from '@/utils'
 import { useStore } from '@/store'
 import { errorTip } from '@/utils/tip-info'
+import { mapRangeToSearch } from '../../../../utils/index'
 
 export default defineComponent({
   name: 'fiancePurse',
@@ -158,10 +159,19 @@ export default defineComponent({
     const handleQueryBtnClick = (data: any) => {
       const beginDate = mapTimeToSearch(data.dateTime).start
       const endDate = mapTimeToSearch(data.dateTime).end
+      const lv = mapRangeToSearch(data.startLvValue, data.endLvValue)
+      const pb = mapRangeToSearch(data.startPbValue, data.endPbValue)
+      const number = mapRangeToSearch(
+        data.startNumberValue,
+        data.endNumberValue
+      )
       handleQueryClick({
         ...data,
         beginDate,
-        endDate
+        endDate,
+        lv,
+        pb,
+        number
       })
     }
     const exportData = () => {
