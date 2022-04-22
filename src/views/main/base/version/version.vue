@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex base-version" v-if="0">
+  <div class="hg-flex base-version" v-if="1">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -19,8 +19,11 @@
         @newBtnClick="handleNewData"
         @editBtnClick="handleEditData"
       >
+        <template #isOsType="scope">
+          {{ scope.row.osType ? 'IOS' : 'Android' }}
+        </template>
         <template #isHost="scope">
-          {{ scope.row.host }}
+          {{ $filters.formatSelectTitle(scope.row.host, hostList) }}
         </template>
         <!-- <template #isStatus="scope">
           {{ scope.row.status == 1 ? '有效' : '无效' }}
@@ -60,7 +63,15 @@
         </el-col>
       </el-row>
       <!-- 可编辑表格 -->
-      <editor-table :listData="listData" v-bind="contentTableEditConfigRef">
+      <editor-table
+        :listData="selectCountryList"
+        v-bind="contentTableEditConfigRef"
+      >
+        <template #isNotice="{ row }">
+          <el-button type="text" @click="handleChangeEditTableNotice(row)">
+            {{ row.isNotice ? '开' : '关' }}
+          </el-button>
+        </template>
         <template #handler="{ row }">
           <el-button
             type="danger"
@@ -99,7 +110,6 @@
 import { defineComponent, ref, watchEffect } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
-
 import { useMapCountry } from '@/hooks/use-page-side-country'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
@@ -118,18 +128,22 @@ export default defineComponent({
     hyEditor
   },
   setup() {
+    const otherInfo = ref<any>({})
+    // 下拉地区
+    const areaIds = ref<any>([])
+    // 用户选中的地区
+    const selectCountryList = ref<any>([])
+    const {
+      searchFormConfig,
+      searchFormConfigRef,
+      modalConfigRef,
+      modalConfig,
+      contentTableEditConfigRef,
+      contentTableEditConfig,
+      hostList
+    } = useMapFormData()
     // 编辑表格
     const [listData, newTableData, deleteTableData] = useEditTableData()
-    const handleNewTableData = (name: string) => {
-      newTableData({
-        name,
-        status: 1,
-        onlineTime: '',
-        endTime: '',
-        isNotice: ''
-      })
-    }
-    const handleDeleteEditTableData = (item: any) => deleteTableData(item)
     // 多语言
     const [
       editorRef,
@@ -151,9 +165,17 @@ export default defineComponent({
       loading
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
-    const otherInfo = ref<any>({})
-    // 下拉地区
-    const areaIds = ref<any>([])
+
+    // 编辑表格操作
+    const handleDeleteEditTableData = (id: any) => {
+      const index = selectCountryList.value.findIndex((i: any) => i.id === id)
+      const selectIndex = areaIds.value.findIndex((i: any) => i === id)
+      selectCountryList.value.splice(index, 1)
+      areaIds.value.splice(selectIndex, 1)
+    }
+    const handleChangeEditTableNotice = (item: any) => {
+      item.isNotice = item.isNotice ? 0 : 1
+    }
     watchEffect(() => {
       otherInfo.value = {
         ...otherInfo.value,
@@ -162,31 +184,35 @@ export default defineComponent({
         childListStr: JSON.stringify(listData.value)
       }
     })
-    const handleChangeCountry = (item: any[]) => {
-      const name = item.map((i: any) => {
-        return countryList.value.filter((item: any) => item.id === i)
-      })
-      console.log(name)
-      // handleNewTableData(item.name)
-      // const all: any[] = []
-      // const check = item.find((i: any) => i === -1)
-      // if (check === -1) {
-      //   countryList.value
-      //     .filter((i: any) => i.id !== -1)
-      //     .forEach((item: any) => {
-      //       all.push(item.id)
-      //     })
-      //   otherInfo.value = {
-      //     ...otherInfo.value,
-      //     areaIds: all.toString()
-      //   }
-      //   areaIds.value = all
-      // } else {
-      //   otherInfo.value = {
-      //     ...otherInfo.value,
-      //     areaIds: item.toString()
-      //   }
-      // }
+    const handleChangeCountry = (value: any[]) => {
+      if (value.length > 0) {
+        let prpObj: any = {}
+        let prepEditObj: any = {}
+        let prepEditList2: any = []
+        countryList.value.map((v: any) => {
+          prpObj[v.id] = v
+        })
+        selectCountryList.value.map((v: any) => {
+          prepEditObj[v.id] = v
+        })
+        value.map((v: any) => {
+          if (prepEditObj[v]) {
+            prepEditList2.push(prepEditObj[v])
+          } else if (prpObj[v]) {
+            let d = prpObj[v]
+            prepEditList2.push({
+              name: d.name,
+              id: d.id,
+              status: 1,
+              onlineTime: '',
+              endTime: '',
+              isNotice: 0
+            })
+          }
+          prepEditObj[v] = v
+        })
+        selectCountryList.value = prepEditList2
+      } else selectCountryList.value = []
     }
     const newData = () => {
       areaIds.value = []
@@ -195,19 +221,29 @@ export default defineComponent({
     }
 
     const editData = (item: any) => {
-      console.log(item)
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: item.areaIds
+      }
+      areaIds.value = item.areaIds
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newData)
+      usePageModal(newData, editData)
     return {
-      ...useMapFormData(),
+      searchFormConfig,
+      searchFormConfigRef,
+      modalConfigRef,
+      modalConfig,
+      contentTableEditConfigRef,
+      contentTableEditConfig,
+      hostList,
       // 编辑表格
-      handleNewTableData,
       handleDeleteEditTableData,
-      listData,
+      handleChangeEditTableNotice,
+      selectCountryList,
       deleteTableData,
       // 侧边国家
-      ...useMapCountry(),
+      ...useMapCountry(false),
       // 下拉框数据
       areaIds,
       countryList,

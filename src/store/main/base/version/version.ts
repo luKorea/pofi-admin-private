@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 10:15:46
+ * @LastEditTime: 2022-04-22 16:20:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -23,11 +23,14 @@ import {
   deletePageToQueryData
 } from '@/service/common-api'
 import { sortPageTableData } from '@/service/common-api'
+import { useMapCountry } from '@/hooks/use-page-side-country'
 
 const apiList: any = {
   versions: '/cms/version/',
   sort: '/cms/version/updateSort'
 }
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
@@ -64,7 +67,7 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
-        rid: queryInfo.rid ?? -999
+        rid: queryInfo.rid ?? handleCountryList.value[0].id
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
