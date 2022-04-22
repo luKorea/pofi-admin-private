@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:16:55
+ * @LastEditTime: 2022-04-22 09:54:38
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/language/language.vue
 -->
@@ -27,9 +27,9 @@
       <template #isState="scope">
         <el-button
           size="mini"
-          :type="scope.row.status ? 'primary' : 'info'"
+          :type="scope.row.status ? 'info' : 'primary'"
           @click="changeState(scope.row)"
-          >{{ scope.row.status ? '启用' : '禁用' }}</el-button
+          >{{ scope.row.status ? '隐藏' : '显示' }}</el-button
         >
       </template>
     </page-content>
@@ -197,7 +197,7 @@ export default defineComponent({
       infoTipBox({
         title: '修改关键词状态',
         message: `您确定将当前关键词为${item.name}的状态修改为:${
-          item.status ? '禁用' : '启用'
+          item.status ? '显示' : '隐藏'
         }吗`
       }).then(() => {
         updateKeywordState({
