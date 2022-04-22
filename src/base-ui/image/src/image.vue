@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-17 10:37:58
- * @LastEditTime: 2022-03-17 10:54:41
+ * @LastEditTime: 2022-04-22 17:55:21
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin/src/base-ui/image/src/image.vue
@@ -18,6 +18,7 @@
       :style="{ width: showWidth, height: showHeight }"
       fit="cover"
       :preview-src-list="imgList.length > 0 ? imgList : [imgSrc]"
+      :lazy="lazy"
     >
       <template #error>
         <div class="image-slot" style="font-size: 50px">
@@ -53,6 +54,10 @@ export default defineComponent({
     showHeight: {
       type: String,
       default: '40px'
+    },
+    lazy: {
+      type: Boolean,
+      default: false
     }
   },
   setup() {
@@ -61,4 +66,9 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.demo-image__lazy {
+  height: 400px;
+  overflow-y: auto;
+}
+</style>
