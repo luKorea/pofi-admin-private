@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 10:32:32
+ * @LastEditTime: 2022-04-22 17:08:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -12,7 +12,7 @@ export const modalConfig: IForm = {
   title: '版本管理操作',
   formItems: [
     {
-      field: 'osType',
+      field: 'osTypeName',
       type: 'input',
       label: '平台',
       placeholder: '请选择平台',

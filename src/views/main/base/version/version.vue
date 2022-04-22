@@ -17,17 +17,36 @@
         :storeTypeInfo="storeTypeInfo"
         pageName="versions"
         @newBtnClick="handleNewData"
-        @editBtnClick="handleEditData"
+        @editBtnClick="editData"
       >
+        <template #otherHandler>
+          <el-dropdown trigger="click" style="margin-right: 10px">
+            <el-button
+              size="mini"
+              type="primary"
+              plain
+              class="hg-flex hg-items-center"
+            >
+              新增<i class="el-icon-arrow-down hg-ml-1"></i>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="newData($event, 1)"
+                  >IOS</el-dropdown-item
+                >
+                <el-dropdown-item @click="newData($event, 0)"
+                  >Android</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </template>
         <template #isOsType="scope">
           {{ scope.row.osType ? 'IOS' : 'Android' }}
         </template>
         <template #isHost="scope">
           {{ $filters.formatSelectTitle(scope.row.host, hostList) }}
         </template>
-        <!-- <template #isStatus="scope">
-          {{ scope.row.status == 1 ? '有效' : '无效' }}
-        </template> -->
       </page-content>
     </div>
     <page-modal
@@ -58,6 +77,57 @@
                 :label="option.name"
                 >{{ option.name }}</el-option
               >
+            </el-select>
+          </div>
+        </el-col>
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">批量操作</span>
+            <el-tag>已下选项为批量操作版本信息，请勾选地区后再操作</el-tag>
+          </div>
+        </el-col>
+      </el-row>
+      <!-- 批量操作 -->
+      <el-row :gutter="12">
+        <el-col :span="8">
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              发布时间
+            </span>
+            <el-date-picker
+              v-model="changeTableData.onlineTime"
+              type="datetime"
+              style="width: 100%"
+              placeholder="请选择发布时间"
+            ></el-date-picker>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="item-flex">
+            <span class="item-title">停运时间</span>
+            <el-date-picker
+              v-model="changeTableData.endTime"
+              type="datetime"
+              style="width: 100%"
+              placeholder="请选择停运时间"
+            ></el-date-picker>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="item-flex">
+            <span class="item-title">
+              <span class="item-tip">*</span>
+              更新公告
+            </span>
+            <el-select
+              placeholder="请选择公告状态"
+              style="width: 100%"
+              clearable
+              v-model="changeTableData.isNotice"
+            >
+              <el-option :value="1" label="开">开</el-option>
+              <el-option :value="0" label="关">关</el-option>
             </el-select>
           </div>
         </el-col>
@@ -121,6 +191,8 @@ import {
 } from './hooks/use-page-list'
 import editorTable from '@/base-ui/table'
 import hyEditor from '@/base-ui/editor'
+import { getItemData } from '../../../../service/common-api'
+import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'baseVersion',
   components: {
@@ -165,7 +237,19 @@ export default defineComponent({
       loading
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
-
+    watchEffect(() => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: areaIds.value.toString(),
+        topicJson: JSON.stringify(languageList.value),
+        childListStr: JSON.stringify(listData.value)
+      }
+    })
+    const changeTableData = ref<any>({
+      onlineTime: '',
+      endTime: '',
+      isNotice: ''
+    })
     // 编辑表格操作
     const handleDeleteEditTableData = (id: any) => {
       const index = selectCountryList.value.findIndex((i: any) => i.id === id)
@@ -176,14 +260,6 @@ export default defineComponent({
     const handleChangeEditTableNotice = (item: any) => {
       item.isNotice = item.isNotice ? 0 : 1
     }
-    watchEffect(() => {
-      otherInfo.value = {
-        ...otherInfo.value,
-        areaIds: areaIds.value.toString(),
-        topicJson: JSON.stringify(languageList.value),
-        childListStr: JSON.stringify(listData.value)
-      }
-    })
     const handleChangeCountry = (value: any[]) => {
       if (value.length > 0) {
         let prpObj: any = {}
@@ -214,21 +290,40 @@ export default defineComponent({
         selectCountryList.value = prepEditList2
       } else selectCountryList.value = []
     }
-    const newData = () => {
+    const newData = (item: any, osType: any) => {
+      item.osTypeName = osType ? 'IOS' : 'Android'
+      otherInfo.value = {
+        ...otherInfo.value,
+        osType: osType
+      }
       areaIds.value = []
-      listData.value = []
+      selectCountryList.value = []
       resetLanguageList()
+      handleNewData(item, true)
     }
-
+    const getItem = (id: any) => {
+      getItemData('versionItem', { id: id }).then((res) => {
+        if (res.result === 0) {
+          const osTypeName = res.data.osType ? 'IOS' : 'Android'
+          selectCountryList.value = res.data.childList
+          handleEditData({
+            ...res.data,
+            osTypeName
+          })
+        } else errorTip(res.msg)
+      })
+    }
     const editData = (item: any) => {
       otherInfo.value = {
         ...otherInfo.value,
-        areaIds: item.areaIds
+        areaIds: item.areaIds,
+        id: item.id
       }
       areaIds.value = item.areaIds
+      getItem(item.id)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newData, editData)
+      usePageModal()
     return {
       searchFormConfig,
       searchFormConfigRef,
@@ -242,6 +337,7 @@ export default defineComponent({
       handleChangeEditTableNotice,
       selectCountryList,
       deleteTableData,
+      changeTableData,
       // 侧边国家
       ...useMapCountry(false),
       // 下拉框数据
@@ -264,6 +360,7 @@ export default defineComponent({
       contentTableConfig,
       handleNewData,
       editData,
+      newData,
       handleEditData,
       pageModalRef,
       defaultInfo,
