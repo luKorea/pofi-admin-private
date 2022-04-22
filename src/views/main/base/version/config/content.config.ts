@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 16:27:21
+ * @LastEditTime: 2022-04-22 17:00:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/content.config.ts
  */
@@ -29,7 +29,7 @@ export const contentTableConfig: TableConfig = {
     rowKey: 'id'
   },
   permission: {
-    add: true,
+    add: false,
     update: true,
     delete: true,
     rowAdd: false,

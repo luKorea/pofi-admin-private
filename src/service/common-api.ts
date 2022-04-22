@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-19 10:22:30
+ * @LastEditTime: 2022-04-22 17:11:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -74,7 +74,8 @@ enum getItemUrl {
   u3dItem = '/cms/mold/getSource', // 资源管理中心u3d文件
   relevanceItem = '/cms/mold/getPrep',
   homeSeriesItem = '/cms/index/getLanguage',
-  homeIndexItem = '/cms/index/getIndex'
+  homeIndexItem = '/cms/index/getIndex',
+  versionItem = '/cms/version/get' //版本管理
 }
 
 // 获取单行数据
