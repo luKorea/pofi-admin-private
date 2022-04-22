@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 14:40:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-22 09:55:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -54,12 +54,12 @@ export const modalConfig: IForm = {
       placeholder: '请选择状态',
       options: [
         {
-          title: '启用',
-          value: 1
+          title: '显示',
+          value: 0
         },
         {
-          title: '禁用',
-          value: 0
+          title: '隐藏',
+          value: 1
         }
         // {
         //   title: '未知',
