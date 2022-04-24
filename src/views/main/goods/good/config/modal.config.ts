@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:50:08
+ * @LastEditTime: 2022-04-24 11:52:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -23,12 +23,12 @@ export const modalConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '套餐名称',
-      placeholder: '请输入套餐名称',
+      label: '商品名称',
+      placeholder: '请输入商品名称',
       rules: [
         {
           required: true,
-          message: '请输入套餐名称',
+          message: '请输入商品名称',
           trigger: 'blur'
         }
       ]
@@ -45,6 +45,29 @@ export const modalConfig: IForm = {
       //     trigger: 'blur'
       //   }
       // ]
+    },
+    {
+      field: 'useType',
+      type: 'select',
+      label: '商品用途',
+      placeholder: '请选择商品用途',
+      rules: [
+        {
+          required: true,
+          message: '请选择商品用途',
+          trigger: 'blur'
+        }
+      ],
+      options: [
+        {
+          title: '常规商品',
+          value: 1
+        },
+        {
+          title: '临时商品',
+          value: 2
+        }
+      ]
     },
     {
       field: 'sale',
@@ -65,7 +88,7 @@ export const modalConfig: IForm = {
       }
     },
     {
-      field: 'original',
+      field: 'limitNum',
       type: 'inputNumber',
       label: '限定数量',
       placeholder: '请输入限定数量',
@@ -74,43 +97,66 @@ export const modalConfig: IForm = {
       }
     },
     {
-      field: 'developed',
-      type: 'select',
-      label: '定价等级',
-      placeholder: '请选择定价等级',
-      rules: [
-        {
-          required: true,
-          message: '请选择定价等级',
-          trigger: 'blur'
-        }
-      ],
-      options: [
-        {
-          title: '发达国家',
-          value: 1
-        },
-        {
-          title: '发展中国家',
-          value: 2
-        }
-      ]
+      field: 'saleNum',
+      type: 'inputNumber',
+      label: '已售出',
+      placeholder: '已售出数量',
+      otherOptions: {
+        disabled: true
+      }
     },
+    // {
+    //   field: 'developed',
+    //   type: 'select',
+    //   label: '定价等级',
+    //   placeholder: '请选择定价等级',
+    //   rules: [
+    //     {
+    //       required: true,
+    //       message: '请选择定价等级',
+    //       trigger: 'blur'
+    //     }
+    //   ],
+    //   options: [
+    //     {
+    //       title: '发达国家',
+    //       value: 1
+    //     },
+    //     {
+    //       title: '发展中国家',
+    //       value: 2
+    //     }
+    //   ]
+    // },
+    // {
+    //   field: 'show',
+    //   type: 'select',
+    //   label: '商品状态',
+    //   placeholder: '请选择商品状态',
+    //   options: [
+    //     {
+    //       title: '上架',
+    //       value: 1
+    //     },
+    //     {
+    //       title: '下架',
+    //       value: 0
+    //     }
+    //   ]
+    // },
+    // {
+    //   field: 'moId',
+    //   label: '绑定模型',
+    //   type: 'selectRemote',
+    //   placeholder: '请输入模型资源id或名称搜索',
+    //   options: []
+    // },
     {
-      field: 'show',
+      field: 'tagType',
+      label: '活动标签',
       type: 'select',
-      label: '商品状态',
-      placeholder: '请选择商品状态',
-      options: [
-        {
-          title: '上架',
-          value: 1
-        },
-        {
-          title: '下架',
-          value: 0
-        }
-      ]
+      placeholder: '请活动标签',
+      options: []
     },
     {
       field: 'tagStartTime',
@@ -123,6 +169,15 @@ export const modalConfig: IForm = {
       type: 'datetime',
       label: '标签结束时间',
       placeholder: '请选择结束时间'
+    },
+    {
+      field: 'cmsContent',
+      label: '绑定模型名称',
+      type: 'textarea',
+      placeholder: '绑定模型名称',
+      otherOptions: {
+        disabled: true
+      }
     }
   ],
   colLayout: {

@@ -2,10 +2,39 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 11:29:33
+ * @LastEditTime: 2022-04-24 13:55:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 文章类型
+export const articleList = [
+  { value: 1, title: '版本文案' },
+  { value: 2, title: '权益分类' },
+  { value: 3, title: '功能' },
+  { value: 4, title: '特权' },
+  { value: 5, title: '富文本' }
+]
+
+// 活动标签
+export const activeLabelList = [
+  {
+    value: 1,
+    title: '新上架'
+  },
+  {
+    value: 2,
+    title: '立省折扣'
+  },
+  {
+    value: 3,
+    title: '活动中'
+  },
+  {
+    value: 4,
+    title: '自定义'
+  }
+]
 
 // 功能专属使用条件
 export const functionExclusiveUseConditionsList = [
@@ -178,6 +207,21 @@ export const memberList = [
   {
     value: 2,
     title: 'Plus'
+  }
+]
+// VIP所属套餐
+export const memberTypeList = [
+  {
+    value: 0,
+    title: 'Free免费版'
+  },
+  {
+    value: 1,
+    title: 'Pro专业版'
+  },
+  {
+    value: 2,
+    title: 'Plus豪华版'
   }
 ]
 

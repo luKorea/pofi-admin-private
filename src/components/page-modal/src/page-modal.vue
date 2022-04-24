@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 16:05:07
+ * @LastEditTime: 2022-04-24 11:09:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -60,6 +60,7 @@
             v-bind="modalConfig"
             v-model="formData"
             @changeSelect="handleChangeSelect"
+            @remoteMethod="handleRemoteMethod"
           ></hy-form>
           <slot></slot>
         </div>
@@ -119,7 +120,7 @@ export default defineComponent({
       default: true
     }
   },
-  emits: ['editClick', 'addClick', 'changeSelect'],
+  emits: ['editClick', 'addClick', 'changeSelect', 'remoteMethod'],
   setup(props, { emit }) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
@@ -195,6 +196,9 @@ export default defineComponent({
     // 表单事件监听
     const handleChangeSelect = (item: any) => {
       emit('changeSelect', item)
+    }
+    const handleRemoteMethod = (item: any) => {
+      emit('remoteMethod', item)
     }
     return {
       pageFormRef,

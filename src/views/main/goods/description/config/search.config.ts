@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:19:42
+ * @LastEditTime: 2022-04-24 14:07:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -21,36 +21,28 @@ export const searchFormConfig: IForm = {
     {
       field: 'snId',
       type: 'input',
-      label: '套餐编号',
-      placeholder: '请输入套餐编号'
+      label: '文案编号',
+      placeholder: '请输入文案编号'
     },
     {
       field: 'name',
       type: 'input',
-      label: '套餐名称',
-      placeholder: '请输入套餐名称'
+      label: '文案名称',
+      placeholder: '请输入文案名称'
     },
     {
-      field: 'label',
-      type: 'input',
-      label: '商品标注',
-      placeholder: '请输入商品标注'
-    },
-    {
-      field: 'show',
+      field: 'type',
       type: 'select',
-      label: '商品状态',
-      placeholder: '请选择商品状态',
-      options: [
-        {
-          title: '已上架',
-          value: 1
-        },
-        {
-          title: '已下架',
-          value: 0
-        }
-      ]
+      label: '文案类型',
+      placeholder: '请选择文案类型',
+      options: []
+    },
+    {
+      field: 'funcType',
+      type: 'select',
+      label: '所属套餐',
+      placeholder: '请选择所属套餐',
+      options: []
     }
   ]
 }

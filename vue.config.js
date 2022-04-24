@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 11:36:11
+ * @LastEditTime: 2022-04-24 10:27:33
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -15,6 +15,8 @@ module.exports = {
   outputDir: './dist',
   // publicPath: './',
   devServer: {
+    hot: true,
+    open: true,
     proxy: {
       '^/api': {
         // http://152.136.185.210:5000
