@@ -120,6 +120,29 @@
                   >
                 </el-select>
               </template>
+              <!-- 远程搜索下拉框 selectRemote -->
+              <template v-else-if="item.type === 'selectRemote'">
+                <el-select
+                  clearable
+                  filterable
+                  remote
+                  reserve-keyword
+                  :placeholder="item.placeholder"
+                  :remote-method="handleRemoteMethod($event, item.field)"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                  :model-value="modelValue[`${item.field}`]"
+                  @update:modelValue="handleValueChange($event, item.field)"
+                >
+                  <el-option
+                    v-for="option in item.options"
+                    :key="option.value"
+                    :value="option.value"
+                    :label="option.title"
+                    >{{ option.title }}</el-option
+                  >
+                </el-select>
+              </template>
 
               <template v-else-if="item.type === 'cascader'">
                 <el-cascader
@@ -265,7 +288,13 @@ export default defineComponent({
       })
     }
   },
-  emits: ['update:modelValue', 'changeSelect', 'changeInput', 'changeClear'],
+  emits: [
+    'update:modelValue',
+    'changeSelect',
+    'changeInput',
+    'changeClear',
+    'remoteMethod'
+  ],
   setup(props, { emit }) {
     type FormInstance = InstanceType<typeof ElForm>
     const formRef = ref<FormInstance>()
@@ -293,6 +322,13 @@ export default defineComponent({
         data: data
       })
     }
+    // 远程搜索事件
+    const handleRemoteMethod = (item: any, field: string) => {
+      emit('remoteMethod', {
+        value: item,
+        field: field
+      })
+    }
 
     return {
       formRef,
@@ -300,7 +336,8 @@ export default defineComponent({
       handleKeyUp,
       handleClear,
       handleValueChange,
-      handleChangeSelect
+      handleChangeSelect,
+      handleRemoteMethod
     }
   }
 })

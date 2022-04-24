@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2022-03-18 15:00:37
- * @LastEditTime: 2022-04-14 18:01:27
+ * @LastEditTime: 2022-04-24 14:43:58
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin/src/hooks/use-page-language.ts
@@ -23,8 +23,8 @@ export function usePageLanguage(field: any, fieldID = 'languageId') {
   const languageBtnList = ref<any>([])
   // 根据ID选中不同的值
   const languageId = ref<number>(0)
-  const getLanguageList = () => {
-    getCommonSelectList('language').then((res) => {
+  const getLanguageList = (field: any, fieldID = 'languageId') => {
+    getCommonSelectList('language', null, false).then((res) => {
       if (res.state) {
         languageList.value = res!.data.map((item: any) => {
           return {
@@ -103,13 +103,14 @@ export function usePageLanguage(field: any, fieldID = 'languageId') {
       item!.icon = 'el-icon-warning'
     }
   }
-  getLanguageList()
+  getLanguageList(field, fieldID)
   return [
     languageList,
     languageId,
     resetLanguageList,
     languageBtnList,
     mapIconState,
-    mapItemIcon
+    mapItemIcon,
+    getLanguageList
   ]
 }

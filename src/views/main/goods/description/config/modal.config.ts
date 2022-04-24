@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 11:48:53
+ * @LastEditTime: 2022-04-24 15:40:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -15,7 +15,7 @@ export const modalConfig: IForm = {
       field: 'PBId',
       type: 'input',
       label: '套餐编号',
-      placeholder: '系统分配，不能修改，PB开头',
+      placeholder: '系统分配，不能修改',
       otherOptions: {
         disabled: true
       }
@@ -34,108 +34,40 @@ export const modalConfig: IForm = {
       ]
     },
     {
-      field: 'label',
-      type: 'input',
-      label: '商品标注',
-      placeholder: '请输入商品标注',
-      rules: [
-        {
-          required: true,
-          message: '请输入商品标注',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'labelShow',
-      type: 'textarea',
-      label: '说明文字',
-      placeholder: '请输入说明文字',
-      otherOptions: {
-        rows: 2
-      }
-    },
-    {
-      field: 'sale',
-      type: 'inputNumber',
-      label: '销售价',
-      placeholder: '请输入销售价',
-      otherOptions: {
-        min: 0
-      }
-    },
-    {
-      field: 'original',
-      type: 'inputNumber',
-      label: '原价',
-      placeholder: '请输入原价',
-      otherOptions: {
-        min: 0
-      }
-    },
-    {
-      field: 'rcg',
-      type: 'inputNumber',
-      label: '实际到账(P币)',
-      placeholder: '请输入实际到账(P币)',
-      otherOptions: {
-        min: 0
-      }
-    },
-    {
-      field: 'rank',
-      type: 'inputNumber',
-      label: '套餐排序',
-      placeholder: '请输入套餐排序序号',
-      otherOptions: {
-        min: 0
-      },
-      rules: [
-        {
-          required: true,
-          message: '请输入套餐排序序号',
-          trigger: 'blur'
-        }
-      ]
-    },
-    {
-      field: 'developed',
+      field: 'type',
       type: 'select',
-      label: '定价等级',
-      placeholder: '请选择定价等级',
+      label: '文案类型',
+      placeholder: '请选择文案类型',
+      options: [],
       rules: [
         {
           required: true,
-          message: '请选择定价等级',
+          message: '请选择文案类型',
           trigger: 'blur'
-        }
-      ],
-      options: [
-        {
-          title: '发达国家',
-          value: 1
-        },
-        {
-          title: '发展中国家',
-          value: 2
         }
       ]
     },
     {
-      field: 'show',
+      field: 'funcType',
       type: 'select',
-      label: '商品状态',
-      placeholder: '请选择商品状态',
-      options: [
+      label: '所属套餐',
+      placeholder: '请选择所属套餐',
+      options: [],
+      rules: [
         {
-          title: '上架',
-          value: 1
-        },
-        {
-          title: '下架',
-          value: 0
+          required: true,
+          message: '请选择所属套餐',
+          trigger: 'blur'
         }
       ]
+    },
+    {
+      field: 'parentId',
+      type: 'select',
+      label: '所属权益',
+      placeholder: '请选择所属权益',
+      options: [],
+      isHidden: true
     }
   ],
   colLayout: {

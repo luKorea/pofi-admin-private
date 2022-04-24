@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:44
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 14:52:00
+ * @LastEditTime: 2022-04-24 10:59:07
  * @Description: file content
  * @FilePath: /pofi-admin/src/base-ui/form/types/index.ts
  */
@@ -11,6 +11,7 @@ type IFormType =
   | 'inputRange'
   | 'password'
   | 'select'
+  | 'selectRemote'
   | 'date'
   | 'datepicker'
   | 'datetimerange'
