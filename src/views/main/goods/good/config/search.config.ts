@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:19:42
+ * @LastEditTime: 2022-04-24 16:30:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -44,11 +44,11 @@ export const searchFormConfig: IForm = {
       options: [
         {
           title: '已上架',
-          value: 1
+          value: -999
         },
         {
           title: '已下架',
-          value: 0
+          value: -999
         }
       ]
     },

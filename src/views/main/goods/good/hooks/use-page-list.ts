@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 12:02:08
+ * @LastEditTime: 2022-04-24 17:34:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -25,7 +25,7 @@ export function useStoreName() {
 }
 
 export function useSetLanguage() {
-  const requiredField = ref<any>(['name'])
+  const requiredField = ref<any>(['promotionNum'])
   const [
     languageList,
     languageId,
@@ -35,14 +35,12 @@ export function useSetLanguage() {
     mapItemIcon
   ] = usePageLanguage(
     {
-      name: '',
-      desc: '',
-      discount: '', //促销价
-      promotionNum: 0, //促销数量
+      tagName: '',
+      promotionSale: '', //促销价
+      promotionNum: '', //促销数量
       promotionSwitch: '', // 促销开关
       promotionStartTime: '', //促销开始时间
-      promotionEndTime: '', //促销结束时间
-      show: 0 //状态
+      promotionEndTime: '' //促销结束时间
     },
     'lid'
   )
