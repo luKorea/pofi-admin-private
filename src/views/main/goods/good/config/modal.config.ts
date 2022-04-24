@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 11:52:34
+ * @LastEditTime: 2022-04-24 17:20:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -129,21 +129,6 @@ export const modalConfig: IForm = {
     //   ]
     // },
     // {
-    //   field: 'show',
-    //   type: 'select',
-    //   label: '商品状态',
-    //   placeholder: '请选择商品状态',
-    //   options: [
-    //     {
-    //       title: '上架',
-    //       value: 1
-    //     },
-    //     {
-    //       title: '下架',
-    //       value: 0
-    //     }
-    //   ]
-    // },
     // {
     //   field: 'moId',
     //   label: '绑定模型',
@@ -151,24 +136,61 @@ export const modalConfig: IForm = {
     //   placeholder: '请输入模型资源id或名称搜索',
     //   options: []
     // },
+    // {
+    //   field: 'tagType',
+    //   label: '活动标签',
+    //   type: 'select',
+    //   placeholder: '请活动标签',
+    //   options: []
+    // },
+    // {
+    //   field: 'tagStartTime',
+    //   type: 'datetime',
+    //   label: '标签开始时间',
+    //   placeholder: '请选择开始时间'
+    // },
+    // {
+    //   field: 'tagEndTime',
+    //   type: 'datetime',
+    //   label: '标签结束时间',
+    //   placeholder: '请选择结束时间'
+    // },
     {
-      field: 'tagType',
-      label: '活动标签',
+      field: 'unityType',
+      label: 'U3D类型',
       type: 'select',
-      placeholder: '请活动标签',
+      placeholder: '请选择U3D类型',
       options: []
     },
     {
-      field: 'tagStartTime',
-      type: 'datetime',
-      label: '标签开始时间',
-      placeholder: '请选择开始时间'
+      field: 'moId',
+      label: '绑定模型名称',
+      type: 'select',
+      placeholder: '请先选择U3D类型',
+      options: []
     },
     {
-      field: 'tagEndTime',
-      type: 'datetime',
-      label: '标签结束时间',
-      placeholder: '请选择结束时间'
+      field: 'show',
+      type: 'select',
+      label: '商品状态',
+      placeholder: '请选择商品状态',
+      options: [
+        {
+          title: '上架',
+          value: 1
+        },
+        {
+          title: '下架',
+          value: 0
+        }
+      ],
+      rules: [
+        {
+          required: true,
+          message: '请选择商品用途',
+          trigger: 'blur'
+        }
+      ]
     },
     {
       field: 'cmsContent',

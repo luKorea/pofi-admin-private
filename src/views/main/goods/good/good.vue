@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 13:41:41
+ * @LastEditTime: 2022-04-24 17:40:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
   <!-- TODO 暂时隐藏，多语言 -->
-  <div class="resource-good" v-if="0">
+  <div class="resource-good" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfig"
       @resetBtnClick="handleResetClick"
@@ -20,7 +20,7 @@
       :storeTypeInfo="storeTypeInfo"
       pageName="goods"
       @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
+      @editBtnClick="editData"
     >
       <template #isUnity="{ row }">
         <span>{{
@@ -41,8 +41,14 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
+      @changeSelect="handleChangeSelect"
     >
-      <el-row :gutter="12">
+      <!-- <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">U3D类型</span>
+          </div>
+        </el-col>
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">绑定模型</span>
@@ -67,7 +73,7 @@
             </el-select>
           </div>
         </el-col>
-      </el-row>
+      </el-row> -->
       <!-- 多语言区域 -->
       <page-language
         :languageList="languageList"
@@ -87,7 +93,6 @@
                 <el-input-number
                   v-model="languageItem.promotionNum"
                   placeholder="请输入促销数量"
-                  :min="0"
                   clearable
                   style="width: 100%"
                 ></el-input-number>
@@ -97,9 +102,8 @@
               <div class="item-flex">
                 <div class="item-title">促销价</div>
                 <el-input-number
-                  v-model="languageItem.discount"
+                  v-model="languageItem.promotionSale"
                   placeholder="请输入促销价"
-                  :min="0"
                   clearable
                   style="width: 100%"
                 ></el-input-number>
@@ -139,20 +143,6 @@
           <el-row :gutter="12">
             <el-col v-bind="modalConfigRef.colLayout">
               <div class="item-flex">
-                <div class="item-title">商品状态</div>
-                <el-select
-                  v-model="languageItem.promotionSwitch"
-                  placeholder="请选择商品状态"
-                  clearable
-                  style="width: 100%"
-                >
-                  <el-option label="开启中" value="1">上架</el-option>
-                  <el-option label="暂停" value="0">下架</el-option>
-                </el-select>
-              </div>
-            </el-col>
-            <el-col v-bind="modalConfigRef.colLayout">
-              <div class="item-flex">
                 <div class="item-title">促销开关</div>
                 <el-select
                   v-model="languageItem.promotionSwitch"
@@ -160,9 +150,20 @@
                   clearable
                   style="width: 100%"
                 >
-                  <el-option label="开启中" value="1">开启中</el-option>
-                  <el-option label="暂停" value="0">暂停</el-option>
+                  <el-option label="开启中" :value="1">开启中</el-option>
+                  <el-option label="暂停" :value="0">暂停</el-option>
                 </el-select>
+              </div>
+            </el-col>
+            <el-col v-bind="modalConfigRef.colLayout">
+              <div class="item-flex">
+                <div class="item-title">自定义</div>
+                <el-input
+                  v-model="languageItem.tagName"
+                  placeholder="请输入自定义"
+                  clearable
+                  style="width: 100%"
+                ></el-input>
               </div>
             </el-col>
           </el-row>
@@ -173,7 +174,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watch, watchEffect } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -183,11 +184,9 @@ import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
 import { useStoreName, useSetLanguage } from './hooks/use-page-list'
-import {
-  unityModalList,
-  activeLabelList
-} from '@/utils/select-list/map-resource-list'
-import { getCommonSelectList } from '@/service/common'
+import { unityModalList } from '@/utils/select-list/map-resource-list'
+import { mapResourceInfo } from '@/service/main/goods/function'
+import { getItemData } from '@/service/common-api'
 
 export default defineComponent({
   name: 'resourceGood',
@@ -205,50 +204,74 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     // 编辑新增操作
-    const otherInfo = ref<any>({
-      moId: ''
+    const otherInfo = ref<any>()
+    watchEffect(() => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        goodsTagJson: JSON.stringify(languageList.value)
+      }
     })
     const newData = () => {
-      otherInfo.value = {
-        moId: ''
-      }
+      otherInfo.value = {}
       resetLanguageList()
+    }
+    const getItem = (item: any) => {
+      getItemData('goodItem', { snId: item.snId }).then((res) => {
+        if (res.result === 0) {
+          const data = res.data
+          if (data.goodsTagList && data.goodsTagList.length > 0) {
+            languageList.value = data.goodsTagList
+            languageId.value = data.goodsTagList[0].lid
+            mapIconState(data.goodsTagList, requiredField.value)
+          }
+          handleEditData({
+            ...data,
+            unityType: item.unityType
+          })
+        }
+      })
     }
     const editData = (item: any) => {
       otherInfo.value = {
         ...otherInfo.value,
-        id: item.id
+        snId: item.snId
       }
+      handleChangeSelect({
+        field: 'unityType',
+        value: item.unityType
+      })
+      getItem(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newData, editData)
+      usePageModal(newData)
     const modalConfigRef = computed(() => {
-      const tagItem = modalConfig.formItems.find(
-        (item: any) => item.field === 'tagType'
+      const unitTypeItem = modalConfig.formItems.find(
+        (item: any) => item.field === 'unityType'
       )
-      tagItem!.options = activeLabelList
+      unitTypeItem!.options = unityModalList.filter(
+        (i: any) => i.value !== undefined
+      )
       return modalConfig
     })
-    const modelList = ref<any>([])
-    const loading = ref<boolean>(false)
-    const handleRemoteMethodToMoId = (item: any) => {
-      if (item !== '') {
-        loading.value = true
-        getCommonSelectList('searchMoIdType', { keyword: item }, false)
-          .then((res) => {
-            if (res.result === 0) {
-              modelList.value =
-                res.data && res.data.length > 0
-                  ? res.data.map((item: any) => {
-                      return {
-                        title: item.pname,
-                        value: item.moId
-                      }
-                    })
-                  : []
-            }
-          })
-          .finally(() => (loading.value = false))
+    const handleChangeSelect = (item: any) => {
+      if (item.field == 'unityType') {
+        mapResourceInfo(item.value).then((res) => {
+          if (res.result === 0) {
+            modalConfigRef.value.formItems.map((i: any) => {
+              if (i.field === 'moId') {
+                i!.options =
+                  res.data && res.data.length > 0
+                    ? res.data.map((item: any) => {
+                        return {
+                          title: item.pname,
+                          value: item.moId
+                        }
+                      })
+                    : []
+              }
+            })
+          }
+        })
       }
     }
     return {
@@ -268,13 +291,12 @@ export default defineComponent({
       modalConfigRef,
       handleNewData,
       handleEditData,
+      editData,
       pageModalRef,
       defaultInfo,
       operationName,
       otherInfo,
-      modelList,
-      handleRemoteMethodToMoId,
-      loading
+      handleChangeSelect
     }
   }
 })

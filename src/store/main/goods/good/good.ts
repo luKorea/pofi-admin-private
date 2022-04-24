@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:46:35
+ * @LastEditTime: 2022-04-24 17:05:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { firstToUpperCase } from '@/utils/index'
+import { firstToUpperCase, validateParamsRules } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IGoodsItemType } from './types'
@@ -28,6 +28,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
+const requiredField = ['promotionNum']
 const goodsItemModule: Module<IGoodsItemType, IRootState> = {
   namespaced: true,
   state() {
@@ -54,7 +55,10 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
-      queryInfo = payload.queryInfo
+      queryInfo = {
+        ...payload.queryInfo,
+        show: -999
+      }
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, queryInfo)
@@ -68,7 +72,7 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + 'delete'
+      const pageUrl = apiList[pageName] + 'deleteGoods'
       const data = await deletePageToQueryData(pageUrl, { id: id })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -85,34 +89,56 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'add'
-        const data = await createPageData(pageUrl, newData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        const validData = JSON.parse(newData.goodsTagJson)[0]
+        validateParamsRules(
+          JSON.parse(newData.goodsTagJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'addGoods'
+            const data = await createPageData(pageUrl, {
+              ...newData
+            })
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          .catch((err) => errorTip(err))
       })
     },
 
     async editPageDataAction({ dispatch }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
-        // 1.编辑数据的请求
+        // 1.创建数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'update'
-        const data = await editPageData(pageUrl, editData)
-        if (data.result === 0) {
-          // 2.请求最新的数据
-          dispatch('getPageListAction', {
-            pageName,
-            queryInfo: queryInfo
+        const validData = JSON.parse(editData.goodsTagJson)[0]
+        validateParamsRules(
+          JSON.parse(editData.goodsTagJson),
+          validData,
+          requiredField
+        )
+          .then(async () => {
+            const pageUrl = apiList[pageName] + 'updateGoods'
+            const data = await createPageData(pageUrl, {
+              ...editData
+            })
+            if (data.result === 0) {
+              // 2.请求最新的数据
+              dispatch('getPageListAction', {
+                pageName,
+                queryInfo: queryInfo
+              })
+              resolve(data.msg)
+            } else reject(data.msg)
           })
-          resolve(data.msg)
-        } else reject(data.msg)
+          .catch((err) => errorTip(err))
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {

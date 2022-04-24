@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 17:11:08
+ * @LastEditTime: 2022-04-24 17:10:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -72,10 +72,11 @@ enum getItemUrl {
   bannerItem = '/cms/ad/banner/getBanner', //栏目广告
   resourceCenterItem = '/cms/mold/get', // 资源管理中心类型属性
   u3dItem = '/cms/mold/getSource', // 资源管理中心u3d文件
-  relevanceItem = '/cms/mold/getPrep',
-  homeSeriesItem = '/cms/index/getLanguage',
-  homeIndexItem = '/cms/index/getIndex',
-  versionItem = '/cms/version/get' //版本管理
+  relevanceItem = '/cms/mold/getPrep', // 资源管理中心相关关联
+  homeSeriesItem = '/cms/index/getLanguage', // 首页分类管理
+  homeIndexItem = '/cms/index/getIndex', // 首页管理
+  versionItem = '/cms/version/get', //版本管理
+  goodItem = '/cms/goods/getGoods' // 资源商品
 }
 
 // 获取单行数据
