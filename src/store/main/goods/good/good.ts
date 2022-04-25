@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 13:47:36
+ * @LastEditTime: 2022-04-25 17:36:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -73,7 +73,10 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
       const pageUrl = apiList[pageName] + 'deleteGoods'
-      const data = await deletePageToQueryData(pageUrl, { id: id })
+      const data = await deletePageToQueryData(pageUrl, {
+        id: id,
+        snId: payload.queryInfo.snId
+      })
       if (data.result === 0) {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
@@ -89,9 +92,9 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const validData = JSON.parse(newData.goodsTagList)[0]
+        const validData = JSON.parse(newData.goodsTagJson)[0]
         validateParamsRules(
-          JSON.parse(newData.goodsTagList),
+          JSON.parse(newData.goodsTagJson),
           validData,
           requiredField
         )
@@ -118,9 +121,9 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.goodsTagList)[0]
+        const validData = JSON.parse(editData.goodsTagJson)[0]
         validateParamsRules(
-          JSON.parse(editData.goodsTagList),
+          JSON.parse(editData.goodsTagJson),
           validData,
           requiredField
         )
