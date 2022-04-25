@@ -47,10 +47,10 @@
                 />
               </template>
               <template v-if="item.type === 'inputNumber'">
+                <!-- :precision="2" -->
                 <el-input-number
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
-                  :precision="2"
                   :model-value="modelValue[`${item.field}`]"
                   style="width: 100%"
                   @update:modelValue="handleValueChange($event, item.field)"

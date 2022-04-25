@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 17:34:47
+ * @LastEditTime: 2022-04-25 15:08:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -36,9 +36,9 @@ export function useSetLanguage() {
   ] = usePageLanguage(
     {
       tagName: '',
-      promotionSale: '', //促销价
-      promotionNum: '', //促销数量
-      promotionSwitch: '', // 促销开关
+      promotionSale: 0, //促销价
+      promotionNum: 0, //促销数量
+      promotionSwitch: 0, // 促销开关
       promotionStartTime: '', //促销开始时间
       promotionEndTime: '' //促销结束时间
     },

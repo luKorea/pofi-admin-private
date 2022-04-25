@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 17:40:23
+ * @LastEditTime: 2022-04-25 11:59:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -206,9 +206,13 @@ export default defineComponent({
     // 编辑新增操作
     const otherInfo = ref<any>()
     watchEffect(() => {
+      // let list: any = []
+      // languageList.value.forEach((item: any) => {
+      //   list.push(item)
+      // })
       otherInfo.value = {
         ...otherInfo.value,
-        goodsTagJson: JSON.stringify(languageList.value)
+        goodsTagList: JSON.stringify(languageList.value)
       }
     })
     const newData = () => {

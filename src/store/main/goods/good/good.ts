@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 17:05:21
+ * @LastEditTime: 2022-04-25 13:47:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -89,9 +89,9 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const validData = JSON.parse(newData.goodsTagJson)[0]
+        const validData = JSON.parse(newData.goodsTagList)[0]
         validateParamsRules(
-          JSON.parse(newData.goodsTagJson),
+          JSON.parse(newData.goodsTagList),
           validData,
           requiredField
         )
@@ -118,15 +118,15 @@ const goodsItemModule: Module<IGoodsItemType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.goodsTagJson)[0]
+        const validData = JSON.parse(editData.goodsTagList)[0]
         validateParamsRules(
-          JSON.parse(editData.goodsTagJson),
+          JSON.parse(editData.goodsTagList),
           validData,
           requiredField
         )
           .then(async () => {
             const pageUrl = apiList[pageName] + 'updateGoods'
-            const data = await createPageData(pageUrl, {
+            const data = await editPageData(pageUrl, {
               ...editData
             })
             if (data.result === 0) {
