@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 16:30:16
+ * @LastEditTime: 2022-04-25 16:57:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -27,8 +27,8 @@ export const searchFormConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '套餐名称',
-      placeholder: '请输入套餐名称'
+      label: '商品名称',
+      placeholder: '请输入商品名称'
     },
     {
       field: 'label',

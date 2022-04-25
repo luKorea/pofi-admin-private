@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 11:59:37
+ * @LastEditTime: 2022-04-25 17:39:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -212,7 +212,7 @@ export default defineComponent({
       // })
       otherInfo.value = {
         ...otherInfo.value,
-        goodsTagList: JSON.stringify(languageList.value)
+        goodsTagJson: JSON.stringify(languageList.value)
       }
     })
     const newData = () => {
@@ -228,6 +228,11 @@ export default defineComponent({
             languageId.value = data.goodsTagList[0].lid
             mapIconState(data.goodsTagList, requiredField.value)
           }
+          otherInfo.value = {
+            ...otherInfo.value,
+            content: JSON.stringify(data.content),
+            moId: data.content.moId
+          }
           handleEditData({
             ...data,
             unityType: item.unityType
@@ -238,7 +243,8 @@ export default defineComponent({
     const editData = (item: any) => {
       otherInfo.value = {
         ...otherInfo.value,
-        snId: item.snId
+        snId: item.snId,
+        id: item.id
       }
       handleChangeSelect({
         field: 'unityType',
