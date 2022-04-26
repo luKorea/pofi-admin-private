@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 15:44:07
+ * @LastEditTime: 2022-04-26 14:17:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -49,7 +49,9 @@ export function useMapFormData() {
   return {
     searchFormConfigRef,
     modalConfigRef,
-    modalConfig
+    modalConfig,
+    articleList,
+    memberTypeList
   }
 }
 
