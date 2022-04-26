@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 16:09:20
+ * @LastEditTime: 2022-04-26 14:18:36
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -22,6 +22,12 @@
       @newBtnClick="handleNewData"
       @editBtnClick="handleEditData"
     >
+      <template #isType="{ row }">
+        {{ $filters.formatSelectTitle(row.type, articleList) }}
+      </template>
+      <template #isFuncType="{ row }">
+        {{ $filters.formatSelectTitle(row.funcType, memberTypeList) }}
+      </template>
     </page-content>
     <page-modal
       :defaultInfo="defaultInfo"
@@ -681,8 +687,13 @@ export default defineComponent({
     HyUpload
   },
   setup() {
-    const { searchFormConfigRef, modalConfigRef, modalConfig } =
-      useMapFormData()
+    const {
+      searchFormConfigRef,
+      modalConfigRef,
+      modalConfig,
+      articleList,
+      memberTypeList
+    } = useMapFormData()
     const [jumpList, otherList] = usePageList()
     const {
       editorRef,
@@ -774,6 +785,8 @@ export default defineComponent({
       searchFormConfigRef,
       modalConfigRef,
       modalConfig,
+      articleList,
+      memberTypeList,
       unityModalList,
       equityList,
       // 跳转链接
