@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-21 16:36:32
+ * @LastEditTime: 2022-04-27 16:15:08
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -500,7 +500,6 @@ export default defineComponent({
           } else {
             resourceU3dOperation(data, 'update').then((res) => {
               if (res.result === 0) {
-                successTip(res.msg)
                 if (pageModalRef.value) {
                   successTip(res.msg)
                   pageModalRef.value.dialogVisible = false
