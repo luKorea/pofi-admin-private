@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-21 16:38:09
+ * @LastEditTime: 2022-04-27 10:37:03
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -22,7 +22,7 @@
       <template #otherModalHandler="{ row }">
         <el-button size="mini" @click="cancelData(row)">取消</el-button>
         <el-button size="mini" type="primary" @click="sendData(row)"
-          >确定</el-button
+          >保存</el-button
         >
       </template>
       <template #titleWrapper="{ row }">
