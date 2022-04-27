@@ -250,7 +250,7 @@ export default defineComponent({
               ...d,
               openType: mapSelectListTitle(d.open, resourceConditionList),
               snId: '',
-              endTime: ''
+              endTime: undefined
             })
           }
           prepEditObj[v] = v
@@ -278,7 +278,7 @@ export default defineComponent({
               ...d,
               openType: mapSelectListTitle(d.open, resourceConditionList),
               snId: '',
-              endTime: ''
+              endTime: undefined
             })
           }
           prepEditObj[v] = v
@@ -446,7 +446,6 @@ export default defineComponent({
           ...otherInfo.value
         }).then((res) => {
           if (res.result === 0) {
-            successTip(res.msg)
             if (pageModalRef.value) {
               successTip(res.msg)
               // pageModalRef.value.dialogVisible = false

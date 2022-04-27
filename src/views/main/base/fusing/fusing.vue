@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-27 11:29:43
+ * @LastEditTime: 2022-04-27 16:16:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/fusing/fusing.vue
 -->
 <template>
   <!-- TODO 暂时隐藏 -->
-  <div class="hg-flex" v-if="1">
+  <div class="hg-flex" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="countryList"

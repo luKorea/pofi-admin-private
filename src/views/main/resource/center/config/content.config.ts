@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 10:04:01
+ * @LastEditTime: 2022-04-27 16:04:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/content.config.ts
  */
@@ -11,7 +11,7 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '资源管理中心',
   propList: [
-    { prop: 'id', label: 'ID', sortable: true, minWidth: '50' },
+    // { prop: 'id', label: 'ID', sortable: true, minWidth: '50' },
     { prop: 'moId', label: '资源编号' },
     { prop: 'nickId', label: '标注ID' },
     { prop: 'pname', label: '模型名称' },

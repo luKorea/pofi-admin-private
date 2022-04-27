@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-21 16:42:01
+ * @LastEditTime: 2022-04-27 16:14:36
  * @LastEditors: Please set LastEditors
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -368,7 +368,6 @@ export default defineComponent({
       }
       resourceFileOperation(data, 'update').then((res) => {
         if (res.result === 0) {
-          successTip(res.msg)
           if (pageModalRef.value) {
             // resetLanguageList()
             successTip(res.msg)
@@ -426,7 +425,6 @@ export default defineComponent({
             } else {
               resourceFileOperation(data, 'update').then((res) => {
                 if (res.result === 0) {
-                  successTip(res.msg)
                   if (pageModalRef.value) {
                     successTip(res.msg)
                     pageModalRef.value.dialogVisible = false
