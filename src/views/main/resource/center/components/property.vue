@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-04-27 10:37:03
+ * @LastEditTime: 2022-04-27 13:46:47
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -36,9 +36,32 @@
       </template>
       <!-- 使用条件 -->
       <el-row :gutter="12">
+        <!-- 国家地区 -->
+        <el-col v-bind="propertyModalConfig.colLayout">
+          <div class="item-flex">
+            <span class="item-title">地区</span>
+            <el-select
+              placeholder="请选择国家地区，不选默认全部"
+              style="width: 100%"
+              clearable
+              v-model="areaIds"
+              multiple
+              collapse-tags
+              @change="handleChangeCountry($event)"
+            >
+              <el-option
+                v-for="option in countryList"
+                :key="option.id"
+                :value="option.value"
+                :label="option.title"
+                >{{ option.title }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
         <el-col
           v-bind="propertyModalConfig.colLayout"
-          v-if="otherInfo.open === 2 || editType === 'edit'"
+          v-if="otherInfo.open === 2 && editType === 'edit'"
         >
           <div class="item-flex">
             <span class="item-title">商品编号</span>
@@ -46,9 +69,6 @@
               v-model="otherInfo.snId"
               placeholder="商品编号"
               style="width: 100%"
-              :disabled="
-                otherInfo.open === 2 && editType === 'add' ? true : false
-              "
             >
               <el-option
                 v-for="item in goodsList"
@@ -62,7 +82,7 @@
         </el-col>
         <el-col
           v-bind="propertyModalConfig.colLayout"
-          v-if="otherInfo.open === 2"
+          v-if="otherInfo.open === 2 && editType === 'add'"
         >
           <div class="item-flex">
             <span class="item-title">销售价</span>
@@ -87,31 +107,6 @@
                 :label="item.title"
                 :value="item.value"
                 >{{ item.title }}</el-option
-              >
-            </el-select>
-          </div>
-        </el-col>
-      </el-row>
-      <!-- 国家地区 -->
-      <el-row :gutter="12">
-        <el-col v-bind="propertyModalConfig.colLayout">
-          <div class="item-flex">
-            <span class="item-title">地区</span>
-            <el-select
-              placeholder="请选择国家地区，不选默认全部"
-              style="width: 100%"
-              clearable
-              v-model="areaIds"
-              multiple
-              collapse-tags
-              @change="handleChangeCountry($event)"
-            >
-              <el-option
-                v-for="option in countryList"
-                :key="option.id"
-                :value="option.value"
-                :label="option.title"
-                >{{ option.title }}</el-option
               >
             </el-select>
           </div>
