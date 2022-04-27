@@ -78,7 +78,9 @@
       <el-row :gutter="12">
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
-            <span class="item-title">关联目的</span>
+            <span class="item-title">
+              <span class="item-tip">*</span>关联目的</span
+            >
             <el-select
               style="width: 100%"
               v-model="otherInfo.rel"
@@ -396,40 +398,64 @@ export default defineComponent({
         })
     }
     const addData = (item: any) => {
-      relevanceOperation({
-        ...item.data,
-        moId: props.params.moId,
-        cidList: item.data.cidList.flat(),
-        chiefJson: JSON.stringify(prepEditList.value),
-        noChiefJson: JSON.stringify(subPrepEditList.value),
-        ...otherInfo.value
-      }).then((res) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-          emit('changePage', 'timer', { moId: props.params.moId })
-        } else errorTip(res.msg)
-      })
+      if (+item.data.isPrep === 2 && otherInfo.value.prep.length === 0) {
+        errorTip('主关联资源不能为空')
+        return
+      }
+      if (
+        (+item.data.isPrep === 2 && otherInfo.value.rel === undefined) ||
+        otherInfo.value.rel === ''
+      ) {
+        errorTip('请选择关联目的')
+        return
+      } else {
+        relevanceOperation({
+          ...item.data,
+          moId: props.params.moId,
+          cidList: item.data.cidList.flat(),
+          chiefJson: JSON.stringify(prepEditList.value),
+          noChiefJson: JSON.stringify(subPrepEditList.value),
+          ...otherInfo.value
+        }).then((res) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            if (pageModalRef.value) pageModalRef.value.dialogVisible = false
+            emit('changePage', 'timer', { moId: props.params.moId })
+          } else errorTip(res.msg)
+        })
+      }
     }
     const editData = (item: any) => {
-      relevanceOperation({
-        ...item.data,
-        moId: props.params.moId,
-        cidList: item.data.cidList.flat(),
-        chiefJson: JSON.stringify(prepEditList.value),
-        noChiefJson: JSON.stringify(subPrepEditList.value),
-        ...otherInfo.value
-      }).then((res) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          if (pageModalRef.value) {
+      if (+item.data.isPrep === 2 && otherInfo.value.prep.length === 0) {
+        errorTip('主关联资源不能为空')
+        return
+      }
+      if (
+        (+item.data.isPrep === 2 && otherInfo.value.rel === undefined) ||
+        otherInfo.value.rel === ''
+      ) {
+        errorTip('请选择关联目的')
+        return
+      } else {
+        relevanceOperation({
+          ...item.data,
+          moId: props.params.moId,
+          cidList: item.data.cidList.flat(),
+          chiefJson: JSON.stringify(prepEditList.value),
+          noChiefJson: JSON.stringify(subPrepEditList.value),
+          ...otherInfo.value
+        }).then((res) => {
+          if (res.result === 0) {
             successTip(res.msg)
-            // pageModalRef.value.dialogVisible = false
-            emit('getData')
-            emit('changeStepIcon', props.params.moId)
-          }
-        } else errorTip(res.msg)
-      })
+            if (pageModalRef.value) {
+              successTip(res.msg)
+              // pageModalRef.value.dialogVisible = false
+              emit('getData')
+              emit('changeStepIcon', props.params.moId)
+            }
+          } else errorTip(res.msg)
+        })
+      }
     }
     const sendTimer = (item: any, type = 'config') => {
       const formRef = item.ref.formRef
@@ -457,38 +483,70 @@ export default defineComponent({
         formRef?.validate((valid: any) => {
           if (valid) {
             if (props.editType === 'add') {
-              relevanceOperation({
-                ...item.data,
-                moId: props.params.moId,
-                cidList: item.data.cidList.flat(),
-                chiefJson: JSON.stringify(prepEditList.value),
-                noChiefJson: JSON.stringify(subPrepEditList.value),
-                ...otherInfo.value
-              }).then((res) => {
-                if (res.result === 0) {
-                  successTip(res.msg)
-                  if (pageModalRef.value)
-                    pageModalRef.value.dialogVisible = false
-                  emit('openStep', step.step, props.params)
-                } else errorTip(res.msg)
-              })
-            } else {
-              relevanceOperation({
-                ...item.data,
-                moId: props.params.moId,
-                cidList: item.data.cidList.flat(),
-                chiefJson: JSON.stringify(prepEditList.value),
-                noChiefJson: JSON.stringify(subPrepEditList.value),
-                ...otherInfo.value
-              }).then((res) => {
-                if (res.result === 0) {
-                  successTip(res.msg)
-                  if (pageModalRef.value) {
-                    pageModalRef.value.dialogVisible = false
+              if (
+                +item.data.isPrep === 2 &&
+                otherInfo.value.prep.length === 0
+              ) {
+                errorTip('主关联资源不能为空')
+                return
+              }
+              if (
+                (+item.data.isPrep === 2 &&
+                  otherInfo.value.rel === undefined) ||
+                otherInfo.value.rel === ''
+              ) {
+                errorTip('请选择关联目的')
+                return
+              } else {
+                relevanceOperation({
+                  ...item.data,
+                  moId: props.params.moId,
+                  cidList: item.data.cidList.flat(),
+                  chiefJson: JSON.stringify(prepEditList.value),
+                  noChiefJson: JSON.stringify(subPrepEditList.value),
+                  ...otherInfo.value
+                }).then((res) => {
+                  if (res.result === 0) {
+                    successTip(res.msg)
+                    if (pageModalRef.value)
+                      pageModalRef.value.dialogVisible = false
                     emit('openStep', step.step, props.params)
-                  }
-                } else errorTip(res.msg)
-              })
+                  } else errorTip(res.msg)
+                })
+              }
+            } else {
+              if (
+                +item.data.isPrep === 2 &&
+                otherInfo.value.prep.length === 0
+              ) {
+                errorTip('主关联资源不能为空')
+                return
+              }
+              if (
+                (+item.data.isPrep === 2 &&
+                  otherInfo.value.rel === undefined) ||
+                otherInfo.value.rel === ''
+              ) {
+                errorTip('请选择关联目的')
+                return
+              } else {
+                relevanceOperation({
+                  ...item.data,
+                  moId: props.params.moId,
+                  cidList: item.data.cidList.flat(),
+                  chiefJson: JSON.stringify(prepEditList.value),
+                  noChiefJson: JSON.stringify(subPrepEditList.value),
+                  ...otherInfo.value
+                }).then((res) => {
+                  if (res.result === 0) {
+                    successTip(res.msg)
+                    if (pageModalRef.value) {
+                      pageModalRef.value.dialogVisible = false
+                      emit('openStep', step.step, props.params)
+                    }
+                  } else errorTip(res.msg)
+                })
+              }
             }
           }
         })

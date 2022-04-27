@@ -470,26 +470,30 @@ export default defineComponent({
             //   if (i.field === 'prep') i!.isHidden = false
             //   if (i.field === 'subPrep') i!.isHidden = false
             // })
-            relevanceRef.value.prepEditList = res.data.chief.map((i: any) => {
-              return {
-                ...i,
-                openType: mapSelectListTitle(
-                  i.open,
-                  resourceConditionList as any
-                )
-              }
-            })
-            relevanceRef.value.subPrepEditList = res.data.noChief.map(
-              (i: any) => {
-                return {
-                  ...i,
-                  openType: mapSelectListTitle(
-                    i.open,
-                    resourceConditionList as any
-                  )
-                }
-              }
-            )
+            relevanceRef.value.prepEditList =
+              res.data.chief && res.data.chief.length > 0
+                ? res.data.chief.map((i: any) => {
+                    return {
+                      ...i,
+                      openType: mapSelectListTitle(
+                        i.open,
+                        resourceConditionList as any
+                      )
+                    }
+                  })
+                : []
+            relevanceRef.value.subPrepEditList =
+              res.data.noChief && res.data.noChief.length > 0
+                ? res.data.noChief.map((i: any) => {
+                    return {
+                      ...i,
+                      openType: mapSelectListTitle(
+                        i.open,
+                        resourceConditionList as any
+                      )
+                    }
+                  })
+                : []
           } else {
             relevanceRef.value.showEditTable = false
             // console.log(relevanceRef.value.modalConfigRef.formItems)
