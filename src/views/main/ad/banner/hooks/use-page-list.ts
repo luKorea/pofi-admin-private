@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 10:43:54
+ * @LastEditTime: 2022-04-27 11:27:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/head/hooks/use-page-list.ts
  */
@@ -36,9 +36,6 @@ export function useSetLanguage() {
     'lid'
   )
   const languageItem = computed(() => {
-    console.log(
-      languageList.value.find((item: any) => item.lid === languageId.value)
-    )
     return languageList.value.find((item: any) => item.lid === languageId.value)
   })
   watchEffect(() => {

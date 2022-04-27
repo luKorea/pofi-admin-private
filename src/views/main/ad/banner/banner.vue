@@ -468,18 +468,22 @@ export default defineComponent({
       if (languageItem.value) {
         if (languageItem.value.img.length > 0) {
           languageItem.value.cover = languageItem.value.img[0].url
-          languageItem.value = {
-            ...languageItem.value,
-            cover: languageItem.value.img[0].url
-          }
         } else {
           languageItem.value.cover = undefined
           languageItem.value.img = []
         }
       }
-      otherInfo.value = {
-        ...otherInfo.value,
-        bannerJson: JSON.stringify(languageList.value)
+    })
+    watchEffect(() => {
+      if (languageList.value) {
+        try {
+          otherInfo.value = {
+            ...otherInfo.value,
+            bannerJson: JSON.stringify(languageList.value)
+          }
+        } catch (e) {
+          console.log(e, '这是错误')
+        }
       }
     })
     // bannerJson

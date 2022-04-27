@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 11:10:44
+ * @LastEditTime: 2022-04-27 11:17:03
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -41,23 +41,23 @@ module.exports = {
   productionSourceMap: false,
   configureWebpack: (config) => {
     const plugins = [] // 打包优化
-    if (isProduction) {
-      plugins.push(
-        new UglifyJsPlugin({
-          uglifyOptions: {
-            output: {
-              comments: false // 去掉注释
-            },
-            warnings: false,
-            compress: {
-              drop_console: true,
-              drop_debugger: false,
-              pure_funcs: ['console.log'] //移除 console
-            }
-          }
-        })
-      )
-    }
+    // if (isProduction) {
+    //   plugins.push(
+    //     new UglifyJsPlugin({
+    //       uglifyOptions: {
+    //         output: {
+    //           comments: false // 去掉注释
+    //         },
+    //         warnings: false,
+    //         compress: {
+    //           drop_console: true,
+    //           drop_debugger: false,
+    //           pure_funcs: ['console.log'] //移除 console
+    //         }
+    //       }
+    //     })
+    //   )
+    // }
     ;(config.resolve.alias = {
       '@': path.resolve(__dirname, 'src'),
       components: '@/components',
