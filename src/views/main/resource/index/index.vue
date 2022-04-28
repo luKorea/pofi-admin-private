@@ -332,6 +332,7 @@ export default defineComponent({
       mapIconState
     ] = useSetLanguage()
     watchEffect(() => {
+      // if(languageItem?.value?.childListStr?.length > 0) {}
       if (
         languageItem.value &&
         languageItem.value.childListStr &&
