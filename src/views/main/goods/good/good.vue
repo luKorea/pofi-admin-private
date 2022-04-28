@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 10:49:31
+ * @LastEditTime: 2022-04-28 17:02:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -222,7 +222,7 @@ export default defineComponent({
       getItemData('goodItem', { snId: item.snId }).then((res) => {
         if (res.result === 0) {
           const data = res.data
-          if (data.goodsTagList && data.goodsTagList.length > 0) {
+          if (data?.goodsTagList?.length > 0) {
             languageList.value = data.goodsTagList
             languageId.value = data.goodsTagList[0].lid
             mapIconState(data.goodsTagList, requiredField.value)

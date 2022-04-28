@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 17:06:02
+ * @LastEditTime: 2022-04-28 17:06:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -99,7 +99,7 @@ export default defineComponent({
         })
       })
       const ExportExcel = new ExcelService()
-      ExportExcel.exportAsExcelFile(result.value, '内购记录')
+      ExportExcel.exportAsExcelFile(result.value, '内购记录数据导出')
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
