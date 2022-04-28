@@ -306,6 +306,11 @@ export default defineComponent({
             (res: any) => res.id === row.id
           )
           languageItem.value.childListStr.splice(index, 1)
+        } else {
+          const index = languageItem.value.childListStr.findIndex(
+            (res: any) => res.tempId === tempId
+          )
+          languageItem.value.childListStr.splice(index, 1)
         }
       }
       // 暂时不做处理
@@ -549,7 +554,7 @@ export default defineComponent({
           otherInfo.value = {
             ...otherInfo.value,
             areaIds: data.index.areaList.toString(),
-            rank: data.rank
+            rank: item.rank
           }
         } else errorTip(res.msg)
       })
