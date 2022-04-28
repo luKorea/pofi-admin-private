@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 16:44:16
+ * @LastEditTime: 2022-04-28 17:06:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -135,7 +135,7 @@ export default defineComponent({
         })
       })
       const ExportExcel = new ExcelService()
-      ExportExcel.exportAsExcelFile(result.value, '用户钱包数据导出')
+      ExportExcel.exportAsExcelFile(result.value, '订单数据导出')
     }
     const otherInfo = ref<any>({})
     const getItem = (item: any) => {

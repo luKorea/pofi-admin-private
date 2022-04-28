@@ -332,12 +332,7 @@ export default defineComponent({
       mapIconState
     ] = useSetLanguage()
     watchEffect(() => {
-      // if(languageItem?.value?.childListStr?.length > 0) {}
-      if (
-        languageItem.value &&
-        languageItem.value.childListStr &&
-        languageItem.value.childListStr.length > 0
-      ) {
+      if (languageItem?.value?.childListStr?.length > 0) {
         languageItem.value.childListStr = languageItem.value.childListStr.map(
           (item: any) => {
             return {
@@ -426,6 +421,19 @@ export default defineComponent({
         }
       }
     }
+    // const mapShowItem = (showTrue, showFalse) => {
+    //   contentTableEditConfig.propList.map((item: any) => {
+    //     if (item.prop === 'title' && item.label === '按钮名称')
+    //       item!.isHidden = false
+    //     if (item.prop === 'shape') item!.isHidden = true
+    //     if (item.prop === 'tid') item!.isHidden = true
+    //     if (item.prop === 'title' && item.label === '标题')
+    //       item!.isHidden = true
+    //     if (item.prop === 'subTitle') item!.isHidden = true
+    //     if (item.prop === 'giftList') item!.isHidden = true
+    //     if (item.prop === 'jump') item!.isHidden = false
+    //   })
+    // }
     // 映射可编辑表格数据
     const mapDiffParams = () => {
       if (editTableType.value !== undefined) {
@@ -490,12 +498,7 @@ export default defineComponent({
       })
     }
     const handleChangeSelect = (data: any) => {
-      if (data.field === 'library' && +data.value === 2) {
-        mapCategoryList(data.value)
-      }
-      if (data.field === 'library' && +data.value === 1) {
-        mapCategoryList(data.value)
-      }
+      if (data.field === 'library') mapCategoryList(data.value)
       if (data.field === 'type') {
         editTableType.value = +data.value
         mapDiffParams()
