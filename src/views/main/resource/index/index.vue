@@ -511,6 +511,7 @@ export default defineComponent({
       areaIds.value = []
       listData.value = []
       editTableType.value = undefined
+      otherInfo.value = {}
       mapDiffParams()
       mapCategoryList(undefined)
       resetLanguageList()
@@ -547,7 +548,8 @@ export default defineComponent({
           }
           otherInfo.value = {
             ...otherInfo.value,
-            areaIds: data.index.areaList.toString()
+            areaIds: data.index.areaList.toString(),
+            rank: data.rank
           }
         } else errorTip(res.msg)
       })
