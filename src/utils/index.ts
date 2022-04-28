@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 16:28:09
+ * @LastEditTime: 2022-04-28 16:56:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -16,10 +16,10 @@ import { Base64 } from 'js-base64'
 
 let loading: ILoadingInstance
 
-export function showLoading() {
+export function showLoading(text = 'Loading') {
   loading = ElLoading.service({
     lock: true,
-    text: 'Loading',
+    text: text,
     spinner: 'el-icon-loading',
     background: 'rgba(250, 250, 250, 1)'
   })
