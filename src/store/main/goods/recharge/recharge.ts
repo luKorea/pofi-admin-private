@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 10:04:09
+ * @LastEditTime: 2022-04-29 15:17:25
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
 import { errorTip, successTip } from '@/utils/tip-info'
-import { firstToUpperCase } from '@/utils/index'
+import { firstToUpperCase, cultureDifferentType } from '@/utils/index'
 import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { IGoodsRechargeType } from './types'
@@ -68,7 +68,8 @@ const goodsRechargeModule: Module<IGoodsRechargeType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + 'delete'
+      const pageUrl =
+        apiList[pageName] + cultureDifferentType('delete', pageName)
       const data = await deletePageToQueryData(pageUrl, { id: id })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -85,7 +86,8 @@ const goodsRechargeModule: Module<IGoodsRechargeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'add'
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('add', pageName)
         const data = await createPageData(pageUrl, {
           ...newData,
           type: 3
@@ -106,7 +108,8 @@ const goodsRechargeModule: Module<IGoodsRechargeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'update'
+        const pageUrl =
+          apiList[pageName] + cultureDifferentType('update', pageName)
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据
