@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 17:20:28
+ * @LastEditTime: 2022-04-29 15:43:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -143,18 +143,6 @@ export const modalConfig: IForm = {
     //   placeholder: '请活动标签',
     //   options: []
     // },
-    // {
-    //   field: 'tagStartTime',
-    //   type: 'datetime',
-    //   label: '标签开始时间',
-    //   placeholder: '请选择开始时间'
-    // },
-    // {
-    //   field: 'tagEndTime',
-    //   type: 'datetime',
-    //   label: '标签结束时间',
-    //   placeholder: '请选择结束时间'
-    // },
     {
       field: 'unityType',
       label: 'U3D类型',
@@ -200,6 +188,66 @@ export const modalConfig: IForm = {
       otherOptions: {
         disabled: true
       }
+    },
+    {
+      field: 'promotionStartTime',
+      type: 'datetime',
+      label: '促销开始时间',
+
+      otherOptions: {
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        placeholder: '请选择促销开始时间'
+      }
+    },
+    {
+      field: 'promotionEndTime',
+      type: 'datetime',
+      label: '促销结束时间',
+      otherOptions: {
+        valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        placeholder: '请选择促销结束时间'
+      }
+    },
+    {
+      field: 'promotionSale',
+      type: 'inputNumber',
+      label: '促销价',
+      placeholder: '请输入促销价',
+      otherOptions: {
+        min: 0
+      }
+    },
+    {
+      field: 'promotionNum',
+      type: 'inputNumber',
+      label: '促销数量',
+      placeholder: '请输入促销数量',
+      otherOptions: {
+        min: 0
+      }
+    },
+    {
+      field: 'promotionSwitch',
+      type: 'select',
+      label: '促销开关',
+      placeholder: '请选择促销开关',
+      options: [
+        {
+          title: '开启中',
+          value: 1
+        },
+        {
+          title: '暂停',
+          value: 0
+        }
+      ],
+      rules: [
+        {
+          required: true,
+          message: '请选择促销开关',
+          trigger: 'blur'
+        }
+      ]
     }
   ],
   colLayout: {
