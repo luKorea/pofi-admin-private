@@ -249,7 +249,8 @@ export default defineComponent({
         giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : [],
         state: 1,
         lid: languageItem.value.lid,
-        tempId: uid(8)
+        tempId: uid(8),
+        newField: true
       })
     }
     // 下拉数据搜索
@@ -285,7 +286,8 @@ export default defineComponent({
           shape: editTableType.value === 8 ? 1 : 0, // shape 0:无,1:大横矩形,2:小横矩形
           jump: '',
           lid: languageItem.value.lid,
-          tempId: uid(8)
+          tempId: uid(8),
+          newField: true
         })
         languageItem.value.childListStr = [
           ...languageItem.value.childListStr,
@@ -362,19 +364,24 @@ export default defineComponent({
     })
     const [storeTypeInfo, operationName] = useStoreName()
     const handleDrawTable = (data: any) => {
-      const idList = data.map((item: any) => +item.id)
-      const lid = data[0].lid
-      sortPageTableData('/cms/index/child/updateSort', {
-        idList: JSON.stringify(idList),
-        rid: otherInfo.value.rid,
-        parent: otherInfo.value.id,
-        lid: lid
-      }).then((res: any) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          getItem(otherInfo.value)
-        } else errorTip(res.msg)
-      })
+      const nothing = data.find((i: any) => i.newField)
+      if (nothing) {
+        warnTip('当前表格有新增项，请填写保存后，再排序，否则排序无效', 2000)
+      } else {
+        const idList = data.map((item: any) => +item.id)
+        const lid = data[0].lid
+        sortPageTableData('/cms/index/child/updateSort', {
+          idList: JSON.stringify(idList),
+          rid: otherInfo.value.rid,
+          parent: otherInfo.value.id,
+          lid: lid
+        }).then((res: any) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            getItem(otherInfo.value)
+          } else errorTip(res.msg)
+        })
+      }
     }
     watchEffect(() => {
       if (areaIds.value && areaIds.value.length === 0) {

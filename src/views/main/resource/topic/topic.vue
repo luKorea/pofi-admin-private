@@ -200,7 +200,7 @@ import hyUpload from '@/base-ui/upload'
 import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
-import { successTip, errorTip } from '@/utils/tip-info'
+import { successTip, errorTip, warnTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
@@ -218,7 +218,8 @@ export default defineComponent({
         mid: '',
         subTitle: '',
         url: [],
-        cover: ''
+        cover: '',
+        newField: true
       })
     }
     const handleDeleteEditTableData = (item: any) => {
@@ -229,13 +230,17 @@ export default defineComponent({
       //   console.log(1111)
       // }
     }
-    watch(listData.value, () => {
-      listData.value = listData.value.map((item: any) => {
-        return {
-          ...item,
-          cover: item.url && item.cover.length > 0 ? item.cover[0].url : ''
-        }
-      })
+    watchEffect(() => {
+      if (listData?.value?.length > 0) {
+        let newData: any[] = []
+        newData = listData.value.map((item: any) => {
+          return {
+            ...item,
+            cover: item.url && item.url.length > 0 ? item.url[0].url : ''
+          }
+        })
+        listData.value = newData
+      }
     })
     // 多语言
     const [
@@ -297,15 +302,20 @@ export default defineComponent({
       })
     }
     const handleDrawTable = (data: any) => {
-      const idList = data.map((item: any) => item.id)
-      sortPageTableData('/cms/topic/updateSort', {
-        idList: JSON.stringify(idList)
-      }).then((res: any) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          getData(otherInfo.value.mtId)
-        } else errorTip(res.msg)
-      })
+      const nothing = data.find((i: any) => i.newField)
+      if (nothing) {
+        warnTip('当前表格有新增项，请填写保存后，再排序，否则排序无效', 2000)
+      } else {
+        const idList = data.map((item: any) => item.id)
+        sortPageTableData('/cms/topic/updateSort', {
+          idList: JSON.stringify(idList)
+        }).then((res: any) => {
+          if (res.result === 0) {
+            successTip(res.msg)
+            getData(otherInfo.value.mtId)
+          } else errorTip(res.msg)
+        })
+      }
     }
     const [imgLimit] = useImageUpload()
     const author = ref<any>()
@@ -324,6 +334,7 @@ export default defineComponent({
       )
       listData.value.splice(index, 1, {
         id: selectItem.id,
+        newField: true,
         cover: selectItem.cover,
         title: selectItem.name,
         subTitle: selectItem.seriesName,
