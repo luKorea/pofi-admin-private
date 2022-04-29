@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 17:02:45
+ * @LastEditTime: 2022-04-29 15:48:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -81,8 +81,39 @@
         @changeLanguage="handleChangeLanguage"
       >
         <template #formItem>
-          <!-- 促销价格 -->
+          <!-- 促销状态 -->
           <el-row :gutter="12">
+            <!-- <el-col v-bind="modalConfigRef.colLayout">
+              <div class="item-flex">
+                <div class="item-title">促销开关</div>
+                <el-select
+                  v-model="languageItem.promotionSwitch"
+                  placeholder="请选择促销状态"
+                  clearable
+                  style="width: 100%"
+                >
+                  <el-option label="开启中" :value="1">开启中</el-option>
+                  <el-option label="暂停" :value="0">暂停</el-option>
+                </el-select>
+              </div>
+            </el-col> -->
+            <el-col :span="24">
+              <div class="item-flex">
+                <div class="item-title">
+                  <span class="item-tip">*</span>
+                  自定义
+                </div>
+                <el-input
+                  v-model="languageItem.tagName"
+                  placeholder="请输入自定义"
+                  clearable
+                  style="width: 100%"
+                ></el-input>
+              </div>
+            </el-col>
+          </el-row>
+          <!-- 促销价格 -->
+          <!-- <el-row :gutter="12">
             <el-col v-bind="modalConfigRef.colLayout">
               <div class="item-flex">
                 <div class="item-title">
@@ -108,16 +139,16 @@
                 ></el-input-number>
               </div>
             </el-col>
-          </el-row>
+          </el-row> -->
           <!-- 促销时间 -->
           <el-row :gutter="12">
             <el-col v-bind="modalConfigRef.colLayout">
               <div class="item-flex">
-                <div class="item-title">促销开始时间</div>
+                <div class="item-title">标签开始时间</div>
                 <el-date-picker
                   type="datetime"
-                  v-model="languageItem.promotionStartTime"
-                  placeholder="请输入促销开始时间"
+                  v-model="languageItem.tagStartTime"
+                  placeholder="请输入标签开始时间"
                   clearable
                   value-format="YYYY-MM-DD HH:ss:mm"
                   style="width: 100%"
@@ -126,43 +157,15 @@
             </el-col>
             <el-col v-bind="modalConfigRef.colLayout">
               <div class="item-flex">
-                <div class="item-title">促销结束时间</div>
+                <div class="item-title">标签结束时间</div>
                 <el-date-picker
                   type="datetime"
-                  v-model="languageItem.promotionEndTime"
-                  placeholder="请输入促销结束时间"
+                  v-model="languageItem.tagEndTime"
+                  placeholder="请输入标签结束时间"
                   clearable
                   value-format="YYYY-MM-DD HH:ss:mm"
                   style="width: 100%"
                 ></el-date-picker>
-              </div>
-            </el-col>
-          </el-row>
-          <!-- 促销状态 -->
-          <el-row :gutter="12">
-            <el-col v-bind="modalConfigRef.colLayout">
-              <div class="item-flex">
-                <div class="item-title">促销开关</div>
-                <el-select
-                  v-model="languageItem.promotionSwitch"
-                  placeholder="请选择促销状态"
-                  clearable
-                  style="width: 100%"
-                >
-                  <el-option label="开启中" :value="1">开启中</el-option>
-                  <el-option label="暂停" :value="0">暂停</el-option>
-                </el-select>
-              </div>
-            </el-col>
-            <el-col v-bind="modalConfigRef.colLayout">
-              <div class="item-flex">
-                <div class="item-title">自定义</div>
-                <el-input
-                  v-model="languageItem.tagName"
-                  placeholder="请输入自定义"
-                  clearable
-                  style="width: 100%"
-                ></el-input>
               </div>
             </el-col>
           </el-row>

@@ -28,7 +28,8 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const requiredField = ['promotionNum']
+// const requiredField = ['promotionNum']
+const requiredField = ['tagName']
 const goodsItemModule: Module<IGoodsItemType, IRootState> = {
   namespaced: true,
   state() {
