@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 15:13:40
+ * @LastEditTime: 2022-04-29 15:30:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -19,7 +19,7 @@
       :storeTypeInfo="storeTypeInfo"
       pageName="functions"
       @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
+      @editBtnClick="editData"
     >
       <template #otherHandler>
         <el-button size="mini" @click="exportData">导出Excel</el-button>
@@ -91,19 +91,26 @@ export default defineComponent({
     }
     // 编辑新增操作
     const otherInfo = ref<any>()
-    const editData = async (item: any) => {
-      await nextTick()
-      item.PNId = 'PN' + item.id
-      item.moId = item.moId ? item.moId.split(',') : []
-      item.modeType = item.type
-      console.log(item.moId, 'moId')
+    const editData = (item: any) => {
       mapResourceName(+item.type)
-      otherInfo.value = {
-        id: item.id
-      }
+      setTimeout(() => {
+        let moId = null
+        if (item.moId && item.moId !== undefined) {
+          moId = item.moId.split(',')
+        } else moId = []
+        item.PNId = 'PN' + item.id
+        item.modeType = item.type
+        otherInfo.value = {
+          id: item.id
+        }
+        handleEditData({
+          ...item,
+          moId
+        })
+      }, 500)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(undefined, editData)
+      usePageModal()
     const formatDeveloped = (type: number | string) => {
       switch (+type) {
         case 1:
@@ -126,7 +133,7 @@ export default defineComponent({
     const mapResourceName = (unityType: any) => {
       mapResourceInfo(unityType).then((res) => {
         if (res.result === 0) {
-          modalConfig.formItems.map((i: any) => {
+          modalConfigRef.value.formItems.map((i: any) => {
             if (i.field === 'moId')
               i!.options = res.data.map((item: any) => {
                 return {
@@ -162,7 +169,8 @@ export default defineComponent({
       exportData,
       formatDeveloped,
       otherInfo,
-      handleChangeSelect
+      handleChangeSelect,
+      editData
     }
   }
 })
