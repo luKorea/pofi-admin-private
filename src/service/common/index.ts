@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 15:36:32
+ * @LastEditTime: 2022-04-29 16:14:43
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -48,6 +48,12 @@ export function getCommonSelectList(
   return hyRequest.post<any>({
     url: (commonAPI as any)[type],
     data: data,
+    showLoading: showLoading
+  })
+}
+export function getCommonSelectList1(keyword?: any, showLoading = true) {
+  return hyRequest.post<any>({
+    url: `/cms/mold/searchMold?keyword=${keyword}`,
     showLoading: showLoading
   })
 }

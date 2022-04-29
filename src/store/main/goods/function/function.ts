@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 15:11:17
+ * @LastEditTime: 2022-04-29 16:26:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -111,7 +111,10 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
         const { pageName, editData } = payload
         const pageUrl =
           apiList[pageName] + cultureDifferentType('update', pageName)
-        const data = await editPageData(pageUrl, editData)
+        const data = await editPageData(pageUrl, {
+          ...editData,
+          moId: editData.moId.toString()
+        })
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 15:08:16
+ * @LastEditTime: 2022-04-29 16:00:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -127,23 +127,23 @@ export const modalConfig: IForm = {
         }
       ]
     },
-    {
-      field: 'modeType',
-      type: 'select',
-      label: '资源类型',
-      placeholder: '请选择资源类型',
-      options: []
-    },
-    {
-      field: 'moId',
-      type: 'select',
-      label: '资源名字',
-      placeholder: '请选择资源名字',
-      options: [],
-      otherOptions: {
-        multiple: true
-      }
-    },
+    // {
+    //   field: 'modeType',
+    //   type: 'select',
+    //   label: '资源类型',
+    //   placeholder: '请选择资源类型',
+    //   options: []
+    // },
+    // {
+    //   field: 'moId',
+    //   type: 'select',
+    //   label: '资源名字',
+    //   placeholder: '请选择资源名字',
+    //   options: [],
+    //   otherOptions: {
+    //     multiple: true
+    //   }
+    // },
     {
       field: 'developed',
       type: 'select',
