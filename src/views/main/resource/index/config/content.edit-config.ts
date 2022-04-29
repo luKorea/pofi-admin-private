@@ -2,14 +2,14 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 11:29:44
+ * @LastEditTime: 2022-04-29 11:17:04
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
 
 import { TableConfig } from '@/types/table-config'
 export const contentTableEditConfig: TableConfig = {
-  title: '内容设置',
+  title: '内容设置（多语言）',
   propList: [
     {
       prop: 'id',

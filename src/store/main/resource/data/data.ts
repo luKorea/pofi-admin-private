@@ -3,7 +3,7 @@ import { cultureDifferentType } from '@/utils/index'
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 09:29:27
+ * @LastEditTime: 2022-04-29 14:55:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/resource/data/data.ts
  */
@@ -116,7 +116,7 @@ const resourceDataModule: Module<IResourceDataType, IRootState> = {
         console.log(editData)
         const result = {
           state: editData.downloadState,
-          showNum: editData.num / 1000,
+          showNum: editData.showNum / 1000,
           id: editData.id,
           num: editData.num,
           moId: editData.moId

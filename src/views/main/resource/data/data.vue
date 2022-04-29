@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 10:17:59
+ * @LastEditTime: 2022-04-29 14:53:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -131,12 +131,13 @@ export default defineComponent({
       otherInfo.value = {
         id: item.id,
         num: item.downloadShow,
-        download: item.download
+        download: item.download,
+        showNum: item.downloadShow
       }
       if (item.downloadShow) {
         if (item.downloadShow / 1000 < 1) {
-          item.showNum = 0 + 'K'
-        } else item.showNum = +item.downloadShow / 1000 + 'K'
+          item.showNum1 = 0 + 'K'
+        } else item.showNum1 = +item.downloadShow / 1000 + 'K'
       }
     }
     const handleChangeNumber = () => {

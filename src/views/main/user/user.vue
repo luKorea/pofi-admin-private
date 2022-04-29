@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-13 18:21:40
+ * @LastEditTime: 2022-04-29 10:50:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -22,7 +22,7 @@
       @editBtnClick="handleEdit"
       @operationBtnClick="handleOperationClick"
     >
-      <template #isState="scope">
+      <template #isStatus="scope">
         <span>{{
           scope.row.status == 1
             ? '注销'

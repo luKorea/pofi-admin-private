@@ -133,7 +133,7 @@
       </page-language>
       <!-- 可编辑表格 -->
       <editor-table
-        :listData="listData"
+        :listData="languageItem.childListStr"
         v-bind="contentTableEditConfig"
         :handleDraw="operationType === 'add' ? false : true"
         :editTableDraw="operationType === 'add' ? false : true"
@@ -169,7 +169,7 @@
           <el-button
             type="danger"
             size="mini"
-            @click="handleDeleteEditTableData(row.id)"
+            @click="handleDeleteEditTableData(row.tempId, row)"
             >删除</el-button
           >
         </template>
@@ -179,7 +179,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect, watch } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -192,8 +192,7 @@ import {
   useStoreName,
   useSetLanguage,
   usePageList,
-  useImageUpload,
-  useEditTableData
+  useImageUpload
 } from './hooks/use-page-list'
 import { getItemData, sortPageTableData } from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
@@ -201,6 +200,7 @@ import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { successTip, errorTip, warnTip } from '@/utils/tip-info'
+import { uid } from 'uid'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
@@ -209,11 +209,11 @@ export default defineComponent({
     editorTable
   },
   setup() {
-    // 编辑表格
-    const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
-      newTableData({
-        id: '',
+      let res: any[] = []
+      res.push({
+        lid: languageItem.value.lid,
+        tempId: uid(8),
         rank: '',
         mid: '',
         subTitle: '',
@@ -221,25 +221,41 @@ export default defineComponent({
         cover: '',
         newField: true
       })
+      languageItem.value.childListStr = [
+        ...languageItem.value.childListStr,
+        ...res
+      ]
     }
-    const handleDeleteEditTableData = (item: any) => {
-      deleteTableData(item)
-      // 暂时不做处理
-      // if (operationType.value === 'add') deleteTableData(item)
-      // else {
-      //   console.log(1111)
-      // }
+    const handleDeleteEditTableData = (tempId: any, row: any) => {
+      if (operationType.value === 'add') {
+        const index = languageItem.value.childListStr.findIndex(
+          (res: any) => res.tempId === tempId
+        )
+        languageItem.value.childListStr.splice(index, 1)
+      } else {
+        if (row.id) {
+          const index = languageItem.value.childListStr.findIndex(
+            (res: any) => res.id === row.id
+          )
+          languageItem.value.childListStr.splice(index, 1)
+        } else {
+          const index = languageItem.value.childListStr.findIndex(
+            (res: any) => res.tempId === tempId
+          )
+          languageItem.value.childListStr.splice(index, 1)
+        }
+      }
     }
     watchEffect(() => {
-      if (listData?.value?.length > 0) {
+      if (languageItem?.value?.childListStr?.length > 0) {
         let newData: any[] = []
-        newData = listData.value.map((item: any) => {
+        newData = languageItem.value.childListStr.map((item: any) => {
           return {
             ...item,
             cover: item.url && item.url.length > 0 ? item.url[0].url : ''
           }
         })
-        listData.value = newData
+        languageItem.value.childListStr = newData
       }
     })
     // 多语言
@@ -283,17 +299,26 @@ export default defineComponent({
                 url: item.cover ? [mapImageToObject(item.cover)] : []
               }
             })
-            console.log(result)
-            languageList.value = result
-            let info: any[] = []
-            info = res?.data?.childList.map((item: any) => {
-              return {
-                ...item,
-                tempMid: `${item.mid} : ${item.title}`,
-                url: item.cover ? [mapImageToObject(item.cover)] : []
+            let endData = []
+            endData = result.map((item: any) => {
+              console.log(result, 'resulr')
+              if (item.childList) {
+                item['childListStr'] = []
+                item.childList.map((i: any) => {
+                  item.childListStr.push({
+                    ...i,
+                    tempMid: i.title,
+                    url: i.cover ? [mapImageToObject(i.cover)] : []
+                  })
+                })
+                return item
+              } else {
+                return {
+                  ...item
+                }
               }
             })
-            listData.value = info
+            languageList.value = endData
             languageId.value = res?.data?.topicList[0].lid
             mapIconState(res?.data?.topicList, requiredField.value)
           }
@@ -329,17 +354,18 @@ export default defineComponent({
       const selectItem = resourceList.value.find(
         (item: any) => item.moId === tempMid
       )
-      const index = listData.value.findIndex(
+      const index = languageItem.value.childListStr.findIndex(
         (item: any) => item.tempMid === tempMid
       )
-      listData.value.splice(index, 1, {
-        id: selectItem.id,
+      languageItem.value.childListStr.splice(index, 1, {
+        lid: languageItem.value.lid,
         newField: true,
         cover: selectItem.cover,
         title: selectItem.name,
         subTitle: selectItem.seriesName,
         mid: selectItem.moId,
         tempMid: selectItem.moId,
+        tempId: uid(8),
         url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
       })
     }
@@ -370,11 +396,16 @@ export default defineComponent({
           languageItem.value.url = []
         }
       }
+      const indexJSON = languageList.value.map((i: any) => {
+        return {
+          ...i,
+          childListStr: JSON.stringify(i.childListStr)
+        }
+      })
       otherInfo.value = {
         ...otherInfo.value,
         author: author.value,
-        topicJson: JSON.stringify(languageList.value),
-        childListStr: JSON.stringify(listData.value)
+        topicJson: JSON.stringify(indexJSON)
       }
     })
     // 监听多语言图片设置
@@ -409,7 +440,6 @@ export default defineComponent({
       author.value = null
       operationType.value = 'add'
       areaIds.value = []
-      listData.value = []
       resetLanguageList()
     }
 
@@ -425,8 +455,6 @@ export default defineComponent({
       contentTableEditConfig,
       handleNewTableData,
       handleDeleteEditTableData,
-      listData,
-      deleteTableData,
       handleDrawTable,
       // 侧边国家
       ...useMapCountry(),

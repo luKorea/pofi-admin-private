@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 15:30:50
+ * @LastEditTime: 2022-04-29 15:13:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -91,8 +91,13 @@ export default defineComponent({
     }
     // 编辑新增操作
     const otherInfo = ref<any>()
-    const editData = (item: any) => {
+    const editData = async (item: any) => {
+      await nextTick()
       item.PNId = 'PN' + item.id
+      item.moId = item.moId ? item.moId.split(',') : []
+      item.modeType = item.type
+      console.log(item.moId, 'moId')
+      mapResourceName(+item.type)
       otherInfo.value = {
         id: item.id
       }

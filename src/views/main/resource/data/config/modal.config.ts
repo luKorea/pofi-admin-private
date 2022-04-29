@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 09:22:00
+ * @LastEditTime: 2022-04-29 14:48:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
@@ -28,7 +28,7 @@ export const modalConfig: IForm = {
       }
     },
     {
-      field: 'showNum',
+      field: 'showNum1',
       type: 'input',
       label: '前端显示',
       otherOptions: {

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 21:26:23
+ * @LastEditTime: 2022-04-29 10:55:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -41,7 +41,8 @@ export function useSetLanguage() {
       subTitle: '',
       url: [],
       cover: '',
-      desc: ''
+      desc: '',
+      childListStr: []
     },
     'lid'
   )
