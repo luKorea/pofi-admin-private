@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 11:39:56
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 10:00:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/router/config/modal.config.ts
  */
@@ -58,11 +58,11 @@ export const modalConfig: IForm = {
       field: 'path',
       type: 'input',
       label: '路由路径',
-      placeholder: '请输入路由路径',
+      placeholder: '请输入路由路径, 一级路由带 "/",二级路由无需带 ',
       rules: [
         {
           required: true,
-          message: '请输入路由路径',
+          message: '请输入路由路径, 一级路由带 "/",二级路由无需带',
           trigger: 'blur'
         }
       ]
@@ -71,11 +71,13 @@ export const modalConfig: IForm = {
       field: 'component',
       type: 'input',
       label: '路由组件地址',
-      placeholder: '请输入路由组件地址',
+      placeholder:
+        '请输入路由组件地址, 请输入前端配置对应地址，例如 "/finance/warehouse/warehouse"',
       rules: [
         {
           required: true,
-          message: '请输入路由组件地址',
+          message:
+            '请输入路由组件地址, 请输入前端配置对应地址，例如 "/finance/warehouse/warehouse"',
           trigger: 'blur'
         }
       ]

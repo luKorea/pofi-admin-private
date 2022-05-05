@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-25 09:46:36
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 09:54:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/router/index.ts
  */
@@ -31,20 +31,11 @@ const routes: RouteRecordRaw[] = [
     }
     // children: [
     //   {
-    //     path: '/oa/user',
-    //     name: 'user',
-    //     component: () => import('@/views/oa/user/user.vue'),
+    //     path: '/finance/warehouse',
+    //     name: 'warehouse',
+    //     component: () => import('@/views/main/finance/warehouse/warehouse.vue'),
     //     meta: {
-    //       title: '用户管理'
-    //     }
-    //     // children: [] -> 根据userMenus来决定 -> children
-    //   },
-    //   {
-    //     path: '/oa/role',
-    //     name: 'role',
-    //     component: () => import('@/views/oa/role/role.vue'),
-    //     meta: {
-    //       title: '权限管理'
+    //       title: '用户资源仓库'
     //     }
     //     // children: [] -> 根据userMenus来决定 -> children
     //   }

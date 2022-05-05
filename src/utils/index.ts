@@ -2,8 +2,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-28 16:56:23
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 11:05:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -207,6 +207,8 @@ export function mapImageToObject(url: string) {
 
 // 判断必填字段是否为空
 export function mapObjectIsNull(params: any[], obj: any) {
+  console.log(params.filter((v) => obj[v]).length === params.length)
+  console.log(params, 'obj')
   return params.filter((v) => obj[v]).length === params.length
 }
 
