@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 10:51:12
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 14:06:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -138,8 +138,9 @@ const helpFunctionTypeModule: Module<IHelpFunctionTypeType, IRootState> = {
             const pageUrl =
               apiList[pageName] + cultureDifferentType('update', pageName)
             const data = await editPageData(pageUrl, {
+              ...validData,
               ...editData,
-              ...validData
+              id: editData.id
             })
             if (data.result === 0) {
               // 2.请求最新的数据
