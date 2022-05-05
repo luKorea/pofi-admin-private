@@ -2,13 +2,12 @@ import { getRouterSelectList } from '@/service/common'
 /*
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 17:36:30
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 12:11:07
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
 import { Module } from 'vuex'
-import { errorTip } from '@/utils/tip-info'
 
 import {
   accountLoginRequest,
@@ -64,43 +63,41 @@ const loginModule: Module<any, any> = {
   },
   actions: {
     async accountLoginAction({ commit }, payload: IAccount) {
-      // 1.实现登录逻辑
-      const loginResult = await accountLoginRequest(payload)
-      // const { id, token } = loginResult.data
-      if (loginResult.state) {
-        const { token } = loginResult
-        commit('changeToken', token)
-        localCache.setCache('token', token)
-        // successTip('登录成功')
-        // 发送初始化的请求(完整的role/department)
-        // dispatch('getInitialDataAction', null, { root: true })
+      // eslint-disable-next-line no-async-promise-executor
+      return new Promise(async (resolve, reject) => {
+        // 1.实现登录逻辑
+        const loginResult = await accountLoginRequest(payload)
+        if (loginResult.state) {
+          const { token } = loginResult
+          commit('changeToken', token)
+          localCache.setCache('token', token)
+          // 2.请求用户信息
+          const userInfoResult = await requestUserInfo()
+          const userInfo = userInfoResult.data
+          if (userInfoResult.data) {
+            commit('changeUserInfo', userInfo)
+            localCache.setCache('userInfo', userInfo)
 
-        // 2.请求用户信息
-        const userInfoResult = await requestUserInfo()
-        const userInfo = userInfoResult.data
-        if (userInfoResult.data) {
-          commit('changeUserInfo', userInfo)
-          localCache.setCache('userInfo', userInfo)
-
-          // 3.请求用户菜单
-          const userMenusResult = await requestUserMenusByRoleId()
-          const userMenus = userMenusResult.result
-          commit('changeUserMenus', userMenus)
-          localCache.setCache('userMenus', userMenus)
-          // 4. 获取菜单列表
-          const { data } = await getRouterSelectList()
-          commit('changeRouterList', data)
-          localCache.setCache('routerList', data)
-          // 5. 校验用户是否是超级管理员，后续页面按钮，表单编辑权限分配
-          const { data: isAdmin } = await checkUserIsAdmin()
-          commit('changeIsAdmin', isAdmin)
-          localCache.setCache('isAdmin', isAdmin)
-          // 6.跳到首页
-          router.push('/main')
-        } else errorTip(userInfoResult.msg)
-      } else {
-        errorTip(loginResult.msg)
-      }
+            // 3.请求用户菜单
+            const userMenusResult = await requestUserMenusByRoleId()
+            const userMenus = userMenusResult.result
+            commit('changeUserMenus', userMenus)
+            localCache.setCache('userMenus', userMenus)
+            // 4. 获取菜单列表
+            const { data } = await getRouterSelectList()
+            commit('changeRouterList', data)
+            localCache.setCache('routerList', data)
+            // 5. 校验用户是否是超级管理员，后续页面按钮，表单编辑权限分配
+            const { data: isAdmin } = await checkUserIsAdmin()
+            commit('changeIsAdmin', isAdmin)
+            localCache.setCache('isAdmin', isAdmin)
+            // 6.跳到首页, 判断用户是否已经登录，验证码校验
+            resolve(loginResult)
+          } else reject(userInfoResult.msg)
+        } else {
+          reject(loginResult.msg)
+        }
+      })
     },
     loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')

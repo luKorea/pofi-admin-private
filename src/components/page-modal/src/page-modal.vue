@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 10:09:37
+ * @LastEditTime: 2022-05-05 11:55:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -14,7 +14,7 @@
       size="85%"
       :show-close="false"
       :close-on-click-modal="false"
-      :close-on-press-escape="false"
+      :close-on-press-escape="true"
       :destroy-on-close="true"
     >
       <template #title>
