@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 11:09:54
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 10:09:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -130,10 +130,12 @@ export default defineComponent({
     watch(
       () => props.defaultInfo,
       (newValue) => {
-        for (const item of props.modalConfig.formItems) {
-          if (item.type === 'checkbox') {
-            formData.value[item.field] = []
-          } else formData.value[`${item.field}`] = newValue[`${item.field}`]
+        if (props?.modalConfig?.formItems) {
+          for (const item of props.modalConfig.formItems) {
+            if (item.type === 'checkbox') {
+              formData.value[item.field] = []
+            } else formData.value[`${item.field}`] = newValue[`${item.field}`]
+          }
         }
       }
     )

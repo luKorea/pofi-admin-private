@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 13:55:38
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-05 10:31:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -253,10 +253,10 @@ export const userMessageTypeList = [
 
 // USD模型
 export const unityModalList = [
-  {
-    title: '未知',
-    value: undefined
-  },
+  // {
+  //   title: '未知',
+  //   value: undefined
+  // },
   {
     title: '单人偶',
     value: 1

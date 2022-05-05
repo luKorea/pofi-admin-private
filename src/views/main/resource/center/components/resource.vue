@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-04-27 16:14:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-05 11:01:14
+ * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
 -->
@@ -361,7 +361,7 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
-      console.log(props.params.moId, 'demo')
+      console.log(props.params.moId, 'demo', languageItem.value)
       const data = {
         moId: props.params.moId,
         moldJson: JSON.stringify(languageList.value)
@@ -379,6 +379,7 @@ export default defineComponent({
       })
     }
     const sendTimer = (item: any, type = 'config') => {
+      console.log(languageItem.value, 'validateParamsRules')
       validateParamsRules(
         languageList.value,
         languageList.value[0],
