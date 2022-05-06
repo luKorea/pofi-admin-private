@@ -207,6 +207,7 @@ import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { successTip, errorTip, warnTip } from '@/utils/tip-info'
 import { uid } from 'uid'
+import { getCommonSelectList } from '@/service/common'
 export default defineComponent({
   name: 'resourceTopic',
   components: {
@@ -215,6 +216,7 @@ export default defineComponent({
     editorTable
   },
   setup() {
+    //新增
     const handleNewTableData = () => {
       let res: any[] = []
       res.push({
@@ -222,6 +224,7 @@ export default defineComponent({
         tempId: uid(8),
         rank: '',
         mid: '',
+        title: '',
         subTitle: '',
         url: [],
         cover: '',
@@ -232,6 +235,31 @@ export default defineComponent({
         ...res
       ]
     }
+    //新增
+    const handleNewTableData2 = (info: any) => {
+      console.log(info, 'info')
+      let res: any[] = []
+      let obj: any = {
+        lid: languageItem.value.lid,
+        tempMid: info.mid,
+        title: info.title,
+        tempId: uid(8),
+        rank: '',
+        mid: '',
+        subTitle: '',
+        url: [],
+        cover: '',
+        newField: true
+      }
+      console.log(obj, 'obj')
+
+      res.push(obj)
+      languageItem.value.childListStr = [
+        ...languageItem.value.childListStr,
+        ...res
+      ]
+    }
+    //删除
     const handleDeleteEditTableData = (tempId: any, row: any) => {
       if (operationType.value === 'add') {
         const index = languageItem.value.childListStr.findIndex(
@@ -253,6 +281,7 @@ export default defineComponent({
       }
     }
     watchEffect(() => {
+      console.log(languageItem, 'languageItem')
       if (languageItem?.value?.childListStr?.length > 0) {
         let newData: any[] = []
         newData = languageItem.value.childListStr.map((item: any) => {
@@ -275,11 +304,75 @@ export default defineComponent({
       requiredField,
       mapIconState
     ] = useSetLanguage()
+    let Temp: any[] = []
+    let TempLength: any = 0
     // 改变多语言
-    // 点击这里改变多语言
+    // 点击这里改变多语言---A 1 点击改变事件
     const handleChangeLanguage = async (id: any) => {
+      console.log(languageItem.value, 'A')
+      let length =
+        (languageItem.value.childListStr &&
+          languageItem.value.childListStr.length) ||
+        0
+      if (TempLength < length) {
+        TempLength = length
+        Temp = languageItem.value.childListStr
+      }
       languageId.value = id
       await nextTick()
+      console.log(languageItem.value, 'B')
+      if (TempLength > languageItem.value.childListStr.length) {
+        console.log(Temp, languageItem.value.childListStr)
+        console.log(TempLength, languageItem.value.childListStr.length)
+        let length = languageItem.value.childListStr.length
+        for (let index = length; index < TempLength; index++) {
+          console.log(index, '000')
+          handleNewTableData2(Temp[index])
+        }
+        await nextTick()
+        console.log('Temp', languageItem.value.childListStr)
+        for (
+          let index = 0;
+          index < languageItem.value.childListStr.length;
+          index++
+        ) {
+          const item = languageItem.value.childListStr[index]
+
+          getCommonSelectList(
+            'resourceType',
+            { keyword: item.title, lid: languageItem.value.lid },
+            false
+          )
+            .then((res) => {
+              if (res.state) {
+                handleChangeResourceItemData2(item.tempMid, res.data)
+              } else errorTip(res.msg)
+            })
+            .finally(() => (loading.value = false))
+        }
+        // languageItem.value.childListStr.map((item: any) => {
+        //   console.log(item.tempMid, '000')
+        //   if(){
+
+        //   }
+        //   getCommonSelectList(
+        //     'resourceType',
+        //     { keyword: item.tempMid, lid: languageItem.value.lid },
+        //     false
+        //   )
+        //     .then((res) => {
+        //       if (res.state) {
+        //         resourceList.value = res.data
+        //       } else errorTip(res.msg)
+        //     })
+        //     .finally(() => (loading.value = false))
+        //   handleChangeResourceData(item.tempMid)
+        //   handleChangeResourceItemData(item.tempMid)
+        // })
+
+        // TempLength = languageItem.value.childListStr.length
+        // Temp = languageItem.value.childListStr
+      }
       editorRef.value.setEditorValue()
     }
 
@@ -350,6 +443,7 @@ export default defineComponent({
         }).then((res: any) => {
           if (res.result === 0) {
             successTip(res.msg)
+            //保持后获取新数据
             getData(otherInfo.value.mtId)
           } else errorTip(res.msg)
         })
@@ -363,13 +457,36 @@ export default defineComponent({
     const handleChangeResourceData = (keyword: string) => {
       getResourceList(keyword, languageId.value)
     }
+    //资源搜索---A 2 点击资源搜索事件
     const handleChangeResourceItemData = (tempMid: any) => {
+      console.log(tempMid, '222888', resourceList.value)
       const selectItem = resourceList.value.find(
         (item: any) => item.moId === tempMid
       )
       const index = languageItem.value.childListStr.findIndex(
         (item: any) => item.tempMid === tempMid
       )
+      console.log(selectItem, index, '333')
+      languageItem.value.childListStr.splice(index, 1, {
+        lid: languageItem.value.lid,
+        newField: true,
+        cover: selectItem.cover ?? '',
+        title: selectItem.pname,
+        subTitle: selectItem.seriesName,
+        mid: selectItem.moId,
+        tempMid: selectItem.moId,
+        tempId: uid(8),
+        url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
+      })
+      console.log('444')
+    }
+    const handleChangeResourceItemData2 = (tempMid: any, rList: any) => {
+      console.log(tempMid, '222', rList)
+      const selectItem = rList.find((item: any) => item.moId === tempMid)
+      const index = languageItem.value.childListStr.findIndex(
+        (item: any) => item.tempMid === tempMid
+      )
+      console.log(selectItem, index, '333')
       languageItem.value.childListStr.splice(index, 1, {
         lid: languageItem.value.lid,
         newField: true,
@@ -381,6 +498,7 @@ export default defineComponent({
         tempId: uid(8),
         url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
       })
+      console.log('444')
     }
     // 下拉地区
     const areaIds = ref<any>([])
@@ -458,6 +576,8 @@ export default defineComponent({
 
     const editData = (item: any) => {
       operationType.value = 'edit'
+      console.log(getData, 'getData')
+      //点击编辑
       getData(item.mtId)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
