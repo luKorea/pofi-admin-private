@@ -148,8 +148,7 @@ export default defineComponent({
           }
           otherInfo.value = {
             id: res.data.id,
-            rank: res.data.rank,
-            name: res.data.name
+            rank: res.data.rank
           }
           if (
             res.data.functionExplainTypeList &&
