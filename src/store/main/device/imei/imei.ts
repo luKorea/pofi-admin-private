@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-25 10:14:32
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-06 14:41:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/device/imei/imei.ts
  */
@@ -22,16 +22,17 @@ import {
 const apiList: any = {
   imei: '/cms/userImei/'
 }
-let queryInfo: any = {
-  currentPage: 1,
-  pageSize: 10
-}
+
 const userImeiModule: Module<IUserImeiType, IRootState> = {
   namespaced: true,
   state() {
     return {
       imeiCount: 0,
-      imeiList: []
+      imeiList: [],
+      queryInfo: {
+        currentPage: 1,
+        pageSize: 10
+      }
     }
   },
   mutations: {
@@ -40,6 +41,9 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
     },
     changeImeiCount(state, imeiCount: number) {
       state.imeiCount = imeiCount
+    },
+    changeQueryInfo(state, queryInfo: any) {
+      state.queryInfo = queryInfo
     }
   },
   getters: {
@@ -51,11 +55,11 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
     }
   },
   actions: {
-    async getPageListAction({ commit }, payload: any) {
-      queryInfo = payload.queryInfo
+    async getPageListAction({ commit, state }, payload: any) {
+      commit('changeQueryInfo', payload.queryInfo)
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
-      const pageResult = await getPageListData(pageUrl, queryInfo)
+      const pageResult = await getPageListData(pageUrl, state.queryInfo)
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
         const changePageName = firstToUpperCase(pageName)
@@ -63,7 +67,7 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
         commit(`change${changePageName}Count`, total)
       } else errorTip(pageResult.msg)
     },
-    async deletePageDataAction({ dispatch }, payload: any) {
+    async deletePageDataAction({ dispatch, state }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
       const pageUrl = apiList[pageName] + 'delLimit'
@@ -72,13 +76,13 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
           pageName, // 这里的pageName，无需处理，在getPageListAction会处理
-          queryInfo: queryInfo
+          queryInfo: state.queryInfo
         })
         successTip(data.msg)
       } else errorTip(data.msg)
     },
 
-    createPageDataAction({ dispatch }, payload: any) {
+    createPageDataAction({ dispatch, state }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
@@ -89,14 +93,14 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
-            queryInfo: queryInfo
+            queryInfo: state.queryInfo
           })
           resolve(data.msg)
         } else reject(data.msg)
       })
     },
 
-    async editPageDataAction({ dispatch }, payload: any) {
+    async editPageDataAction({ dispatch, state }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
@@ -107,7 +111,7 @@ const userImeiModule: Module<IUserImeiType, IRootState> = {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
             pageName,
-            queryInfo: queryInfo
+            queryInfo: state.queryInfo
           })
           resolve(data.msg)
         } else reject(data.msg)

@@ -238,7 +238,6 @@ export default defineComponent({
         (item: any) => item.moId === tid
       )
       const index = listData.findIndex((item: any) => item.tid === tid)
-      console.log(index, selectItem)
       listData.splice(index, 1, {
         cover: selectItem.cover,
         gift: selectItem.gift,
@@ -270,6 +269,8 @@ export default defineComponent({
     // 下拉数据
     const [contentList, categoryList] = mapFormConfigData()
     // 编辑表格
+    // 用来保存所有语言新增的内容
+    const backList = ref<any>([])
     const [listData, newTableData, deleteTableData] = useEditTableData()
     const handleNewTableData = () => {
       if (editTableType.value) {
@@ -289,11 +290,13 @@ export default defineComponent({
           tempId: uid(8),
           newField: true
         })
+        console.log(backList.value, 'deom')
+        backList.value = [...backList.value, ...res]
         languageItem.value.childListStr = [
           ...languageItem.value.childListStr,
           ...res
         ]
-        console.log(languageItem.value.childListStr, 'deom')
+        console.log(backList.value, 'deom')
       } else warnTip('请先选择样式类型')
     }
     const handleDeleteEditTableData = (tempId: any, row: any) => {
@@ -637,7 +640,8 @@ export default defineComponent({
       defaultInfo,
       operationName,
       otherInfo,
-      contentTableEditConfigRef
+      contentTableEditConfigRef,
+      backList
     }
   }
 })
