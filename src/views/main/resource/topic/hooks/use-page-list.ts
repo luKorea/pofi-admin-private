@@ -1,13 +1,13 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 10:55:44
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-06 13:33:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
 import { errorTip } from '@/utils/tip-info'
-import { ref, computed, nextTick, watchEffect } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
 import { _debounce } from '@/utils'
@@ -59,13 +59,6 @@ export function useSetLanguage() {
       mapItemIcon(requiredField.value, languageItem.value)
     }
   })
-  // 改变多语言
-  const handleChangeLanguage = async (id: any) => {
-    languageId.value = id
-    await nextTick()
-    editorRef.value.setEditorValue()
-  }
-
   return [
     editorRef,
     languageList,
@@ -73,7 +66,6 @@ export function useSetLanguage() {
     resetLanguageList,
     languageBtnList,
     languageItem,
-    handleChangeLanguage,
     requiredField,
     mapIconState
   ]
@@ -114,23 +106,18 @@ export function usePageList() {
     300,
     true
   )
-  const getResourceList = _debounce(
-    (keyword: string) => {
-      loading.value = true
-      getCommonSelectList('resourceType', { keyword: keyword, lid: 1 }, false)
-        .then((res) => {
-          if (res.state) {
-            resourceList.value = res.data
-          } else errorTip(res.msg)
-        })
-        .finally(() => (loading.value = false))
-    },
-    300,
-    true
-  )
+  const getResourceList = (keyword: string, lid: any) => {
+    loading.value = true
+    getCommonSelectList('resourceType', { keyword: keyword, lid: lid }, false)
+      .then((res) => {
+        if (res.state) {
+          resourceList.value = res.data
+        } else errorTip(res.msg)
+      })
+      .finally(() => (loading.value = false))
+  }
   getCountryList()
   getAuthorList()
-  getResourceList()
   return [
     countryList,
     authorList,

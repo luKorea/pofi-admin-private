@@ -1,3 +1,9 @@
+<!--
+1. 实现逻辑
+    新增资源后，每一次切换，
+    拿到上一个数组的内容。进行资源搜索然后赋值
+    2. 将所有新增的内容都放到一个数组中，然后点击切换时，查出对应的内容
+-->
 <template>
   <div class="hg-flex help-questionType">
     <page-country
@@ -179,7 +185,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -266,10 +272,17 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage,
       requiredField,
       mapIconState
     ] = useSetLanguage()
+    // 改变多语言
+    // 点击这里改变多语言
+    const handleChangeLanguage = async (id: any) => {
+      languageId.value = id
+      await nextTick()
+      editorRef.value.setEditorValue()
+    }
+
     const [
       countryList,
       authorList,
@@ -348,7 +361,7 @@ export default defineComponent({
     const operationType = ref<string>('add')
     // 资源管理
     const handleChangeResourceData = (keyword: string) => {
-      getResourceList(keyword)
+      getResourceList(keyword, languageId.value)
     }
     const handleChangeResourceItemData = (tempMid: any) => {
       const selectItem = resourceList.value.find(
@@ -360,7 +373,7 @@ export default defineComponent({
       languageItem.value.childListStr.splice(index, 1, {
         lid: languageItem.value.lid,
         newField: true,
-        cover: selectItem.cover,
+        cover: selectItem.cover ?? '',
         title: selectItem.name,
         subTitle: selectItem.seriesName,
         mid: selectItem.moId,

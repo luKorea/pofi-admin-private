@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 10:16:19
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-06 14:47:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/imei.vue
 -->
@@ -129,7 +129,10 @@ export default defineComponent({
       }).then(() => {
         selectImeiOperation(data).then((res: any) => {
           if (res.result === 0) {
-            handleResetClick()
+            store.dispatch('userImeiModule/getPageListAction', {
+              pageName: 'imei',
+              queryInfo: store.state.userImeiModule.queryInfo
+            })
             successTip(res.msg)
           } else errorTip(res.msg)
         })
@@ -154,7 +157,10 @@ export default defineComponent({
             }
           })
           .then((res) => {
-            handleResetClick()
+            store.dispatch('userImeiModule/getPageListAction', {
+              pageName: 'imei',
+              queryInfo: store.state.userImeiModule.queryInfo
+            })
             successTip(res)
           })
           .catch((err) => {
