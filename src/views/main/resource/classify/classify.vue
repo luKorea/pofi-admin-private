@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -153,6 +153,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      resetLanguageList()
       selectName.value = item.name
       if (item.parent === 0) {
         warnTip('当前分类暂不支持编辑')
@@ -161,7 +162,7 @@ export default defineComponent({
         getItemData('resourceClassify', {
           id: item.id,
           language: 1
-        }).then((res: any) => {
+        }).then(async (res: any) => {
           if (res.result === 0) {
             imgList.value = []
             if (res.data.url) {
@@ -174,9 +175,25 @@ export default defineComponent({
               res.data.moldCategoryList &&
               res.data.moldCategoryList.length > 0
             ) {
-              languageList.value = res?.data?.moldCategoryList
-              languageId.value = res?.data?.moldCategoryList[0].lid
-              mapIconState(res?.data?.moldCategoryList, requiredField.value)
+              const info = languageList.value.map((item: any) => {
+                let result = res.data.moldCategoryList.find(
+                  (i: any) => i.lid === item.lid
+                )
+                if (result) {
+                  return {
+                    ...item,
+                    ...result
+                  }
+                } else {
+                  return {
+                    ...item
+                  }
+                }
+              })
+              await nextTick()
+              languageList.value = info
+              languageId.value = info[0].lid
+              mapIconState(info, requiredField.value)
             }
             handleEditData(res.data)
           } else errorTip(res.msg)

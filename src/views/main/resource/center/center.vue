@@ -464,12 +464,6 @@ export default defineComponent({
               prep: res.data.prep ? res.data.prep : [],
               subPrep: res.data.subPrep ? res.data.subPrep : []
             }
-            // console.log(relevanceRef.value.modalConfigRef.formItems)
-            // relevanceRef.value.modalConfigRef.formItems.map((i: any) => {
-            //   if (i.field === 'rel') i!.isHidden = false
-            //   if (i.field === 'prep') i!.isHidden = false
-            //   if (i.field === 'subPrep') i!.isHidden = false
-            // })
             relevanceRef.value.prepEditList =
               res.data.chief && res.data.chief.length > 0
                 ? res.data.chief.map((i: any) => {
@@ -523,7 +517,7 @@ export default defineComponent({
           moId: params.value.moId
         },
         'get'
-      ).then((res: any) => {
+      ).then(async (res: any) => {
         if (res.result === 0) {
           if (res.data && res.data.moldList && res.data.moldList.length > 0) {
             let result: any[] = []
@@ -549,7 +543,6 @@ export default defineComponent({
                       return mapImageToObject(i)
                     })
                   : []
-              console.log(b0List)
               return {
                 ...item,
                 coverList: item.cover ? [mapImageToObject(item.cover)] : [],
@@ -559,8 +552,22 @@ export default defineComponent({
                 d0List
               }
             })
-            resourceRef.value.languageList = result
-            languageId.value = result[0].lid
+            const info = resourceRef.value.languageList.map((item: any) => {
+              let res = result.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            resourceRef.value.languageList = info
+            languageId.value = info[0].lid
             resourceRef.value && resourceRef.value.handleEditData(result)
           } else {
             if (resourceRef.value) {

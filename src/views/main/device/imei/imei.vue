@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-06 14:47:20
+ * @LastEditTime: 2022-05-07 17:10:14
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/imei.vue
 -->
@@ -34,9 +34,9 @@
       <template #isType="scope">
         <span>{{ scope.row.osType ? 'iOS' : 'Android' }}</span>
       </template>
-      <template #loginAt="scope">
+      <!-- <template #loginAt="scope">
         <span>{{ $filters.formatTime(scope.row.loginTime) }}</span>
-      </template>
+      </template> -->
       <template #isState="scope">
         <el-button
           size="mini"

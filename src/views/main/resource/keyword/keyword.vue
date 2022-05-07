@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 09:54:38
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 17:37:29
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/language/language.vue
 -->
@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -160,18 +160,35 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      resetLanguageList()
       getItemData('resourceKeyword', {
         id: item.id,
         language: 1
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           otherInfo.value = {
             id: res.data.id
           }
           if (res.data.moldKeywordList && res.data.moldKeywordList.length > 0) {
-            languageList.value = res?.data?.moldKeywordList
-            languageId.value = res?.data?.moldKeywordList[0].lid
-            mapIconState(res?.data?.moldKeywordList, requiredField.value)
+            const info = languageList.value.map((item: any) => {
+              let result = res.data.moldKeywordList.find(
+                (i: any) => i.lid === item.lid
+              )
+              if (result) {
+                return {
+                  ...item,
+                  ...result
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

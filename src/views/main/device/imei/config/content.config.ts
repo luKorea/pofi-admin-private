@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 14:16:10
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 17:10:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/content.config.ts
  */
@@ -19,8 +19,8 @@ export const contentTableConfig: TableConfig = {
     { prop: 'version', label: 'APP版本' },
     { prop: 'nickId', label: '用户ID' },
     { prop: 'ip', label: '客户端IP' },
-    { prop: 'createTime', label: '最近登录', slotName: 'createAt' },
-    { prop: 'loginTime', label: '首次登录', slotName: 'loginAt' },
+    { prop: 'createTime', label: '最近登录' },
+    { prop: 'loginTime', label: '首次登录' },
     { prop: 'state', label: '状态', slotName: 'isState' }
     // { label: '操作', slotName: 'handler', minWidth: '50' }
   ],

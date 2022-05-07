@@ -422,7 +422,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect } from 'vue'
+import { defineComponent, watchEffect, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -511,9 +511,10 @@ export default defineComponent({
       resetLanguageList()
     }
     const getData = (id: any) => {
+      resetLanguageList()
       getItemData('bannerItem', {
         id: id
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           areaIds.value = res.data.areaIds
           otherInfo.value = {
@@ -528,7 +529,22 @@ export default defineComponent({
                 img: item.cover ? [mapImageToObject(item.cover)] : []
               }
             })
-            languageList.value = result
+            const info = languageList.value.map((item: any) => {
+              let res = result.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            console.log(languageList.value, 'languageList.value')
             languageId.value = res?.data?.bannerList[0].lid
             mapIconState(res?.data?.bannerList, requiredField.value)
           }

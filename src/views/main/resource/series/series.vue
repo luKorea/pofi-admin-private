@@ -115,7 +115,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -231,6 +231,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      resetLanguageList()
       selectName.value = item.name
       if (item.parent === 0) {
         warnTip('当前系列暂不支持编辑')
@@ -239,7 +240,7 @@ export default defineComponent({
         getItemData('seriesItem', {
           id: item.id,
           language: 1
-        }).then((res: any) => {
+        }).then(async (res: any) => {
           if (res.result === 0) {
             otherInfo.value = {
               id: res.data.id,
@@ -255,10 +256,23 @@ export default defineComponent({
                   url: item.icon ? [mapImageToObject(item.icon)] : []
                 }
               })
-              console.log(result)
-              languageList.value = result
-              languageId.value = res?.data?.moldSeriesList[0].lid
-              mapIconState(res?.data?.moldSeriesList, requiredField.value)
+              const info = languageList.value.map((item: any) => {
+                let res = result.find((i: any) => i.lid === item.lid)
+                if (res) {
+                  return {
+                    ...item,
+                    ...res
+                  }
+                } else {
+                  return {
+                    ...item
+                  }
+                }
+              })
+              await nextTick()
+              languageList.value = info
+              languageId.value = info[0].lid
+              mapIconState(info, requiredField.value)
             }
             handleEditData(res.data)
           } else errorTip(res.msg)

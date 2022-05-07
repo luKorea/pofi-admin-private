@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -137,10 +137,11 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      resetLanguageList()
       getItemData('functionTypeItem', {
         id: item.id,
         language: 1
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           imgList.value = []
           if (res.data.url) {
@@ -154,10 +155,26 @@ export default defineComponent({
             res.data.functionExplainTypeList &&
             res.data.functionExplainTypeList.length > 0
           ) {
-            languageList.value = res?.data?.functionExplainTypeList
-            languageId.value = res?.data?.functionExplainTypeList[0].lid
+            const info = languageList.value.map((item: any) => {
+              let result = res.data.functionExplainTypeList.find(
+                (i: any) => i.lid === item.lid
+              )
+              if (result) {
+                return {
+                  ...item,
+                  ...result
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
-          mapIconState(res.data.functionExplainTypeList, requiredField.value)
           handleEditData(res.data)
         } else errorTip(res.msg)
       })

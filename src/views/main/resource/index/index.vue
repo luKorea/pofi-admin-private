@@ -628,18 +628,17 @@ export default defineComponent({
       resetLanguageList()
     }
     const getItem = (item: any) => {
+      resetLanguageList()
       getItemData('homeIndexItem', {
         id: item.id,
         rid: item.rid
-      }).then((res) => {
+      }).then(async (res) => {
         if (res.result === 0) {
           const data = res.data
           // 国家地区
           areaIds.value = data.index.areaList
-          languageId.value = data?.index?.indexList[0].lid
-          mapIconState(data?.index?.indexList, requiredField.value)
           if (data?.index?.indexList) {
-            languageList.value = data.index.indexList.map((item: any) => {
+            const result = data.index.indexList.map((item: any) => {
               if (item.childList) {
                 item['childListStr'] = []
                 item.childList.map((i: any) => {
@@ -656,6 +655,23 @@ export default defineComponent({
                 }
               }
             })
+            const info = languageList.value.map((item: any) => {
+              let res = result.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
           otherInfo.value = {
             ...otherInfo.value,

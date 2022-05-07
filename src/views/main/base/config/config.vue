@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:23:03
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 17:40:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watchEffect } from 'vue'
+import { computed, defineComponent, ref, watchEffect, nextTick } from 'vue'
 
 import PageCountry from '@/components/page-country'
 import {
@@ -196,10 +196,11 @@ export default defineComponent({
       resetLanguageList()
     }
     const handleEdit = (item: any) => {
+      resetLanguageList()
       getItemData('baseConfig', {
         id: item.id,
         language: 1
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           otherInfo.value = {
             areaIds: res.data.areaIds, // 用户如果没有修改这个选项。使用默认值
@@ -207,13 +208,25 @@ export default defineComponent({
           }
           areaIds.value = res.data.areaIds ?? []
           if (res.data.sysConfigVoList && res.data.sysConfigVoList.length > 0) {
-            languageList.value = res?.data?.sysConfigVoList
-            languageId.value = res?.data?.sysConfigVoList[0].languageId
-            mapIconState(
-              res?.data?.sysConfigVoList,
-              requiredField.value,
-              fieldId.value
-            )
+            const info = languageList.value.map((item: any) => {
+              let result = res.data.sysConfigVoList.find(
+                (i: any) => i.languageId === item.languageId
+              )
+              if (result) {
+                return {
+                  ...item,
+                  ...result
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].languageId
+            mapIconState(info, requiredField.value, fieldId.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)
