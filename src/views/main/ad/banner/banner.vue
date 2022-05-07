@@ -545,8 +545,8 @@ export default defineComponent({
             await nextTick()
             languageList.value = info
             console.log(languageList.value, 'languageList.value')
-            languageId.value = res?.data?.bannerList[0].lid
-            mapIconState(res?.data?.bannerList, requiredField.value)
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)
