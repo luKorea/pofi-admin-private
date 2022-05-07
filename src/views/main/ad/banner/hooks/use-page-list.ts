@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-27 11:27:45
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 10:22:49
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/head/hooks/use-page-list.ts
  */
@@ -90,9 +90,11 @@ export function useCountrySelect() {
   watchEffect(() => {
     if (areaIds.value.length === 0) {
       const region: any[] = []
-      countryList.value.forEach((item: any) => {
-        region.push(item.id)
-      })
+      countryList.value
+        .filter((i: any) => i.id !== -1)
+        .forEach((item: any) => {
+          region.push(item.id)
+        })
       otherInfo.value = {
         ...otherInfo.value,
         areaIds: region.toString()

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 17:13:40
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 10:25:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/condition.vue
 -->
@@ -85,9 +85,11 @@ export default defineComponent({
     watchEffect(() => {
       if (areaIds.value.length === 0) {
         const region: any[] = []
-        countryList.value.forEach((item: any) => {
-          region.push(item.id)
-        })
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            region.push(item.id)
+          })
         otherInfo.value = {
           region: region.toString()
         }

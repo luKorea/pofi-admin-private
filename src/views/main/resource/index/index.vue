@@ -197,6 +197,7 @@ import { mapImageToObject } from '@/utils/index'
 import { successTip, errorTip, warnTip } from '@/utils/tip-info'
 import seriesComponent from './components/indexSeries.vue'
 import { uid } from 'uid'
+import { getCommonSelectList } from '@/service/common'
 export default defineComponent({
   name: 'resourceHome',
   components: {
@@ -227,6 +228,49 @@ export default defineComponent({
     })
     // 资源搜索下拉
     // 资源管理
+    let Temp: any[] = []
+    let TempLength: any = 0
+    const handleChangeLanguage = async (id: any) => {
+      let length =
+        (languageItem.value.childListStr &&
+          languageItem.value.childListStr.length) ||
+        0
+      if (TempLength < length) {
+        TempLength = length
+        Temp = languageItem.value.childListStr
+      }
+      languageId.value = id
+      await nextTick()
+      if (editTableType.value !== 1 && editTableType.value !== undefined) {
+        if (TempLength > languageItem.value.childListStr.length) {
+          let length = languageItem.value.childListStr.length
+          for (let index = length; index < TempLength; index++) {
+            console.log(index, '000')
+            handleNewTableData2(Temp[index])
+          }
+          await nextTick()
+          console.log('Temp', languageItem.value.childListStr)
+          for (
+            let index = 0;
+            index < languageItem.value.childListStr.length;
+            index++
+          ) {
+            const item = languageItem.value.childListStr[index]
+            getCommonSelectList(
+              'resourceType',
+              { keyword: item.tid, lid: languageItem.value.lid },
+              false
+            )
+              .then((res) => {
+                if (res.state) {
+                  handleChangeResourceItemData2(item.tid, res.data ?? [])
+                } else errorTip(res.msg)
+              })
+              .finally(() => (loading.value = false))
+          }
+        }
+      }
+    }
     const handleChangeResourceData = async (keyword: string) => {
       getResourceList(keyword, languageItem.value.lid)
       await nextTick()
@@ -251,6 +295,30 @@ export default defineComponent({
         tempId: uid(8),
         newField: true
       })
+    }
+    const handleChangeResourceItemData2 = (tid: any, rList: any) => {
+      const listData = languageItem.value.childListStr
+      const selectItem = rList.find((item: any) => item.moId === tid)
+      const index = languageItem.value.childListStr.findIndex(
+        (item: any) => item.tid === tid
+      )
+      if (selectItem) {
+        listData.splice(index, 1, {
+          cover: selectItem.cover,
+          gift: selectItem.gift,
+          title: selectItem.name,
+          subTitle: selectItem.seriesName,
+          tid: selectItem.moId,
+          coverList: selectItem.cover
+            ? [mapImageToObject(selectItem.cover)]
+            : [],
+          giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : [],
+          state: 1,
+          lid: languageItem.value.lid,
+          tempId: uid(8),
+          newField: true
+        })
+      }
     }
     // 下拉数据搜索
     const editTableType = ref<any>(undefined)
@@ -299,6 +367,31 @@ export default defineComponent({
         console.log(backList.value, 'deom')
       } else warnTip('请先选择样式类型')
     }
+    const handleNewTableData2 = (info: any) => {
+      console.log(info, 'info')
+      let res: any[] = []
+      let obj: any = {
+        title: '',
+        subTitle: '',
+        cover: '',
+        coverList: [],
+        gift: '',
+        giftList: [],
+        state: 1, // 1. 显示 0. 不显示
+        tid: info.tid,
+        shape: editTableType.value === 8 ? 1 : 0, // shape 0:无,1:大横矩形,2:小横矩形
+        jump: '',
+        lid: languageItem.value.lid,
+        tempId: uid(8),
+        newField: true
+      }
+      console.log(obj, 'obj')
+      res.push(obj)
+      languageItem.value.childListStr = [
+        ...languageItem.value.childListStr,
+        ...res
+      ]
+    }
     const handleDeleteEditTableData = (tempId: any, row: any) => {
       if (operationType.value === 'add') {
         const index = languageItem.value.childListStr.findIndex(
@@ -332,7 +425,6 @@ export default defineComponent({
       resetLanguageList,
       languageBtnList,
       languageItem,
-      handleChangeLanguage,
       requiredField,
       mapIconState
     ] = useSetLanguage()
