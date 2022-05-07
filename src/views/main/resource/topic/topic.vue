@@ -360,9 +360,10 @@ export default defineComponent({
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const getData = (mtId: any) => {
+      resetLanguageList()
       getItemData('topicItem', {
         mtId: mtId
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           author.value = res.data.author
           areaIds.value = res.data.areaIds
@@ -379,7 +380,7 @@ export default defineComponent({
                 url: item.cover ? [mapImageToObject(item.cover)] : []
               }
             })
-            let endData = []
+            let endData: any[] = []
             endData = result.map((item: any) => {
               console.log(result, 'resulr')
               if (item.childList) {
@@ -398,9 +399,24 @@ export default defineComponent({
                 }
               }
             })
-            languageList.value = endData
-            languageId.value = res?.data?.topicList[0].lid
-            mapIconState(res?.data?.topicList, requiredField.value)
+            const info = languageList.value.map((item: any) => {
+              let res = endData.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            // languageList.value = endData
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

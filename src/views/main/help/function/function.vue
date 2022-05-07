@@ -113,7 +113,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -203,10 +203,11 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      resetLanguageList()
       getItemData('functionItem', {
         id: item.id,
         language: 1
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           otherInfo.value = {
             id: res.data.id,
@@ -223,10 +224,24 @@ export default defineComponent({
                 icon: item.url ? [mapImageToObject(item.url)] : []
               }
             })
-            languageList.value = result
-            languageId.value = res?.data?.functionExplainList[0].lid
+            const info = languageList.value.map((item: any) => {
+              let res = result.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
-          mapIconState(res.data.functionExplainList, requiredField.value)
           handleEditData(res.data)
         } else errorTip(res.msg)
       })

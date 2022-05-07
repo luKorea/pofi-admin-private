@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-20 17:35:02
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 17:42:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -90,7 +90,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watchEffect, ref, watch } from 'vue'
+import {
+  computed,
+  defineComponent,
+  watchEffect,
+  ref,
+  watch,
+  nextTick
+} from 'vue'
 import PreviewVideo from '@/base-ui/preview-video'
 
 import {
@@ -137,10 +144,11 @@ export default defineComponent({
 
     const newData = () => resetLanguageList()
     const editData = (item: any) => {
+      resetLanguageList()
       getItemData('companionItem', {
         id: item.id,
         language: 1
-      }).then((res: any) => {
+      }).then(async (res: any) => {
         if (res.result === 0) {
           otherInfo.value = {
             id: res.data.id,
@@ -155,13 +163,26 @@ export default defineComponent({
                 fileList: item.fileUrl ? [mapImageToObject(item.fileUrl)] : []
               }
             })
-            languageList.value = result
-            languageId.value = res?.data?.companionList[0].languageId
-            mapIconState(
-              res.data.companionList,
-              requiredField.value,
-              infoId.value
-            )
+
+            const info = languageList.value.map((item: any) => {
+              let res = result.find(
+                (i: any) => i.languageId === item.languageId
+              )
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].languageId
+            mapIconState(info, requiredField.value, infoId.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 15:57:50
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 17:32:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -176,7 +176,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, watchEffect } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  watchEffect,
+  nextTick
+} from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -222,13 +229,28 @@ export default defineComponent({
       resetLanguageList()
     }
     const getItem = (item: any) => {
-      getItemData('goodItem', { snId: item.snId }).then((res) => {
+      resetLanguageList()
+      getItemData('goodItem', { snId: item.snId }).then(async (res) => {
         if (res.result === 0) {
           const data = res.data
           if (data?.goodsTagList?.length > 0) {
-            languageList.value = data.goodsTagList
-            languageId.value = data.goodsTagList[0].lid
-            mapIconState(data.goodsTagList, requiredField.value)
+            const info = languageList.value.map((item: any) => {
+              let res = data.goodsTagList.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
           }
           otherInfo.value = {
             ...otherInfo.value,
