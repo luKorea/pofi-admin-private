@@ -252,7 +252,6 @@ export default defineComponent({
         newField: true
       }
       console.log(obj, 'obj')
-
       res.push(obj)
       languageItem.value.childListStr = [
         ...languageItem.value.childListStr,
@@ -320,10 +319,7 @@ export default defineComponent({
       }
       languageId.value = id
       await nextTick()
-      console.log(languageItem.value, 'B')
       if (TempLength > languageItem.value.childListStr.length) {
-        console.log(Temp, languageItem.value.childListStr)
-        console.log(TempLength, languageItem.value.childListStr.length)
         let length = languageItem.value.childListStr.length
         for (let index = length; index < TempLength; index++) {
           console.log(index, '000')
@@ -350,28 +346,6 @@ export default defineComponent({
             })
             .finally(() => (loading.value = false))
         }
-        // languageItem.value.childListStr.map((item: any) => {
-        //   console.log(item.tempMid, '000')
-        //   if(){
-
-        //   }
-        //   getCommonSelectList(
-        //     'resourceType',
-        //     { keyword: item.tempMid, lid: languageItem.value.lid },
-        //     false
-        //   )
-        //     .then((res) => {
-        //       if (res.state) {
-        //         resourceList.value = res.data
-        //       } else errorTip(res.msg)
-        //     })
-        //     .finally(() => (loading.value = false))
-        //   handleChangeResourceData(item.tempMid)
-        //   handleChangeResourceItemData(item.tempMid)
-        // })
-
-        // TempLength = languageItem.value.childListStr.length
-        // Temp = languageItem.value.childListStr
       }
       editorRef.value.setEditorValue()
     }
@@ -458,7 +432,7 @@ export default defineComponent({
       getResourceList(keyword, languageId.value)
     }
     //资源搜索---A 2 点击资源搜索事件
-    const handleChangeResourceItemData = (tempMid: any) => {
+    const handleChangeResourceItemData = async (tempMid: any) => {
       console.log(tempMid, '222888', resourceList.value)
       const selectItem = resourceList.value.find(
         (item: any) => item.moId === tempMid
@@ -466,19 +440,20 @@ export default defineComponent({
       const index = languageItem.value.childListStr.findIndex(
         (item: any) => item.tempMid === tempMid
       )
-      console.log(selectItem, index, '333')
-      languageItem.value.childListStr.splice(index, 1, {
-        lid: languageItem.value.lid,
-        newField: true,
-        cover: selectItem.cover ?? '',
-        title: selectItem.pname,
-        subTitle: selectItem.seriesName,
-        mid: selectItem.moId,
-        tempMid: selectItem.moId,
-        tempId: uid(8),
-        url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
-      })
-      console.log('444')
+      if (selectItem) {
+        console.log(selectItem, index, '333')
+        languageItem.value.childListStr.splice(index, 1, {
+          lid: languageItem.value.lid,
+          newField: true,
+          cover: selectItem.cover ?? '',
+          title: selectItem.pname,
+          subTitle: selectItem.seriesName,
+          mid: selectItem.moId,
+          tempMid: selectItem.moId,
+          tempId: uid(8),
+          url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
+        })
+      }
     }
     const handleChangeResourceItemData2 = (tempMid: any, rList: any) => {
       console.log(tempMid, '222', rList)
@@ -486,19 +461,21 @@ export default defineComponent({
       const index = languageItem.value.childListStr.findIndex(
         (item: any) => item.tempMid === tempMid
       )
-      console.log(selectItem, index, '333')
-      languageItem.value.childListStr.splice(index, 1, {
-        lid: languageItem.value.lid,
-        newField: true,
-        cover: selectItem.cover ?? '',
-        title: selectItem.name,
-        subTitle: selectItem.seriesName,
-        mid: selectItem.moId,
-        tempMid: selectItem.moId,
-        tempId: uid(8),
-        url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
-      })
-      console.log('444')
+      if (selectItem) {
+        console.log(selectItem, index, '333')
+        languageItem.value.childListStr.splice(index, 1, {
+          lid: languageItem.value.lid,
+          newField: true,
+          cover: selectItem.cover ?? '',
+          title: selectItem.name,
+          subTitle: selectItem.seriesName,
+          mid: selectItem.moId,
+          tempMid: selectItem.moId,
+          tempId: uid(8),
+          url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
+        })
+        console.log('444')
+      }
     }
     // 下拉地区
     const areaIds = ref<any>([])

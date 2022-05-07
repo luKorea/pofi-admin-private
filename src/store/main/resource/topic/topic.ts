@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 11:06:10
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 10:17:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -104,6 +104,38 @@ const resourceTopicModule: Module<IResourceTopicType, IRootState> = {
           requiredField
         )
           .then(async () => {
+            // const item = newData.tempList[0]
+            // let list: any[] = []
+            // if (item.childListStr.length > 0) {
+            //   list = item.childListStr.map((i: any) => {
+            //     return {
+            //       mid: i.mid
+            //     }
+            //   })
+            // }
+            // let res: any[] = []
+            // if (list.length > 0) {
+            //   res = newData.tempList.map((i: any) => {
+            //     if (i.childListStr.length === 0) {
+            //       i.childListStr = JSON.stringify(
+            //         list.map((c: any) => {
+            //           return {
+            //             ...c,
+            //             lid: i.lid
+            //           }
+            //         })
+            //       )
+            //       return {
+            //         ...i
+            //       }
+            //     } else {
+            //       return {
+            //         ...i
+            //       }
+            //     }
+            //   })
+            // }
+            // console.log(res, 'result')
             const pageUrl =
               apiList[pageName] + cultureDifferentType('add', pageName)
             const data = await createPageData(pageUrl, {

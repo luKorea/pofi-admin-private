@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-19 15:55:33
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-07 10:36:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -97,7 +97,6 @@ export function useSetLanguage() {
     resetLanguageList,
     languageBtnList,
     languageItem,
-    handleChangeLanguage,
     requiredField,
     mapIconState
   ]
