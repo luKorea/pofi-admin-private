@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 16:00:49
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-09 10:30:38
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/search.config.ts
  */
@@ -18,6 +18,12 @@ export const searchFormConfig: IForm = {
     xs: 24
   },
   formItems: [
+    {
+      field: 'uid',
+      type: 'input',
+      label: 'UID',
+      placeholder: '请输入UID'
+    },
     {
       field: 'nickId',
       type: 'input',

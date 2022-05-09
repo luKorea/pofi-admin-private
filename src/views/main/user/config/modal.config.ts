@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 15:37:15
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-09 10:36:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
@@ -11,6 +11,46 @@ import { IForm } from '@/base-ui/form'
 export const modalConfig: IForm = {
   title: '用户管理操作',
   formItems: [
+    {
+      field: 'nickId',
+      type: 'input',
+      label: 'POFI ID',
+      otherOptions: {
+        disabled: true
+      }
+    },
+    {
+      field: 'srcDec',
+      type: 'input',
+      label: '注册类型',
+      otherOptions: {
+        disabled: true
+      }
+    },
+    {
+      field: 'regTime',
+      type: 'input',
+      label: '注册时间',
+      otherOptions: {
+        disabled: true
+      }
+    },
+    {
+      field: 'onlineTime',
+      type: 'input',
+      label: '最近登录时间',
+      otherOptions: {
+        disabled: true
+      }
+    },
+    // {
+    //   field: 'uid',
+    //   type: 'input',
+    //   label: 'UID',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
       field: 'nickName',
       type: 'input',
@@ -132,38 +172,6 @@ export const modalConfig: IForm = {
           trigger: 'blur'
         }
       ]
-    },
-    {
-      field: 'srcDec',
-      type: 'input',
-      label: '注册类型',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'nickId',
-      type: 'input',
-      label: 'POFI ID',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'regTime',
-      type: 'input',
-      label: '注册时间',
-      otherOptions: {
-        disabled: true
-      }
-    },
-    {
-      field: 'onlineTime',
-      type: 'input',
-      label: '最近登录时间',
-      otherOptions: {
-        disabled: true
-      }
     }
   ],
   colLayout: {

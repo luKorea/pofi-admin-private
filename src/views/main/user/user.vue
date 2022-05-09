@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 09:25:38
+ * @LastEditTime: 2022-05-09 10:37:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -46,11 +46,16 @@
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
+      <el-divider>其他信息</el-divider>
       <el-row :gutter="12">
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">Google</span>
-            <el-input v-model="resetInfo.googleId" disabled>
+            <el-input
+              v-model="resetInfo.googleId"
+              disabled
+              placeholder="暂无绑定信息"
+            >
               <template
                 #append
                 v-if="
@@ -65,7 +70,11 @@
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">FaceBook</span>
-            <el-input v-model="resetInfo.facebookId" disabled>
+            <el-input
+              v-model="resetInfo.facebookId"
+              disabled
+              placeholder="暂无绑定信息"
+            >
               <template
                 #append
                 v-if="
@@ -83,7 +92,11 @@
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">Apple</span>
-            <el-input v-model="resetInfo.appleId" disabled>
+            <el-input
+              v-model="resetInfo.appleId"
+              disabled
+              placeholder="暂无绑定信息"
+            >
               <template
                 #append
                 v-if="
@@ -268,7 +281,9 @@ export default defineComponent({
           }
           imgList.value = []
           imgList.value.push(mapImageToObject(res.data.head))
-          handleEditData(res.data)
+          handleEditData({
+            ...res.data
+          })
         } else errorTip(res.msg)
       })
     }
