@@ -2,10 +2,20 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 10:31:01
+ * @LastEditTime: 2022-05-09 10:26:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
+
+// 资源获取方式
+export const resourceGetWayList = [
+  { value: -999, title: '全部' },
+  { value: 2, title: 'P币购买' },
+  { value: 3, title: '兑换码' },
+  { value: 4, title: '活动获取' },
+  { value: 5, title: '系统人工' },
+  { value: 6, title: '批量增删' }
+]
 
 // 文章类型
 export const articleList = [

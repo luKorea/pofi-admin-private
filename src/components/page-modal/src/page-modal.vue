@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 11:55:46
+ * @LastEditTime: 2022-05-09 09:55:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -33,7 +33,7 @@
               type="primary"
               @click="handleConfirmClick"
             >
-              确 定
+              保存
             </el-button>
             <!-- 新增自定义按钮，用于单页面中操作走不同请求操作, 增加延展性 -->
             <slot
