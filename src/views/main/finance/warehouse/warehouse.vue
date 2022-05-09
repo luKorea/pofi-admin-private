@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 10:25:39
+ * @LastEditTime: 2022-05-09 11:32:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/warehouse/warehouse.vue
 -->
@@ -53,9 +53,11 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import { useStoreName, useMapSelectValue } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
 import { mapTimeToSearch } from '@/utils'
-import { unityModalList } from '@/utils/select-list/map-resource-list'
+import {
+  unityModalList,
+  resourceGetWayList
+} from '@/utils/select-list/map-resource-list'
 import { warnTip } from '@/utils/tip-info'
-import { resourceGetWayList } from '../../../../utils/select-list/map-resource-list'
 
 export default defineComponent({
   name: 'financeWarehouse',
