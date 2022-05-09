@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 11:38:12
+ * @LastEditTime: 2022-05-09 10:25:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/warehouse/warehouse.vue
 -->
 <template>
-  <div class="warehouse" v-if="0">
+  <div class="warehouse">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -38,7 +38,6 @@
     >
     </page-modal>
   </div>
-  <div v-else>wareHouseModule</div>
 </template>
 
 <script lang="ts">
@@ -51,12 +50,12 @@ import { modalConfig } from './config/modal.config'
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 
-import { useStoreName } from './hooks/use-page-list'
+import { useStoreName, useMapSelectValue } from './hooks/use-page-list'
 import { ExcelService } from '@/utils/exportExcel'
 import { mapTimeToSearch } from '@/utils'
-import { getCommonSelectList } from '@/service/common'
 import { unityModalList } from '@/utils/select-list/map-resource-list'
 import { warnTip } from '@/utils/tip-info'
+import { resourceGetWayList } from '../../../../utils/select-list/map-resource-list'
 
 export default defineComponent({
   name: 'financeWarehouse',
@@ -77,10 +76,14 @@ export default defineComponent({
       const dataList = pageContentRef.value?.dataList
       dataList.forEach((data: any) => {
         result.value.push({
-          pofiID: data.nickId,
-          昵称: data.nickName,
-          备注: data.remark,
-          操作时间: data.time
+          POFIID: data.nickId,
+          资源名字: data.nickName,
+          资源编号: data.remark,
+          标注ID: data.time,
+          模型状态: data.nickId,
+          是否拥有: data.nickName,
+          拥有时间: data.remark,
+          获取方式: data.time
         })
       })
       const ExportExcel = new ExcelService()
@@ -133,15 +136,8 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(undefined)
-    const userTypeList = ref<any>([])
-    const getType = () => {
-      getCommonSelectList('mark').then((res: any) => {
-        if (res.result === 0) {
-          userTypeList.value = res.data
-        }
-      })
-    }
-    getType()
+    // 搜索映射
+    const [regList, markList, countryList] = useMapSelectValue()
     const searchFormConfigRef = computed(() => {
       const markId = searchFormConfig.formItems.find(
         (item: any) => item.field === 'markId'
@@ -149,13 +145,33 @@ export default defineComponent({
       const snId = searchFormConfig.formItems.find(
         (item: any) => item.field === 'snId'
       )
-      markId!.options = userTypeList.value.map((item: any) => {
+      const srcType = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'srcType'
+      )
+      const areaId = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'areaId'
+      )
+      const have = searchFormConfig.formItems.find(
+        (item: any) => item.field === 'have'
+      )
+      markId!.options = markList.value.map((item: any) => {
         return {
           title: item.dec,
           value: item.type
         }
       })
       snId!.options = unityModalList
+      srcType!.options = regList.value.map((item: any) => {
+        return {
+          title: item.dec,
+          value: item.type
+        }
+      })
+      areaId!.options = countryList.value.map((i: any) => ({
+        title: i.name,
+        value: i.id
+      }))
+      have!.options = resourceGetWayList
       return searchFormConfig
     })
     return {
