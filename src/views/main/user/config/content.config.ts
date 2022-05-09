@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 10:39:47
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-09 10:30:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/content.config.ts
  */
@@ -11,6 +11,7 @@ import { TableConfig } from '@/types/table-config'
 export const contentTableConfig: TableConfig = {
   title: '用户管理',
   propList: [
+    { prop: 'uid', label: 'UID' },
     { prop: 'nickId', label: 'POFI ID' },
     { prop: 'nickName', label: '用户昵称' },
     { prop: 'head', label: '用户头像', slotName: 'isAvatar' },
