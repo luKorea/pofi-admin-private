@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 14:53:28
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 14:41:07
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -137,7 +137,11 @@ export default defineComponent({
       if (item.downloadShow) {
         if (item.downloadShow / 1000 < 1) {
           item.showNum1 = 0 + 'K'
-        } else item.showNum1 = +item.downloadShow / 1000 + 'K'
+        } else {
+          let a = +item.downloadShow / 1000
+          console.log(a, 'bum')
+          item.showNum1 = Math.floor(a) + 'K'
+        }
       }
     }
     const handleChangeNumber = () => {
