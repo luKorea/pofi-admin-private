@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 15:47:38
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 14:16:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -25,7 +25,8 @@ export function useStoreName() {
 }
 
 export function useSetLanguage() {
-  const requiredField = ref<any>(['tagName'])
+  // const requiredField = ref<any>(['tagName'])
+  const requiredField = ref<any>([])
   const [
     languageList,
     languageId,
@@ -52,11 +53,11 @@ export function useSetLanguage() {
   const languageItem = computed(() => {
     return languageList.value.find((item: any) => item.lid === languageId.value)
   })
-  watchEffect(() => {
-    if (languageItem.value) {
-      mapItemIcon(requiredField.value, languageItem.value)
-    }
-  })
+  // watchEffect(() => {
+  //   if (languageItem.value) {
+  //     mapItemIcon(requiredField.value, languageItem.value)
+  //   }
+  // })
   // 改变多语言
   const handleChangeLanguage = (id: any) => {
     languageId.value = id

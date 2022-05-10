@@ -452,6 +452,13 @@ export default defineComponent({
     }
     // 获取相关关联
     const getRelevance = () => {
+      relevanceRef.value.prepEditList = []
+      relevanceRef.value.subPrepEditList = []
+      relevanceRef.value.otherInfo = {
+        rel: '',
+        prep: [],
+        subPrep: []
+      }
       getItemData('relevanceItem', {
         moId: params.value.moId
       }).then((res: any) => {

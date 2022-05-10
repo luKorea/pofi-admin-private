@@ -404,7 +404,7 @@ export default defineComponent({
       }
       if (
         (+item.data.isPrep === 2 && otherInfo.value.rel === undefined) ||
-        otherInfo.value.rel === ''
+        (+item.data.isPrep === 2 && otherInfo.value.rel === '')
       ) {
         errorTip('请选择关联目的')
         return
@@ -432,7 +432,7 @@ export default defineComponent({
       }
       if (
         (+item.data.isPrep === 2 && otherInfo.value.rel === undefined) ||
-        otherInfo.value.rel === ''
+        (+item.data.isPrep === 2 && otherInfo.value.rel === '')
       ) {
         errorTip('请选择关联目的')
         return
@@ -492,7 +492,7 @@ export default defineComponent({
               if (
                 (+item.data.isPrep === 2 &&
                   otherInfo.value.rel === undefined) ||
-                otherInfo.value.rel === ''
+                (+item.data.isPrep === 2 && otherInfo.value.rel === '')
               ) {
                 errorTip('请选择关联目的')
                 return
@@ -524,7 +524,7 @@ export default defineComponent({
               if (
                 (+item.data.isPrep === 2 &&
                   otherInfo.value.rel === undefined) ||
-                otherInfo.value.rel === ''
+                (+item.data.isPrep === 2 && otherInfo.value.rel === '')
               ) {
                 errorTip('请选择关联目的')
                 return

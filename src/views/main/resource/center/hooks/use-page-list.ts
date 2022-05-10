@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 18:22:07
+ * @LastEditTime: 2022-05-10 14:18:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
@@ -262,8 +262,8 @@ export function useSetLanguage() {
     'summary',
     'cover',
     'labelA',
-    'b0', // 暂时不做判断
-    'gift'
+    'b0' // 暂时不做判断
+    // 'gift'
   ])
   const [
     languageList,
