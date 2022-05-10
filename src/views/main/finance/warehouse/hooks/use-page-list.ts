@@ -2,13 +2,21 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 10:20:39
+ * @LastEditTime: 2022-05-10 17:09:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { getCommonSelectList } from '@/service/common'
+import { searchFormConfig } from '../config/search.config'
+import {
+  unityModalList,
+  resourceGetWayList
+} from '@/utils/select-list/map-resource-list'
 
+export const regList = ref<any>([])
+export const markList = ref<any>([])
+export const countryList = ref<any>([])
 export function useStoreName() {
   const storeTypeInfo = ref({
     actionName: 'wareHouseModule/getPageListAction',
@@ -25,9 +33,6 @@ export function useStoreName() {
 
 // 动态设置下拉列表的值
 export function useMapSelectValue() {
-  const regList = ref<any>([])
-  const markList = ref<any>([])
-  const countryList = ref<any>([])
   Promise.allSettled([
     getCommonSelectList('reg'),
     getCommonSelectList('mark'),
@@ -45,5 +50,47 @@ export function useMapSelectValue() {
     .catch((err) => {
       console.log(err)
     })
-  return [regList, markList, countryList]
+}
+useMapSelectValue()
+export function useMapSearch() {
+  const searchFormConfigRef = computed(() => {
+    const markId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'markId'
+    )
+    const snId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'snId'
+    )
+    const srcType = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'srcType'
+    )
+    const areaId = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'areaId'
+    )
+    const have = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'have'
+    )
+    markId!.options = markList.value.map((item: any) => {
+      return {
+        title: item.dec,
+        value: item.type
+      }
+    })
+    snId!.options = unityModalList
+    srcType!.options = regList.value.map((item: any) => {
+      return {
+        title: item.dec,
+        value: item.type
+      }
+    })
+    areaId!.options = countryList.value.map((i: any) => ({
+      title: i.name,
+      value: i.id
+    }))
+    have!.options = resourceGetWayList
+    return searchFormConfig
+  })
+  return {
+    searchFormConfigRef,
+    searchFormConfig
+  }
 }

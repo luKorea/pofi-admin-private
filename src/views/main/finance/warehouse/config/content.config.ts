@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 10:19:46
+ * @LastEditTime: 2022-05-10 16:37:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/content.config.ts
  */
@@ -22,9 +22,9 @@ export const contentTableConfig: TableConfig = {
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
-  showSelectColumn: true,
+  showSelectColumn: false,
   permission: {
-    add: false,
+    add: true,
     update: true,
     delete: false
   }
