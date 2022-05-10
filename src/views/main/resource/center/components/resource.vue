@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-05-09 18:24:58
+ * @LastEditTime: 2022-05-10 14:18:54
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -36,7 +36,8 @@
           <el-col v-bind="resourceModalConfig.colLayout">
             <div class="item-flex">
               <span class="item-title">
-                <span class="item-tip">*</span>主图a0-gif(彩蛋)
+                <!-- <span class="item-tip">*</span> -->
+                主图a0-gif(彩蛋)
               </span>
               <hy-upload
                 :limit="1"

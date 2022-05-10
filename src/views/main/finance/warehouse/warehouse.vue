@@ -2,12 +2,12 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 10:38:38
+ * @LastEditTime: 2022-05-10 14:14:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/warehouse/warehouse.vue
 -->
 <template>
-  <div class="warehouse">
+  <div class="warehouse" v-if="0">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-25 17:36:14
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 14:15:17
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -29,7 +29,8 @@ let queryInfo: any = {
   pageSize: 10
 }
 // const requiredField = ['promotionNum']
-const requiredField = ['tagName']
+// const requiredField = ['tagName']
+const requiredField: any[] = []
 const goodsItemModule: Module<IGoodsItemType, IRootState> = {
   namespaced: true,
   state() {

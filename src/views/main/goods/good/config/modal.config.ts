@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 15:43:01
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 14:17:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -240,14 +240,14 @@ export const modalConfig: IForm = {
           title: '暂停',
           value: 0
         }
-      ],
-      rules: [
-        {
-          required: true,
-          message: '请选择促销开关',
-          trigger: 'blur'
-        }
       ]
+      // rules: [
+      //   {
+      //     required: true,
+      //     message: '请选择促销开关',
+      //     trigger: 'blur'
+      //   }
+      // ]
     }
   ],
   colLayout: {

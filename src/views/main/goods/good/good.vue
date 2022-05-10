@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-07 17:32:52
+ * @LastEditTime: 2022-05-10 14:27:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -100,7 +100,7 @@
             <el-col :span="24">
               <div class="item-flex">
                 <div class="item-title">
-                  <span class="item-tip">*</span>
+                  <!-- <span class="item-tip">*</span> -->
                   自定义
                 </div>
                 <el-input
@@ -250,7 +250,7 @@ export default defineComponent({
             await nextTick()
             languageList.value = info
             languageId.value = info[0].lid
-            mapIconState(info, requiredField.value)
+            // mapIconState(info, requiredField.value)
           }
           otherInfo.value = {
             ...otherInfo.value,
