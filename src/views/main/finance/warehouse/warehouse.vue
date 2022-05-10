@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 17:30:36
+ * @LastEditTime: 2022-05-10 18:01:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/warehouse/warehouse.vue
 -->
@@ -22,6 +22,15 @@
       @editBtnClick="editData"
       @selectAllBtnClick="handleSelectData"
     >
+      <template #isHave="{ row }">
+        {{ row.num > 0 ? '已拥有' : '未拥有' }}
+      </template>
+      <template #isState="{ row }">
+        {{ row.state ? '上架' : '下架' }}
+      </template>
+      <template #isGetter="{ row }">
+        {{ $filters.formatSelectTitle(row.way, resourceGetWayList) }}
+      </template>
       <!-- <template #otherHandler="{ row }">
         <el-button size="mini" type="primary" @click="handleAllEditData(row)"
           >批量编辑</el-button
@@ -120,7 +129,7 @@
           <div class="item-flex">
             <span class="item-title"> 标注ID </span>
             <el-input
-              v-model="otherInfo.snId"
+              v-model="otherInfo.labelId"
               placeholder="系统生成"
               disabled
             ></el-input>
@@ -157,12 +166,12 @@
               <span class="item-tip">*</span>是否拥有
             </span>
             <el-select
-              v-model="otherInfo.have"
+              v-model="otherInfo.isHave"
               placeholder="请选择是否拥有"
               style="width: 100%"
             >
-              <el-option label="已拥有" value="1">已拥有</el-option>
-              <el-option label="未拥有" value="2">未拥有</el-option>
+              <el-option label="已拥有" :value="true">已拥有</el-option>
+              <el-option label="未拥有" :value="false">未拥有</el-option>
             </el-select>
           </div>
         </el-col>
@@ -172,7 +181,7 @@
               <span class="item-tip">*</span>修改原因
             </span>
             <el-input
-              v-model="otherInfo.result"
+              v-model="otherInfo.remark"
               type="textarea"
               :rows="3"
               placeholder="请输入修改原因"
@@ -198,6 +207,7 @@ import { ExcelService } from '@/utils/exportExcel'
 import { mapTimeToSearch } from '@/utils'
 import { warnTip, errorTip } from '@/utils/tip-info'
 import { getCommonSelectList, getCommonSelectList1 } from '@/service/common'
+import { resourceGetWayList } from '@/utils/select-list/map-resource-list'
 
 export default defineComponent({
   name: 'financeWarehouse',
@@ -205,12 +215,12 @@ export default defineComponent({
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
     const handleQueryBtnClick = (data: any) => {
-      const begin = mapTimeToSearch(data.dateTime).start
-      const end = mapTimeToSearch(data.dateTime).end
+      const beginDate = mapTimeToSearch(data.dateTime).start
+      const endDate = mapTimeToSearch(data.dateTime).end
       handleQueryClick({
         ...data,
-        begin,
-        end
+        beginDate,
+        endDate
       })
     }
     const exportData = () => {
@@ -293,7 +303,8 @@ export default defineComponent({
       const selectItem = userList.value.find((i: any) => i.nickId === item)
       otherInfo.value = {
         ...otherInfo.value,
-        nickName: selectItem ? selectItem.nickName : ''
+        nickName: selectItem ? selectItem.nickName : '',
+        uid: selectItem ? selectItem.uid : ''
       }
     }
     const getResourceList = (keyword: string) => {
@@ -311,21 +322,33 @@ export default defineComponent({
       otherInfo.value = {
         ...otherInfo.value,
         pname: selectItem ? selectItem.pname : '',
-        snId: selectItem ? selectItem.snId : ''
+        labelId: selectItem ? selectItem.nickId : ''
       }
     }
     const newData = () => {
       operationType.value = 'add'
+      otherInfo.value = {}
     }
     const editData = (item: any) => {
       operationType.value = 'edit'
       // mapField('edit')
+      otherInfo.value = {
+        id: item.id,
+        uid: item.uid,
+        nickId: item.nickId,
+        nickName: item.nickName,
+        pname: item.pname,
+        labelId: item.labelId,
+        moId: item.moid,
+        isHave: item.num > 0 ? true : false
+      }
       handleEditData(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     const { searchFormConfigRef, searchFormConfig } = useMapSearch()
     return {
+      resourceGetWayList,
       operationType,
       otherInfo,
       loading,
