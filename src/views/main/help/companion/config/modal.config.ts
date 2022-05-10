@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 15:58:02
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 10:36:05
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/page-config/modal.config.ts
  */
@@ -18,6 +18,37 @@ export const modalConfig: IForm = {
       placeholder: '系统自动生成',
       otherOptions: {
         disabled: true
+      }
+    },
+    {
+      field: 'title',
+      type: 'input',
+      label: '标题',
+      placeholder: '请输入标题',
+      rules: [
+        {
+          required: true,
+          message: '请输入标题',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'bgList',
+      type: 'upload',
+      label: '图片上传',
+      otherOptions: {
+        limit: 1,
+        fileTypeName: 'helpCompanion/'
+      }
+    },
+    {
+      field: 'fileList',
+      type: 'upload',
+      label: '视频上传',
+      otherOptions: {
+        limit: 1,
+        fileTypeName: 'helpCompanion/'
       }
     },
     {

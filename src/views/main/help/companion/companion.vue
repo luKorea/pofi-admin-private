@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-07 17:42:09
+ * @LastEditTime: 2022-05-10 10:33:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/help/companion/companion.vue
 -->
@@ -41,6 +41,7 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
+      @uploadData="getUploadData"
     >
       <page-language
         :languageList="languageList"
@@ -142,7 +143,10 @@ export default defineComponent({
     const [videoLimit, videoList] = useVideoUpload()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
 
-    const newData = () => resetLanguageList()
+    const newData = () => {
+      resetLanguageList()
+      otherInfo.value = {}
+    }
     const editData = (item: any) => {
       resetLanguageList()
       getItemData('companionItem', {
@@ -152,8 +156,16 @@ export default defineComponent({
         if (res.result === 0) {
           otherInfo.value = {
             id: res.data.id,
-            rank: res.data.rank
+            rank: res.data.rank,
+            bgUrl: res.data.bgUrl,
+            fileUrl: res.data.fileUrl
           }
+          let bgList: any[] = []
+          let fileList: any[] = []
+          bgList = res.data.bgUrl ? [mapImageToObject(res.data.bgUrl)] : []
+          fileList = res.data.fileUrl
+            ? [mapImageToObject(res.data.fileUrl)]
+            : []
           if (res.data.companionList && res.data.companionList.length > 0) {
             let result: any[] = []
             result = res?.data?.companionList.map((item: any) => {
@@ -184,13 +196,32 @@ export default defineComponent({
             languageId.value = info[0].languageId
             mapIconState(info, requiredField.value, infoId.value)
           }
-          handleEditData(res.data)
+          handleEditData({
+            ...res.data,
+            fileList,
+            bgList
+          })
         } else errorTip(res.msg)
       })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     const otherInfo = ref<any>({})
+    // 获取表单上传数据
+    const getUploadData = (data: any) => {
+      if (data.field === 'bgList') {
+        otherInfo.value = {
+          ...otherInfo.value,
+          bgUrl: data.value[0].url
+        }
+      }
+      if (data.field === 'fileList') {
+        otherInfo.value = {
+          ...otherInfo.value,
+          fileUrl: data.value[0].url
+        }
+      }
+    }
     // 监听多语言图片设置
     watchEffect(() => {
       otherInfo.value = {
@@ -249,7 +280,8 @@ export default defineComponent({
       editData,
       handleEditData,
       modalConfigRef,
-      operationName
+      operationName,
+      getUploadData
     }
   }
 })

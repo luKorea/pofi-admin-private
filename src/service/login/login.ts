@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 14:08:53
+ * @LastEditTime: 2022-05-10 09:37:27
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
@@ -56,7 +56,7 @@ export function requestUserInfo() {
 export function requestUserMenusByRoleId() {
   return hyRequest.post<any>({
     url: LoginAPI.UserMenus,
-    showLoading: false
+    showLoading: true
   })
 }
 
@@ -64,6 +64,6 @@ export function requestUserMenusByRoleId() {
 export function checkUserIsAdmin() {
   return hyRequest.post<any>({
     url: LoginAPI.IsAdmin,
-    showLoading: false
+    showLoading: true
   })
 }

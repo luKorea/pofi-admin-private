@@ -81,7 +81,15 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, watch, toRefs, onMounted, defineComponent } from 'vue'
+import {
+  ref,
+  computed,
+  watch,
+  toRefs,
+  onMounted,
+  defineComponent,
+  nextTick
+} from 'vue'
 import Vuedraggable from 'vuedraggable'
 import { useOSSConfig } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
@@ -161,7 +169,7 @@ export default defineComponent({
   components: {
     Vuedraggable
   },
-  emits: ['update:value'],
+  emits: ['update:value', 'getData'],
   setup(props, { emit }) {
     let client = ref<any>()
     const isUploading = ref(false) // 正在上传状态
@@ -259,7 +267,7 @@ export default defineComponent({
           const suffix = '.' + file.type.split('/')[1]
           const name =
             props.fileTypeName + client.value.options.fileName + suffix
-          client.value.multipartUpload(name, file).then((res: any) => {
+          client.value.multipartUpload(name, file).then(async (res: any) => {
             const url = `${OSSURL}/${res.name}`
             emit('update:value', [
               ...props.value,
@@ -272,6 +280,8 @@ export default defineComponent({
               name: res.name + '?' + new Date().getTime(),
               url: url + '?' + new Date().getTime()
             })
+            await nextTick()
+            emit('getData', imgList.value)
             isUploading.value = false
           })
         }

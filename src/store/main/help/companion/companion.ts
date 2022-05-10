@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 10:12:57
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-10 10:35:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/help/companion/companion.ts
  */
@@ -100,7 +100,7 @@ const helpCompanionModule: Module<IHelpCompanionType, IRootState> = {
             const pageUrl =
               apiList[pageName] + cultureDifferentType('add', pageName)
             const data = await createPageData(pageUrl, {
-              ...validData, // 获取一级数据，传递给后台
+              // ...validData, // 获取一级数据，传递给后台
               ...newData
             })
             if (data.result === 0) {
@@ -131,8 +131,8 @@ const helpCompanionModule: Module<IHelpCompanionType, IRootState> = {
             const pageUrl =
               apiList[pageName] + cultureDifferentType('update', pageName)
             const data = await editPageData(pageUrl, {
-              ...editData, // 获取一级数据，传递给后台
-              ...validData
+              ...editData // 获取一级数据，传递给后台
+              // ...validData
             })
             if (data.result === 0) {
               // 2.请求最新的数据

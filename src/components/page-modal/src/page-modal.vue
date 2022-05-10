@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:54
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 09:55:00
+ * @LastEditTime: 2022-05-10 10:25:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-modal/src/page-modal.vue
 -->
@@ -61,6 +61,7 @@
             v-model="formData"
             @changeSelect="handleChangeSelect"
             @remoteMethod="handleRemoteMethod"
+            @uploadData="getUploadData"
           ></hy-form>
           <slot></slot>
         </div>
@@ -120,7 +121,13 @@ export default defineComponent({
       default: true
     }
   },
-  emits: ['editClick', 'addClick', 'changeSelect', 'remoteMethod'],
+  emits: [
+    'editClick',
+    'addClick',
+    'changeSelect',
+    'remoteMethod',
+    'uploadData'
+  ],
   setup(props, { emit }) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
@@ -200,14 +207,20 @@ export default defineComponent({
       emit('changeSelect', item)
     }
     const handleRemoteMethod = (item: any) => {
-      emit('remoteMethod', item)
+      console.log(item)
+      // emit('remoteMethod', item)
+    }
+    const getUploadData = (data: any) => {
+      emit('uploadData', data)
     }
     return {
       pageFormRef,
       dialogVisible,
       formData,
       handleConfirmClick,
-      handleChangeSelect
+      handleChangeSelect,
+      getUploadData,
+      handleRemoteMethod
     }
   }
 })
