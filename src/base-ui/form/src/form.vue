@@ -209,7 +209,7 @@
                 <hy-upload
                   v-bind="item.otherOptions"
                   v-model:value="modelValue[`${item.field}`]"
-                  @update:modelValue="handleValueChange($event, item.field)"
+                  @getData="handleUploadData($event, item.field)"
                 />
               </template>
               <template v-if="item.type === 'inputRange'">
@@ -294,7 +294,8 @@ export default defineComponent({
     'changeSelect',
     'changeInput',
     'changeClear',
-    'remoteMethod'
+    'remoteMethod',
+    'uploadData'
   ],
   setup(props, { emit }) {
     type FormInstance = InstanceType<typeof ElForm>
@@ -330,6 +331,13 @@ export default defineComponent({
         field: field
       })
     }
+    // 上传组件数据获取
+    const handleUploadData = (data: any, filed: string) => {
+      emit('uploadData', {
+        value: data,
+        field: filed
+      })
+    }
 
     return {
       formRef,
@@ -338,7 +346,8 @@ export default defineComponent({
       handleClear,
       handleValueChange,
       handleChangeSelect,
-      handleRemoteMethod
+      handleRemoteMethod,
+      handleUploadData
     }
   }
 })
