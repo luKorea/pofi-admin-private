@@ -57,8 +57,8 @@ export function useMapSearch() {
     const markId = searchFormConfig.formItems.find(
       (item: any) => item.field === 'markId'
     )
-    const snId = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'snId'
+    const unityType = searchFormConfig.formItems.find(
+      (item: any) => item.field === 'unityType'
     )
     const srcType = searchFormConfig.formItems.find(
       (item: any) => item.field === 'srcType'
@@ -67,7 +67,7 @@ export function useMapSearch() {
       (item: any) => item.field === 'areaId'
     )
     const have = searchFormConfig.formItems.find(
-      (item: any) => item.field === 'have'
+      (item: any) => item.field === 'way'
     )
     markId!.options = markList.value.map((item: any) => {
       return {
@@ -75,7 +75,7 @@ export function useMapSearch() {
         value: item.type
       }
     })
-    snId!.options = unityModalList
+    unityType!.options = unityModalList
     srcType!.options = regList.value.map((item: any) => {
       return {
         title: item.dec,

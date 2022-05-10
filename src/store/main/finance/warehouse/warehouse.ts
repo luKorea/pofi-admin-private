@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 11:34:31
+ * @LastEditTime: 2022-05-10 17:36:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -20,7 +20,7 @@ import {
 } from '@/service/common-api'
 
 const apiList: any = {
-  wareHouses: '/cms/warehouse/'
+  wareHouses: '/cms/userStorage/'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -84,7 +84,7 @@ const wareHouseModule: Module<IWareHouseType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'addLimit'
+        const pageUrl = apiList[pageName] + 'addStorage'
         const data = await createPageData(pageUrl, newData)
         if (data.result === 0) {
           // 2.请求最新的数据
@@ -102,7 +102,7 @@ const wareHouseModule: Module<IWareHouseType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const pageUrl = apiList[pageName] + 'update'
+        const pageUrl = apiList[pageName] + 'updateStorage'
         const data = await editPageData(pageUrl, editData)
         if (data.result === 0) {
           // 2.请求最新的数据

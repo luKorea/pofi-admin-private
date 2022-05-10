@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 11:28:53
+ * @LastEditTime: 2022-05-10 17:58:39
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -113,25 +113,25 @@ export const searchFormConfig: IForm = {
       }
     },
     {
-      field: 'nickId',
+      field: 'moid',
       type: 'input',
       label: '资源编号',
       placeholder: '请输入资源编号'
     },
     {
-      field: 'nickId',
+      field: 'pname',
       type: 'input',
       label: '资源名称',
       placeholder: '请输入资源名称'
     },
     {
-      field: 'nickId',
+      field: 'labelId',
       type: 'input',
       label: '标注ID',
       placeholder: '请输入标注ID'
     },
     {
-      field: 'costType',
+      field: 'isHave',
       type: 'select',
       label: '是否拥有',
       placeholder: '请选择是否拥有',
@@ -163,14 +163,14 @@ export const searchFormConfig: IForm = {
       ]
     },
     {
-      field: 'snId',
+      field: 'unityType',
       type: 'select',
       label: 'U3D类型',
       placeholder: '请选择U3D类型',
       options: []
     },
     {
-      field: 'have',
+      field: 'way',
       type: 'select',
       label: '获取方式',
       placeholder: '请选择获取方式',
