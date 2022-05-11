@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 17:58:39
+ * @LastEditTime: 2022-05-11 09:35:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -138,11 +138,11 @@ export const searchFormConfig: IForm = {
       options: [
         {
           title: '已拥有',
-          value: 1
+          value: true
         },
         {
           title: '未拥有',
-          value: 0
+          value: false
         }
       ]
     },
