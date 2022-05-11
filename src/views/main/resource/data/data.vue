@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 14:41:07
+ * @LastEditTime: 2022-05-11 14:57:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -53,17 +53,32 @@
       :operationName="operationName"
       :otherInfo="otherInfo"
     >
-      <div class="item-flex">
-        <span class="item-title">编辑数据</span>
-        <el-input
-          v-model="otherInfo.num"
-          placeholder="请输入值"
-          type="number"
-          @input="handleChangeNumber"
-        >
-          <template #prepend>{{ otherInfo.download }} +</template>
-        </el-input>
-      </div>
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">编辑数据</span>
+            <el-input
+              v-model="otherInfo.num"
+              placeholder="请输入值"
+              type="number"
+              @input="handleChangeNumber"
+            >
+              <template #prepend>{{ otherInfo.download }} +</template>
+            </el-input>
+          </div>
+        </el-col>
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">前端显示</span>
+            <el-input
+              v-model="otherInfo.showNum1"
+              placeholder="前端显示"
+              disabled
+            >
+            </el-input>
+          </div>
+        </el-col>
+      </el-row>
     </page-modal>
 
     <page-dialog ref="pageDialogRef" title="下载量日志">
@@ -136,18 +151,27 @@ export default defineComponent({
       }
       if (item.downloadShow) {
         if (item.downloadShow / 1000 < 1) {
-          item.showNum1 = 0 + 'K'
+          otherInfo.value = {
+            ...otherInfo.value,
+            showNum1: 0 + 'K'
+          }
         } else {
           let a = +item.downloadShow / 1000
-          console.log(a, 'bum')
-          item.showNum1 = Math.floor(a) + 'K'
+          otherInfo.value = {
+            ...otherInfo.value,
+            showNum1: Math.floor(a) + 'K'
+          }
         }
       }
     }
     const handleChangeNumber = () => {
-      // if (isNaN(otherInfo.value.num)) {
-      //   otherInfo.value.num = 0
-      // }
+      if (!isNaN(otherInfo.value.num)) {
+        let a = +otherInfo.value.num / 1000
+        otherInfo.value = {
+          ...otherInfo.value,
+          showNum1: Math.floor(a) + 'K'
+        }
+      }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(undefined, editData)

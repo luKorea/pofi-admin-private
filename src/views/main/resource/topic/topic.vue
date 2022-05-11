@@ -359,7 +359,7 @@ export default defineComponent({
       loading
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
-    const getData = (mtId: any) => {
+    const getData = (mtId: any, isItem = false) => {
       resetLanguageList()
       getItemData('topicItem', {
         mtId: mtId
@@ -415,14 +415,16 @@ export default defineComponent({
             await nextTick()
             languageList.value = info
             // languageList.value = endData
-            languageId.value = info[0].lid
+            languageId.value = !isItem ? info[0].lid : backId.value
             mapIconState(info, requiredField.value)
           }
           handleEditData(res.data)
         } else errorTip(res.msg)
       })
     }
+    const backId = ref<any>()
     const handleDrawTable = (data: any) => {
+      backId.value = languageId.value
       const nothing = data.find((i: any) => i.newField)
       if (nothing) {
         warnTip('当前表格有新增项，请填写保存后，再排序，否则排序无效', 2000)
@@ -434,7 +436,7 @@ export default defineComponent({
           if (res.result === 0) {
             successTip(res.msg)
             //保持后获取新数据
-            getData(otherInfo.value.mtId)
+            getData(otherInfo.value.mtId, true)
           } else errorTip(res.msg)
         })
       }

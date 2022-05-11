@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 14:48:23
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-11 14:51:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
@@ -27,14 +27,14 @@ export const modalConfig: IForm = {
         disabled: true
       }
     },
-    {
-      field: 'showNum1',
-      type: 'input',
-      label: '前端显示',
-      otherOptions: {
-        disabled: true
-      }
-    },
+    // {
+    //   field: 'showNum1',
+    //   type: 'input',
+    //   label: '前端显示',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
       field: 'downloadState',
       type: 'select',

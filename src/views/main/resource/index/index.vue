@@ -458,7 +458,9 @@ export default defineComponent({
       })
     })
     const [storeTypeInfo, operationName] = useStoreName()
+    const backId = ref<any>()
     const handleDrawTable = (data: any) => {
+      backId.value = languageId.value
       const nothing = data.find((i: any) => i.newField)
       if (nothing) {
         warnTip('当前表格有新增项，请填写保存后，再排序，否则排序无效', 2000)
@@ -473,7 +475,7 @@ export default defineComponent({
         }).then((res: any) => {
           if (res.result === 0) {
             successTip(res.msg)
-            getItem(otherInfo.value)
+            getItem(otherInfo.value, true)
           } else errorTip(res.msg)
         })
       }
@@ -627,7 +629,7 @@ export default defineComponent({
       mapCategoryList(undefined)
       resetLanguageList()
     }
-    const getItem = (item: any) => {
+    const getItem = (item: any, isItem = false) => {
       resetLanguageList()
       getItemData('homeIndexItem', {
         id: item.id,
@@ -670,7 +672,7 @@ export default defineComponent({
             })
             await nextTick()
             languageList.value = info
-            languageId.value = info[0].lid
+            languageId.value = !isItem ? info[0].lid : backId.value
             mapIconState(info, requiredField.value)
           }
           otherInfo.value = {
