@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 14:17:12
+ * @LastEditTime: 2022-05-11 10:21:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -143,20 +143,20 @@ export const modalConfig: IForm = {
     //   placeholder: '请活动标签',
     //   options: []
     // },
-    {
-      field: 'unityType',
-      label: 'U3D类型',
-      type: 'select',
-      placeholder: '请选择U3D类型',
-      options: []
-    },
-    {
-      field: 'moId',
-      label: '绑定模型名称',
-      type: 'select',
-      placeholder: '请先选择U3D类型',
-      options: []
-    },
+    // {
+    //   field: 'unityType',
+    //   label: 'U3D类型',
+    //   type: 'select',
+    //   placeholder: '请选择U3D类型',
+    //   options: []
+    // },
+    // {
+    //   field: 'moId',
+    //   label: '绑定模型名称',
+    //   type: 'select',
+    //   placeholder: '请先选择U3D类型',
+    //   options: []
+    // },
     {
       field: 'show',
       type: 'select',
@@ -180,15 +180,15 @@ export const modalConfig: IForm = {
         }
       ]
     },
-    {
-      field: 'cmsContent',
-      label: '绑定模型名称',
-      type: 'textarea',
-      placeholder: '绑定模型名称',
-      otherOptions: {
-        disabled: true
-      }
-    },
+    // {
+    //   field: 'cmsContent',
+    //   label: '绑定模型名称',
+    //   type: 'textarea',
+    //   placeholder: '绑定模型名称',
+    //   otherOptions: {
+    //     disabled: true
+    //   }
+    // },
     {
       field: 'promotionStartTime',
       type: 'datetime',

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 14:27:58
+ * @LastEditTime: 2022-05-11 10:25:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -42,12 +42,12 @@
       :otherInfo="otherInfo"
       @changeSelect="handleChangeSelect"
     >
-      <!-- <el-row :gutter="12">
-        <el-col v-bind="modalConfigRef.colLayout">
+      <el-row :gutter="12">
+        <!-- <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">U3D类型</span>
           </div>
-        </el-col>
+        </el-col> -->
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">绑定模型</span>
@@ -59,20 +59,31 @@
               reserve-keyword
               clearable
               placeholder="请输入模型资源id或名称搜索"
-              :remote-method="handleRemoteMethodToMoId"
+              :remote-method="handleGetResource"
               :loading="loading"
             >
               <el-option
-                v-for="item in modelList"
+                v-for="item in resourceList"
                 :key="item.value"
-                :label="item.title"
-                :value="item.value"
-                >{{ item.title }}
+                :label="item.pname"
+                :value="item.moId"
+                >{{ item.pname }}
               </el-option>
             </el-select>
           </div>
         </el-col>
-      </el-row> -->
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">绑定模型名称</span>
+            <el-input
+              type="textarea"
+              v-model="otherInfo.cmsContent"
+              placeholder="模型名称"
+              disabled
+            ></el-input>
+          </div>
+        </el-col>
+      </el-row>
       <!-- 多语言区域 -->
       <page-language
         :languageList="languageList"
@@ -196,6 +207,8 @@ import { useStoreName, useSetLanguage } from './hooks/use-page-list'
 import { unityModalList } from '@/utils/select-list/map-resource-list'
 import { mapResourceInfo } from '@/service/main/goods/function'
 import { getItemData } from '@/service/common-api'
+import { getCommonSelectList1 } from '@/service/common'
+import { errorTip } from '@/utils/tip-info'
 
 export default defineComponent({
   name: 'resourceGood',
@@ -254,11 +267,11 @@ export default defineComponent({
           }
           otherInfo.value = {
             ...otherInfo.value,
-            content: JSON.stringify(data.content)
+            content: JSON.stringify(data.content),
+            cmsContent: res.data.cmsContent
           }
           handleEditData({
-            ...data,
-            unityType: item.unityType
+            ...data
           })
         }
       })
@@ -269,23 +282,34 @@ export default defineComponent({
         snId: item.snId,
         id: item.id
       }
-      handleChangeSelect({
-        field: 'unityType',
-        value: item.unityType
-      })
+      // handleChangeSelect({
+      //   field: 'unityType',
+      //   value: item.unityType
+      // })
       getItem(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     const modalConfigRef = computed(() => {
-      const unitTypeItem = modalConfig.formItems.find(
-        (item: any) => item.field === 'unityType'
-      )
-      unitTypeItem!.options = unityModalList.filter(
-        (i: any) => i.value !== undefined
-      )
+      // const unitTypeItem = modalConfig.formItems.find(
+      //   (item: any) => item.field === 'unityType'
+      // )
+      // unitTypeItem!.options = unityModalList.filter(
+      //   (i: any) => i.value !== undefined
+      // )
       return modalConfig
     })
+    const resourceList = ref<any>([])
+    const loading = ref<boolean>(false)
+    const handleGetResource = (keyword: any) => {
+      getCommonSelectList1(keyword, false)
+        .then((res) => {
+          if (res.result === 0) {
+            resourceList.value = res.data
+          } else errorTip(res.msg)
+        })
+        .finally(() => (loading.value = false))
+    }
     const handleChangeSelect = (item: any) => {
       if (item.field == 'unityType') {
         mapResourceInfo(item.value).then((res) => {
@@ -329,7 +353,10 @@ export default defineComponent({
       defaultInfo,
       operationName,
       otherInfo,
-      handleChangeSelect
+      handleChangeSelect,
+      handleGetResource,
+      loading,
+      resourceList
     }
   }
 })
