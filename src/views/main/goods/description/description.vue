@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 14:25:45
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 09:29:24
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -439,7 +439,7 @@
         :languageBtnList="languageBtnList"
         @changeLanguage="handleChangeLanguage"
       >
-        <template #formItem>
+        <template #formItem v-if="articleType !== 0">
           <!-- 版本文案 -->
           <template v-if="articleType === 1">
             <div class="item-flex">
@@ -653,13 +653,14 @@
             </div>
           </template>
         </template>
+        <template #formItem v-else> 请先选择分类 </template>
       </page-language>
     </page-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -732,7 +733,7 @@ export default defineComponent({
       }
     })
     // 监听选项变化，动态修改多语言值
-    const articleType = ref<number>()
+    const articleType = ref<number>(0)
     const handleChangeSelect = (item: any) => {
       if (item.field === 'type') {
         mapDifferentLanguage(+item.value)
@@ -774,6 +775,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const editData = (item: any) => {
+      articleType.value = +item.type
       otherInfo.value = {
         ...otherInfo.value,
         id: item.id
