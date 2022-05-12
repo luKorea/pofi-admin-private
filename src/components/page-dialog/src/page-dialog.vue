@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:43:09
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-16 12:07:43
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 13:39:20
  * @Description:
  * @FilePath: /pofi-admin/src/components/page-dialog/src/page-dialog.vue
 -->
@@ -11,7 +11,7 @@
     <el-dialog
       v-model="dialogVisible"
       :width="showWidth"
-      top="8vh"
+      top="20vh"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       destroy-on-close

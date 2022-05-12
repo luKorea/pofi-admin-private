@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 11:48:50
+ * @LastEditTime: 2022-05-12 13:46:47
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
@@ -70,9 +70,11 @@ export function checkUserIsAdmin() {
 }
 
 // 修改密码
-export function editPassword(data: any) {
+export function editPassword(pwd: any) {
   return hyRequest.post<any>({
     url: LoginAPI.editPassword,
-    data: data
+    data: {
+      pwd: md5(pwd)
+    }
   })
 }

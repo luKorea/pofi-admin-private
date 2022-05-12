@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 11:58:29
+ * @LastEditTime: 2022-05-12 13:51:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
@@ -21,7 +21,9 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item icon="el-icon-lock" @click="showPasswordDialog"
+          <el-dropdown-item
+            icon="el-icon-lock"
+            @click="showPasswordDialog(true)"
             >修改密码</el-dropdown-item
           >
           <el-dropdown-item
@@ -38,12 +40,20 @@
 
     <page-dialog ref="passwordRef" title="修改密码" showWidth="20%">
       <el-input
-        v-model="pwd"
+        v-model.trim="pwd"
         placeholder="请输入新的密码"
         show-password
         type="password"
         clearable
       ></el-input>
+      <div class="hg-flex hg-mt-3 hg-justify-end">
+        <el-button size="mini" @click="showPasswordDialog(false)"
+          >取消</el-button
+        >
+        <el-button type="primary" size="mini" @click="resetPassword"
+          >确认</el-button
+        >
+      </div>
     </page-dialog>
   </div>
 </template>
@@ -90,19 +100,26 @@ export default defineComponent({
     // 修改密码
     const pwd = ref<any>()
     const passwordRef = ref<any>()
-    const showPasswordDialog = () => {
+    const showPasswordDialog = (flag: boolean) => {
       if (passwordRef.value) {
-        passwordRef.value.dialogVisible = true
+        passwordRef.value.dialogVisible = flag
       }
     }
     const resetPassword = () => {
-      editPassword({ pwd: pwd.value }).then((res) => {
-        if (res.result === 0) {
-          successTip('密码更新成功，请重新登录')
-          localCache.deleteCache('pwd')
-          resetInfo()
-        } else errorTip(res.msg)
-      })
+      if (!pwd.value) {
+        errorTip('请输入新的密码')
+        return
+      } else {
+        editPassword(pwd.value).then((res) => {
+          if (res.result === 0) {
+            successTip('修改密码成功')
+            // localCache.deleteCache('pwd')
+            // resetInfo()
+            showPasswordDialog(false)
+            pwd.value = ''
+          } else errorTip(res.msg)
+        })
+      }
     }
 
     return {
