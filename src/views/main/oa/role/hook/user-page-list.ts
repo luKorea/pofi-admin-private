@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-21 10:48:12
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 09:53:55
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 16:02:53
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/role/hook/user-page-list.ts
  */
@@ -54,8 +54,7 @@ export function useTreeOptions() {
   const handleCheckChange = (data1: any, data2: any) => {
     const checkedKeys = data2.checkedKeys
     const halfCheckedKeys = data2.halfCheckedKeys // 目前这个参数没有作用
-    console.log(halfCheckedKeys)
-    const menuList = [...checkedKeys]
+    const menuList = [...halfCheckedKeys, ...checkedKeys]
     otherInfo.value = {
       ...otherInfo.value,
       pids: JSON.stringify(menuList)
