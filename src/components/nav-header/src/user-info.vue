@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-08 14:03:45
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 11:58:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/nav-header/src/user-info.vue
 -->
@@ -21,7 +21,13 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item icon="el-icon-circle-close" @click="handleExitClick"
+          <el-dropdown-item icon="el-icon-lock" @click="showPasswordDialog"
+            >修改密码</el-dropdown-item
+          >
+          <el-dropdown-item
+            icon="el-icon-circle-close"
+            divided
+            @click="handleExitClick"
             >退出登录</el-dropdown-item
           >
           <!-- <el-dropdown-item divided>用户信息</el-dropdown-item>
@@ -29,6 +35,16 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
+
+    <page-dialog ref="passwordRef" title="修改密码" showWidth="20%">
+      <el-input
+        v-model="pwd"
+        placeholder="请输入新的密码"
+        show-password
+        type="password"
+        clearable
+      ></el-input>
+    </page-dialog>
   </div>
 </template>
 
@@ -38,7 +54,8 @@ import { useStore } from '@/store'
 import { useRouter } from 'vue-router'
 import localCache from '@/utils/cache'
 import { timeNow } from '@/utils'
-import { infoTipBox } from '@/utils/tip-info'
+import { infoTipBox, errorTip, successTip } from '@/utils/tip-info'
+import { editPassword } from '@/service/login/login'
 
 export default defineComponent({
   setup() {
@@ -58,22 +75,44 @@ export default defineComponent({
       infoTipBox({
         title: '退出登录',
         message: '您确定退出登录吗'
-      }).then(() => {
-        // 移除本地缓存
-        localCache.deleteCache('token')
-        localCache.deleteCache('userInfo')
-        localCache.deleteCache('userMenus')
-        localCache.deleteCache('routerList')
-        localCache.deleteCache('isAdmin')
-        router.push('/login')
-        location.reload()
+      }).then(() => resetInfo())
+    }
+    const resetInfo = () => {
+      // 移除本地缓存
+      localCache.deleteCache('token')
+      localCache.deleteCache('userInfo')
+      localCache.deleteCache('userMenus')
+      localCache.deleteCache('routerList')
+      localCache.deleteCache('isAdmin')
+      router.push('/login')
+      location.reload()
+    }
+    // 修改密码
+    const pwd = ref<any>()
+    const passwordRef = ref<any>()
+    const showPasswordDialog = () => {
+      if (passwordRef.value) {
+        passwordRef.value.dialogVisible = true
+      }
+    }
+    const resetPassword = () => {
+      editPassword({ pwd: pwd.value }).then((res) => {
+        if (res.result === 0) {
+          successTip('密码更新成功，请重新登录')
+          localCache.deleteCache('pwd')
+          resetInfo()
+        } else errorTip(res.msg)
       })
     }
 
     return {
       name,
       localTime,
-      handleExitClick
+      handleExitClick,
+      pwd,
+      passwordRef,
+      showPasswordDialog,
+      resetPassword
     }
   }
 })
