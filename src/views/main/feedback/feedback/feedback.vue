@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 10:26:11
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 09:36:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
