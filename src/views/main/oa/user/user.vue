@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-07 17:46:52
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 14:27:17
  * @Description: 增删改功能完成，缺少分页搜索功能
  * @FilePath: /pofi-admin/src/views/main/oa/user/user.vue
 -->
@@ -114,6 +114,7 @@ export default defineComponent({
     const addData = () => {
       isShowPermissionCheck.value = false
       changeFormItemStatus(false)
+      otherInfo.value = {}
     }
     // 分配用户权限
     const isShowPermissionCheck = ref<boolean>(false)
