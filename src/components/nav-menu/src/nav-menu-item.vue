@@ -2,7 +2,7 @@
  * @Author: korealu 643949593@qq.com
  * @Date: 2022-04-20 09:33:38
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 18:19:52
+ * @LastEditTime: 2022-05-12 18:25:28
  * @FilePath: /pofi-admin-private/src/components/nav-menu/src/nav-menu-item.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
     <template v-if="item.children.length > 0">
       <el-submenu
         :index="item.id + ''"
-        :style="{ backgroundColor: currentEnv === 5 ? '#88001F' : '#001529' }"
+        :style="{ backgroundColor: currentEnv === 4 ? '#88001F' : '#001529' }"
       >
         <template #title>
           <i v-if="item.icon" :class="item.icon"></i>
@@ -28,8 +28,8 @@
       v-else
       :index="item.id + ''"
       @click="handleMenuItem(item)"
-      :class="item.id == selectIndex && currentEnv === 5 && 'select'"
-      :style="{ backgroundColor: currentEnv === 5 ? '#A40026' : '#0c2135' }"
+      :class="item.id == selectIndex && currentEnv === 4 && 'select'"
+      :style="{ backgroundColor: currentEnv === 4 ? '#A40026' : '#0c2135' }"
     >
       <i v-if="item.icon" :class="item.icon"></i>
       <span>{{ item.title }}</span>
