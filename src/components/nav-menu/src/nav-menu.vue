@@ -1,14 +1,28 @@
+<!--
+ * @Author: korealu 643949593@qq.com
+ * @Date: 2022-04-20 09:33:38
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 18:18:58
+ * @FilePath: /pofi-admin-private/src/components/nav-menu/src/nav-menu.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <template>
-  <div class="nav-menu">
+  <div
+    class="nav-menu"
+    :style="{ backgroundColor: currentEnv === 5 ? '#88001F' : '#001529' }"
+  >
     <el-menu
       :default-active="defaultValue"
       class="el-menu-vertical"
       :collapse="collapse"
-      background-color="#0c2135"
-      text-color="#b7bdc3"
-      active-text-color="#0a60bd"
+      :background-color="currentEnv === 5 ? '#A40026' : '#0c2135'"
+      text-color="#fff"
+      :active-text-color="currentEnv === 5 ? '#C5002E' : '#0a60bd'"
     >
-      <nav-menu-item :menuList="userMenus"></nav-menu-item>
+      <nav-menu-item
+        :menuList="userMenus"
+        :defaultValue="defaultValue"
+      ></nav-menu-item>
     </el-menu>
   </div>
 </template>
@@ -35,6 +49,7 @@ export default defineComponent({
     // store
     const store = useStore()
     const userMenus = computed(() => store.state.login.userMenus)
+    const currentEnv = computed(() => store.state.login.userInfo.env)
     // route
     const route = useRoute()
     const currentPath = route.path
@@ -44,7 +59,8 @@ export default defineComponent({
     const defaultValue = ref(menu.id + '')
     return {
       userMenus,
-      defaultValue
+      defaultValue,
+      currentEnv
     }
   }
 })
@@ -53,7 +69,6 @@ export default defineComponent({
 <style scoped lang="less">
 .nav-menu {
   height: 100%;
-  background-color: #001529;
 
   .logo {
     display: flex;
