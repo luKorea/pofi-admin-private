@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:31:15
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 09:37:27
+ * @LastEditTime: 2022-05-12 11:48:50
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/login/login.ts
  */
@@ -18,7 +18,8 @@ enum LoginAPI {
   UserMenus = '/cms/router/getRouter', // 用法: role/1/menu
   IsAdmin = '/cms/user/isAdmin',
   CodeLogin = '/cms/user/sendSmsCode', // 获取验证码
-  AccountCodeLogin = '/cms/user/getSmsCode'
+  AccountCodeLogin = '/cms/user/getSmsCode',
+  editPassword = '/cms/user/updatePwd'
 }
 
 export function getCode(phone: any) {
@@ -65,5 +66,13 @@ export function checkUserIsAdmin() {
   return hyRequest.post<any>({
     url: LoginAPI.IsAdmin,
     showLoading: true
+  })
+}
+
+// 修改密码
+export function editPassword(data: any) {
+  return hyRequest.post<any>({
+    url: LoginAPI.editPassword,
+    data: data
   })
 }
