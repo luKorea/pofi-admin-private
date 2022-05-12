@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 18:01:08
+ * @LastEditTime: 2022-05-12 14:15:23
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/warehouse/warehouse.vue
 -->
@@ -63,6 +63,7 @@
               :loading="loading"
               v-model="otherInfo.nickId"
               @change="changeUserInfo"
+              :disabled="operationType === 'edit'"
             >
               <el-option
                 v-for="option in userList"
@@ -102,6 +103,7 @@
               :loading="loading"
               v-model="otherInfo.moId"
               @change="changeResourceInfo"
+              :disabled="operationType === 'edit'"
             >
               <el-option
                 v-for="option in resourceList"
