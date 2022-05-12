@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-22 11:40:20
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-12 16:08:31
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
 -->
@@ -89,7 +89,10 @@ export default defineComponent({
       handleCheckChange,
       otherInfo
     } = useTreeOptions()
-    const newData = () => (editShowTree.value = false)
+    const newData = () => {
+      editShowTree.value = false
+      otherInfo.value = {}
+    }
     const editData = (item: any) => {
       otherInfo.value = {
         id: item.id
