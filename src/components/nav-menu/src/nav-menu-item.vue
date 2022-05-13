@@ -2,7 +2,7 @@
  * @Author: korealu 643949593@qq.com
  * @Date: 2022-04-20 09:33:38
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 18:25:28
+ * @LastEditTime: 2022-05-13 09:41:48
  * @FilePath: /pofi-admin-private/src/components/nav-menu/src/nav-menu-item.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,7 +17,7 @@
         :style="{ backgroundColor: currentEnv === 4 ? '#88001F' : '#001529' }"
       >
         <template #title>
-          <i v-if="item.icon" :class="item.icon"></i>
+          <i v-if="item.icon" :class="item.icon" style="color： #fff"></i>
           <span>{{ item.title }}</span>
         </template>
         <nav-menu-item :menuList="item.children"></nav-menu-item>
@@ -108,11 +108,17 @@ export default defineComponent({
   color: #fff !important;
   background-color: #0a60bd !important;
 }
+.el-menu-item.is-select {
+  background-color: #0a60bd !important;
+}
 .el-menu-item.select {
   background-color: #c5002e !important;
 }
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 100%;
   //height: calc(100% - 48px);
+}
+.el-submenu [class^='el-icon-'] {
+  color: #fff !important;
 }
 </style>
