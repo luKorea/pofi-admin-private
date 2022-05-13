@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-12 14:09:32
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-13 16:15:40
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */
@@ -65,10 +65,12 @@ import {
   ElButtonGroup,
   ElCascader,
   ElStep,
-  ElSteps
+  ElSteps,
+  ElEmpty
 } from 'element-plus'
 
 const components = [
+  ElEmpty,
   ElSteps,
   ElStep,
   ElCascader,
