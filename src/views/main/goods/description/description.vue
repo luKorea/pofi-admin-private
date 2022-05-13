@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 09:29:24
+ * @LastEditTime: 2022-05-13 15:35:25
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
   <!-- TODO 暂时隐藏，多语言 -->
-  <div class="resource-good" v-if="0">
+  <div class="resource-good" v-if="1">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -774,12 +774,18 @@ export default defineComponent({
       otherInfo.value = {}
       resetLanguageList()
     }
+    // 编辑操作
+    const getData = (item: any) => {
+      console.log(item)
+      languageList.value = item
+    }
     const editData = (item: any) => {
       articleType.value = +item.type
       otherInfo.value = {
         ...otherInfo.value,
         id: item.id
       }
+      getData(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
