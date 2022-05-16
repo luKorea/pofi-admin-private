@@ -268,6 +268,12 @@ export default defineComponent({
               })
               .finally(() => (loading.value = false))
           }
+        } else {
+          const info1 = [...languageItem.value.childListStr]
+          const newArr = [
+            ...new Set(info1.map((e: any) => JSON.stringify(e)))
+          ].map((e) => JSON.parse(e))
+          languageItem.value.childListStr = newArr
         }
       }
     }
@@ -358,13 +364,11 @@ export default defineComponent({
           tempId: uid(8),
           newField: true
         })
-        console.log(backList.value, 'deom')
-        backList.value = [...backList.value, ...res]
-        languageItem.value.childListStr = [
-          ...languageItem.value.childListStr,
-          ...res
-        ]
-        console.log(backList.value, 'deom')
+        const info1 = [...languageItem.value.childListStr, ...res]
+        const newArr = [
+          ...new Set(info1.map((e: any) => JSON.stringify(e)))
+        ].map((e) => JSON.parse(e))
+        languageItem.value.childListStr = newArr
       } else warnTip('请先选择样式类型')
     }
     const handleNewTableData2 = (info: any) => {
@@ -387,10 +391,11 @@ export default defineComponent({
       }
       console.log(obj, 'obj')
       res.push(obj)
-      languageItem.value.childListStr = [
-        ...languageItem.value.childListStr,
-        ...res
-      ]
+      const info1 = [...languageItem.value.childListStr, ...res]
+      const newArr = [...new Set(info1.map((e: any) => JSON.stringify(e)))].map(
+        (e) => JSON.parse(e)
+      )
+      languageItem.value.childListStr = newArr
     }
     const handleDeleteEditTableData = (tempId: any, row: any) => {
       if (operationType.value === 'add') {
@@ -657,6 +662,7 @@ export default defineComponent({
                 }
               }
             })
+            console.log(result, 'resulr')
             const info = languageList.value.map((item: any) => {
               let res = result.find((i: any) => i.lid === item.lid)
               if (res) {
