@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-07 17:40:39
+ * @LastEditTime: 2022-05-16 17:10:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -43,6 +43,7 @@
       :modalConfig="modalConfigRef"
       :operationName="operationName"
       :otherInfo="otherInfo"
+      @changeSelect="handleSelectChange"
     >
       <el-row :gutter="12">
         <el-col v-bind="modalConfigRef.colLayout">
@@ -94,10 +95,18 @@
               <span class="item-tip">*</span>
               内容
             </div>
+            <template v-if="!showEditor">
+              <el-input
+                v-model="languageItem.value"
+                type="textarea"
+                :rows="3"
+              ></el-input>
+            </template>
             <hy-editor
+              v-show="showEditor"
               ref="editorRef"
               v-model:value="languageItem.value"
-              :fileTypeName="editorFileName"
+              fileTypeName="configName/"
             ></hy-editor>
           </div>
         </template>
@@ -193,10 +202,12 @@ export default defineComponent({
     }
     const newClick = () => {
       areaIds.value = []
+      showEditor.value = false
       resetLanguageList()
     }
     const handleEdit = (item: any) => {
       resetLanguageList()
+      showEditor.value = item.type === 'editor'
       getItemData('baseConfig', {
         id: item.id,
         language: 1
@@ -274,6 +285,14 @@ export default defineComponent({
       typeItem!.isHidden = !isAdmin.value
       return modalConfig
     })
+    const showEditor = ref<boolean>(false)
+    const handleSelectChange = (data: any) => {
+      if (data.field === 'type' && data.value === 'editor') {
+        showEditor.value = true
+      } else if (data.field === 'type' && data.value !== 'editor') {
+        showEditor.value = false
+      }
+    }
     return {
       ...useMapCountry(),
       // 多语言编辑
@@ -298,7 +317,9 @@ export default defineComponent({
       handleEditData,
       modalConfigRef,
       operationName,
-      otherInfo
+      otherInfo,
+      handleSelectChange,
+      showEditor
     }
   }
 })
