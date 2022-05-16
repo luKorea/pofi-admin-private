@@ -242,14 +242,17 @@ export default defineComponent({
         }
       })
     }
-    const handleChangeLanguage = async (id: any) => {
+    function handlechildListStr() {
       let childListStr = unique(languageItem.value.childListStr || [])
       let length = childListStr.length
-      console.log(length, 'length')
-      // let length =
-      //   (languageItem.value.childListStr &&
-      //     languageItem.value.childListStr.length) ||
-      //   0
+      if (languageItem.value.childListStr.length > length) {
+        languageItem.value.childListStr = childListStr
+      }
+      return childListStr.length
+    }
+    const handleChangeLanguage = async (id: any) => {
+      let length = handlechildListStr()
+
       if (TempLength < length) {
         TempLength = length
         Temp = languageItem.value.childListStr
@@ -257,10 +260,9 @@ export default defineComponent({
       languageId.value = id
       await nextTick()
       if (editTableType.value !== 1 && editTableType.value !== undefined) {
-        if (TempLength > languageItem.value.childListStr.length) {
-          let length = languageItem.value.childListStr.length
+        length = handlechildListStr()
+        if (TempLength > length) {
           for (let index = length; index < TempLength; index++) {
-            console.log(index, '000')
             handleNewTableData2(Temp[index])
           }
           await nextTick()
