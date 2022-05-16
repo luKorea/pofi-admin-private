@@ -1,5 +1,5 @@
 <template>
-  <div class="hg-flex base-version" v-if="0">
+  <div class="hg-flex base-version" v-if="1">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
