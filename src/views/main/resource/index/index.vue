@@ -132,21 +132,25 @@
             </template>
             <template #isSelect="{ row }">
               <el-select
-                placeholder="资源搜索"
+                placeholder="资源/专题搜索"
                 style="width: 100%"
                 filterable
                 remote
                 reserve-keyword
                 :loading="loading"
                 :remote-method="handleChangeResourceData"
-                @change="handleChangeResourceItemData(row.tid)"
-                v-model="row.tid"
+                @change="handleChangeResourceItemData(row)"
+                v-model="row.cid"
                 clearable
               >
                 <el-option
                   v-for="option in resourceList"
-                  :key="option.moId"
-                  :value="option.moId"
+                  :key="
+                    searchUrl === 'resourceType' ? option.moId : option.mtId
+                  "
+                  :value="
+                    searchUrl === 'resourceType' ? option.moId : option.mtId
+                  "
                   :label="option.pname"
                 ></el-option>
               </el-select>
@@ -275,9 +279,10 @@ export default defineComponent({
             index++
           ) {
             const item = languageItem.value.childListStr[index]
+            console.log(item, 'i')
             getCommonSelectList(
-              'resourceType',
-              { keyword: item.tid, lid: languageItem.value.lid },
+              searchUrl.value,
+              { keyword: item.cid, lid: languageItem.value.lid },
               false
             )
               .then((res) => {
@@ -297,22 +302,41 @@ export default defineComponent({
       }
     }
     const handleChangeResourceData = async (keyword: string) => {
-      getResourceList(keyword, languageItem.value.lid)
-      await nextTick()
-      resourceList.value = []
+      // getResourceList(keyword, languageItem.value.lid)
+      getCommonSelectList(
+        searchUrl.value,
+        {
+          keyword: keyword,
+          lid: languageItem.value.lid
+        },
+        false
+      ).then((res: any) => {
+        if (res.result === 0) {
+          resourceList.value = res.data
+        }
+      })
     }
-    const handleChangeResourceItemData = (tid: any) => {
+    const handleChangeResourceItemData = (row: any) => {
       const listData = languageItem.value.childListStr
-      const selectItem = resourceList.value.find(
-        (item: any) => item.moId === tid
-      )
-      const index = listData.findIndex((item: any) => item.tid === tid)
+      const selectItem = resourceList.value.find((item: any) => {
+        return searchUrl.value === 'resourceType'
+          ? item.moId === row.cid
+          : item.mtId === row.cid
+      })
+      const index = listData.findIndex((item: any) => item.cid === row.cid)
       listData.splice(index, 1, {
         cover: selectItem.cover,
         gift: selectItem.gift,
         title: selectItem.name,
-        subTitle: selectItem.seriesName,
-        tid: selectItem.moId,
+        subTitle:
+          searchUrl.value === 'resourceType'
+            ? selectItem.seriesName
+            : selectItem.subTitle,
+        tid:
+          searchUrl.value === 'resourceType'
+            ? selectItem.moId
+            : selectItem.mtId,
+        cid: selectItem.pname,
         coverList: selectItem.cover ? [mapImageToObject(selectItem.cover)] : [],
         giftList: selectItem.gift ? [mapImageToObject(selectItem.gift)] : [],
         state: 1,
@@ -333,8 +357,15 @@ export default defineComponent({
           cover: selectItem.cover,
           gift: selectItem.gift,
           title: selectItem.name,
-          subTitle: selectItem.seriesName,
-          tid: selectItem.moId,
+          subTitle:
+            searchUrl.value === 'resourceType'
+              ? selectItem.seriesName
+              : selectItem.subTitle,
+          tid:
+            searchUrl.value === 'resourceType'
+              ? selectItem.moId
+              : selectItem.mtId,
+          cid: selectItem.pname,
           coverList: selectItem.cover
             ? [mapImageToObject(selectItem.cover)]
             : [],
@@ -379,6 +410,7 @@ export default defineComponent({
           giftList: [],
           state: 1, // 1. 显示 0. 不显示
           tid: '',
+          cid: '',
           shape: editTableType.value === 8 ? 1 : 0, // shape 0:无,1:大横矩形,2:小横矩形
           jump: '',
           lid: languageItem.value.lid,
@@ -404,6 +436,7 @@ export default defineComponent({
         giftList: [],
         state: 1, // 1. 显示 0. 不显示
         tid: info.tid,
+        cid: info.cid,
         shape: editTableType.value === 8 ? 1 : 0, // shape 0:无,1:大横矩形,2:小横矩形
         jump: '',
         lid: languageItem.value.lid,
@@ -629,11 +662,19 @@ export default defineComponent({
         }
       })
     }
+    const searchUrl = ref<string>('resourceType')
     const handleChangeSelect = (data: any) => {
       if (data.field === 'library') mapCategoryList(data.value)
       if (data.field === 'type') {
         editTableType.value = +data.value
         mapDiffParams()
+      }
+      if (data.field === 'childType') {
+        if (data.value === 1) {
+          searchUrl.value = 'resourceType'
+        } else if (data.value === 2) {
+          searchUrl.value = 'topicType'
+        }
       }
     }
     // 可编辑表格改变矩形以及状态
@@ -664,6 +705,11 @@ export default defineComponent({
       }).then(async (res) => {
         if (res.result === 0) {
           const data = res.data
+          if (data.index.childType && +data.index.childType === 2) {
+            searchUrl.value = 'topicType'
+          } else {
+            searchUrl.value = 'resourceType'
+          }
           // 国家地区
           areaIds.value = data.index.areaList
           if (data?.index?.indexList) {
@@ -673,6 +719,7 @@ export default defineComponent({
                 item.childList.map((i: any) => {
                   item.childListStr.push({
                     ...i,
+                    cid: i.title,
                     giftList: i.gift ? [mapImageToObject(i.gift)] : [],
                     coverList: i.cover ? [mapImageToObject(i.cover)] : []
                   })
@@ -728,6 +775,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     return {
+      searchUrl,
       nodeClick,
       contentList,
       categoryList,
