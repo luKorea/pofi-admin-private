@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 11:17:04
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 17:45:20
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -42,7 +42,7 @@ export const contentTableEditConfig: TableConfig = {
     },
     {
       prop: 'tid',
-      label: '资源名称',
+      label: '资源/专题名称',
       isHidden: true,
       editInfo: {
         type: 'other',

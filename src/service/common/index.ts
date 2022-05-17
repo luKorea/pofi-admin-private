@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 16:14:43
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 17:39:20
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -23,6 +23,7 @@ enum commonAPI {
   functionType = '/cms/function/explain/getType', // 功能说明分类
   questionType = '/cms/question/getType', // 问题
   resourceType = '/cms/mold/search', // 资源搜索
+  topicType = '/cms/topic/search',
   authorType = '/cms/topic/author', // 作者搜索
   feedbackSelect = '/cms/feedback/getCities', // 意见返回
   jumpType = '/cms/jump/getJumpList', // 跳转列表
