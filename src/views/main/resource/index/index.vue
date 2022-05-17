@@ -318,7 +318,8 @@ export default defineComponent({
         state: 1,
         lid: languageItem.value.lid,
         tempId: uid(8),
-        newField: true
+        newField: true,
+        shape: editTableType.value === 8 ? 1 : 0
       })
     }
     const handleChangeResourceItemData2 = (tid: any, rList: any) => {
@@ -341,6 +342,7 @@ export default defineComponent({
           state: 1,
           lid: languageItem.value.lid,
           tempId: uid(8),
+          shape: editTableType.value === 8 ? 1 : 0,
           newField: true
         })
       }
@@ -639,7 +641,6 @@ export default defineComponent({
       if (row.shape === 1) {
         row.shape = 2
       } else if (row.shape === 2) row.shape = 1
-      console.log(row.shape)
     }
     const handleChangeEditTableStatus = (row: any) => {
       row.state = row.state === 1 ? 0 : 1
