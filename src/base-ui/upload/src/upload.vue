@@ -264,7 +264,8 @@ export default defineComponent({
         if (client.value !== null) {
           isFirstMount.value = false
           const file = options.file
-          const suffix = '.' + file.type.split('/')[1]
+          const fileArr = file.name.split('.')
+          const suffix = '.' + fileArr[fileArr.length - 1]
           const name =
             props.fileTypeName + client.value.options.fileName + suffix
           client.value.multipartUpload(name, file).then(async (res: any) => {
@@ -272,13 +273,13 @@ export default defineComponent({
             emit('update:value', [
               ...props.value,
               {
-                name: res.name + '?' + new Date().getTime(),
-                url: url + '?' + new Date().getTime()
+                name: res.name,
+                url: url
               }
             ])
             imgList.value.push({
-              name: res.name + '?' + new Date().getTime(),
-              url: url + '?' + new Date().getTime()
+              name: res.name,
+              url: url
             })
             await nextTick()
             emit('getData', imgList.value)

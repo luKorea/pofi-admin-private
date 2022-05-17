@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-11 14:57:42
+ * @LastEditTime: 2022-05-17 14:57:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/resource/data/data.vue
 -->
@@ -105,7 +105,8 @@ import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useOperationData,
   useStoreName,
-  useMapSearchFormConfigData
+  useMapSearchFormConfigData,
+  resourceTypeList
 } from './hooks/use-page-list'
 import HyTable from '@/base-ui/table'
 import { mapTimeToSearch, mapSelectListTitle } from '@/utils'
@@ -119,12 +120,8 @@ export default defineComponent({
   setup() {
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    const [
-      searchFormConfigData,
-      resourceTypeList,
-      resourceConditionList,
-      resourceValueList
-    ] = useMapSearchFormConfigData()
+    const [searchFormConfigData, resourceConditionList, resourceValueList] =
+      useMapSearchFormConfigData()
     const mapTitle = (value: number, list: any[]) => {
       return mapSelectListTitle(value, list)
     }

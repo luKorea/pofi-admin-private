@@ -2,13 +2,13 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-13 16:16:44
+ * @LastEditTime: 2022-05-17 15:30:12
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
 <template>
   <!-- TODO 暂时隐藏，多语言 -->
-  <div class="resource-good" v-if="1">
+  <div class="resource-good">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
@@ -20,7 +20,7 @@
       :storeTypeInfo="storeTypeInfo"
       pageName="descriptions"
       @newBtnClick="handleNewData"
-      @editBtnClick="handleEditData"
+      @editBtnClick="editData"
     >
       <template #isType="{ row }">
         {{ $filters.formatSelectTitle(row.type, articleList) }}
@@ -49,8 +49,8 @@
               placeholder="请选择是否专属资源"
               style="width: 100%"
             >
-              <el-option label="是" value="1">是</el-option>
-              <el-option label="否" value="0">否</el-option>
+              <el-option label="是" :value="1">是</el-option>
+              <el-option label="否" :value="0">否</el-option>
             </el-select>
           </div>
         </el-col>
@@ -102,8 +102,8 @@
               placeholder="请选择是否Pro"
               style="width: 100%"
             >
-              <el-option label="是" value="1">是</el-option>
-              <el-option label="否" value="0">否</el-option>
+              <el-option label="是" :value="1">是</el-option>
+              <el-option label="否" :value="0">否</el-option>
             </el-select>
           </div>
         </el-col>
@@ -115,8 +115,8 @@
               placeholder="请选择是否Plus"
               style="width: 100%"
             >
-              <el-option label="是" value="1">是</el-option>
-              <el-option label="否" value="0">否</el-option>
+              <el-option label="是" :value="1">是</el-option>
+              <el-option label="否" :value="0">否</el-option>
             </el-select>
           </div>
         </el-col>
@@ -131,6 +131,7 @@
             <hy-upload
               v-model:value="otherInfo.iconList"
               fileTypeName="goodDescription/"
+              :limit="1"
             ></hy-upload>
           </div>
         </el-col>
@@ -662,7 +663,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect, watch, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -682,6 +683,8 @@ import HyUpload from '@/base-ui/upload'
 import { _debounce } from '@/utils'
 import { getJumpLink } from '@/service/main/help/account'
 import { errorTip } from '@/utils/tip-info'
+import { getItemData } from '@/service/common-api'
+import { mapImageToObject } from '@/utils/index'
 
 export default defineComponent({
   name: 'goodDescription',
@@ -697,7 +700,7 @@ export default defineComponent({
       articleList,
       memberTypeList
     } = useMapFormData()
-    const [jumpList, otherList] = usePageList()
+    const [jumpList, otherList, getEquityList] = usePageList()
     const {
       editorRef,
       languageList,
@@ -708,40 +711,73 @@ export default defineComponent({
       handleChangeLanguage,
       requiredField,
       mapIconState,
-      mapDifferentLanguage
+      mapDifferentLanguage,
+      mapDifferentRequired
     } = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
+    // 编辑新增操作
+    const otherInfo = ref<any>({
+      jumpType: '', //跳转链接
+      parentId: '', // 所属权益
+      isExclusive: '', //是否专属资源
+      iconList: [], //图标
+      icon: '',
+      button: '', // 功能说明按钮
+      isPro: '',
+      isPlus: '',
+      jump: ''
+    })
+    const resetInfo = () => {
+      return {
+        jumpType: '', //跳转链接
+        parentId: '', // 所属权益
+        isExclusive: '', //是否专属资源
+        iconList: [], //图标
+        icon: '',
+        button: '', // 功能说明按钮
+        isPro: '',
+        isPlus: '',
+        jump: ''
+      }
+    }
     watchEffect(() => {
       if (languageItem.value) {
-        if (
-          languageItem.value.imgList &&
-          languageItem.value.imgList.length > 0
-        ) {
+        if (languageItem.value?.imgList?.length > 0) {
           languageItem.value.funcFile = languageItem.value.imgList[0].url
         } else {
           languageItem.value.funcFile = undefined
           languageItem.value.imgList = []
         }
-        if (
-          languageItem.value.iconList &&
-          languageItem.value.iconList.length > 0
-        ) {
-          languageItem.value.icon = languageItem.value.iconList[0].url
+      }
+      if (otherInfo.value && otherInfo.value.iconList) {
+        if (otherInfo.value?.iconList?.length > 0) {
+          otherInfo.value.icon = otherInfo.value.iconList[0].url
         } else {
-          languageItem.value.icon = undefined
-          languageItem.value.iconList = []
+          otherInfo.value.icon = undefined
+          otherInfo.value.iconList = []
         }
       }
     })
     // 监听选项变化，动态修改多语言值
     const articleType = ref<number>(0)
-    const handleChangeSelect = (item: any) => {
+    const handleChangeSelect = async (item: any) => {
       if (item.field === 'type') {
         mapDifferentLanguage(+item.value)
         articleType.value = +item.value
+        getEquityList(+item.value)
       }
     }
+    watchEffect(async () => {
+      if (languageList?.value?.length > 0) {
+        await nextTick()
+        otherInfo.value = {
+          ...otherInfo.value,
+          vipConfigJson: languageList.value,
+          requiredField: requiredField.value
+        }
+      }
+    })
     // 当前函数用来生成用户选择不同链接类型后生成不同跳转地址，需要做节流操作，避免用户快速输入重复发送请求
     const handleChangeLink = _debounce(
       () => {
@@ -760,17 +796,6 @@ export default defineComponent({
       200,
       true
     )
-    // 编辑新增操作
-    const otherInfo = ref<any>({
-      jumpType: '', //跳转链接
-      parentId: '', // 所属权益
-      isExclusive: '', //是否专属资源
-      iconList: [], //图标
-      icon: '',
-      button: '', // 功能说明按钮
-      isPro: '',
-      isPlus: ''
-    })
     const newData = () => {
       articleType.value = 0
       otherInfo.value = {}
@@ -778,19 +803,61 @@ export default defineComponent({
     }
     // 编辑操作
     const getData = (item: any) => {
-      console.log(item)
-      languageList.value = item
+      getEquityList(+item.type)
+      getItemData('descriptionItem', { id: item.id }).then(async (res) => {
+        if (res.result === 0) {
+          const data = res.data
+          otherInfo.value = {
+            ...otherInfo.value,
+            jumpType: data.jumpType ?? '', //跳转链接
+            jump: data.jump ?? '',
+            parentId: data.parentId ? +data.parentId : '', // 所属权益
+            isExclusive: data.isExclusive ? +data.isExclusive : '', //是否专属资源
+            iconList: data.icon ? [mapImageToObject(data.icon)] : [], //图标
+            icon: data.icon ?? '',
+            button: data.button ? +data.button : '', // 功能说明按钮
+            isPro: data.isPro ? +data.isPro : '',
+            isPlus: data.isPlus ? +data.isPlus : ''
+          }
+          if (data?.vipConfigList?.length > 0) {
+            const info = languageList.value.map((item: any) => {
+              let res = data.vipConfigList.find((i: any) => i.lid === item.lid)
+              if (res) {
+                return {
+                  ...item,
+                  ...res,
+                  imgList: res.funcFile ? [mapImageToObject(res.funcFile)] : []
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            console.log(languageList.value, 'value')
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
+          }
+          handleEditData({
+            ...data
+          })
+        }
+      })
     }
     const editData = (item: any) => {
       articleType.value = +item.type
       otherInfo.value = {
-        ...otherInfo.value,
-        id: item.id
+        ...resetInfo(),
+        id: item.id,
+        rank: item.rank
       }
+      mapDifferentRequired(+item.type)
       getData(item)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal(newData, editData)
+      usePageModal(newData)
     return {
       searchFormConfigRef,
       modalConfigRef,
@@ -816,6 +883,7 @@ export default defineComponent({
       pageContentRef,
       handleNewData,
       handleEditData,
+      editData,
       pageModalRef,
       defaultInfo,
       operationName,

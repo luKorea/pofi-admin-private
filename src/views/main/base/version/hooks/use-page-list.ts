@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 16:24:28
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 11:09:07
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -103,8 +103,8 @@ export function useSetLanguage() {
   // 改变多语言
   const handleChangeLanguage = async (id: any) => {
     languageId.value = id
-    await nextTick()
-    editorRef.value.setEditorValue()
+    // await nextTick()
+    // editorRef.value.setEditorValue()
   }
 
   return [
