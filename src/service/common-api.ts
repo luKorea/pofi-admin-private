@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-24 17:10:37
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 11:25:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -75,8 +75,9 @@ enum getItemUrl {
   relevanceItem = '/cms/mold/getPrep', // 资源管理中心相关关联
   homeSeriesItem = '/cms/index/getLanguage', // 首页分类管理
   homeIndexItem = '/cms/index/getIndex', // 首页管理
-  versionItem = '/cms/version/get', //版本管理
-  goodItem = '/cms/goods/getGoods' // 资源商品
+  versionItem = '/cms/version/getVersion', //版本管理
+  goodItem = '/cms/goods/getGoods', // 资源商品
+  descriptionItem = '/cms/description/getDescription'
 }
 
 // 获取单行数据

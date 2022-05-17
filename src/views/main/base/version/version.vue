@@ -164,11 +164,17 @@
               <span class="item-tip">*</span>
               更新内容
             </span>
-            <hy-editor
+            <el-input
+              v-model="languageItem.notice"
+              type="textarea"
+              :rows="3"
+              placeholder="请输入更新内容"
+            ></el-input>
+            <!-- <hy-editor
               ref="editorRef"
               v-model:value="languageItem.notice"
               fileTypeName="baseVersion/"
-            ></hy-editor>
+            ></hy-editor> -->
           </div>
         </template>
       </page-language>
@@ -177,7 +183,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue'
+import { defineComponent, ref, watchEffect, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 import { useMapCountry } from '@/hooks/use-page-side-country'
@@ -190,14 +196,14 @@ import {
   useMapFormData
 } from './hooks/use-page-list'
 import editorTable from '@/base-ui/table'
-import hyEditor from '@/base-ui/editor'
-import { getItemData } from '../../../../service/common-api'
+// import hyEditor from '@/base-ui/editor'
+import { getItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'baseVersion',
   components: {
-    editorTable,
-    hyEditor
+    editorTable
+    // hyEditor
   },
   setup() {
     const otherInfo = ref<any>({})
@@ -282,7 +288,8 @@ export default defineComponent({
               status: 1,
               onlineTime: '',
               endTime: '',
-              isNotice: 0
+              isNotice: 0,
+              rid: d.id
             })
           }
           prepEditObj[v] = v
@@ -302,10 +309,36 @@ export default defineComponent({
       handleNewData(item, true)
     }
     const getItem = (id: any) => {
-      getItemData('versionItem', { id: id }).then((res) => {
+      getItemData('versionItem', { id: id }).then(async (res) => {
         if (res.result === 0) {
           const osTypeName = res.data.osType ? 'IOS' : 'Android'
           selectCountryList.value = res.data.childList
+          if (res?.data?.versionList?.length > 0) {
+            const info = languageList.value.map((item: any) => {
+              let result = res.data.versionList.find(
+                (i: any) => i.lid === item.lid
+              )
+              if (result) {
+                return {
+                  ...item,
+                  ...result
+                }
+              } else {
+                return {
+                  ...item
+                }
+              }
+            })
+            await nextTick()
+            languageList.value = info
+            languageId.value = info[0].lid
+            mapIconState(info, requiredField.value)
+          }
+          otherInfo.value = {
+            ...otherInfo.value,
+            areaIds: res.data.areaIds
+          }
+          areaIds.value = res.data.areaIds ?? []
           handleEditData({
             ...res.data,
             osTypeName
@@ -316,10 +349,8 @@ export default defineComponent({
     const editData = (item: any) => {
       otherInfo.value = {
         ...otherInfo.value,
-        areaIds: item.areaIds,
         id: item.id
       }
-      areaIds.value = item.areaIds
       getItem(item.id)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

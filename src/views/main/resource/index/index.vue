@@ -251,11 +251,13 @@ export default defineComponent({
       return childListStr.length
     }
     const handleChangeLanguage = async (id: any) => {
-      let length = handlechildListStr()
-
-      if (TempLength < length) {
-        TempLength = length
-        Temp = languageItem.value.childListStr
+      let length
+      if (editTableType.value !== 1 && editTableType.value !== undefined) {
+        length = handlechildListStr()
+        if (TempLength < length) {
+          TempLength = length
+          Temp = languageItem.value.childListStr
+        }
       }
       languageId.value = id
       await nextTick()
@@ -515,15 +517,17 @@ export default defineComponent({
           areaIds: region.toString()
         }
       }
-      const indexJSON = languageList.value.map((i: any) => {
-        return {
-          ...i,
-          childListStr: JSON.stringify(i.childListStr)
-        }
-      })
+      // const indexJSON = languageList.value.map((i: any) => {
+      //   console.log(i.childListStr, '数据格式')
+      //   return {
+      //     ...i,
+      //     childList: undefined,
+      //     childListStr: JSON.stringify(i.childListStr)
+      //   }
+      // })
       otherInfo.value = {
         ...otherInfo.value,
-        indexJson: JSON.stringify(indexJSON)
+        indexJson: languageList.value
       }
     })
     const handleChangeCountry = (item: any[]) => {

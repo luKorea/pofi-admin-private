@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 16:20:44
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 10:44:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -35,7 +35,7 @@ let queryInfo: any = {
   currentPage: 1,
   pageSize: 10
 }
-const requiredField = ['name']
+const requiredField = ['notice']
 const baseVersionModule: Module<IBaseVersionType, IRootState> = {
   namespaced: true,
   state() {

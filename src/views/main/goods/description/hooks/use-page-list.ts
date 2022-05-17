@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-26 14:17:04
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 14:23:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -129,35 +129,56 @@ export function useSetLanguage() {
   // 映射赋值
   const requiredField = ref<any>([])
   const selectItem = ref<any>()
-  const mapDifferentLanguage = (type: number) => {
+  const mapDifferentLanguage = async (type: number) => {
     switch (type) {
       case 1:
         selectItem.value = versionItem.value
         requiredField.value = versionField.value
-        getLanguageList(selectItem.value, 'lid')
+        await getLanguageList(selectItem.value, 'lid')
         break
       case 2:
         selectItem.value = benefitItem.value
         requiredField.value = benefitField.value
-        getLanguageList(selectItem.value, 'lid')
+        await getLanguageList(selectItem.value, 'lid')
         break
       case 3:
         selectItem.value = functionItem.value
         requiredField.value = functionField.value
-        getLanguageList(selectItem.value, 'lid')
+        await getLanguageList(selectItem.value, 'lid')
         break
       case 4:
         selectItem.value = privilegeItem.value
         requiredField.value = privilegeField.value
-        getLanguageList(selectItem.value, 'lid')
+        await getLanguageList(selectItem.value, 'lid')
         break
       case 5:
         selectItem.value = editorItem.value
         requiredField.value = editorField.value
-        getLanguageList(selectItem.value, 'lid')
+        await getLanguageList(selectItem.value, 'lid')
         break
       default:
         selectItem.value = {}
+        requiredField.value = []
+    }
+  }
+  const mapDifferentRequired = (type: number) => {
+    switch (type) {
+      case 1:
+        requiredField.value = versionField.value
+        break
+      case 2:
+        requiredField.value = benefitField.value
+        break
+      case 3:
+        requiredField.value = functionField.value
+        break
+      case 4:
+        requiredField.value = privilegeField.value
+        break
+      case 5:
+        requiredField.value = editorField.value
+        break
+      default:
         requiredField.value = []
     }
   }
@@ -182,7 +203,11 @@ export function useSetLanguage() {
   const handleChangeLanguage = async (id: any) => {
     languageId.value = id
     await nextTick()
-    editorRef.value.setEditorValue()
+    try {
+      editorRef.value.setEditorValue()
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return {
@@ -195,7 +220,8 @@ export function useSetLanguage() {
     handleChangeLanguage,
     requiredField,
     mapIconState,
-    mapDifferentLanguage
+    mapDifferentLanguage,
+    mapDifferentRequired
   }
 }
 
@@ -240,21 +266,23 @@ export function usePageList() {
       } else errorTip(res.msg)
     })
   }
-  const getEquityList = () => {
-    getCommonSelectList('equityType', { funcType: 0 }, false).then((res) => {
-      if (res.state) {
-        const result = res.data as any[]
-        equityList.value = result.map((item: any) => {
-          return {
-            title: item.name,
-            value: item.id
-          }
-        })
-      } else errorTip(res.msg)
-    })
+  const getEquityList = (funcType: any) => {
+    getCommonSelectList('equityType', { funcType: funcType }, false).then(
+      (res) => {
+        if (res.state) {
+          const result = res.data as any[]
+          equityList.value = result.map((item: any) => {
+            return {
+              title: item.name,
+              value: item.id
+            }
+          })
+        } else errorTip(res.msg)
+      }
+    )
   }
   getOtherList()
   getJumpList()
-  getEquityList()
-  return [jumpList, otherList]
+  getEquityList(undefined)
+  return [jumpList, otherList, getEquityList]
 }

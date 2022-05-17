@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-21 18:26:14
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-17 10:27:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -24,10 +24,23 @@ import {
 } from '@/service/common-api'
 import { sortPageTableData } from '@/service/common-api'
 import { useMapCountry } from '@/hooks/use-page-side-country'
+import { nextTick } from 'vue'
 
 const apiList: any = {
   resourceHomes: '/cms/index/',
   sort: '/cms/index/updateSort'
+}
+function unique(arr: any) {
+  const res: any = new Set()
+  return arr.filter((item: any) => {
+    const id = item.tid
+    if (res.has(id)) {
+      return false
+    } else {
+      res.add(id)
+      return true
+    }
+  })
 }
 // 这里获取第一位数据
 const { handleCountryList } = useMapCountry(false)
@@ -96,19 +109,30 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
     createPageDataAction({ dispatch }, payload: any) {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
-        // 1.创建数据的请求
-        const { pageName, newData } = payload
-        console.log(newData)
-        const validData = JSON.parse(newData.indexJson)[0]
-        validateParamsRules(
-          JSON.parse(newData.indexJson),
-          validData,
-          requiredField
-        )
+        // 1.新增数据的请求
+        const { pageName, editData } = payload
+        const validData = editData.indexJson[0]
+        validateParamsRules(editData.indexJson, validData, requiredField)
           .then(async () => {
+            console.log(editData.indexJson, 'data')
+            const info = editData.indexJson.map((item: any) => {
+              return {
+                id: item.id,
+                title: item.title,
+                lid: item.lid,
+                tid: item.tid,
+                childListStr: JSON.stringify(unique(item.childListStr ?? [])),
+                length: unique(item.childListStr ?? []).length
+              }
+            })
+            console.log(info, 'infdo')
+            await nextTick()
+            console.log(info, 'info')
+            editData.indexJson = JSON.stringify(info)
+            console.log(editData.indexJson, 'indexJSON')
             const pageUrl = apiList[pageName] + 'addIndex'
-            const data = await createPageData(pageUrl, {
-              ...newData
+            const data = await editPageData(pageUrl, {
+              ...editData
             })
             if (data.result === 0) {
               // 2.请求最新的数据
@@ -128,13 +152,25 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.indexJson)[0]
-        validateParamsRules(
-          JSON.parse(editData.indexJson),
-          validData,
-          requiredField
-        )
+        const validData = editData.indexJson[0]
+        validateParamsRules(editData.indexJson, validData, requiredField)
           .then(async () => {
+            console.log(editData.indexJson, 'data')
+            const info = editData.indexJson.map((item: any) => {
+              return {
+                id: item.id,
+                title: item.title,
+                lid: item.lid,
+                tid: item.tid,
+                childListStr: JSON.stringify(unique(item.childListStr ?? [])),
+                length: unique(item.childListStr ?? []).length
+              }
+            })
+            console.log(info, 'infdo')
+            await nextTick()
+            console.log(info, 'info')
+            editData.indexJson = JSON.stringify(info)
+            console.log(editData.indexJson, 'indexJSON')
             const pageUrl = apiList[pageName] + 'updateIndex'
             const data = await editPageData(pageUrl, {
               ...editData
