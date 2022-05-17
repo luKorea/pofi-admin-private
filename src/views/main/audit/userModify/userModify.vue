@@ -1,5 +1,5 @@
 <template>
-  <hy-card title="用户资料审核" v-if="0">
+  <hy-card title="用户资料审核">
     <template #handler>
       <div class="hg-mr-4">
         <el-badge :value="dataCount" type="danger">
