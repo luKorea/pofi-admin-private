@@ -270,8 +270,9 @@ export default defineComponent({
         )
         languageItem.value.childListStr.splice(index, 1)
       } else {
+        backId.value = languageId.value
         deleteItemData('/cms/topic/child/del', { id: row.id }).then((res) => {
-          getData(otherInfo.value.mtId, false)
+          getData(otherInfo.value.mtId, true)
         })
         // if (row.id) {
         //   const index = languageItem.value.childListStr.findIndex(
