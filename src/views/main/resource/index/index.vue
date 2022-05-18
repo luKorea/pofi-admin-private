@@ -795,6 +795,7 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
+      resetLanguageList()
       operationType.value = 'edit'
       editTableType.value = +item.type
       otherInfo.value = {
@@ -802,6 +803,7 @@ export default defineComponent({
         id: item.id,
         rid: item.rid
       }
+      languageList.value = []
       resetLanguageList()
       mapDiffParams()
       mapCategoryList(item.library)
