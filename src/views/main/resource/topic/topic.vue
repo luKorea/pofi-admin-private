@@ -200,7 +200,11 @@ import {
   usePageList,
   useImageUpload
 } from './hooks/use-page-list'
-import { getItemData, sortPageTableData } from '@/service/common-api'
+import {
+  getItemData,
+  sortPageTableData,
+  deleteItemData
+} from '@/service/common-api'
 import hyUpload from '@/base-ui/upload'
 import hyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
@@ -222,7 +226,7 @@ export default defineComponent({
       res.push({
         lid: languageItem.value.lid,
         tempId: uid(8),
-        rank: '',
+        rank: 0,
         mid: '',
         title: '',
         subTitle: '',
@@ -244,7 +248,7 @@ export default defineComponent({
         tempMid: info.mid,
         title: info.title,
         tempId: uid(8),
-        rank: '',
+        rank: 0,
         mid: '',
         subTitle: '',
         url: [],
@@ -266,17 +270,20 @@ export default defineComponent({
         )
         languageItem.value.childListStr.splice(index, 1)
       } else {
-        if (row.id) {
-          const index = languageItem.value.childListStr.findIndex(
-            (res: any) => res.id === row.id
-          )
-          languageItem.value.childListStr.splice(index, 1)
-        } else {
-          const index = languageItem.value.childListStr.findIndex(
-            (res: any) => res.tempId === tempId
-          )
-          languageItem.value.childListStr.splice(index, 1)
-        }
+        deleteItemData('/cms/topic/child/del', { id: row.id }).then((res) => {
+          getData(otherInfo.value.mtId, false)
+        })
+        // if (row.id) {
+        //   const index = languageItem.value.childListStr.findIndex(
+        //     (res: any) => res.id === row.id
+        //   )
+        //   languageItem.value.childListStr.splice(index, 1)
+        // } else {
+        //   const index = languageItem.value.childListStr.findIndex(
+        //     (res: any) => res.tempId === tempId
+        //   )
+        //   languageItem.value.childListStr.splice(index, 1)
+        // }
       }
     }
     watchEffect(() => {
@@ -469,6 +476,7 @@ export default defineComponent({
           mid: selectItem.moId,
           tempMid: selectItem.moId,
           tempId: uid(8),
+          rank: 0,
           url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
         })
       }
@@ -490,6 +498,7 @@ export default defineComponent({
           mid: selectItem.moId,
           tempMid: selectItem.moId,
           tempId: uid(8),
+          rank: 0,
           url: selectItem.cover ? [mapImageToObject(selectItem.cover)] : []
         })
         console.log('444')
@@ -572,6 +581,10 @@ export default defineComponent({
     const editData = (item: any) => {
       operationType.value = 'edit'
       console.log(getData, 'getData')
+      otherInfo.value = {
+        ...otherInfo.value,
+        mtId: item.mtId
+      }
       //点击编辑
       getData(item.mtId)
     }

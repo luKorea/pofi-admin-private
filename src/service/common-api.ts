@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 11:25:22
+ * @LastEditTime: 2022-05-18 16:47:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -86,5 +86,13 @@ export const getItemData = (url: string, data: any) => {
     url: (getItemUrl as any)[url],
     data: data,
     showLoading: true
+  })
+}
+
+export const deleteItemData = (url: string, data: any) => {
+  return hyRequest.post({
+    url: url,
+    data: data,
+    showLoading: false
   })
 }

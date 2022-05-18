@@ -195,7 +195,11 @@ import {
   useEditTableData,
   mapFormConfigData
 } from './hooks/use-page-list'
-import { getItemData, sortPageTableData } from '@/service/common-api'
+import {
+  getItemData,
+  sortPageTableData,
+  deleteItemData
+} from '@/service/common-api'
 import editorTable from '@/base-ui/table'
 import { mapImageToObject } from '@/utils/index'
 import { successTip, errorTip, warnTip } from '@/utils/tip-info'
@@ -439,8 +443,6 @@ export default defineComponent({
       console.log(info, 'info')
       let res: any[] = []
       let obj: any = {
-        id: info.id ?? '',
-        rank: info.rank ?? 0,
         title: '',
         subTitle: '',
         cover: '',
@@ -471,17 +473,20 @@ export default defineComponent({
         )
         languageItem.value.childListStr.splice(index, 1)
       } else {
-        if (row.id) {
-          const index = languageItem.value.childListStr.findIndex(
-            (res: any) => res.id === row.id
-          )
-          languageItem.value.childListStr.splice(index, 1)
-        } else {
-          const index = languageItem.value.childListStr.findIndex(
-            (res: any) => res.tempId === tempId
-          )
-          languageItem.value.childListStr.splice(index, 1)
-        }
+        deleteItemData('/cms/index/child/del', { id: row.id }).then((res) => {
+          getItem(otherInfo.value)
+        })
+        // if (row.id) {
+        //   const index = languageItem.value.childListStr.findIndex(
+        //     (res: any) => res.id === row.id
+        //   )
+        //   languageItem.value.childListStr.splice(index, 1)
+        // } else {
+        //   const index = languageItem.value.childListStr.findIndex(
+        //     (res: any) => res.tempId === tempId
+        //   )
+        //   languageItem.value.childListStr.splice(index, 1)
+        // }
       }
       // 暂时不做处理
       // if (operationType.value === 'add') deleteTableData(item)

@@ -210,7 +210,7 @@ import {
 } from './hooks/use-page-list'
 import editorTable from '@/base-ui/table'
 // import hyEditor from '@/base-ui/editor'
-import { getItemData } from '@/service/common-api'
+import { getItemData, deleteItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
 import { mapVersionState } from '@/utils'
 export default defineComponent({
@@ -225,6 +225,7 @@ export default defineComponent({
     const areaIds = ref<any>([])
     // 用户选中的地区
     const selectCountryList = ref<any>([])
+    const operationType = ref<any>('add')
     const {
       searchFormConfig,
       searchFormConfigRef,
@@ -336,10 +337,16 @@ export default defineComponent({
     }
     // 删除操作
     const handleDeleteEditTableData = (id: any) => {
-      const index = selectCountryList.value.findIndex((i: any) => i.id === id)
-      const selectIndex = areaIds.value.findIndex((i: any) => i === id)
-      selectCountryList.value.splice(index, 1)
-      areaIds.value.splice(selectIndex, 1)
+      if (operationType.value === 'add') {
+        const index = selectCountryList.value.findIndex((i: any) => i.id === id)
+        const selectIndex = areaIds.value.findIndex((i: any) => i === id)
+        selectCountryList.value.splice(index, 1)
+        areaIds.value.splice(selectIndex, 1)
+      } else {
+        deleteItemData('/cms/version/child/del', { id: id }).then((res) => {
+          getItem(otherInfo.value.id)
+        })
+      }
     }
     const handleChangeEditTableNotice = (item: any) => {
       item.isNotice = item.isNotice ? 0 : 1
@@ -376,6 +383,7 @@ export default defineComponent({
       } else selectCountryList.value = []
     }
     const newData = (item: any, osType: any) => {
+      operationType.value = 'add'
       modalConfigRef.value.title = osType
         ? '版本管理操作 (IOS)'
         : '版本管理操作 (Android)'
@@ -439,6 +447,7 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
+      operationType.value = 'edit'
       selectCountryList.value = []
       selectList.value = []
       changeTableData.value = {
@@ -458,6 +467,7 @@ export default defineComponent({
       handleChangePicker,
       handleSelectChange,
       handleChangeAllData,
+      operationType,
       selectList,
       searchFormConfig,
       searchFormConfigRef,
