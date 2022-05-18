@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 11:16:35
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-18 15:55:30
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
@@ -12,9 +12,9 @@ export const contentTableEditConfig: TableConfig = {
   title: '内容设置（多语言）',
   propList: [
     {
-      prop: 'id',
-      placeholder: '系统生成',
+      prop: 'rank',
       label: '序号',
+      placeholder: '系统生成',
       editInfo: {
         type: 'input',
         placeholder: '系统生成',
@@ -22,9 +22,9 @@ export const contentTableEditConfig: TableConfig = {
       }
     },
     {
-      prop: 'rank',
-      label: '排序序号',
+      prop: 'id',
       placeholder: '系统生成',
+      label: '编号',
       editInfo: {
         type: 'input',
         placeholder: '系统生成',

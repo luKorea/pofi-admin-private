@@ -44,6 +44,9 @@
         <template #isOsType="scope">
           {{ scope.row.osType ? 'IOS' : 'Android' }}
         </template>
+        <template #isStatus="scope">
+          {{ scope.row.status ? '生效' : '失效' }}
+        </template>
         <template #isHost="scope">
           {{ $filters.formatSelectTitle(scope.row.host, hostList) }}
         </template>
@@ -258,8 +261,8 @@ export default defineComponent({
       otherInfo.value = {
         ...otherInfo.value,
         areaIds: areaIds.value.toString(),
-        topicJson: JSON.stringify(languageList.value),
-        childListStr: JSON.stringify(listData.value)
+        versionJson: JSON.stringify(languageList.value),
+        childListStr: JSON.stringify(selectCountryList.value)
       }
     })
     const changeTableData = ref<any>({
@@ -303,7 +306,6 @@ export default defineComponent({
             }
           }
         })
-        selectList.value = selectCountryList.value
       } else {
         selectList.value = selectList.value.map((item: any) => {
           return {
@@ -330,7 +332,6 @@ export default defineComponent({
             }
           }
         })
-        selectList.value = selectCountryList.value
       }
     }
     // 删除操作
@@ -382,13 +383,18 @@ export default defineComponent({
         ? '内容设置(IOS)'
         : '内容设置(Android)'
       otherInfo.value = {
-        ...otherInfo.value,
         osType: osType
       }
       areaIds.value = []
       selectCountryList.value = []
+      selectList.value = []
+      changeTableData.value = {
+        onlineTime: '',
+        endTime: '',
+        isNotice: ''
+      }
       resetLanguageList()
-      handleNewData(item, true)
+      handleNewData(item)
     }
     const getItem = (id: any) => {
       getItemData('versionItem', { id: id }).then(async (res) => {
@@ -433,6 +439,13 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
+      selectCountryList.value = []
+      selectList.value = []
+      changeTableData.value = {
+        onlineTime: '',
+        endTime: '',
+        isNotice: ''
+      }
       otherInfo.value = {
         ...otherInfo.value,
         id: item.id

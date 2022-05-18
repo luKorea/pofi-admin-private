@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 10:44:19
+ * @LastEditTime: 2022-05-18 14:05:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -78,11 +78,11 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
     },
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
-      const mtId = payload.queryInfo.mtId
+      const id = payload.queryInfo.id
       const pageUrl =
         apiList[pageName] + cultureDifferentType('delete', pageName)
       const data = await deletePageToQueryData(pageUrl, {
-        mtId: mtId
+        id: id
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -100,15 +100,16 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
         // 1.创建数据的请求
         const { pageName, newData } = payload
         console.log(newData)
-        const validData = JSON.parse(newData.topicJson)[0]
+        const validData = JSON.parse(newData.versionJson)[0]
         validateParamsRules(
-          JSON.parse(newData.topicJson),
+          JSON.parse(newData.versionJson),
           validData,
           requiredField
         )
           .then(async () => {
             const pageUrl =
               apiList[pageName] + cultureDifferentType('add', pageName)
+            debugger
             const data = await createPageData(pageUrl, {
               ...newData
             })
@@ -130,9 +131,9 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.topicJson)[0]
+        const validData = JSON.parse(editData.versionJson)[0]
         validateParamsRules(
-          JSON.parse(editData.topicJson),
+          JSON.parse(editData.versionJson),
           validData,
           requiredField
         )
