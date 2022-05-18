@@ -8,6 +8,7 @@
       v-model:page="pageInfo"
       @drawTable="drawTable"
       @selectionChange="handleSelectionChange"
+      @changePicker="handleChangePicker"
       :handleDraw="permissionList.isDrawTable"
       ref="tableRef"
       :showHeader="showHeader"
@@ -204,7 +205,8 @@ export default defineComponent({
     'distributionBtnClick',
     'operationBtnClick',
     'exportBtnClick',
-    'rowBtnClick'
+    'rowBtnClick',
+    'changePicker'
   ],
   setup(props, { emit }) {
     const store = useStore()
@@ -346,6 +348,7 @@ export default defineComponent({
     const handleDistributionClick = (item: any) =>
       emit('distributionBtnClick', item)
     const handleOperationClick = (item: any) => emit('operationBtnClick', item)
+    const handleChangePicker = (item: any) => emit('changePicker', item)
     return {
       tableRef,
       dataList,
@@ -368,7 +371,8 @@ export default defineComponent({
       handleExportClick,
       handleAddRowClick,
       handleNewColumnClick,
-      handleDeleteColumnClick
+      handleDeleteColumnClick,
+      handleChangePicker
     }
   }
 })

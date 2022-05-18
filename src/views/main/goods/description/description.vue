@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 15:36:29
+ * @LastEditTime: 2022-05-18 09:48:12
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -725,7 +725,8 @@ export default defineComponent({
       button: '', // 功能说明按钮
       isPro: '',
       isPlus: '',
-      jump: ''
+      jump: '',
+      rank: 0
     })
     const resetInfo = () => {
       return {
@@ -737,7 +738,8 @@ export default defineComponent({
         button: '', // 功能说明按钮
         isPro: '',
         isPlus: '',
-        jump: ''
+        jump: '',
+        rank: 0
       }
     }
     watchEffect(() => {
@@ -797,7 +799,9 @@ export default defineComponent({
     )
     const newData = () => {
       articleType.value = 0
-      otherInfo.value = {}
+      otherInfo.value = {
+        rank: 0
+      }
       resetLanguageList()
     }
     // 编辑操作

@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 11:05:03
+ * @LastEditTime: 2022-05-18 10:52:58
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -13,6 +13,7 @@ import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type'
 import Clipboard from 'clipboard'
 import { successTip, errorTip } from '@/utils/tip-info'
 import { Base64 } from 'js-base64'
+import dayjs from 'dayjs'
 
 let loading: ILoadingInstance
 
@@ -443,4 +444,26 @@ export function validateParamsRules(
       resolve(true)
     } else reject('请确保默认语言中必填字段填写完整')
   })
+}
+
+// 判断版本状态
+
+/**
+ *
+ * @param start
+ * @param end
+ * @returns versionState { 0. 运营中 1. 预上线 2. 已停运 }
+ */
+export function mapVersionState(start?: any, end?: any) {
+  let versionState = 0
+  const currentTime = dayjs().valueOf()
+  const startTime = start !== null ? dayjs(start).valueOf() : 0
+  const endTime = end !== null ? dayjs(end).valueOf() : 0
+  console.log(currentTime, 'current', startTime, 'start', endTime, 'end')
+  if (startTime !== 0 && currentTime < startTime) versionState = 1
+  else if (currentTime > startTime && endTime === 0) versionState = 0
+  else if (endTime !== 0 && endTime < currentTime) versionState = 2
+  else if (startTime < currentTime && currentTime < endTime) versionState = 0
+  else if (startTime === 0 && endTime === 0) versionState = 1
+  return versionState
 }

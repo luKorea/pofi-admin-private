@@ -282,7 +282,7 @@ export default defineComponent({
             console.log(item, 'i')
             getCommonSelectList(
               searchUrl.value,
-              { keyword: item.cid, lid: languageItem.value.lid },
+              { keyword: item.tid, lid: languageItem.value.lid },
               false
             )
               .then((res) => {
@@ -719,7 +719,7 @@ export default defineComponent({
                 item.childList.map((i: any) => {
                   item.childListStr.push({
                     ...i,
-                    cid: i.title,
+                    cid: i.pname,
                     giftList: i.gift ? [mapImageToObject(i.gift)] : [],
                     coverList: i.cover ? [mapImageToObject(i.cover)] : []
                   })

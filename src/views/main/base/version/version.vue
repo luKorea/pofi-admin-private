@@ -100,6 +100,9 @@
               type="datetime"
               style="width: 100%"
               placeholder="请选择发布时间"
+              value-format="YYYY-MM-DD HH:ss:mm"
+              :disabled="selectList.length === 0"
+              @change="handleChangeAllData('time')"
             ></el-date-picker>
           </div>
         </el-col>
@@ -111,6 +114,9 @@
               type="datetime"
               style="width: 100%"
               placeholder="请选择停运时间"
+              value-format="YYYY-MM-DD HH:ss:mm"
+              :disabled="selectList.length === 0"
+              @change="handleChangeAllData('time')"
             ></el-date-picker>
           </div>
         </el-col>
@@ -125,6 +131,8 @@
               style="width: 100%"
               clearable
               v-model="changeTableData.isNotice"
+              :disabled="selectList.length === 0"
+              @change="handleChangeAllData('notice')"
             >
               <el-option :value="1" label="开">开</el-option>
               <el-option :value="0" label="关">关</el-option>
@@ -136,6 +144,8 @@
       <editor-table
         :listData="selectCountryList"
         v-bind="contentTableEditConfigRef"
+        @change-picker="handleChangePicker"
+        @selectionChange="handleSelectChange"
       >
         <template #isNotice="{ row }">
           <el-button type="text" @click="handleChangeEditTableNotice(row)">
@@ -199,6 +209,7 @@ import editorTable from '@/base-ui/table'
 // import hyEditor from '@/base-ui/editor'
 import { getItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
+import { mapVersionState } from '@/utils'
 export default defineComponent({
   name: 'baseVersion',
   components: {
@@ -257,6 +268,72 @@ export default defineComponent({
       isNotice: ''
     })
     // 编辑表格操作
+    // 单选改变时间
+    const handleChangePicker = (data: any) => {
+      const status = mapVersionState(data.onlineTime, data.endTime)
+      const selectItem = selectCountryList.value.find(
+        (item: any) => item.rid === data.rid
+      )
+      selectItem['status'] = status
+    }
+    // 多选改变时间
+    const selectList = ref<any>([])
+    const handleSelectChange = (data: any) => {
+      selectList.value = [...selectList.value, ...data]
+    }
+    const handleChangeAllData = async (type: string) => {
+      if (type === 'notice') {
+        selectList.value = selectList.value.map((item: any) => {
+          return {
+            ...item,
+            isNotice: changeTableData.value.isNotice
+          }
+        })
+        await nextTick()
+        selectCountryList.value = selectCountryList.value.map((item: any) => {
+          let result = selectList.value.find((i: any) => i.rid === item.rid)
+          if (result) {
+            return {
+              ...item,
+              ...result
+            }
+          } else {
+            return {
+              ...item
+            }
+          }
+        })
+        selectList.value = selectCountryList.value
+      } else {
+        selectList.value = selectList.value.map((item: any) => {
+          return {
+            ...item,
+            onlineTime: changeTableData.value.onlineTime,
+            endTime: changeTableData.value.endTime,
+            status: mapVersionState(
+              changeTableData.value.onlineTime,
+              changeTableData.value.endTime
+            )
+          }
+        })
+        await nextTick()
+        selectCountryList.value = selectCountryList.value.map((item: any) => {
+          let result = selectList.value.find((i: any) => i.rid === item.rid)
+          if (result) {
+            return {
+              ...item,
+              ...result
+            }
+          } else {
+            return {
+              ...item
+            }
+          }
+        })
+        selectList.value = selectCountryList.value
+      }
+    }
+    // 删除操作
     const handleDeleteEditTableData = (id: any) => {
       const index = selectCountryList.value.findIndex((i: any) => i.id === id)
       const selectIndex = areaIds.value.findIndex((i: any) => i === id)
@@ -298,7 +375,12 @@ export default defineComponent({
       } else selectCountryList.value = []
     }
     const newData = (item: any, osType: any) => {
-      item.osTypeName = osType ? 'IOS' : 'Android'
+      modalConfigRef.value.title = osType
+        ? '版本管理操作 (IOS)'
+        : '版本管理操作 (Android)'
+      contentTableEditConfigRef.value.title = osType
+        ? '内容设置(IOS)'
+        : '内容设置(Android)'
       otherInfo.value = {
         ...otherInfo.value,
         osType: osType
@@ -311,7 +393,12 @@ export default defineComponent({
     const getItem = (id: any) => {
       getItemData('versionItem', { id: id }).then(async (res) => {
         if (res.result === 0) {
-          const osTypeName = res.data.osType ? 'IOS' : 'Android'
+          modalConfigRef.value.title = res.data.osType
+            ? '版本管理操作 (IOS)'
+            : '版本管理操作 (Android)'
+          contentTableEditConfigRef.value.title = res.data.osType
+            ? '内容设置(IOS)'
+            : '内容设置(Android)'
           selectCountryList.value = res.data.childList
           if (res?.data?.versionList?.length > 0) {
             const info = languageList.value.map((item: any) => {
@@ -340,8 +427,7 @@ export default defineComponent({
           }
           areaIds.value = res.data.areaIds ?? []
           handleEditData({
-            ...res.data,
-            osTypeName
+            ...res.data
           })
         } else errorTip(res.msg)
       })
@@ -356,6 +442,10 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      handleChangePicker,
+      handleSelectChange,
+      handleChangeAllData,
+      selectList,
       searchFormConfig,
       searchFormConfigRef,
       modalConfigRef,

@@ -60,6 +60,9 @@ export const contentTableEditConfig: TableConfig = {
   showIndexColumn: false,
   showSelectColumn: true,
   showFooter: false,
+  childrenProps: {
+    rowKey: 'rid'
+  },
   permission: {
     add: false,
     update: false,
