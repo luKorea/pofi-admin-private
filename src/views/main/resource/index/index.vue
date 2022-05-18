@@ -327,11 +327,14 @@ export default defineComponent({
       listData.splice(index, 1, {
         cover: selectItem.cover,
         gift: selectItem.gift,
-        title: selectItem.name,
+        title:
+          searchUrl.value === 'resourceType'
+            ? selectItem.name
+            : selectItem.showTitle,
         subTitle:
           searchUrl.value === 'resourceType'
             ? selectItem.seriesName
-            : selectItem.subTitle,
+            : selectItem.showSubTitle,
         tid:
           searchUrl.value === 'resourceType'
             ? selectItem.moId
@@ -348,19 +351,27 @@ export default defineComponent({
     }
     const handleChangeResourceItemData2 = (tid: any, rList: any) => {
       const listData = languageItem.value.childListStr
-      const selectItem = rList.find((item: any) => item.moId === tid)
+      const selectItem = rList.find((item: any) => {
+        return searchUrl.value === 'resourceType'
+          ? item.moId === tid
+          : item.mtId === tid
+      })
       const index = languageItem.value.childListStr.findIndex(
         (item: any) => item.tid === tid
       )
+      console.log(selectItem, 'selectItrem')
       if (selectItem) {
         listData.splice(index, 1, {
           cover: selectItem.cover,
           gift: selectItem.gift,
-          title: selectItem.name,
+          title:
+            searchUrl.value === 'resourceType'
+              ? selectItem.name
+              : selectItem.showTitle,
           subTitle:
             searchUrl.value === 'resourceType'
               ? selectItem.seriesName
-              : selectItem.subTitle,
+              : selectItem.showSubTitle,
           tid:
             searchUrl.value === 'resourceType'
               ? selectItem.moId
@@ -428,6 +439,8 @@ export default defineComponent({
       console.log(info, 'info')
       let res: any[] = []
       let obj: any = {
+        id: info.id ?? '',
+        rank: info.rank ?? 0,
         title: '',
         subTitle: '',
         cover: '',
@@ -663,6 +676,19 @@ export default defineComponent({
       })
     }
     const searchUrl = ref<string>('resourceType')
+    const mapGift = (flag: any) => {
+      contentTableEditConfigRef.value.propList.map((item: any) => {
+        if (item.prop === 'title' && item.label === '按钮名称')
+          item!.isHidden = true
+        if (item.prop === 'shape') item!.isHidden = true
+        if (item.prop === 'tid') item!.isHidden = false
+        if (item.prop === 'title' && item.label === '标题')
+          item!.isHidden = false
+        if (item.prop === 'subTitle') item!.isHidden = false
+        if (item.prop === 'jump') item!.isHidden = true
+        if (item.prop === 'giftList') item!.isHidden = flag
+      })
+    }
     const handleChangeSelect = (data: any) => {
       if (data.field === 'library') mapCategoryList(data.value)
       if (data.field === 'type') {
@@ -672,8 +698,10 @@ export default defineComponent({
       if (data.field === 'childType') {
         if (data.value === 1) {
           searchUrl.value = 'resourceType'
+          mapGift(false)
         } else if (data.value === 2) {
           searchUrl.value = 'topicType'
+          mapGift(true)
         }
       }
     }
@@ -707,8 +735,10 @@ export default defineComponent({
           const data = res.data
           if (data.index.childType && +data.index.childType === 2) {
             searchUrl.value = 'topicType'
+            mapGift(true)
           } else {
             searchUrl.value = 'resourceType'
+            mapGift(false)
           }
           // 国家地区
           areaIds.value = data.index.areaList

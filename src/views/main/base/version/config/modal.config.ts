@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 11:58:20
+ * @LastEditTime: 2022-05-18 13:59:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -35,7 +35,7 @@ export const modalConfig: IForm = {
     },
     {
       field: 'version',
-      type: 'input',
+      type: 'inputNumber',
       label: '版本号',
       placeholder: '请输入版本号',
       rules: [
