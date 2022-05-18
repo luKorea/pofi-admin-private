@@ -360,9 +360,10 @@ export default defineComponent({
           prpObj[v.id] = v
         })
         selectCountryList.value.map((v: any) => {
-          prepEditObj[v.id] = v
+          prepEditObj[v.rid] = v
         })
         value.map((v: any) => {
+          debugger
           if (prepEditObj[v]) {
             prepEditList2.push(prepEditObj[v])
           } else if (prpObj[v]) {
