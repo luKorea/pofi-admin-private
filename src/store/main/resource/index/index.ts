@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 10:27:48
+ * @LastEditTime: 2022-05-18 17:36:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -110,12 +110,12 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
       // eslint-disable-next-line no-async-promise-executor
       return new Promise<any>(async (resolve, reject) => {
         // 1.新增数据的请求
-        const { pageName, editData } = payload
-        const validData = editData.indexJson[0]
-        validateParamsRules(editData.indexJson, validData, requiredField)
+        const { pageName, newData } = payload
+        const validData = newData.indexJson[0]
+        validateParamsRules(newData.indexJson, validData, requiredField)
           .then(async () => {
-            console.log(editData.indexJson, 'data')
-            const info = editData.indexJson.map((item: any) => {
+            console.log(newData.indexJson, 'data')
+            const info = newData.indexJson.map((item: any) => {
               return {
                 id: item.id,
                 title: item.title,
@@ -128,11 +128,11 @@ const resourceHomeModule: Module<IResourceHomeType, IRootState> = {
             console.log(info, 'infdo')
             await nextTick()
             console.log(info, 'info')
-            editData.indexJson = JSON.stringify(info)
-            console.log(editData.indexJson, 'indexJSON')
+            newData.indexJson = JSON.stringify(info)
+            console.log(newData.indexJson, 'indexJSON')
             const pageUrl = apiList[pageName] + 'addIndex'
-            const data = await editPageData(pageUrl, {
-              ...editData
+            const data = await createPageData(pageUrl, {
+              ...newData
             })
             if (data.result === 0) {
               // 2.请求最新的数据
