@@ -61,7 +61,8 @@ export const contentTableEditConfig: TableConfig = {
   showSelectColumn: true,
   showFooter: false,
   childrenProps: {
-    rowKey: 'rid'
+    rowKey: 'rid',
+    isReserve: true
   },
   permission: {
     add: false,

@@ -44,12 +44,13 @@
             <i class="el-icon-menu"></i>
           </template>
         </el-table-column>
+        <!-- :reserve-selection="true" -->
         <el-table-column
           v-if="showSelectColumn"
           type="selection"
           align="center"
+          :reserve-selection="childrenProps.isReserve ? true : false"
           width="60"
-          :reserve-selection="true"
         ></el-table-column>
         <el-table-column
           v-if="showIndexColumn"
@@ -230,7 +231,9 @@ export default defineComponent({
     },
     childrenProps: {
       type: Object,
-      default: () => ({})
+      default: () => ({
+        isReserve: false
+      })
     },
     // 展示底部分页器
     showFooter: {
