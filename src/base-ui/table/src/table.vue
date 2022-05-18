@@ -49,6 +49,7 @@
           type="selection"
           align="center"
           width="60"
+          :reserve-selection="true"
         ></el-table-column>
         <el-table-column
           v-if="showIndexColumn"
@@ -132,6 +133,7 @@
                       :type="propItem.editInfo.type"
                       v-bind="propItem.editInfo.otherOptions"
                       v-model="scope.row[propItem.prop]"
+                      @change="handleChangeDatePicker(scope.row)"
                     ></el-date-picker>
                   </template>
                   <template v-else-if="propItem.editInfo.type === 'upload'">
@@ -249,7 +251,7 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['selectionChange', 'update:page', 'drawTable'],
+  emits: ['selectionChange', 'update:page', 'drawTable', 'changePicker'],
   setup(props, { emit }) {
     const tableData = computed(() => {
       return props.listData
@@ -332,6 +334,8 @@ export default defineComponent({
     }
     // 多选操作
     const handleSelectionChange = (value: any) => emit('selectionChange', value)
+    // 监听日期选择器
+    const handleChangeDatePicker = (item: any) => emit('changePicker', item)
     // 分页操作
     const handleCurrentChange = (currentPage: number) =>
       emit('update:page', { ...props.page, currentPage })
@@ -345,6 +349,7 @@ export default defineComponent({
       handleSelectionChange,
       handleCurrentChange,
       handleSizeChange,
+      handleChangeDatePicker,
       tableRef,
       tableData
     }
