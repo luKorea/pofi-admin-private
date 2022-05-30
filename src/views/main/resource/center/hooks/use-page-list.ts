@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 14:18:40
+ * @LastEditTime: 2022-05-30 09:23:16
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/hooks/use-page-list.ts
  */
@@ -32,6 +32,17 @@ export const goodsList = ref<any>()
 export const otherList = ref<any>()
 export const classifyList = ref<any>()
 export const prpeList = ref<any>()
+let list: any[] = []
+getCommonSelectList('resourceCenterType').then((res) => {
+  if (res.result === 0) {
+    list = res.data.map((item: any) => {
+      return {
+        value: item.type,
+        title: item.dec
+      }
+    })
+  }
+})
 export function usePageList() {
   const getOther = () => {
     getCommonSelectList('prpeType').then((res) => {
@@ -123,7 +134,7 @@ export function useMapDifferentModal() {
 export function useMapPropertyData() {
   const propertyModalConfig = computed(() => {
     modalConfig.formItems.map((item: any) => {
-      if (item.field === 'moType') item.options = resourceTypeList
+      if (item.field === 'moType') item.options = list
       if (item.field === 'unityType')
         item!.options = unityModalList.filter((i: any) => i.value !== undefined)
       if (item.field === 'device') item!.options = deviceLevelList
