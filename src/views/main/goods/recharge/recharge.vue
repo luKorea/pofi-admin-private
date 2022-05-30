@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-30 10:18:14
+ * @LastEditTime: 2022-05-30 13:42:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -77,6 +77,7 @@ export default defineComponent({
           套餐名称: data.name,
           销售价: data.sale,
           原价: data.original,
+          定价等级: formatDeveloped(data.developed),
           实际到账P币: data.rcg,
           说明文字: data.labelShow,
           排序: data.rank,
