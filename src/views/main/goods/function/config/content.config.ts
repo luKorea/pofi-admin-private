@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-18 15:43:32
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:16:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/content.config.ts
  */
@@ -19,7 +19,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'labelShow', label: '说明文字' },
     // { prop: 'labelShow', label: '备注' },
     { prop: 'rank', label: '排序序号' },
-    { prop: 'developed', label: '发达国家', slotName: 'isDeveloped' },
+    { prop: 'developed', label: '定价等级', slotName: 'isDeveloped' },
     { prop: 'show', label: '套餐状态', slotName: 'isState' },
     { label: '操作', slotName: 'handler' }
   ],

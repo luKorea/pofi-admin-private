@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 16:56:22
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:29:36
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/area/config/modal.config.ts
  */
@@ -56,12 +56,25 @@ export const modalConfig: IForm = {
     {
       field: 'iso',
       type: 'input',
-      label: 'ISO标头',
-      placeholder: '请输入ISO标头',
+      label: 'ISO标头(APPLE用)',
+      placeholder: '请输入ISO标头(APPLE用)',
       rules: [
         {
           required: true,
-          message: '请输入ISO标头',
+          message: '请输入ISO标头(APPLE用)',
+          trigger: 'blur'
+        }
+      ]
+    },
+    {
+      field: 'isoAndroid',
+      type: 'input',
+      label: 'ISO标头(Google用)',
+      placeholder: '请输入ISOAndroid标头(Google用)',
+      rules: [
+        {
+          required: true,
+          message: '请输入ISOAndroid标头(Google用)',
           trigger: 'blur'
         }
       ]
@@ -79,12 +92,16 @@ export const modalConfig: IForm = {
       ],
       options: [
         {
-          title: '发展国家',
+          title: '低价区',
           value: 1
         },
         {
-          title: '发展中国家',
+          title: '中价区',
           value: 2
+        },
+        {
+          title: '高价区',
+          value: 3
         }
       ]
     },

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-01 14:22:33
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:27:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/area/config/content.config.ts
  */
@@ -16,7 +16,8 @@ export const contentTableConfig: TableConfig = {
     { prop: 'picture', label: '图片', slotName: 'slotImage' },
     { prop: 'code', label: '标头' },
     { prop: 'areaCode', label: '电话区号' },
-    { prop: 'iso', label: 'ISO标头' },
+    { prop: 'iso', label: 'ISO标头(APPLE用)' },
+    { prop: 'isoAndroid', label: 'ISO标头(Google用)' },
     { prop: 'developed', label: '定价等级', slotName: 'slotLevel' },
     { prop: 'state', label: '状态', slotName: 'slotState' },
     { label: '操作', slotName: 'handler' }

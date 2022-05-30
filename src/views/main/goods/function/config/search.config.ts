@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 10:58:37
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:16:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -49,6 +49,26 @@ export const searchFormConfig: IForm = {
         {
           title: '已下架',
           value: 0
+        }
+      ]
+    },
+    {
+      field: 'developed',
+      type: 'select',
+      label: '定价等级',
+      placeholder: '请选择定价等级',
+      options: [
+        {
+          title: '低价区',
+          value: 1
+        },
+        {
+          title: '中价区',
+          value: 2
+        },
+        {
+          title: '高价区',
+          value: 3
         }
       ]
     }

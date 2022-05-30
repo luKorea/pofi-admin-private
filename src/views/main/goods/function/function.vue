@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 09:30:21
+ * @LastEditTime: 2022-05-30 10:17:21
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -177,9 +177,11 @@ export default defineComponent({
     const formatDeveloped = (type: number | string) => {
       switch (+type) {
         case 1:
-          return '发达国家'
+          return '低价区'
         case 2:
-          return '发展中国家'
+          return '中价区'
+        case 3:
+          return '高价区'
         default:
           return '未知'
       }
