@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 09:48:12
+ * @LastEditTime: 2022-05-30 15:00:21
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -425,7 +425,7 @@
               关键字(多语言)
             </span>
             <el-input
-              v-model="otherInfo.jumpKeyword"
+              v-model="otherInfo.keyword"
               placeholder="请输入关键字(多语言)"
               @input="handleChangeLink"
             ></el-input>
@@ -784,7 +784,7 @@ export default defineComponent({
       () => {
         getJumpLink({
           ...otherInfo.value,
-          jumpType: otherInfo.value.jumpType
+          type: otherInfo.value.jumpType
         }).then((res: any) => {
           if (res.result === 0) {
             otherInfo.value = {

@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 16:00:15
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 14:45:41
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
@@ -326,7 +326,7 @@
               关键字(多语言)
             </span>
             <el-input
-              v-model="otherInfo.jumpKeyword"
+              v-model="otherInfo.keyword"
               placeholder="请输入关键字(多语言)"
               @input="handleChangeLink"
             ></el-input>
