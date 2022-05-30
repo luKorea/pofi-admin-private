@@ -328,7 +328,7 @@
               关键字(多语言)
             </span>
             <el-input
-              v-model="otherInfo.jumpKeyword"
+              v-model="otherInfo.keyword"
               placeholder="请输入关键字(多语言)"
               @input="handleChangeLink"
             ></el-input>

@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 10:52:58
+ * @LastEditTime: 2022-05-30 14:47:10
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -413,7 +413,7 @@ export function decryType(type: any, otherInfo: any, res: any) {
   } else if (type === 24) {
     otherInfo.msId = res.data.id
   } else if (type === 9) {
-    otherInfo.jumpKeyword = Base64.decode(res.data.word)
+    otherInfo.keyword = Base64.decode(res.data.word)
   }
   return otherInfo
 }

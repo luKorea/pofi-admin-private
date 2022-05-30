@@ -254,8 +254,8 @@
           关键字(多语言)
         </span>
         <el-input
-          :value="value.jumpKeyword"
-          @update:value="handleValueChange($event, value.jumpKeyword)"
+          :value="value.keyword"
+          @update:value="handleValueChange($event, value.keyword)"
           placeholder="请输入关键字(多语言)"
           @input="handleChangeLink"
         ></el-input>
