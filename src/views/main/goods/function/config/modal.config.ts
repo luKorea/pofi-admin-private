@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 16:00:04
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:15:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -158,12 +158,16 @@ export const modalConfig: IForm = {
       ],
       options: [
         {
-          title: '发达国家',
+          title: '低价区',
           value: 1
         },
         {
-          title: '发展中国家',
+          title: '中价区',
           value: 2
+        },
+        {
+          title: '高价区',
+          value: 3
         }
       ]
     },

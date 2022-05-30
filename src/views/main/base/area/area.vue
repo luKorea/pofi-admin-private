@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 17:08:19
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-30 10:22:12
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/area/area.vue
 -->
@@ -20,7 +20,7 @@
         <span>{{ scope.row.state ? '启用' : '禁用' }}</span>
       </template>
       <template #slotLevel="scope">
-        {{ scope.row.developed === 1 ? '发展国家' : '发展中国家' }}
+        {{ formatDeveloped(scope.row.developed) }}
       </template>
       <template #slotImage="scope">
         <page-image :img-src="scope.row.picture"></page-image>
@@ -100,6 +100,18 @@ export default defineComponent({
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData, editData)
+    const formatDeveloped = (type: number | string) => {
+      switch (+type) {
+        case 1:
+          return '低价区'
+        case 2:
+          return '中价区'
+        case 3:
+          return '高价区'
+        default:
+          return '未知'
+      }
+    }
     return {
       storeTypeInfo,
       contentTableConfig,
@@ -112,7 +124,8 @@ export default defineComponent({
       operationName,
       otherInfo,
       imgLimit,
-      imgList
+      imgList,
+      formatDeveloped
     }
   }
 })
