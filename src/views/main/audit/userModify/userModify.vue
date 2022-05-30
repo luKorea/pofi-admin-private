@@ -155,19 +155,26 @@ export default defineComponent({
     })
     // 驳回操作
     const handleChangeUserModify = (uid: any, item: any) => {
-      checkUserModify({ uid: uid }).then((res) => {
-        if (res.result === 0) {
-          successTip(res.msg)
-          const selectItem = dataList.value.findIndex(
-            (item: any) => item.uid === uid
-          )
-          dataList.value.splice(selectItem, 1, {
-            ...item,
-            disabled: true,
-            head: 'https://f2.pofiart.com/LOGO.png'
-          })
-        } else errorTip(res.msg)
+      infoTipBox({
+        title: '驳回操作',
+        message: `你确定驳回用户${item.name}的资料吗`
       })
+        .then(() => {
+          checkUserModify({ uid: uid }).then((res) => {
+            if (res.result === 0) {
+              successTip(res.msg)
+              const selectItem = dataList.value.findIndex(
+                (item: any) => item.uid === uid
+              )
+              dataList.value.splice(selectItem, 1, {
+                ...item,
+                disabled: true,
+                head: 'https://f2.pofiart.com/LOGO.png'
+              })
+            } else errorTip(res.msg)
+          })
+        })
+        .catch((err) => console.log(err))
     }
     const uids = computed(() => {
       return dataList.value.map((item: any) => {
