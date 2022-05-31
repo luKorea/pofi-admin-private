@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-31 15:25:48
+ * @LastEditTime: 2022-05-31 15:42:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -89,6 +89,7 @@ export const modalConfig: IForm = {
       field: 'childType',
       type: 'select',
       label: '专栏内容类型',
+      disabled: false,
       placeholder: '请选择专栏内容类型',
       rules: [
         {
