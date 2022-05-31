@@ -720,11 +720,18 @@ export default defineComponent({
     const handleChangeEditTableStatus = (row: any) => {
       row.state = row.state === 1 ? 0 : 1
     }
-    const newData = () => {
+    const mapDisabled = (flag: boolean) => {
       const i = modalConfigRef.value.formItems.find(
         (c: any) => c.field === 'type'
       )
-      i!.disabled = false
+      i!.disabled = flag
+      const a = modalConfigRef.value.formItems.find(
+        (c: any) => c.field === 'childType'
+      )
+      a!.disabled = flag
+    }
+    const newData = () => {
+      mapDisabled(false)
       // 清空原有数据
       operationType.value = 'add'
       areaIds.value = []
@@ -814,10 +821,7 @@ export default defineComponent({
       mapCategoryList(item.library)
       getItem(item)
       handleEditData(item)
-      const i = modalConfigRef.value.formItems.find(
-        (c: any) => c.field === 'type'
-      )
-      i!.disabled = true
+      mapDisabled(true)
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
