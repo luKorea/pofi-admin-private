@@ -634,7 +634,7 @@ export default defineComponent({
             if (item.prop === 'giftList') item!.isHidden = true
             if (item.prop === 'jump') item!.isHidden = false
           })
-        } else if (editTableType.value === 8) {
+        } else if (editTableType.value == 8) {
           contentTableEditConfigRef.value.propList.map((item: any) => {
             if (item.prop === 'title' && item.label === '按钮名称')
               item!.isHidden = true
@@ -721,6 +721,10 @@ export default defineComponent({
       row.state = row.state === 1 ? 0 : 1
     }
     const newData = () => {
+      const i = modalConfigRef.value.formItems.find(
+        (c: any) => c.field === 'type'
+      )
+      i!.disabled = false
       // 清空原有数据
       operationType.value = 'add'
       areaIds.value = []
@@ -746,6 +750,7 @@ export default defineComponent({
             searchUrl.value = 'resourceType'
             mapGift(false)
           }
+          mapDiffParams()
           // 国家地区
           areaIds.value = data.index.areaList
           if (data?.index?.indexList) {
@@ -798,6 +803,7 @@ export default defineComponent({
       resetLanguageList()
       operationType.value = 'edit'
       editTableType.value = +item.type
+      console.log(+item.type, 'demo')
       otherInfo.value = {
         ...otherInfo.value,
         id: item.id,
@@ -805,10 +811,13 @@ export default defineComponent({
       }
       languageList.value = []
       resetLanguageList()
-      mapDiffParams()
       mapCategoryList(item.library)
       getItem(item)
       handleEditData(item)
+      const i = modalConfigRef.value.formItems.find(
+        (c: any) => c.field === 'type'
+      )
+      i!.disabled = true
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)

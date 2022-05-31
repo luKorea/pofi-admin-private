@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 15:54:54
+ * @LastEditTime: 2022-05-31 15:15:08
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/condition/config/content.config.ts
  */
