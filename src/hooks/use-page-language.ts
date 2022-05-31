@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2022-03-18 15:00:37
- * @LastEditTime: 2022-04-24 14:43:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-05-31 16:05:23
+ * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin/src/hooks/use-page-language.ts
  */
@@ -82,7 +82,6 @@ export function usePageLanguage(field: any, fieldID = 'languageId') {
         } else {
           iconItem!.icon = 'el-icon-warning'
         }
-        console.log(iconItem)
       })
     }
   }

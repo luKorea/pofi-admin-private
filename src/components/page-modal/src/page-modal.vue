@@ -149,7 +149,6 @@ export default defineComponent({
 
     // 点击确定按钮的逻辑
     const store = useStore()
-    console.log(store)
     const handleConfirmClick = () => {
       const formRef = pageFormRef.value?.formRef
       formRef?.validate((valid: any) => {
