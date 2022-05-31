@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-19 11:39:02
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-31 15:25:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -75,6 +75,7 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '样式类型',
       placeholder: '请选择样式类型',
+      disabled: false,
       rules: [
         {
           required: true,

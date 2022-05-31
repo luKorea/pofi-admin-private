@@ -111,6 +111,7 @@
                   @update:modelValue="handleValueChange($event, item.field)"
                   @change="handleChangeSelect($event, item.field, item.options)"
                   @clear="handleClear"
+                  :disabled="item.disabled"
                 >
                   <el-option
                     v-for="option in item.options"
