@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 14:53:25
+ * @LastEditTime: 2022-05-31 10:54:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -315,20 +315,20 @@ export const unityModalList = [
 ]
 // 资源类型
 export const resourceTypeList = list
-// export const resourceTypeList = [
-//   { value: 1, title: '可动人偶' },
-//   { value: 2, title: '静态手办' },
-//   { value: 3, title: '多人人偶' },
-//   { value: 4, title: '可动动物' },
-//   { value: 5, title: '动物标本' },
-//   { value: 6, title: '单个道具' },
-//   { value: 7, title: '道具包' },
-//   { value: 8, title: '场景' },
-//   { value: 9, title: '建筑' },
-//   { value: 10, title: '发型' },
-//   { value: 11, title: 'Pose库' },
-//   { value: 12, title: '动画库' }
-// ]
+export const resourceTypeListCenter = [
+  { value: 1, title: '可动人偶' },
+  { value: 2, title: '静态手办' },
+  { value: 3, title: '多人人偶' },
+  { value: 4, title: '可动动物' },
+  { value: 5, title: '动物标本' },
+  { value: 6, title: '单个道具' },
+  { value: 7, title: '道具包' },
+  { value: 8, title: '场景' },
+  { value: 9, title: '建筑' },
+  { value: 10, title: '发型' },
+  { value: 11, title: 'Pose库' },
+  { value: 12, title: '动画库' }
+]
 // 使用条件
 export const resourceConditionList = [
   {
