@@ -259,6 +259,8 @@ export default defineComponent({
       return childListStr.length
     }
     const handleChangeLanguage = async (id: any) => {
+      console.log(languageItem.value)
+      // debugger
       let length
       if (editTableType.value !== 1 && editTableType.value !== undefined) {
         length = handlechildListStr()
@@ -762,7 +764,7 @@ export default defineComponent({
           areaIds.value = data.index.areaList
           if (data?.index?.indexList) {
             const result = data.index.indexList.map((item: any) => {
-              if (item.childList) {
+              if (item.childList && item.childList.length > 0) {
                 item['childListStr'] = []
                 item.childList.map((i: any) => {
                   item.childListStr.push({
@@ -779,7 +781,6 @@ export default defineComponent({
                 }
               }
             })
-            console.log(result, 'resulr')
             const info = languageList.value.map((item: any) => {
               let res = result.find((i: any) => i.lid === item.lid)
               if (res) {

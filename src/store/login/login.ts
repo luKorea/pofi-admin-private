@@ -3,7 +3,7 @@ import { getRouterSelectList } from '@/service/common'
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 12:11:07
+ * @LastEditTime: 2022-05-31 16:00:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/login/login.ts
  */
@@ -52,7 +52,6 @@ const loginModule: Module<any, any> = {
       const routes = mapMenusToRoutes(userMenus)
       // 将routes => router.main.children
       routes.forEach((route) => router.addRoute('main', route))
-      console.log(routes, 'routes')
       // 获取用户按钮的权限
       const permissions = mapMenusToPermissions(userMenus)
       state.permissions = permissions

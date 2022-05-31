@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-31 10:49:16
+ * @LastEditTime: 2022-05-31 16:03:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -208,8 +208,6 @@ export function mapImageToObject(url: string) {
 
 // 判断必填字段是否为空
 export function mapObjectIsNull(params: any[], obj: any) {
-  console.log(params.filter((v) => obj[v]).length === params.length)
-  console.log(params, 'obj')
   return params.filter((v) => obj[v]).length === params.length
 }
 
@@ -222,7 +220,6 @@ export function fileTypeIsImage(fileName: string) {
   try {
     const flieArr = fileName.split('.')
     suffix = flieArr[flieArr.length - 1]
-    console.log(suffix)
   } catch (err) {
     suffix = ''
   }

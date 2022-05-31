@@ -2,7 +2,6 @@ import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
 // 存储 侧边栏第一个菜单，登录后默认打开
 let firstMenu: any = null
-console.log(firstMenu, 'menu')
 // 将用户拥有的权限路由进行映射
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
@@ -19,7 +18,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
       if (menu.children && menu.children.length > 0) {
-        console.log(menu.children, 'menu.children')
         _recurseGetRoute(menu.children)
       } else {
         const route = allRoutes.find((route) => {

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:29:12
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-22 16:26:53
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-05-31 16:01:25
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-properties.ts
  */
@@ -33,9 +33,7 @@ export default function registerProperties(app: App) {
     },
     // 映射表格数据
     formatSelectTitle(type: any, list: any) {
-      console.log(type, list)
       return mapSelectListTitle(type, list)
     }
   }
-  console.log(APP, 'Vue全局配置')
 }

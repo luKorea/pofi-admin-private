@@ -246,7 +246,7 @@ export default defineComponent({
     }
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
-      console.log(queryInfo, '用户传递的参数')
+      // console.log(queryInfo, '用户传递的参数')
       backQueryInfo.value = queryInfo
       if (!permissionList.value.isQuery) return
       store.dispatch(props.storeTypeInfo?.actionName, {
