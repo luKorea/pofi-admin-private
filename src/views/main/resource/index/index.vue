@@ -259,8 +259,15 @@ export default defineComponent({
       return childListStr.length
     }
     const handleChangeLanguage = async (id: any) => {
-      console.log(languageItem.value)
-      // debugger
+      let successIcon = false
+      if (
+        languageBtnList.value.find((item: any) => {
+          return item.id == id && item.icon == 'el-icon-success'
+        })
+      ) {
+        successIcon = true
+      }
+      console.log(languageItem.value, 'languageItem.value', successIcon)
       let length
       if (editTableType.value !== 1 && editTableType.value !== undefined) {
         length = handlechildListStr()
@@ -271,7 +278,12 @@ export default defineComponent({
       }
       languageId.value = id
       await nextTick()
-      if (editTableType.value !== 1 && editTableType.value !== undefined) {
+
+      if (
+        editTableType.value !== 1 &&
+        editTableType.value !== undefined &&
+        !successIcon
+      ) {
         length = handlechildListStr()
         if (TempLength > length) {
           for (let index = length; index < TempLength; index++) {
