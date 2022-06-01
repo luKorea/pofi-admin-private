@@ -316,7 +316,14 @@ export default defineComponent({
     // 改变多语言
     // 点击这里改变多语言---A 1 点击改变事件
     const handleChangeLanguage = async (id: any) => {
-      console.log(languageItem.value, 'A')
+      let successIcon = false
+      if (
+        languageBtnList.value.find((item: any) => {
+          return item.id == id && item.icon == 'el-icon-success'
+        })
+      ) {
+        successIcon = true
+      }
       let length =
         (languageItem.value.childListStr &&
           languageItem.value.childListStr.length) ||
@@ -327,7 +334,7 @@ export default defineComponent({
       }
       languageId.value = id
       await nextTick()
-      if (TempLength > languageItem.value.childListStr.length) {
+      if (TempLength > languageItem.value.childListStr.length && !successIcon) {
         let length = languageItem.value.childListStr.length
         for (let index = length; index < TempLength; index++) {
           console.log(index, '000')
