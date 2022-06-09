@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-02 17:47:10
+ * @LastEditTime: 2022-06-09 16:10:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
