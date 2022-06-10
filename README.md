@@ -117,8 +117,7 @@ bug
 http://47.243.49.122:38001/doc.html#/default/cms%E9%BB%98%E8%AE%A4%E5%A4%B4%E5%83%8F/updateHeadUsingPOST
 
 # 使用命令动态创建页面
-coderwhy add3page pageName -d dirname (/src/views/main/*)
-# 文件树形结构
+coderwhy add3page [pageName] -d src/views/main/[dirName]
 ```ABAP
 ├── README.md
 ├── babel.config.js
