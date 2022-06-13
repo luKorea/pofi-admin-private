@@ -291,91 +291,10 @@ export default defineComponent({
       const { field, value } = item
       if (field === 'isPrep' && +value === 2) {
         showEditTable.value = true
-        // prepEditList.value = []
-        // subPrepEditList.value = []
-        // otherInfo.value = {
-        //   rel: '',
-        //   prep: [],
-        //   subPrep: []
-        // }
-        // modalConfigRef.value.formItems.map((i: any) => {
-        //   if (i.field === 'rel') i!.isHidden = false
-        //   if (i.field === 'prep') i!.isHidden = false
-        //   if (i.field === 'subPrep') i!.isHidden = false
-        // })
       }
       if (+value === 1 && field === 'isPrep') {
         showEditTable.value = false
-        // prepEditList.value = []
-        // subPrepEditList.value = []
-        // otherInfo.value = {
-        //   rel: '',
-        //   prep: [],
-        //   subPrep: []
-        // }
-        // modalConfigRef.value.formItems.map((i: any) => {
-        //   if (i.field === 'rel') i!.isHidden = true
-        //   if (i.field === 'prep') i!.isHidden = true
-        //   if (i.field === 'subPrep') i!.isHidden = true
-        // })
       }
-      // TODO 后续完善
-      // if (field === 'prep') {
-      //   if (value.length > 0) {
-      //     let prpObj: any = {}
-      //     let prepEditObj: any = {}
-      //     let prepEditList2: any = []
-      //     prpeList.value.map((v: any) => {
-      //       prpObj[v.moId] = v
-      //     })
-      //     prepEditList.value.map((v: any) => {
-      //       prepEditObj[v.moId] = v
-      //     })
-      //     value.map((v: any) => {
-      //       if (prepEditObj[v]) {
-      //         prepEditList2.push(prepEditObj[v])
-      //       } else if (prpObj[v]) {
-      //         let d = prpObj[v]
-      //         prepEditList2.push({
-      //           ...d,
-      //           openType: mapSelectListTitle(d.open, resourceConditionList),
-      //           snId: '',
-      //           endTime: ''
-      //         })
-      //       }
-      //       prepEditObj[v] = v
-      //     })
-      //     prepEditList.value = prepEditList2
-      //   } else prepEditList.value = []
-      // }
-      // if (field === 'subPrep') {
-      //   if (value.length > 0) {
-      //     let prpObj: any = {}
-      //     let prepEditObj: any = {}
-      //     let prepEditList2: any = []
-      //     prpeList.value.map((v: any) => {
-      //       prpObj[v.moId] = v
-      //     })
-      //     subPrepEditList.value.map((v: any) => {
-      //       prepEditObj[v.moId] = v
-      //     })
-      //     value.map((v: any) => {
-      //       if (prepEditObj[v]) {
-      //         prepEditList2.push(prepEditObj[v])
-      //       } else if (prpObj[v]) {
-      //         let d = prpObj[v]
-      //         prepEditList2.push({
-      //           ...d,
-      //           openType: mapSelectListTitle(d.open, resourceConditionList),
-      //           snId: '',
-      //           endTime: ''
-      //         })
-      //       }
-      //       prepEditObj[v] = v
-      //     })
-      //     subPrepEditList.value = prepEditList2
-      //   } else subPrepEditList.value = []
-      // }
     }
     // 表单操作
     const cancelData = (item: any) => {

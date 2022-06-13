@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-09 16:10:03
+ * @LastEditTime: 2022-06-13 11:30:51
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -20,6 +20,24 @@ getCommonSelectList('resourceCenterType').then((res) => {
   }
 })
 console.log(list)
+
+// 默认作者账号
+export const defaultAuthorList = [
+  { value: 'Pofi小亚当（官方）', title: 'Pofi小亚当（官方）' },
+  { value: '爱画画的小夏哇（官方）', title: '爱画画的小夏哇（官方）' },
+  { value: 'Pofi无限人偶（官方）', title: 'Pofi无限人偶（官方）' },
+  { value: 'Pofi活动君（官方）', title: 'Pofi活动君（官方）' },
+  { value: 'Pofi福利娘（官方）', title: 'Pofi福利娘（官方）' },
+  { value: undefined, title: '其他用户【在下方填写】' }
+]
+
+// 用户心得审核状态
+export const userExperienceAuditList = [
+  { value: -1, title: '审核不通过' },
+  { value: 0, title: '待审核' },
+  { value: 1, title: '审核通过' },
+  { value: 2, title: '精华' }
+]
 
 // 资源获取方式
 export const resourceGetWayList = [

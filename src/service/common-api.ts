@@ -2,11 +2,11 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 16:47:43
+ * @LastEditTime: 2022-06-13 16:03:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
-import hyRequest from '@/service/index'
+import hyRequest, { hyRequestJSON } from '@/service/index'
 
 // 获取表格数据
 export function getPageListData(url: string, queryInfo: any) {
@@ -34,6 +34,21 @@ export function deletePageToQueryData(url: string, data: any) {
 //新增数据
 export function createPageData(url: string, newData: any) {
   return hyRequest.post<any>({
+    url: url,
+    data: newData
+  })
+}
+
+// 编辑数据
+export function editPageDataJSON(url: string, editData: any) {
+  return hyRequestJSON.post<any>({
+    url: url,
+    data: editData
+  })
+}
+//新增数据
+export function createPageDataJSON(url: string, newData: any) {
+  return hyRequestJSON.post<any>({
     url: url,
     data: newData
   })
@@ -77,7 +92,8 @@ enum getItemUrl {
   homeIndexItem = '/cms/index/getIndex', // 首页管理
   versionItem = '/cms/version/getVersion', //版本管理
   goodItem = '/cms/goods/getGoods', // 资源商品
-  descriptionItem = '/cms/description/getDescription'
+  descriptionItem = '/cms/description/getDescription',
+  contentCenterItem = '/cms/feels/getFeels'
 }
 
 // 获取单行数据

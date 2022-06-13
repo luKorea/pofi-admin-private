@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 17:39:20
+ * @LastEditTime: 2022-06-13 10:25:36
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -37,7 +37,8 @@ enum commonAPI {
   prpeType = '/cms/mold/prepList',
   categoryType = '/cms/index/getAllCategory',
   searchMoIdType = '/cms/mold/searchMold',
-  equityType = '/cms/description/getList' // 所属权益
+  equityType = '/cms/description/getList', // 所属权益
+  contentCenter = '/cms/feels/getFeelsType' // 获得灵感心得分类
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改
