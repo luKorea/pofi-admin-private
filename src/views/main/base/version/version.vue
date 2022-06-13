@@ -363,7 +363,6 @@ export default defineComponent({
           prepEditObj[v.rid] = v
         })
         value.map((v: any) => {
-          debugger
           if (prepEditObj[v]) {
             prepEditList2.push(prepEditObj[v])
           } else if (prpObj[v]) {
@@ -372,8 +371,8 @@ export default defineComponent({
               name: d.name,
               id: d.id,
               status: 1,
-              onlineTime: '',
-              endTime: '',
+              onlineTime: null,
+              endTime: null,
               isNotice: 0,
               rid: d.id
             })

@@ -1,8 +1,9 @@
+import { ICreativeInspirationType } from './main/contentCenter/creativeInspiration/types'
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-05 11:36:00
+ * @LastEditTime: 2022-06-13 11:03:02
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -46,6 +47,7 @@ import { IResourceCenterType } from './main/resource/center/types'
 import { IAadvertisementBannerType } from './main/ad/banner/types'
 import { IBaseVersionType } from './main/base/version/types'
 import { IResourceHomeType } from './main/resource/index/types'
+import { IUserExperienceType } from './main/contentCenter/userExperience/types'
 
 export interface IRootState {
   name: string
@@ -107,6 +109,9 @@ export interface IRootWithModule {
   wareHouseModule: IWareHouseType
   // 广告管理
   advertisementBannerModule: IAadvertisementBannerType
+  // 内容管理
+  userExperienceModule: IUserExperienceType
+  creativeInspirationModule: ICreativeInspirationType
 }
 
 export type IStoreType = IRootState & IRootWithModule
