@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-18 14:05:36
+ * @LastEditTime: 2022-06-14 10:29:46
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -101,28 +101,34 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
         const { pageName, newData } = payload
         console.log(newData)
         const validData = JSON.parse(newData.versionJson)[0]
-        validateParamsRules(
-          JSON.parse(newData.versionJson),
-          validData,
-          requiredField
-        )
-          .then(async () => {
-            const pageUrl =
-              apiList[pageName] + cultureDifferentType('add', pageName)
-            debugger
-            const data = await createPageData(pageUrl, {
-              ...newData
-            })
-            if (data.result === 0) {
-              // 2.请求最新的数据
-              dispatch('getPageListAction', {
-                pageName,
-                queryInfo: queryInfo
+        const info = JSON.parse(newData.childListStr)
+        const checkNothing = info.find((i: any) => i.onlineTime === null)
+        if (checkNothing) {
+          errorTip('请确保每个地区的发布时间已经填写完成！')
+          return
+        } else {
+          validateParamsRules(
+            JSON.parse(newData.versionJson),
+            validData,
+            requiredField
+          )
+            .then(async () => {
+              const pageUrl =
+                apiList[pageName] + cultureDifferentType('add', pageName)
+              const data = await createPageData(pageUrl, {
+                ...newData
               })
-              resolve(data.msg)
-            } else reject(data.msg)
-          })
-          .catch((err) => errorTip(err))
+              if (data.result === 0) {
+                // 2.请求最新的数据
+                dispatch('getPageListAction', {
+                  pageName,
+                  queryInfo: queryInfo
+                })
+                resolve(data.msg)
+              } else reject(data.msg)
+            })
+            .catch((err) => errorTip(err))
+        }
       })
     },
 
@@ -132,27 +138,34 @@ const baseVersionModule: Module<IBaseVersionType, IRootState> = {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
         const validData = JSON.parse(editData.versionJson)[0]
-        validateParamsRules(
-          JSON.parse(editData.versionJson),
-          validData,
-          requiredField
-        )
-          .then(async () => {
-            const pageUrl =
-              apiList[pageName] + cultureDifferentType('update', pageName)
-            const data = await editPageData(pageUrl, {
-              ...editData
-            })
-            if (data.result === 0) {
-              // 2.请求最新的数据
-              dispatch('getPageListAction', {
-                pageName,
-                queryInfo: queryInfo
+        const info = JSON.parse(editData.childListStr)
+        const checkNothing = info.find((i: any) => i.onlineTime === null)
+        if (checkNothing) {
+          errorTip('请确保每个地区的发布时间已经填写完成！')
+          return
+        } else {
+          validateParamsRules(
+            JSON.parse(editData.versionJson),
+            validData,
+            requiredField
+          )
+            .then(async () => {
+              const pageUrl =
+                apiList[pageName] + cultureDifferentType('update', pageName)
+              const data = await editPageData(pageUrl, {
+                ...editData
               })
-              resolve(data.msg)
-            } else reject(data.msg)
-          })
-          .catch((err) => errorTip(err))
+              if (data.result === 0) {
+                // 2.请求最新的数据
+                dispatch('getPageListAction', {
+                  pageName,
+                  queryInfo: queryInfo
+                })
+                resolve(data.msg)
+              } else reject(data.msg)
+            })
+            .catch((err) => errorTip(err))
+        }
       })
     },
     async sortPageDataAction({ dispatch }, payload: any) {
