@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 11:09:07
+ * @LastEditTime: 2022-06-14 09:56:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -131,14 +131,14 @@ export function usePageList() {
   const getCountryList = () => {
     getCommonSelectList('country').then((res) => {
       if (res.state) {
-        // countryList.value.push(
-        //   {
-        //     name: '全选',
-        //     id: -1
-        //   },
-        //   ...res.data.rows
-        // )
-        countryList.value.push(...res.data.rows)
+        countryList.value.push(
+          {
+            name: '全选',
+            id: -1
+          },
+          ...res.data.rows
+        )
+        // countryList.value.push(...res.data.rows)
       } else errorTip(res.msg)
     })
   }
