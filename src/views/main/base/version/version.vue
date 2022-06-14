@@ -267,8 +267,8 @@ export default defineComponent({
       }
     })
     const changeTableData = ref<any>({
-      onlineTime: '',
-      endTime: '',
+      onlineTime: null,
+      endTime: null,
       isNotice: ''
     })
     // 编辑表格操作
@@ -311,8 +311,14 @@ export default defineComponent({
         selectList.value = selectList.value.map((item: any) => {
           return {
             ...item,
-            onlineTime: changeTableData.value.onlineTime,
-            endTime: changeTableData.value.endTime,
+            onlineTime:
+              item.onlineTime && !changeTableData.value.onlineTime
+                ? item.onlineTime
+                : changeTableData.value.onlineTime,
+            endTime:
+              item.endTime && !changeTableData.value.endTime
+                ? item.endTime
+                : changeTableData.value.endTime,
             status: mapVersionState(
               changeTableData.value.onlineTime,
               changeTableData.value.endTime
@@ -353,15 +359,52 @@ export default defineComponent({
     }
     const handleChangeCountry = (value: any[]) => {
       if (value.length > 0) {
-        let prpObj: any = {}
-        let prepEditObj: any = {}
-        let prepEditList2: any = []
-        countryList.value.map((v: any) => {
-          prpObj[v.id] = v
+        mapList(value)
+      } else selectCountryList.value = []
+    }
+    const mapList = (value: any) => {
+      let prpObj: any = {}
+      let prepEditObj: any = {}
+      let prepEditList2: any = []
+      countryList.value.map((v: any) => {
+        prpObj[v.id] = v
+      })
+      selectCountryList.value.map((v: any) => {
+        prepEditObj[v.rid] = v
+      })
+      // 新增全选功能
+      const all: any[] = []
+      const selectAll = value.find((i: any) => i === -1)
+      if (selectAll) {
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            all.push(item.id)
+          })
+        otherInfo.value = {
+          ...otherInfo.value,
+          areaIds: all.toString()
+        }
+        areaIds.value = all
+        all.map((v: any) => {
+          if (prepEditObj[v]) {
+            prepEditList2.push(prepEditObj[v])
+          } else if (prpObj[v]) {
+            let d = prpObj[v]
+            prepEditList2.push({
+              name: d.name,
+              id: d.id,
+              status: 1,
+              onlineTime: null,
+              endTime: null,
+              isNotice: 0,
+              rid: d.id
+            })
+          }
+          prepEditObj[v] = v
         })
-        selectCountryList.value.map((v: any) => {
-          prepEditObj[v.rid] = v
-        })
+        selectCountryList.value = prepEditList2
+      } else {
         value.map((v: any) => {
           if (prepEditObj[v]) {
             prepEditList2.push(prepEditObj[v])
@@ -380,7 +423,7 @@ export default defineComponent({
           prepEditObj[v] = v
         })
         selectCountryList.value = prepEditList2
-      } else selectCountryList.value = []
+      }
     }
     const newData = (item: any, osType: any) => {
       operationType.value = 'add'
@@ -397,8 +440,8 @@ export default defineComponent({
       selectCountryList.value = []
       selectList.value = []
       changeTableData.value = {
-        onlineTime: '',
-        endTime: '',
+        onlineTime: null,
+        endTime: null,
         isNotice: ''
       }
       resetLanguageList()
@@ -413,7 +456,15 @@ export default defineComponent({
           contentTableEditConfigRef.value.title = res.data.osType
             ? '内容设置(IOS)'
             : '内容设置(Android)'
-          selectCountryList.value = res.data.childList
+          // 修改编辑时版本状态没有更新
+          if (res.data?.childList?.length > 0) {
+            selectCountryList.value = res.data.childList.map((item: any) => {
+              return {
+                ...item,
+                status: mapVersionState(item.onlineTime, item.endTime)
+              }
+            })
+          }
           if (res?.data?.versionList?.length > 0) {
             const info = languageList.value.map((item: any) => {
               let result = res.data.versionList.find(
@@ -451,8 +502,8 @@ export default defineComponent({
       selectCountryList.value = []
       selectList.value = []
       changeTableData.value = {
-        onlineTime: '',
-        endTime: '',
+        onlineTime: null,
+        endTime: null,
         isNotice: ''
       }
       otherInfo.value = {
