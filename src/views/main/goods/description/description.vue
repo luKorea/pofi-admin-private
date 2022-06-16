@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-16 10:25:12
+ * @LastEditTime: 2022-06-16 11:35:51
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -821,7 +821,7 @@ export default defineComponent({
     }
     // 编辑操作
     const getData = (item: any) => {
-      getEquityList(+item.type)
+      getEquityList(+item.funcType)
       getItemData('descriptionItem', { id: item.id }).then(async (res) => {
         if (res.result === 0) {
           const data = res.data
