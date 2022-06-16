@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-14 09:47:24
- * @LastEditTime: 2022-06-16 16:12:43
+ * @LastEditTime: 2022-06-16 16:27:22
  * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/base-ui/upload/src/upload copy.vue
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { ref, computed, watch, onMounted, defineComponent } from 'vue'
+import { ref, computed, watch, onMounted, defineComponent, nextTick } from 'vue'
 import Vuedraggable from 'vuedraggable'
 import { useOSSConfig } from '@/hooks/use-oss-config'
 import OSS from 'ali-oss'
@@ -307,7 +307,7 @@ export default defineComponent({
           } else {
             name = `${props.fileTypeName}${file.name.trim()}_${iosVersion + 1}`
           }
-          client.value.multipartUpload(name, file).then((res: any) => {
+          client.value.multipartUpload(name, file).then(async (res: any) => {
             let url = null
             let name = null
             let version = null
@@ -323,11 +323,15 @@ export default defineComponent({
               version = iosVersion + 1
             }
             console.log(url, '拼接后的地址')
-            emit('sendOtherValue', {
-              ...otherValue.value,
-              name: name,
-              version: version
-            })
+            await nextTick()
+            if (otherValue.value !== undefined) {
+              console.log(otherValue.value, '拿到的值')
+              emit('sendOtherValue', {
+                ...otherValue.value,
+                name: name,
+                version: version
+              })
+            }
             emit('update:value', [
               ...props.value,
               {
