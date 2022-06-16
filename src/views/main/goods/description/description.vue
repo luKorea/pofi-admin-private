@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-30 15:00:21
+ * @LastEditTime: 2022-06-16 10:25:12
  * @Description: descriptions
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -42,7 +42,9 @@
         <!-- 是否专属资源 -->
         <el-col v-bind="modalConfig.colLayout" v-if="articleType === 2">
           <div class="item-flex">
-            <span class="item-title">是否专属资源</span>
+            <span class="item-title"
+              ><span class="item-tip">*</span>是否专属资源</span
+            >
             <el-select
               v-model="otherInfo.isExclusive"
               placeholder="请选择是否专属资源"
@@ -59,7 +61,13 @@
           v-if="articleType === 3 || articleType === 4 || articleType === 5"
         >
           <div class="item-flex">
-            <span class="item-title">所属权益</span>
+            <span class="item-title"
+              ><span
+                class="item-tip"
+                v-if="articleType === 3 || articleType === 4"
+                >*</span
+              >所属权益</span
+            >
             <el-select
               v-model="otherInfo.parentId"
               placeholder="请选择所属权益"
@@ -83,7 +91,9 @@
         >
           <div class="item-flex">
             <span class="item-title"
-              >功能{{ articleType === 3 ? '说明' : '设置' }}按钮</span
+              ><span class="item-tip">*</span>功能{{
+                articleType === 3 ? '说明' : '设置'
+              }}按钮</span
             >
             <el-select v-model="otherInfo.button" style="width: 100%">
               <el-option label="显示" :value="1">显示</el-option>
@@ -95,7 +105,9 @@
       <el-row :gutter="12" v-if="articleType === 3 || articleType === 4">
         <el-col v-bind="modalConfig.colLayout">
           <div class="item-flex">
-            <span class="item-title">是否Pro</span>
+            <span class="item-title"
+              ><span class="item-tip">*</span>是否Pro</span
+            >
             <el-select
               v-model="otherInfo.isPro"
               placeholder="请选择是否Pro"
@@ -108,7 +120,9 @@
         </el-col>
         <el-col v-bind="modalConfig.colLayout">
           <div class="item-flex">
-            <span class="item-title">是否Plus</span>
+            <span class="item-title"
+              ><span class="item-tip">*</span>是否Plus</span
+            >
             <el-select
               v-model="otherInfo.isPlus"
               placeholder="请选择是否Plus"
@@ -766,6 +780,7 @@ export default defineComponent({
       if (item.field === 'type') {
         mapDifferentLanguage(+item.value)
         articleType.value = +item.value
+      } else if (item.field === 'funcType') {
         getEquityList(+item.value)
       }
     }

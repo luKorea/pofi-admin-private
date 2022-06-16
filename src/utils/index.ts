@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-31 16:03:48
+ * @LastEditTime: 2022-06-16 09:52:31
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -143,31 +143,49 @@ export function mapRangeToSearch(start: any, end: any) {
 export function handleChangeEnv(env: number | string) {
   let title = 'Pofi Create 后台管理系统 · '
   let color = '#F5D67D'
+  let u3dFileUrl = ''
+  let fileDir = ''
   //   2：dev 开发
   // 3：pe 预发布
   // 4：prod 正式
   // 5：audit 审核
   switch (env) {
+    case 1:
+      title += '测试'
+      color = '#95A9F5'
+      u3dFileUrl = 'https://f1.pofiart.com/test'
+      fileDir = '/test/'
+      break
     case 2:
       title += '测试'
       color = '#95A9F5'
+      u3dFileUrl = 'https://f1.pofiart.com/test'
+      fileDir = '/test/'
       break
     case 3:
       title += '预发布'
       color = '#F5D67D'
+      u3dFileUrl = 'https://f1.pofiart.com/internal/res'
+      fileDir = '/internal/res/'
       break
     case 4:
       title += '正式'
       color = '#F596AA'
+      u3dFileUrl = 'https://f1.pofiart.com/res'
+      fileDir = '/res/'
       break
     case 5:
       title += '审核'
       color = '#C0A2F5'
+      u3dFileUrl = 'https://f1.pofiart.com/audit/res'
+      fileDir = '/audit/res/'
       break
   }
   return {
     title: title,
-    color: color
+    color: color,
+    u3dFileUrl: u3dFileUrl,
+    fileDir: fileDir
   }
 }
 

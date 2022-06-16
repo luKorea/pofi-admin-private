@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-14 09:47:24
- * @LastEditTime: 2022-04-20 13:51:38
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-16 11:10:30
+ * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/base-ui/upload/src/upload copy.vue
 -->
@@ -106,6 +106,18 @@ console.log(bmf)
 
 export default defineComponent({
   props: {
+    type: {
+      type: Number,
+      required: true
+    },
+    u3dVersion: {
+      type: Object,
+      required: true
+    },
+    u3dFileUrl: {
+      type: String,
+      required: true
+    },
     fileTypeName: {
       type: String,
       default: 'help/'
@@ -251,7 +263,7 @@ export default defineComponent({
       isFirstMount.value = false
       isUploading.value = true
       return new Promise((resolve, reject) => {
-        useOSSConfig()
+        useOSSConfig(3)
           .then((res) => {
             client.value = new OSS({
               region: 'oss-cn-hongkong',
@@ -279,12 +291,51 @@ export default defineComponent({
               }
             }
           })
-          const suffix = '.' + file.type.split('/')[1]
-          const name =
-            props.fileTypeName + client.value.options.fileName + suffix
+          let name = null
+          let iosVersion = 0
+          let androidVersion = 0
+          if (props.u3dVersion.androidVersion === null) {
+            androidVersion = 0
+          } else androidVersion = props.u3dVersion.androidVersion
+          if (props.u3dVersion.iosVersion === null) {
+            iosVersion = 0
+          } else iosVersion = props.u3dVersion.iosVersion
+          if (props.type === 0) {
+            name = `${props.fileTypeName}${file.name.trim()}_${
+              androidVersion === 0 ? 0 : androidVersion + 1
+            }`
+          } else {
+            name = `${props.fileTypeName}${file.name.trim()}_${
+              iosVersion === 0 ? 0 : iosVersion + 1
+            }`
+          }
           client.value.multipartUpload(name, file).then((res: any) => {
-            const url = `${OSSURL}/${res.name}`
-            emit('sendOtherValue', otherValue.value)
+            let url = null
+            let name = null
+            let version = null
+            if (props.type === 0) {
+              url = `${props.u3dFileUrl}/${file.name.trim()}_${
+                androidVersion === 0 ? 0 : androidVersion + 1
+              }`
+              name = `${file.name.trim()}_${
+                androidVersion === 0 ? 0 : androidVersion + 1
+              }`
+              version = androidVersion === 0 ? 0 : androidVersion + 1
+            } else {
+              url = `${props.u3dFileUrl}/${file.name.trim()}_${
+                iosVersion === 0 ? 0 : iosVersion + 1
+              }`
+              name = `${file.name.trim()}_${
+                iosVersion === 0 ? 0 : iosVersion + 1
+              }`
+              version = iosVersion === 0 ? 0 : iosVersion + 1
+            }
+            console.log(url, '拼接后的地址')
+            emit('sendOtherValue', {
+              ...otherValue.value,
+              name: name,
+              version: version
+            })
             emit('update:value', [
               ...props.value,
               {
