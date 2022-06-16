@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-18 11:45:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 14:30:16
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-06-16 09:36:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/hooks/use-oss-config.ts
  */
@@ -59,8 +59,8 @@ export function useGetClient() {
   return client
 }
 
-export function useOSSConfig() {
-  return getOssToken(2).then((res: any) => res.data)
+export function useOSSConfig(type = 2) {
+  return getOssToken(type).then((res: any) => res.data)
 }
 export function clientSendFile(
   client: any,

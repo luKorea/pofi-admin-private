@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-04-27 16:15:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-16 10:44:37
+ * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
 -->
@@ -50,8 +50,11 @@
             <hy-upload
               @sendOtherValue="getOtherData($event, 1)"
               v-model:value="otherInfo.iosList"
-              fileTypeName="resourceU3dIos/"
+              :fileTypeName="fileTypeName"
               :limit="1"
+              :u3dFileUrl="u3dFileUrl"
+              :u3dVersion="u3dVersion"
+              :type="1"
             ></hy-upload>
             <el-button
               type="primary"
@@ -70,8 +73,11 @@
             <hy-upload
               @sendOtherValue="getOtherData($event, 0)"
               v-model:value="otherInfo.androidList"
-              fileTypeName="resourceU3dAndroid/"
+              :fileTypeName="fileTypeName"
               :limit="1"
+              :type="0"
+              :u3dFileUrl="u3dFileUrl"
+              :u3dVersion="u3dVersion"
             ></hy-upload>
             <el-button
               type="primary"
@@ -201,9 +207,21 @@ import { successTip } from '@/utils/tip-info'
 
 export default defineComponent({
   props: {
+    u3dVersion: {
+      type: Object,
+      required: true
+    },
+    u3dFileUrl: {
+      type: String,
+      required: true
+    },
     editType: {
       type: String,
       default: 'edit'
+    },
+    fileTypeName: {
+      type: String,
+      required: true
     },
     params: {
       type: Object,

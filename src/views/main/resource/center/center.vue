@@ -177,6 +177,9 @@
       @openStep="openStep"
       @getData="getTableData"
       @changeStepIcon="hasStepIsOK"
+      :u3d-file-url="u3dFileUrl.u3dFileUrl"
+      :file-type-name="u3dFileUrl.fileDir"
+      :u3d-version="u3dVersion"
     ></u3d-component>
     <!-- 4. 相关关联 -->
     <relevance-component
@@ -207,7 +210,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, nextTick } from 'vue'
+import { defineComponent, ref, nextTick, computed } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 
@@ -229,10 +232,13 @@ import timerComponent from './components/timer.vue'
 import u3dComponent from './components/u3d.vue'
 import resourceComponent from './components/resource.vue'
 import relevanceComponent from './components/relevance.vue'
-import { resourceFileOperation } from '@/service/main/resource/center'
+import {
+  getU3dVersion,
+  resourceFileOperation
+} from '@/service/main/resource/center'
 import { getItemData } from '@/service/common-api'
 import { selectResourceTypeOperation } from '@/service/main/resource/center'
-import { mapImageToObject } from '@/utils/index'
+import { handleChangeEnv, mapImageToObject } from '@/utils/index'
 import { mapSelectListTitle } from '@/utils'
 import { mapTimeToSearch } from '../../../../utils/index'
 import { useStore } from '@/store'
@@ -249,6 +255,9 @@ export default defineComponent({
     relevanceComponent
   },
   setup() {
+    const u3dFileUrl = computed(() => {
+      return handleChangeEnv(store.state.login.userInfo.env)
+    })
     // 控制步骤
     const dataStep = ref<number>(0)
     const editType = ref<any>('add')
@@ -425,8 +434,15 @@ export default defineComponent({
         } else errorTip(res.msg)
       })
     }
-    // 获取U3d资源
+    const u3dVersion = ref<any>({
+      iosVersion: null,
+      androidVersion: null
+    })
     const getU3d = (item: any) => {
+      u3dVersion.value = {
+        iosVersion: null,
+        androidVersion: null
+      }
       getItemData('u3dItem', {
         osType: item,
         moId: params.value.moId
@@ -443,8 +459,16 @@ export default defineComponent({
           if (data) {
             if (item === 1) {
               value.iosVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+              u3dVersion.value = {
+                ...u3dVersion.value,
+                iosVersion: data.version
+              }
             } else {
               value.androidVersion = `版本号：${data.version} 名字: ${data.name} 文件大小: ${data.size} 更新时间：${data.createTime}`
+              u3dVersion.value = {
+                ...u3dVersion.value,
+                androidVersion: data.version
+              }
             }
           }
         } else errorTip(res.msg)
@@ -695,6 +719,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      u3dFileUrl,
       getTableData,
       dataStep,
       allData,
@@ -741,7 +766,8 @@ export default defineComponent({
       selectList,
       handleChangeState,
       writeData,
-      hasStepIsOK
+      hasStepIsOK,
+      u3dVersion
     }
   }
 })

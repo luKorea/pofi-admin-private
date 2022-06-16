@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-14 10:29:46
+ * @LastEditTime: 2022-06-14 11:16:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */

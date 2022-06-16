@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-17 14:23:15
+ * @LastEditTime: 2022-06-16 10:21:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/hooks/use-page-list.ts
  */
@@ -269,7 +269,7 @@ export function usePageList() {
   const getEquityList = (funcType: any) => {
     getCommonSelectList('equityType', { funcType: funcType }, false).then(
       (res) => {
-        if (res.state) {
+        if (!res.result) {
           const result = res.data as any[]
           equityList.value = result.map((item: any) => {
             return {
@@ -277,12 +277,12 @@ export function usePageList() {
               value: item.id
             }
           })
-        } else errorTip(res.msg)
+        }
       }
     )
   }
   getOtherList()
   getJumpList()
-  getEquityList(undefined)
+  getEquityList(0)
   return [jumpList, otherList, getEquityList]
 }
