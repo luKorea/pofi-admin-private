@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-06-16 13:54:23
+ * @LastEditTime: 2022-06-16 16:13:30
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -274,36 +274,39 @@ export default defineComponent({
     const fileData = ref<any>()
     const radio = ref<any>()
     const getOtherData = (data: any, type: number) => {
-      if (type === 1) {
-        fileInfo.value = {
-          ...fileInfo.value,
-          iosSourceMd5: data.md5,
-          iosName: data.name,
-          iosSize: data.size + 'M',
-          sizeIos: data.size
+      if (data) {
+        console.log(data.size + 'M', 'size')
+        if (type === 1) {
+          fileInfo.value = {
+            ...fileInfo.value,
+            iosSourceMd5: data.md5,
+            iosName: data.name,
+            iosSize: data.size + 'M',
+            sizeIos: data.size
+          }
+          mapFileInfo(
+            {
+              ...data,
+              size: data.size + 'M'
+            },
+            type
+          )
+        } else {
+          fileInfo.value = {
+            ...fileInfo.value,
+            androidSourceMd5: data.md5,
+            androidName: data.name,
+            androidSize: data.size + 'M',
+            sizeAd: data.size
+          }
+          mapFileInfo(
+            {
+              ...data,
+              size: data.size + 'M'
+            },
+            type
+          )
         }
-        mapFileInfo(
-          {
-            ...data,
-            size: data.size + 'M'
-          },
-          type
-        )
-      } else {
-        fileInfo.value = {
-          ...fileInfo.value,
-          androidSourceMd5: data.md5,
-          androidName: data.name,
-          androidSize: data.size + 'M',
-          sizeAd: data.size
-        }
-        mapFileInfo(
-          {
-            ...data,
-            size: data.size + 'M'
-          },
-          type
-        )
       }
     }
     const mapFileInfo = (item: any, type: any) => {
@@ -316,7 +319,7 @@ export default defineComponent({
       } else {
         otherInfo.value.androidVersion = `版本号：${item.version ?? ''} 名字: ${
           item.name
-        } 文件大小: ${item.size} 更新时间：${item.createTime ?? ''}`
+        } 文件大小: ${item.size} 更新时间：${item.createTime ?? '系统生成'}`
       }
     }
     const getSourceData = (type: any) => {
