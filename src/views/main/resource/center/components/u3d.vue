@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-06-16 10:44:37
+ * @LastEditTime: 2022-06-16 13:54:23
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -160,7 +160,7 @@
               <el-button
                 size="mini"
                 type="text"
-                @click="handleDelete(scope.row.id)"
+                @click="handleDelete(scope.row.id, scope.row.osType)"
                 >删除</el-button
               ><br />
               <el-button size="mini" type="text" @click="down(scope.row)"
@@ -341,16 +341,15 @@ export default defineComponent({
     }
     const closeDialog = () => {
       let { type, iosChose, androidChose } = otherInfo.value
-      if (type === 'ios') {
+      if (type === 'ios' && iosChose.name) {
         mapFileInfo(iosChose, 1)
         fileRef.value.dialogVisible = false
-      } else if (type === 'android') {
+      } else if (type === 'android' && androidChose.name) {
         mapFileInfo(androidChose, 0)
         fileRef.value.dialogVisible = false
       } else errorTip('请选择文件')
     }
-    const handleDelete = (id: any) => {
-      const type = otherInfo.value.type === 'ios' ? 0 : 1
+    const handleDelete = (id: any, type: any) => {
       infoTipBox({
         title: '删除文件',
         message: '确定删除文件吗'

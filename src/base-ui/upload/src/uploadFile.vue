@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-14 09:47:24
- * @LastEditTime: 2022-06-16 11:10:30
+ * @LastEditTime: 2022-06-16 13:44:52
  * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/base-ui/upload/src/upload copy.vue
@@ -302,12 +302,10 @@ export default defineComponent({
           } else iosVersion = props.u3dVersion.iosVersion
           if (props.type === 0) {
             name = `${props.fileTypeName}${file.name.trim()}_${
-              androidVersion === 0 ? 0 : androidVersion + 1
+              androidVersion + 1
             }`
           } else {
-            name = `${props.fileTypeName}${file.name.trim()}_${
-              iosVersion === 0 ? 0 : iosVersion + 1
-            }`
+            name = `${props.fileTypeName}${file.name.trim()}_${iosVersion + 1}`
           }
           client.value.multipartUpload(name, file).then((res: any) => {
             let url = null
@@ -315,20 +313,14 @@ export default defineComponent({
             let version = null
             if (props.type === 0) {
               url = `${props.u3dFileUrl}/${file.name.trim()}_${
-                androidVersion === 0 ? 0 : androidVersion + 1
+                androidVersion + 1
               }`
-              name = `${file.name.trim()}_${
-                androidVersion === 0 ? 0 : androidVersion + 1
-              }`
-              version = androidVersion === 0 ? 0 : androidVersion + 1
+              name = `${file.name.trim()}_${androidVersion + 1}`
+              version = androidVersion + 1
             } else {
-              url = `${props.u3dFileUrl}/${file.name.trim()}_${
-                iosVersion === 0 ? 0 : iosVersion + 1
-              }`
-              name = `${file.name.trim()}_${
-                iosVersion === 0 ? 0 : iosVersion + 1
-              }`
-              version = iosVersion === 0 ? 0 : iosVersion + 1
+              url = `${props.u3dFileUrl}/${file.name.trim()}_${iosVersion + 1}`
+              name = `${file.name.trim()}_${iosVersion + 1}`
+              version = iosVersion + 1
             }
             console.log(url, '拼接后的地址')
             emit('sendOtherValue', {
