@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-06-20 16:07:44
+ * @LastEditTime: 2022-06-20 16:52:43
  * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue

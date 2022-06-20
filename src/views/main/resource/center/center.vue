@@ -155,6 +155,7 @@
     ></property-component>
     <!-- 2. 资源资料 -->
     <resource-component
+      v-if="showResource"
       ref="resourceRef"
       :params="params"
       :edit-type="editType"
@@ -338,6 +339,7 @@ export default defineComponent({
     const resourceRef = ref<any>() // 资源资料
     const itemData = ref<any>()
     const relevanceRef = ref<any>() // 相关关联
+    const showResource = ref<boolean>(false)
     // 新增模态框
     const handleChangeNewData = (item: any) => {
       editType.value = 'add'
@@ -373,6 +375,7 @@ export default defineComponent({
      * @param params 第一次页面传递的参数，新增类型属性时会带有
      */
     const changePage = (item: any, params: any) => {
+      showResource.value = false
       switch (item) {
         case 'property':
           hiddenPage()
@@ -388,6 +391,7 @@ export default defineComponent({
           break
         case 'resource':
           hiddenPage()
+          showResource.value = true
           handleChangeEditData(item, params, 'add')
           break
         case 'relevance':
@@ -626,6 +630,7 @@ export default defineComponent({
       params.value = {
         ...row
       }
+      // showResource.value = false
       switch (type) {
         case 'property':
           hiddenPage()
@@ -687,6 +692,7 @@ export default defineComponent({
           break
         case 'resource':
           hiddenPage()
+          showResource.value = true
           if (editType.value === 'add') {
             resourceRef.value && resourceRef.value.handleEditData(row)
           } else {
@@ -719,6 +725,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
     return {
+      showResource,
       u3dFileUrl,
       getTableData,
       dataStep,
