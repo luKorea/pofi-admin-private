@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-12 13:38:30
- * @LastEditTime: 2022-05-07 14:56:33
+ * @LastEditTime: 2022-06-20 16:07:44
  * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/components/property.vue
@@ -277,6 +277,12 @@ export default defineComponent({
       })
     }
     const editData = (item: any) => {
+      let msId = item.msId
+      if (typeof item.msId === 'string') {
+        console.log(item.msId)
+        msId = msId.split(',').at(-1)
+      } else msId = msId.at(-1)
+      console.log(msId, '格式化的值')
       const value = otherInfo.value
       let vipInt = 0
       if (value.vipInt.length > 0) {
@@ -292,7 +298,7 @@ export default defineComponent({
         keyFunc: item.keyFunc.toString(),
         vipInt,
         specialIcon: value.specialIcon ? value.specialIcon.toString() : [],
-        msId: item.msId.at(-1)
+        msId: msId
       }
       updateProperty(data).then((res: any) => {
         if (res.result === 0) {
@@ -368,6 +374,12 @@ export default defineComponent({
                   vipInt += parseInt(item)
                 })
               }
+              let msId = info.msId
+              if (typeof info.msId === 'string') {
+                console.log(info.msId)
+                msId = msId.split(',').at(-1)
+              } else msId = msId.at(-1)
+              console.log(msId, '格式化的值')
               const data = {
                 ...props.params,
                 updatedTime: undefined,
@@ -378,7 +390,7 @@ export default defineComponent({
                 specialIcon: value.specialIcon
                   ? value.specialIcon.toString()
                   : [],
-                msId: info.msId.at(-1)
+                msId: msId
               }
               updateProperty(data).then((res: any) => {
                 if (res.result === 0) {
