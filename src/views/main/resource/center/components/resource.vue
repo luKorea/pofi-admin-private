@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:08
- * @LastEditTime: 2022-05-10 14:18:54
+ * @LastEditTime: 2022-06-20 16:59:54
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getPic
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/timer copy.vue
@@ -221,7 +221,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, nextTick } from 'vue'
+import { defineComponent, watchEffect, nextTick, onMounted } from 'vue'
 import { resourceModalConfig } from './config/resource.modal'
 import { usePageModal } from '@/hooks/use-page-modal'
 import { useSetLanguage } from '../hooks/use-page-list'
@@ -269,6 +269,10 @@ export default defineComponent({
       requiredField,
       mapIconState
     } = useSetLanguage()
+    onMounted(() => {
+      resetLanguageList()
+      console.log(languageList.value, '重置后的值')
+    })
     // 监听gift
     watchEffect(() => {
       if (languageItem.value) {
