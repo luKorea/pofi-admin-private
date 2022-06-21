@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-06-16 16:13:30
+ * @LastEditTime: 2022-06-21 13:45:46
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -170,14 +170,14 @@
                 size="mini"
                 type="text"
                 v-if="scope.row.forcedUpdate == 1"
-                @click="handleForcedUpdate2(scope.row.id)"
+                @click="handleForcedUpdate2(scope.row.id, scope.row.osType)"
                 >取消强制更新</el-button
               >
               <el-button
                 size="mini"
                 type="text"
                 v-if="scope.row.forcedUpdate == 0"
-                @click="handleForcedUpdate(scope.row.id)"
+                @click="handleForcedUpdate(scope.row.id, scope.row.osType)"
                 >强制更新</el-button
               >
             </div>
@@ -323,9 +323,9 @@ export default defineComponent({
       }
     }
     const getSourceData = (type: any) => {
-      otherInfo.value.type = type === 1 ? 'ios' : 'android'
+      otherInfo.value.type = +type === 1 ? 'ios' : 'android'
       getU3dSourceList({
-        osType: type,
+        osType: +type,
         moId: props.params.moId,
         pageSize: 20,
         currentPage: 1
@@ -370,8 +370,8 @@ export default defineComponent({
     const down = (item: any) => {
       window.open(item.sourceUrl)
     }
-    const handleForcedUpdate2 = (id: any) => {
-      const type = otherInfo.value.type === 'ios' ? 0 : 1
+    const handleForcedUpdate2 = (id: any, type: any) => {
+      // const type = otherInfo.value.type === 'ios' ? 0 : 1
       infoTipBox({
         title: '取消强制更新',
         message: '是否取消强制更新?'
@@ -388,8 +388,8 @@ export default defineComponent({
         })
       })
     }
-    const handleForcedUpdate = (id: any) => {
-      const type = otherInfo.value.type === 'ios' ? 0 : 1
+    const handleForcedUpdate = (id: any, type: any) => {
+      // const type = otherInfo.value.type === 'ios' ? 0 : 1
       infoTipBox({
         title: '强制更新',
         message: '是否强制更新?'
