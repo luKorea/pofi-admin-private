@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:48
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 16:03:28
+ * @LastEditTime: 2022-06-22 10:55:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/service/common-api.ts
  */
@@ -93,7 +93,8 @@ enum getItemUrl {
   versionItem = '/cms/version/getVersion', //版本管理
   goodItem = '/cms/goods/getGoods', // 资源商品
   descriptionItem = '/cms/description/getDescription',
-  contentCenterItem = '/cms/feels/getFeels'
+  contentCenterItem = '/cms/feels/getFeels',
+  painterLibraryItem = '/cms/painter/author/getAuthor'
 }
 
 // 获取单行数据

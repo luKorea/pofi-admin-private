@@ -1,9 +1,10 @@
+import { IPainterLibraryType } from './main/contentCenter/painterWiki/painterLibrary/types'
 import { ICreativeInspirationType } from './main/contentCenter/creativeInspiration/types'
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 11:03:02
+ * @LastEditTime: 2022-06-22 10:32:41
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -48,6 +49,7 @@ import { IAadvertisementBannerType } from './main/ad/banner/types'
 import { IBaseVersionType } from './main/base/version/types'
 import { IResourceHomeType } from './main/resource/index/types'
 import { IUserExperienceType } from './main/contentCenter/userExperience/types'
+import { IPainterTopicType } from './main/contentCenter/painterWiki/painterTopic/types'
 
 export interface IRootState {
   name: string
@@ -112,6 +114,8 @@ export interface IRootWithModule {
   // 内容管理
   userExperienceModule: IUserExperienceType
   creativeInspirationModule: ICreativeInspirationType
+  painterLibraryModule: IPainterLibraryType
+  painterTopicModule: IPainterTopicType
 }
 
 export type IStoreType = IRootState & IRootWithModule

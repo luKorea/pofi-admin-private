@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 11:30:51
+ * @LastEditTime: 2022-06-22 11:28:18
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -20,6 +20,14 @@ getCommonSelectList('resourceCenterType').then((res) => {
   }
 })
 console.log(list)
+
+// 画师职业
+export const painterProfession = [
+  { value: 0, title: '未选择' },
+  { value: 1, title: '商业插画师' },
+  { value: 2, title: '艺术家' },
+  { value: 3, title: '漫画家' }
+]
 
 // 默认作者账号
 export const defaultAuthorList = [
