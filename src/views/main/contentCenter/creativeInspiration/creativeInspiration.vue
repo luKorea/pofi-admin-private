@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 17:09:17
+ * @LastEditTime: 2022-06-22 10:02:54
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -411,7 +411,8 @@ export default defineComponent({
               : []
           areaIds.value = res.data.areaIds
           handleEditData({
-            ...res.data
+            ...res.data,
+            kid: 'FL' + id
           })
         } else errorTip(res.msg)
       })

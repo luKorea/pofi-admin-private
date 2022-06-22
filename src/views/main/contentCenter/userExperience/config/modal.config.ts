@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 15:36:11
+ * @LastEditTime: 2022-06-22 10:04:27
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -12,10 +12,10 @@ export const modalConfig: IForm = {
   title: '用户心得操作',
   formItems: [
     {
-      field: 'id',
+      field: 'kid',
       type: 'input',
       label: '心得编号',
-      placeholder: '系统生成',
+      placeholder: '系统生成，以XD开头',
       otherOptions: {
         disabled: true
       }
