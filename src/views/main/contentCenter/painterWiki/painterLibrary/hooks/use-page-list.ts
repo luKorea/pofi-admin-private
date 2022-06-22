@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 13:43:35
+ * @LastEditTime: 2022-06-22 14:32:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -45,7 +45,8 @@ export function useMapField() {
       otherFieldList.value.urlList = res.data.map((item: any) => {
         return {
           title: item.desc,
-          value: item.type
+          value: item.type,
+          ...item
         }
       })
     }

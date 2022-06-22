@@ -90,6 +90,7 @@
               style="width: 100%"
               multiple
               v-model="otherInfo.contactList"
+              @change="handleChangePrep"
             >
               <el-option
                 v-for="option in otherFieldList.urlList"
@@ -99,6 +100,30 @@
                 >{{ option.title }}</el-option
               >
             </el-select>
+          </div>
+        </el-col>
+      </el-row>
+      <!-- 第三方链接 -->
+      <el-row>
+        <!-- 第三方链接 -->
+        <el-col :span="24">
+          <div class="item-flex">
+            <span class="item-title">第三方链接</span>
+            <editor-table
+              :listData="prepEditList"
+              v-bind="urlModalConfig"
+              :showHeader="false"
+              style="width: 100%"
+            >
+              <template #handler="{ row }">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  @click="handleDeletePrep(row)"
+                  >删除</el-button
+                >
+              </template>
+            </editor-table>
           </div>
         </el-col>
       </el-row>
@@ -155,6 +180,7 @@
 import { defineComponent, ref, watchEffect, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
+import { urlModalConfig } from './config/edit.modal.config'
 
 import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
@@ -164,17 +190,19 @@ import {
   useImageUpload,
   useMapField
 } from './hooks/use-page-list'
-import { getItemData } from '@/service/common-api'
+import { getItemData, deleteItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
 import { mapImageToObject, mapTimeToSearch, _debounce } from '@/utils/index'
 import hyUpload from '@/base-ui/upload'
 import HyEditor from '@/base-ui/editor'
+import editorTable from '@/base-ui/table'
 import { getCommonSelectList } from '@/service/common'
 export default defineComponent({
   name: 'painterLibrary',
   components: {
     hyUpload,
-    HyEditor
+    HyEditor,
+    editorTable
   },
   setup() {
     const [searchFormConfigRef, modalConfigRef, otherFieldList] = useMapField()
@@ -233,10 +261,12 @@ export default defineComponent({
     const newData = () => {
       otherInfo.value = {}
       imgList.value = []
+      editTableStatus.value = 'add'
       resetLanguageList()
     }
     const editData = (item: any) => {
       resetLanguageList()
+      editTableStatus.value = 'edit'
       getItemData('painterLibraryItem', {
         id: item.id
       }).then(async (res: any) => {
@@ -307,11 +337,72 @@ export default defineComponent({
         uid: row
       }
     }
+    // 第三方链接
+    const prepEditList = ref<any>([]) // 主关联资源
+    const editTableStatus = ref<string>('add')
+    const handleChangePrep = (value: any) => {
+      if (value.length > 0) {
+        let prpObj: any = {}
+        let prepEditObj: any = {}
+        let prepEditList2: any = []
+        otherFieldList.value.urlList.map((v: any) => {
+          prpObj[v.value] = v
+        })
+        console.log(prpObj, 'demo')
+        prepEditList.value.map((v: any) => {
+          prepEditObj[v.value] = v
+        })
+        value.map((v: any) => {
+          if (prepEditObj[v]) {
+            prepEditList2.push(prepEditObj[v])
+          } else if (prpObj[v]) {
+            let d = prpObj[v]
+            prepEditList2.push({
+              ...d,
+              url: d.url,
+              iconList: d.url ? [mapImageToObject(d.url)] : []
+            })
+          }
+          prepEditObj[v] = v
+        })
+        prepEditList.value = prepEditList2
+      } else prepEditList.value = []
+    }
+    const handleDeletePrep = (row: any) => {
+      if (editTableStatus.value === 'add') {
+        const checkItem = prepEditList.value.findIndex(
+          (i: any) => i.value === row.value
+        )
+        const selectItem = otherInfo.value.contactList.findIndex(
+          (i: any) => i === row.value
+        )
+        prepEditList.value.splice(checkItem, 1)
+        otherInfo.value.contactList.splice(selectItem, 1)
+      } else {
+        deleteItemData('/cms/painter/author/deleteAuthorChild', {
+          id: row.value
+        }).then((res) => {
+          getItemData('painterLibraryItem', {
+            id: otherInfo.value.id
+          }).then(async (res: any) => {
+            if (res.result === 0) {
+              console.log(res.data, '删除后的数据')
+            } else errorTip(res.msg)
+          })
+        })
+      }
+    }
     return {
       loading,
       authorList,
       getAuthorList,
       handleChangeAuthor,
+      // 可编辑表格
+      urlModalConfig,
+      editTableStatus,
+      handleChangePrep,
+      handleDeletePrep,
+      prepEditList,
       imgLimit,
       imgList,
       imgList1,
