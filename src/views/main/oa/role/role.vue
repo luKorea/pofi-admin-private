@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 16:20:35
+ * @LastEditTime: 2022-06-22 14:01:17
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
 -->
@@ -93,14 +93,22 @@ export default defineComponent({
       editShowTree.value = false
       otherInfo.value = {}
     }
-    const editData = (item: any) => {
+    const editData = async (item: any) => {
       otherInfo.value = {
         id: item.id
       }
       editShowTree.value = true
       const leafKeys = menuMapLeafKeys(item.pids)
       nextTick(() => {
-        elTreeRef.value?.setCheckedKeys(leafKeys, false)
+        const nodes: any[] = []
+        leafKeys.forEach((item: any) => {
+          const node = elTreeRef.value?.getNode(item)
+          if (node?.isLeaf) {
+            //关键，过滤掉不是叶子节点的
+            nodes.push(item)
+          }
+        })
+        elTreeRef.value?.setCheckedKeys(nodes, true)
       })
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

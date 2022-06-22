@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2022-03-17 10:37:58
- * @LastEditTime: 2022-04-22 17:55:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-06-22 10:49:06
+ * @LastEditors: korealu 643949593@qq.com
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: /pofi-admin/src/base-ui/image/src/image.vue
 -->
@@ -17,6 +17,7 @@
       :src="imgSrc"
       :style="{ width: showWidth, height: showHeight }"
       fit="cover"
+      style="border-radius: 4px"
       :preview-src-list="imgList.length > 0 ? imgList : [imgSrc]"
       :lazy="lazy"
     >

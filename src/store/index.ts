@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 10:59:44
+ * @LastEditTime: 2022-06-22 10:32:07
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/index.ts
  */
@@ -69,6 +69,8 @@ import advertisementBannerModule from './main/ad/banner/banner'
 // 内容管理
 import userExperienceModule from './main/contentCenter/userExperience/userExperience'
 import creativeInspirationModule from './main/contentCenter/creativeInspiration/creativeInspiration'
+import painterTopicModule from './main/contentCenter/painterWiki/painterTopic/painterTopic'
+import painterLibraryModule from './main/contentCenter/painterWiki/painterLibrary/painterLibrary'
 
 import { getPageListData } from '@/service/common-api'
 
@@ -213,7 +215,9 @@ const store = createStore<IRootState>({
     advertisementBannerModule,
     // 内容管理
     userExperienceModule,
-    creativeInspirationModule
+    creativeInspirationModule,
+    painterTopicModule,
+    painterLibraryModule
   }
 })
 

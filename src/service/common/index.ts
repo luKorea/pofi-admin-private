@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-11 10:36:34
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 10:25:36
+ * @LastEditTime: 2022-06-22 13:39:05
  * @Description: 下拉列表数据统一获取
  * @FilePath: /pofi-admin/src/service/common/index.ts
  */
@@ -38,7 +38,11 @@ enum commonAPI {
   categoryType = '/cms/index/getAllCategory',
   searchMoIdType = '/cms/mold/searchMold',
   equityType = '/cms/description/getList', // 所属权益
-  contentCenter = '/cms/feels/getFeelsType' // 获得灵感心得分类
+  contentCenter = '/cms/feels/getFeelsType', // 获得灵感心得分类
+  allPainterAuthor = '/cms/painter/author/getAllAuthor', //  获取全部画师列表
+  userCountry = '/cms/painter/author/getUserRegion', // 获取国家地区
+  allLink = '/cms/painter/author/getIcon', //  获取第三方链接
+  jobList = '/cms/userInfo/getJobList' // 获取职业列表
 }
 
 // 公用API获取不同下拉列表。存在的暂时不修改，后续再统一修改

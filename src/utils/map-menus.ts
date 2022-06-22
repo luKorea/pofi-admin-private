@@ -109,6 +109,7 @@ export function menuMapLeafKeys(menus: any) {
   for (const menu of userHasMenu) {
     leftKeys.push(menu)
   }
+  console.log(leftKeys, 'userMenu')
   // const _recurseGetLeaf = (menuList: any[]) => {
   //   for (const menu of menuList) {
   //     if (menu.children) {
