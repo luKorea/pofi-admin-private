@@ -13,11 +13,6 @@ export const prepModalConfig: TableConfig = {
       prop: 'nickId',
       label: 'nickID'
     },
-    // {
-    //   prop: 'sale',
-    //   label: '价格(P币)',
-    //   width: '100'
-    // },
     {
       prop: 'openType',
       label: '资源类型'
@@ -28,27 +23,6 @@ export const prepModalConfig: TableConfig = {
         type: 'handler'
       }
     }
-    // {
-    //   prop: 'snId',
-    //   label: '商品ID(折扣)',
-    //   editInfo: {
-    //     type: 'input',
-    //     placeholder: '商品ID(折扣)',
-    //     disabled: false
-    //   }
-    // },
-    // {
-    //   prop: 'endTime',
-    //   label: '结束时间',
-    //   isEdit: false,
-    //   editInfo: {
-    //     type: 'datetime',
-    //     otherOptions: {
-    //       placeholder: '请输入结束时间',
-    //       valueFormat: 'YYYY-MM-DD HH:mm:ss'
-    //     }
-    //   }
-    // }
   ],
   showIndexColumn: false,
   showSelectColumn: false,
