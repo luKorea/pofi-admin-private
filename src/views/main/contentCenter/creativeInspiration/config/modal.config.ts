@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 17:11:23
+ * @LastEditTime: 2022-06-22 10:04:11
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/device/imei/config/modal.config.ts
  */
@@ -12,10 +12,10 @@ export const modalConfig: IForm = {
   title: '创作灵感操作',
   formItems: [
     {
-      field: 'id',
+      field: 'kid',
       type: 'input',
       label: '灵感编号',
-      placeholder: '系统生成',
+      placeholder: '系统生成, 以FL开头',
       otherOptions: {
         disabled: true
       }
