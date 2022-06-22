@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 14:01:17
+ * @LastEditTime: 2022-06-22 14:12:32
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/oa/role/role.vue
 -->
@@ -95,7 +95,8 @@ export default defineComponent({
     }
     const editData = async (item: any) => {
       otherInfo.value = {
-        id: item.id
+        id: item.id,
+        pids: item.pids
       }
       editShowTree.value = true
       const leafKeys = menuMapLeafKeys(item.pids)
