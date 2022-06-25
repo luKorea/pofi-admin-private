@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-30 13:42:24
+ * @LastEditTime: 2022-06-24 11:41:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -92,7 +92,8 @@ export default defineComponent({
     const editData = (item: any) => {
       item.PBId = 'PB' + item.id
       otherInfo.value = {
-        id: item.id
+        id: item.id,
+        snId: item.snId
       }
     }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-29 16:26:03
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-06-24 14:21:13
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/tradeRecord/tradeRecord.ts
  */
@@ -70,7 +70,10 @@ const goodsFunctionModule: Module<IGoodsFunctionType, IRootState> = {
       const id = payload.queryInfo.id
       const pageUrl =
         apiList[pageName] + cultureDifferentType('delete', pageName)
-      const data = await deletePageToQueryData(pageUrl, { id: id })
+      const data = await deletePageToQueryData(pageUrl, {
+        id: id,
+        snId: payload.queryInfo.snId
+      })
       if (data.result === 0) {
         // 3.重新请求最新的数据
         dispatch('getPageListAction', {
