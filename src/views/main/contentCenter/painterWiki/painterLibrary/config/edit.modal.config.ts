@@ -12,14 +12,14 @@ export const urlModalConfig: TableConfig = {
       }
     },
     {
-      prop: 'desc',
+      prop: 'platform',
       label: '平台',
       editInfo: {
         type: 'input'
       }
     },
     {
-      prop: 'url',
+      prop: 'jump',
       label: '值',
       editInfo: {
         type: 'input'

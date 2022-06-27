@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 14:32:19
+ * @LastEditTime: 2022-06-27 11:54:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -12,23 +12,80 @@ import { getCommonSelectList } from '@/service/common'
 import { usePageLanguage } from '@/hooks/use-page-language'
 import { searchFormConfig } from '../config/search.config'
 import { modalConfig } from '../config/modal.config'
-import { painterProfession } from '@/utils/select-list/map-resource-list'
+
+// 国家下拉
+export function useCountrySelect() {
+  const [, , otherFieldList] = useMapField()
+  const otherInfo = ref<any>()
+  const areaIds = ref<any>([])
+  const handleChangeCountry = (item: any[]) => {
+    const all: any[] = []
+    const check = item.find((i: any) => i === -1)
+    if (check === -1) {
+      otherFieldList.value.countryList
+        .filter((i: any) => i.id !== -1)
+        .forEach((item: any) => {
+          all.push(item.id)
+        })
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: all
+      }
+      areaIds.value = all
+    } else {
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: item
+      }
+    }
+  }
+  // 判断用户是否有选择地区，没有的话将下拉数据循环并发送到后台
+  watchEffect(() => {
+    if (areaIds.value.length === 0) {
+      const region: any[] = []
+      otherFieldList.value.countryList
+        .filter((i: any) => i.id !== -1)
+        .forEach((item: any) => {
+          region.push(item.id)
+        })
+      otherInfo.value = {
+        ...otherInfo.value,
+        areaIds: region
+      }
+    }
+  })
+  return [otherInfo, areaIds, handleChangeCountry]
+}
 
 export function useMapField() {
   const otherFieldList = ref<any>({
     urlList: [],
+    painterCountryList: [],
     countryList: [],
     jobList: []
   })
   getCommonSelectList('userCountry').then((res) => {
     if (!res.result) {
-      otherFieldList.value.countryList = res.data?.regions.map((item: any) => {
-        return {
-          title: item.v,
-          value: item.k
+      otherFieldList.value.painterCountryList = res.data?.regions.map(
+        (item: any) => {
+          return {
+            title: item.v,
+            value: item.k
+          }
         }
-      })
+      )
     }
+  })
+  getCommonSelectList('country').then((res) => {
+    if (res.state) {
+      otherFieldList.value.countryList.push(
+        {
+          name: '全部',
+          id: -1
+        },
+        ...res.data.rows
+      )
+    } else errorTip(res.msg)
   })
   getCommonSelectList('jobList').then((res) => {
     if (!res.result) {
@@ -67,12 +124,12 @@ export function useMapField() {
     )
     platform!.options = otherFieldList.value.urlList
     const region = searchFormConfig.formItems.find((i) => i.field === 'region')
-    region!.options = otherFieldList.value.countryList
+    region!.options = otherFieldList.value.painterCountryList
     return searchFormConfig
   })
   const modalConfigRef = computed(() => {
     const region = modalConfig.formItems.find((i) => i.field === 'region')
-    region!.options = otherFieldList.value.countryList
+    region!.options = otherFieldList.value.painterCountryList
     const job = modalConfig.formItems.find((i) => i.field === 'job')
     job!.options = otherFieldList.value.jobList
     const keywordList = modalConfig.formItems.find(

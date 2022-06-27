@@ -17,6 +17,15 @@
       <!-- <template #isJob="{ row }">
         {{ $filters.formatSelectTitle(row.job, otherFieldList.jobList) }}
       </template> -->
+      isRegion
+      <template #isRegion="{ row }">
+        {{
+          $filters.formatSelectTitle(
+            +row.region,
+            otherFieldList.painterCountryList
+          )
+        }}
+      </template>
       <template #isImage="{ row }">
         <page-image :img-src="row.iconUrl"></page-image>
       </template>
@@ -89,15 +98,39 @@
               placeholder="请选择第三方链接"
               style="width: 100%"
               multiple
-              v-model="otherInfo.contactList"
+              v-model="otherInfo.contactList1"
               @change="handleChangePrep"
             >
               <el-option
                 v-for="option in otherFieldList.urlList"
                 :key="option.value"
-                :value="option.value"
+                :value="option.title"
                 :label="option.title"
                 >{{ option.title }}</el-option
+              >
+            </el-select>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="12">
+        <el-col v-bind="modalConfigRef.colLayout">
+          <div class="item-flex">
+            <span class="item-title">地区</span>
+            <el-select
+              placeholder="请选择国家地区，不选默认全部"
+              style="width: 100%"
+              clearable
+              v-model="areaIds"
+              multiple
+              collapse-tags
+              @change="handleChangeCountry($event)"
+            >
+              <el-option
+                v-for="option in otherFieldList.countryList"
+                :key="option.id"
+                :value="option.id"
+                :label="option.name"
+                >{{ option.name }}</el-option
               >
             </el-select>
           </div>
@@ -108,7 +141,7 @@
         <!-- 第三方链接 -->
         <el-col :span="24">
           <div class="item-flex">
-            <span class="item-title">第三方链接</span>
+            <span class="item-title">第三方链接列表</span>
             <editor-table
               :listData="prepEditList"
               v-bind="urlModalConfig"
@@ -188,7 +221,8 @@ import {
   useStoreName,
   useSetLanguage,
   useImageUpload,
-  useMapField
+  useMapField,
+  useCountrySelect
 } from './hooks/use-page-list'
 import { getItemData, deleteItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
@@ -197,6 +231,7 @@ import hyUpload from '@/base-ui/upload'
 import HyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { getCommonSelectList } from '@/service/common'
+import { successTip } from '../../../../../utils/tip-info'
 export default defineComponent({
   name: 'painterLibrary',
   components: {
@@ -219,8 +254,12 @@ export default defineComponent({
     ] = useSetLanguage()
     const [storeTypeInfo, operationName] = useStoreName()
     const [pageContentRef, handleResetClick, handleQueryClick] = usePageSearch()
-    const otherInfo = ref<any>({})
+    const [otherInfo, areaIds, handleChangeCountry] = useCountrySelect()
     const [imgLimit, imgList, imgList1] = useImageUpload()
+    // 第三方链接
+    const prepEditList = ref<any>([]) // 主关联资源
+    const editTableStatus = ref<string>('add')
+    // 国家地区
     const handleQueryBtnClick = (data: any) => {
       const beginDate = mapTimeToSearch(data.dateTime).start
       const endDate = mapTimeToSearch(data.dateTime).end
@@ -255,20 +294,25 @@ export default defineComponent({
       }
       otherInfo.value = {
         ...otherInfo.value,
-        functionExplainTypeJson: JSON.stringify(languageList.value)
+        authorVoList: languageList.value,
+        contactList: prepEditList.value
+        // authorVoJson: JSON.stringify(languageList.value),
+        // contactList: JSON.stringify(prepEditList.value)
       }
     })
     const newData = () => {
       otherInfo.value = {}
+      areaIds.value = []
       imgList.value = []
       editTableStatus.value = 'add'
+      prepEditList.value = []
       resetLanguageList()
     }
     const editData = (item: any) => {
       resetLanguageList()
       editTableStatus.value = 'edit'
       getItemData('painterLibraryItem', {
-        id: item.id
+        paid: item.paid
       }).then(async (res: any) => {
         if (res.result === 0) {
           imgList.value = []
@@ -279,11 +323,41 @@ export default defineComponent({
           if (res.data.bgUrl) {
             imgList1.value.push(mapImageToObject(res.data.bgUrl))
           }
+          areaIds.value = res.data.areaIds
           otherInfo.value = {
             id: res.data.id,
             uid: res.data.uid,
+            paid: res.data.paid,
+            areaIds: res.data.areaIds,
             nickName: res.data.nickName ? res.data.nickName : ''
           }
+          if (res.data?.contactList?.length > 0) {
+            prepEditList.value = res.data.contactList.map((item: any) => {
+              return {
+                ...item,
+                jump: item.jump,
+                iconList: item.icon ? [mapImageToObject(item.icon)] : []
+              }
+            })
+            const a = res.data.contactList.map((item: any) => item.platform)
+            let b: any[] = []
+            b = a.map((item: any) => {
+              const findItem = otherFieldList.value.urlList.find(
+                (i: any) => i.desc === item
+              )
+              if (findItem) {
+                return findItem.desc
+              }
+            })
+            await nextTick()
+            if (b[0] !== undefined) {
+              otherInfo.value.contactList1 = b
+            }
+          }
+          //   otherInfo.value.contactList1 = res.data.contactList.map(
+          //     (item: any) => item.id
+          //   )
+          // }
           if (res.data?.authorVoList?.length > 0) {
             const info = languageList.value.map((item: any) => {
               let result = res.data.authorVoList.find(
@@ -307,7 +381,8 @@ export default defineComponent({
           }
           handleEditData({
             ...res.data,
-            kid: item.id
+            kid: 'PR' + item.id,
+            region: +res.data.region
           })
         } else errorTip(res.msg)
       })
@@ -337,30 +412,31 @@ export default defineComponent({
         uid: row
       }
     }
-    // 第三方链接
-    const prepEditList = ref<any>([]) // 主关联资源
-    const editTableStatus = ref<string>('add')
+
     const handleChangePrep = (value: any) => {
       if (value.length > 0) {
         let prpObj: any = {}
         let prepEditObj: any = {}
         let prepEditList2: any = []
         otherFieldList.value.urlList.map((v: any) => {
-          prpObj[v.value] = v
+          prpObj[v.desc] = v
         })
-        console.log(prpObj, 'demo')
         prepEditList.value.map((v: any) => {
-          prepEditObj[v.value] = v
+          prepEditObj[v.platform] = v
+          console.log(prepEditObj[v.platform])
         })
         value.map((v: any) => {
+          console.log(v, 'v')
           if (prepEditObj[v]) {
             prepEditList2.push(prepEditObj[v])
           } else if (prpObj[v]) {
             let d = prpObj[v]
             prepEditList2.push({
               ...d,
-              url: d.url,
-              iconList: d.url ? [mapImageToObject(d.url)] : []
+              icon: d.url,
+              platform: d.desc,
+              iconList: d.url ? [mapImageToObject(d.url)] : [],
+              jump: d.jump
             })
           }
           prepEditObj[v] = v
@@ -373,22 +449,26 @@ export default defineComponent({
         const checkItem = prepEditList.value.findIndex(
           (i: any) => i.value === row.value
         )
-        const selectItem = otherInfo.value.contactList.findIndex(
+        const selectItem = otherInfo.value.contactList1.findIndex(
           (i: any) => i === row.value
         )
         prepEditList.value.splice(checkItem, 1)
-        otherInfo.value.contactList.splice(selectItem, 1)
+        otherInfo.value.contactList1.splice(selectItem, 1)
       } else {
         deleteItemData('/cms/painter/author/deleteAuthorChild', {
-          id: row.value
+          id: row.id,
+          paid: otherInfo.value.paid
         }).then((res) => {
-          getItemData('painterLibraryItem', {
-            id: otherInfo.value.id
-          }).then(async (res: any) => {
-            if (res.result === 0) {
-              console.log(res.data, '删除后的数据')
-            } else errorTip(res.msg)
-          })
+          if (res.result === 0) {
+            successTip(res.msg)
+            getItemData('painterLibraryItem', {
+              paid: otherInfo.value.paid
+            }).then(async (res: any) => {
+              if (res.result === 0) {
+                console.log(res.data, '删除后的数据')
+              } else errorTip(res.msg)
+            })
+          }
         })
       }
     }
@@ -397,6 +477,9 @@ export default defineComponent({
       authorList,
       getAuthorList,
       handleChangeAuthor,
+      // 国家地区
+      areaIds,
+      handleChangeCountry,
       // 可编辑表格
       urlModalConfig,
       editTableStatus,

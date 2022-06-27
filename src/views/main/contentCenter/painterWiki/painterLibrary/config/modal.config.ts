@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 13:43:57
+ * @LastEditTime: 2022-06-27 14:13:48
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -69,14 +69,14 @@ export const modalConfig: IForm = {
       options: [],
       otherOptions: {
         multiple: true
-      },
-      rules: [
-        {
-          required: true,
-          message: '请选择标签关键字',
-          trigger: 'blur'
-        }
-      ]
+      }
+      // rules: [
+      //   {
+      //     required: true,
+      //     message: '请选择标签关键字',
+      //     trigger: 'blur'
+      //   }
+      // ]
     },
     {
       field: 'status',
