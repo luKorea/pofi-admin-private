@@ -185,7 +185,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watchEffect, nextTick } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watchEffect,
+  nextTick,
+  watch
+} from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -287,19 +294,19 @@ export default defineComponent({
         // }
       }
     }
-    watchEffect(() => {
-      console.log(languageItem, 'languageItem')
-      if (languageItem?.value?.childListStr?.length > 0) {
-        let newData: any[] = []
-        newData = languageItem.value.childListStr.map((item: any) => {
-          return {
-            ...item,
-            cover: item.url && item.url.length > 0 ? item.url[0].url : ''
-          }
-        })
-        languageItem.value.childListStr = newData
-      }
-    })
+    // watchEffect(() => {
+    //   console.log(languageItem, 'languageItem')
+    //   if (languageItem?.value?.childListStr?.length > 0) {
+    //     let newData: any[] = []
+    //     newData = languageItem.value.childListStr.map((item: any) => {
+    //       return {
+    //         ...item,
+    //         cover: item.url && item.url.length > 0 ? item.url[0].url : ''
+    //       }
+    //     })
+    //     languageItem.value.childListStr = newData
+    //   }
+    // })
     // 多语言
     const [
       editorRef,
@@ -540,9 +547,17 @@ export default defineComponent({
         }
       }
       const indexJSON = languageList.value.map((i: any) => {
+        let res: any[] = []
+        res = i.childListStr.map((z: any) => {
+          return {
+            ...z,
+            cover: z?.url?.length > 0 ? z.url[0].url : ''
+          }
+        })
+        console.log(res, 'res')
         return {
           ...i,
-          childListStr: JSON.stringify(i.childListStr)
+          childListStr: JSON.stringify(res)
         }
       })
       otherInfo.value = {
