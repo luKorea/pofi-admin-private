@@ -242,6 +242,7 @@
           </el-col>
         </template>
       </el-row>
+      <slot name="other"></slot>
     </el-form>
     <div class="footer">
       <slot name="footer"></slot>
