@@ -4,7 +4,7 @@ const painterLibrary = () =>
   )
 export default {
   path: '/painterWiki/painterLibrary',
-  name: 'painterLibrary',
+  name: 'painterLibraryInfo',
   component: painterLibrary,
   children: []
 }
