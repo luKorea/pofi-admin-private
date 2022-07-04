@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 10:31:07
+ * @LastEditTime: 2022-07-04 15:58:13
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -14,15 +14,15 @@ import { IPainterTopicType } from './types'
 
 import {
   getPageListData,
-  createPageData,
-  editPageData,
   deletePageToQueryData,
-  sortPageTableData
+  sortPageTableData,
+  createPageDataJSON,
+  editPageDataJSON
 } from '@/service/common-api'
 
 const apiList: any = {
-  painterTopics: '/cms/painter/author/',
-  sort: '/cms/painter/author/updateSort'
+  painterTopics: '/cms/painter/index/',
+  sort: '/cms/painter/index/updateSort'
 }
 let queryInfo: any = {
   currentPage: 1,
@@ -59,7 +59,9 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
       const pageName = payload.pageName
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
-        ...queryInfo
+        ...queryInfo,
+        type: queryInfo.type ?? 1,
+        rid: queryInfo.rid ?? -999
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
@@ -71,11 +73,11 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
     async deletePageDataAction({ dispatch }, payload: any) {
       const pageName = payload.pageName
       const id = payload.queryInfo.id
-      const pageUrl = apiList[pageName] + 'deleteAuthor'
+      const pageUrl = apiList[pageName] + 'deleteIndex'
       const data = await deletePageToQueryData(pageUrl, {
         id: id,
-        name: payload.queryInfo.name,
-        iso: payload.queryInfo.iso
+        type: payload.queryInfo.type,
+        paid: payload.queryInfo.paid
       })
       if (data.result === 0) {
         // 3.重新请求最新的数据
@@ -92,15 +94,11 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const validData = JSON.parse(newData.functionExplainTypeJson)[0]
-        validateParamsRules(
-          JSON.parse(newData.functionExplainTypeJson),
-          validData,
-          requiredField
-        )
+        const validData = newData.indexVoList[0]
+        validateParamsRules(newData.indexVoList, validData, requiredField)
           .then(async () => {
-            const pageUrl = apiList[pageName] + 'addAuthor'
-            const data = await createPageData(pageUrl, {
+            const pageUrl = apiList[pageName] + 'addIndex'
+            const data = await createPageDataJSON(pageUrl, {
               ...newData,
               ...validData
             })
@@ -122,15 +120,11 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.编辑数据的请求
         const { pageName, editData } = payload
-        const validData = JSON.parse(editData.functionExplainTypeJson)[0]
-        validateParamsRules(
-          JSON.parse(editData.functionExplainTypeJson),
-          validData,
-          requiredField
-        )
+        const validData = editData.indexVoList[0]
+        validateParamsRules(editData.indexVoList, validData, requiredField)
           .then(async () => {
-            const pageUrl = apiList[pageName] + 'updateAuthor'
-            const data = await editPageData(pageUrl, {
+            const pageUrl = apiList[pageName] + 'updateIndex'
+            const data = await editPageDataJSON(pageUrl, {
               ...validData,
               ...editData,
               id: editData.id
