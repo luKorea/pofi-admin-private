@@ -2,8 +2,8 @@
 ###
  # @Author: korealu
  # @Date: 2022-03-08 15:23:56
- # @LastEditors: Please set LastEditors
- # @LastEditTime: 2022-04-27 10:31:28
+ # @LastEditors: korealu 643949593@qq.com
+ # @LastEditTime: 2022-07-04 09:52:28
  # @Description: file content
  # @FilePath: /h5-active-v2/push.sh
 ###
@@ -14,6 +14,6 @@ baseball=$(
 cd "$baseball" || exit
 git add .
 npm run commit
-git push origin -u master
-# git push pofi
+git push origin
+git push pofi
 # git push pofi-create
