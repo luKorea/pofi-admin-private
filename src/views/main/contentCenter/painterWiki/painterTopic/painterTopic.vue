@@ -1,5 +1,5 @@
 <template>
-  <div class="painterLibrary-wrap hg-flex">
+  <div class="painterLibrary-wrap hg-flex" v-if="0">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"

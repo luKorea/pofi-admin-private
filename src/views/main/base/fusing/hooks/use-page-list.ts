@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 16:32:39
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-04 17:42:42
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/fusing/hooks/use-page-list.ts
  */
@@ -12,10 +12,10 @@ import { getCountrySelectList } from '@/service/common'
 
 export function usePageList() {
   const countryList = ref<any>([
-    {
-      name: '全部',
-      id: -999
-    }
+    // {
+    //   name: '全部',
+    //   id: -999
+    // }
   ])
   const getCountryList = () => {
     getCountrySelectList().then((res) => {

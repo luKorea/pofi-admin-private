@@ -246,7 +246,7 @@ export default defineComponent({
       usePageModal(newData)
     return {
       // 侧边国家
-      ...useMapCountry(),
+      ...useMapCountry(false),
       areaIds,
       countryList,
       handleChangeCountry,

@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 10:54:49
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-04 17:45:55
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -23,6 +23,9 @@ import {
   deletePageToQueryData
 } from '@/service/common-api'
 import { sortPageTableData } from '@/service/common-api'
+import { useMapCountry } from '@/hooks/use-page-side-country'
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 
 const apiList: any = {
   questionTypes: '/cms/question/type/',
@@ -64,7 +67,8 @@ const helpQuestionTypeModule: Module<IHelpQuestionTypeType, IRootState> = {
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
-        rid: queryInfo.rid ?? -999
+        rid: queryInfo.rid ?? handleCountryList.value[0].id
+        // rid: queryInfo.rid ?? -999
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any

@@ -234,11 +234,7 @@ import editorTable from '@/base-ui/table'
 import { getCommonSelectList } from '@/service/common'
 import { successTip } from '../../../../../utils/tip-info'
 export default defineComponent({
-<<<<<<< HEAD
-  name: 'painterLibrary',
-=======
   name: 'contentCenterPainterLibrary',
->>>>>>> ad74c60 (feat(painterwiki/paintertopic): 新增画师专题静态页面)
   components: {
     hyUpload,
     HyEditor,

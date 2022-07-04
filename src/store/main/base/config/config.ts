@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-07 11:01:44
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-04 17:41:56
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/config/config.ts
  */
@@ -22,6 +22,9 @@ import {
   editPageData
 } from '@/service/common-api'
 import { successTip, errorTip } from '@/utils/tip-info'
+import { useMapCountry } from '@/hooks/use-page-side-country'
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 
 const apiList: any = {
   records: '/cms/config/'
@@ -62,7 +65,8 @@ const baseConfigModule: Module<IBaseConfigType, IRootState> = {
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
-        rid: queryInfo.rid ?? -999,
+        // rid: queryInfo.rid ?? -999,
+        rid: queryInfo.rid ?? handleCountryList.value[0].id,
         group: queryInfo.group ?? ''
       })
       if (pageResult.result === 0) {

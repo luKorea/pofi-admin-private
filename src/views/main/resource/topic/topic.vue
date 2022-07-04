@@ -621,7 +621,7 @@ export default defineComponent({
       handleDeleteEditTableData,
       handleDrawTable,
       // 侧边国家
-      ...useMapCountry(),
+      ...useMapCountry(false),
       // 下拉框数据
       areaIds,
       author,

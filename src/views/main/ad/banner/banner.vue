@@ -579,7 +579,7 @@ export default defineComponent({
       usePageModal(newData, editData)
     return {
       ...useMapFormData(),
-      ...useMapCountry(),
+      ...useMapCountry(false),
       // 多语言
       languageList,
       languageId,

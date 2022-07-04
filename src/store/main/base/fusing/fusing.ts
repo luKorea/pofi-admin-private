@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: korealu
- * @LastEditTime: 2022-03-14 16:56:28
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-04 17:43:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/fusing/fusing.ts
  */
@@ -18,6 +18,9 @@ import {
   editPageData
 } from '@/service/common-api'
 import { successTip, errorTip } from '@/utils/tip-info'
+import { useMapCountry } from '@/hooks/use-page-side-country'
+// 这里获取第一位数据
+const { handleCountryList } = useMapCountry(false)
 
 const apiList: any = {
   fusings: '/cms/fusing/'
@@ -57,7 +60,8 @@ const baseFusingModule: Module<IBaseFusingType, IRootState> = {
       const pageUrl = apiList[pageName] + 'getRecords'
       const pageResult = await getPageListData(pageUrl, {
         ...queryInfo,
-        rid: queryInfo.rid ?? -999
+        rid: queryInfo.rid ?? handleCountryList.value[0].id
+        // rid: queryInfo.rid ?? -999
       })
       if (pageResult.result === 0) {
         const { rows, total } = pageResult.data as any
