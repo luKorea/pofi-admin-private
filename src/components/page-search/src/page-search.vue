@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-08 09:30:45
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 09:37:14
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-04 11:31:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/components/page-search/src/page-search.vue
 -->
@@ -39,6 +39,10 @@
           : 'animate__animated animate__fadeIn'
       "
     >
+      <!-- 其他插槽 -->
+      <template #other>
+        <slot></slot>
+      </template>
       <!-- <template #header>
         <span class="hg-flex">条件筛选</span>
       </template> -->
@@ -93,7 +97,10 @@ export default defineComponent({
     const formItems = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
     for (const item of formItems) {
-      formOriginData[item.field] = ''
+      // 新增配置默认值功能
+      if (!item.defaultValue) {
+        formOriginData[item.field] = ''
+      } else formOriginData[item.field] = item.defaultValue
     }
     const formData = ref(formOriginData)
 
@@ -109,7 +116,9 @@ export default defineComponent({
 
     // 3.优化三: 当用户点击搜索
     const handleQueryClick = () => {
-      emit('queryBtnClick', formData.value)
+      emit('queryBtnClick', {
+        ...formData.value
+      })
     }
     const doIt = () => {
       console.log(1)

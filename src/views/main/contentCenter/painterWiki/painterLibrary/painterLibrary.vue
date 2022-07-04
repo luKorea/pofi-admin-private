@@ -1,10 +1,11 @@
 <template>
-  <div class="base-languages">
+  <div class="painterLibrary-wrap">
     <page-search
       :searchFormConfig="searchFormConfigRef"
       @resetBtnClick="handleResetClick"
       @queryBtnClick="handleQueryBtnClick"
-    />
+    >
+    </page-search>
     <page-content
       ref="pageContentRef"
       :contentTableConfig="contentTableConfig"

@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-27 14:13:48
+ * @LastEditTime: 2022-07-04 10:50:59
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -83,6 +83,7 @@ export const modalConfig: IForm = {
       type: 'select',
       label: '展示状态',
       placeholder: '请选择展示状态',
+      defaultValue: 1,
       options: [
         {
           title: '显示',
