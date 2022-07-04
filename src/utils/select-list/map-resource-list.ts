@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-03-10 14:13:12
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-01 09:31:06
+ * @LastEditTime: 2022-07-04 14:01:28
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/select-list/map-resource-list.ts
  */
@@ -20,6 +20,12 @@ getCommonSelectList('resourceCenterType').then((res) => {
   }
 })
 console.log(list)
+
+// 画师专题类型
+export const painterTopicList = [
+  { value: 1, title: '画师专题' },
+  { value: 2, title: '推荐专题' }
+]
 
 // 画师职业
 export const painterProfession = [
