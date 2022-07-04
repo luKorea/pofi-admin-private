@@ -168,6 +168,11 @@ export default defineComponent({
     HyTable
   },
   props: {
+    // 默认值
+    defaultSearchValue: {
+      type: Object,
+      default: () => ({})
+    },
     showHeader: {
       type: Boolean,
       default: true
@@ -246,6 +251,7 @@ export default defineComponent({
     }
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
+      console.log(props.defaultSearchValue, '默认值')
       // console.log(queryInfo, '用户传递的参数')
       backQueryInfo.value = queryInfo
       if (!permissionList.value.isQuery) return
@@ -255,7 +261,8 @@ export default defineComponent({
           // currentPage: pageInfo.value.currentPage * pageInfo.value.pageSize, //使用偏移量
           currentPage: pageInfo.value.currentPage,
           pageSize: pageInfo.value.pageSize,
-          ...backQueryInfo.value
+          ...backQueryInfo.value,
+          ...props.defaultSearchValue
         }
       })
     }
