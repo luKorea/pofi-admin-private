@@ -3,7 +3,7 @@
  * @Author: korealu
  * @Date: 2022-02-14 13:44:49
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-16 09:52:31
+ * @LastEditTime: 2022-07-04 17:27:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/utils/index.ts
  */
@@ -141,7 +141,7 @@ export function mapRangeToSearch(start: any, end: any) {
 }
 // 处理当前系统环境
 export function handleChangeEnv(env: number | string) {
-  let title = 'Pofi Create 后台管理系统 · '
+  let title = 'Pofi 无限人偶 后台管理系统 · '
   let color = '#F5D67D'
   let u3dFileUrl = ''
   let fileDir = ''
