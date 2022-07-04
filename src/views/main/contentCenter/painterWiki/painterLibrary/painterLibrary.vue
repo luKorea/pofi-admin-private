@@ -231,9 +231,9 @@ import hyUpload from '@/base-ui/upload'
 import HyEditor from '@/base-ui/editor'
 import editorTable from '@/base-ui/table'
 import { getCommonSelectList } from '@/service/common'
-import { successTip } from '../../../../../utils/tip-info'
+import { successTip } from '@/utils/tip-info'
 export default defineComponent({
-  name: 'painterLibrary',
+  name: 'painterLibraryComponent',
   components: {
     hyUpload,
     HyEditor,
