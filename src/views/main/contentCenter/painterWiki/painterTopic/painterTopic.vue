@@ -214,9 +214,6 @@ import { useMapCountry } from '@/hooks/use-page-side-country'
 import editorTable from '@/base-ui/table'
 import { successTip } from '@/utils/tip-info'
 export default defineComponent({
-<<<<<<< HEAD
-  name: 'painterTopic',
-=======
   name: 'contentCenterPainterTopic',
   components: {
     HyEditor,
@@ -224,7 +221,6 @@ export default defineComponent({
     PageCountry,
     editorTable
   },
->>>>>>> ad74c60 (feat(painterwiki/paintertopic): 新增画师专题静态页面)
   setup() {
     const showDifferentContent = ref<number>(1)
     const handleChangeSelect = (item: any) => {
