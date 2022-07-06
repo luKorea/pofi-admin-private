@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 15:58:13
+ * @LastEditTime: 2022-07-06 16:15:35
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/base/language/language.ts
  */
@@ -100,7 +100,10 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
             const pageUrl = apiList[pageName] + 'addIndex'
             const data = await createPageDataJSON(pageUrl, {
               ...newData,
-              ...validData
+              ...validData,
+              rcmdPo: newData.contactList1
+                ? newData.contactList1.toString()
+                : undefined
             })
             if (data.result === 0) {
               // 2.请求最新的数据
@@ -127,7 +130,10 @@ const painterTopicModule: Module<IPainterTopicType, IRootState> = {
             const data = await editPageDataJSON(pageUrl, {
               ...validData,
               ...editData,
-              id: editData.id
+              id: editData.id,
+              rcmdPo: editData.contactList1
+                ? editData.contactList1.toString()
+                : undefined
             })
             if (data.result === 0) {
               // 2.请求最新的数据
