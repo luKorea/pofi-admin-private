@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:30
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 13:57:53
+ * @LastEditTime: 2022-07-06 15:59:41
  * @Description: file content
  * @FilePath: /pofi-admin/vue.config.js
  */
@@ -67,7 +67,11 @@ module.exports = {
         // 打包优化
         minChunks: 3,
         name: 'vendor'
-      })
+      }),
+      (config.devtool = isProduction
+        ? 'source-map'
+        : 'eval-cheap-module-source-map'),
+      console.log(config, 'config', config.devtool)
   },
   chainWebpack: (config) => {
     config.module.rule('javascript/auto').test(/\.mjs$/)
