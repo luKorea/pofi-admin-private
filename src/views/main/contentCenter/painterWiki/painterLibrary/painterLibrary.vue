@@ -297,8 +297,6 @@ export default defineComponent({
         ...otherInfo.value,
         authorVoList: languageList.value,
         contactList: prepEditList.value
-        // authorVoJson: JSON.stringify(languageList.value),
-        // contactList: JSON.stringify(prepEditList.value)
       }
     })
     const newData = () => {
