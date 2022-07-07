@@ -1,5 +1,5 @@
 <template>
-  <div class="painterLibrary-wrap hg-flex" v-if="0">
+  <div class="painterLibrary-wrap hg-flex">
     <page-country
       ref="countryRef"
       :countryList="handleCountryList"
@@ -52,9 +52,9 @@
                 <span class="item-tip">*</span> 封面图
               </span>
               <hy-upload
-                :limit="1"
+                :limit="imgLimit"
                 fileTypeName="painterLibrary/"
-                v-model:value="otherInfo.coverList"
+                v-model:value="imgList"
               ></hy-upload>
             </div>
           </el-col>
@@ -190,18 +190,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect, nextTick } from 'vue'
+import { defineComponent, ref, watch, nextTick } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 import { urlModalConfig } from './config/edit.modal.config'
 
-import { usePageSearch } from '@/hooks/use-page-search'
 import { usePageModal } from '@/hooks/use-page-modal'
 import {
   useStoreName,
   useSetLanguage,
   useMapField,
-  useCountrySelect
+  useCountrySelect,
+  useImageUpload
 } from './hooks/use-page-list'
 import { getItemData, deleteItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
@@ -222,6 +222,7 @@ export default defineComponent({
     editorTable
   },
   setup() {
+    const [imgLimit, imgList] = useImageUpload()
     const showDifferentContent = ref<number>(1)
     const handleChangeSelect = (item: any) => {
       if (item.field === 'type' && item.value === 1) {
@@ -259,31 +260,33 @@ export default defineComponent({
     // 第三方链接
     const prepEditList = ref<any>([]) // 主关联资源
     const editTableStatus = ref<string>('add')
-    watchEffect(() => {
-      otherInfo.value = {
-        ...otherInfo.value,
-        indexVoList: languageList.value,
-        opusList: prepEditList.value
+    watch(languageList, () => {
+      if (languageList.value) {
+        otherInfo.value = {
+          ...otherInfo.value,
+          indexVoList: languageList.value
+        }
       }
     })
-    watchEffect(() => {
-      if (otherInfo.value?.coverList?.length > 0) {
+    watch(prepEditList, () => {
+      if (prepEditList.value) {
         otherInfo.value = {
           ...otherInfo.value,
-          cover: otherInfo.value.coverList[0].url
+          opusList: prepEditList.value
         }
-      } else {
+      }
+    })
+    watch(imgList, () => {
+      if (imgList.value && imgList.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
-          cover: undefined
+          cover: imgList.value[0].url
         }
       }
     })
     const newData = () => {
       showDifferentContent.value = 1
-      otherInfo.value = {
-        coverList: []
-      }
+      imgList.value = []
       areaIds.value = []
       editTableStatus.value = 'add'
       prepEditList.value = []
@@ -306,11 +309,9 @@ export default defineComponent({
             areaIds: res.data.areaIds,
             type: item.type
           }
+          imgList.value = []
           if (res.data.cover) {
-            otherInfo.value = {
-              ...otherInfo.value,
-              coverList: [mapImageToObject(res.data.cover)]
-            }
+            imgList.value.push(mapImageToObject(res.data.cover))
           }
           if (res.data?.opusList?.length > 0) {
             prepEditList.value = res.data.opusList
@@ -405,6 +406,8 @@ export default defineComponent({
       ...useMapCountry(),
       showDifferentContent,
       handleChangeSelect,
+      imgList,
+      imgLimit,
       // 国家地区
       areaIds,
       handleChangeCountry,
