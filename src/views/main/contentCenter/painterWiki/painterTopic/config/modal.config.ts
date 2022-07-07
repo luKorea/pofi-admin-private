@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 15:39:37
+ * @LastEditTime: 2022-07-07 10:25:19
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/modal.config.ts
  */
@@ -120,14 +120,14 @@ export const modalConfig: IForm = {
       options: [
         { value: 1, title: '深色' },
         { value: 0, title: '浅色' }
-      ],
-      rules: [
-        {
-          required: true,
-          message: '请选择显示样式(封面文字)',
-          trigger: 'blur'
-        }
       ]
+      // rules: [
+      //   {
+      //     required: true,
+      //     message: '请选择显示样式(封面文字)',
+      //     trigger: 'blur'
+      //   }
+      // ]
     }
   ],
   colLayout: {

@@ -211,7 +211,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watchEffect, nextTick } from 'vue'
+import { defineComponent, ref, nextTick, watch } from 'vue'
 
 import { contentTableConfig } from './config/content.config'
 import { urlModalConfig } from './config/edit.modal.config'
@@ -234,11 +234,7 @@ import editorTable from '@/base-ui/table'
 import { getCommonSelectList } from '@/service/common'
 import { successTip } from '../../../../../utils/tip-info'
 export default defineComponent({
-<<<<<<< HEAD
-  name: 'painterLibrary',
-=======
   name: 'contentCenterPainterLibrary',
->>>>>>> ad74c60 (feat(painterwiki/paintertopic): 新增画师专题静态页面)
   components: {
     hyUpload,
     HyEditor,
@@ -274,41 +270,43 @@ export default defineComponent({
         endDate
       })
     }
-    watchEffect(() => {
-      if (imgList.value.length > 0) {
+    watch(languageList, () => {
+      if (languageList.value) {
+        otherInfo.value = {
+          ...otherInfo.value,
+          authorVoList: languageList.value
+        }
+      }
+    })
+    watch(prepEditList, () => {
+      if (prepEditList.value) {
+        otherInfo.value = {
+          ...otherInfo.value,
+          contactList: prepEditList.value
+        }
+      }
+    })
+    watch(imgList, () => {
+      if (imgList.value && imgList.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
           iconUrl: imgList.value[0].url
         }
-      } else {
-        otherInfo.value = {
-          ...otherInfo.value,
-          iconUrl: undefined
-        }
       }
-      if (imgList1.value.length > 0) {
+    })
+    watch(imgList1, () => {
+      if (imgList1.value && imgList1.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
           bgUrl: imgList1.value[0].url
         }
-      } else {
-        otherInfo.value = {
-          ...otherInfo.value,
-          bgUrl: undefined
-        }
-      }
-      otherInfo.value = {
-        ...otherInfo.value,
-        authorVoList: languageList.value,
-        contactList: prepEditList.value
-        // authorVoJson: JSON.stringify(languageList.value),
-        // contactList: JSON.stringify(prepEditList.value)
       }
     })
     const newData = () => {
       otherInfo.value = {}
       areaIds.value = []
       imgList.value = []
+      imgList1.value = []
       editTableStatus.value = 'add'
       prepEditList.value = []
       resetLanguageList()
