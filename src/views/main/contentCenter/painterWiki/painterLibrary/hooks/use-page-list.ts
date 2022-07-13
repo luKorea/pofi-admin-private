@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 11:31:20
+ * @LastEditTime: 2022-07-13 09:42:57
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -60,6 +60,7 @@ export function useCountrySelect() {
 export function useMapField() {
   const otherFieldList = ref<any>({
     urlList: [],
+    urlList1: [],
     painterCountryList: [],
     countryList: [],
     jobList: []
@@ -108,6 +109,17 @@ export function useMapField() {
       })
     }
   })
+  getCommonSelectList('allLink').then((res) => {
+    if (!res.result) {
+      otherFieldList.value.urlList1 = res.data.map((item: any) => {
+        return {
+          title: item.desc,
+          value: item.desc,
+          ...item
+        }
+      })
+    }
+  })
   getCommonSelectList('otherKeyType').then((res: any) => {
     if (!res.result) {
       otherFieldList.value.labelList = res?.data.faceList.map((item: any) => {
@@ -122,7 +134,7 @@ export function useMapField() {
     const platform = searchFormConfig.formItems.find(
       (i) => i.field === 'platform'
     )
-    platform!.options = otherFieldList.value.urlList
+    platform!.options = otherFieldList.value.urlList1
     const region = searchFormConfig.formItems.find((i) => i.field === 'region')
     region!.options = otherFieldList.value.painterCountryList
     return searchFormConfig
