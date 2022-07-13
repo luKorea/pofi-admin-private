@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 10:02:54
+ * @LastEditTime: 2022-07-13 09:18:03
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -275,13 +275,13 @@ export default defineComponent({
           })
         otherInfo.value = {
           ...otherInfo.value,
-          areaIds: all.toString()
+          areaIds: all
         }
         areaIds.value = all
       } else {
         otherInfo.value = {
           ...otherInfo.value,
-          areaIds: item.toString()
+          areaIds: item
         }
       }
     }

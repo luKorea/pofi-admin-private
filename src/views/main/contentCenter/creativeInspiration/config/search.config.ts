@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-13 17:03:51
+ * @LastEditTime: 2022-07-13 09:17:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -31,7 +31,7 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入文章标题'
     },
     {
-      field: 'pofiid',
+      field: 'nickId',
       type: 'input',
       label: '作者Pofi ID',
       placeholder: '请输入作者Pofi ID'
