@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-10 14:33:09
+ * @LastEditTime: 2022-07-15 17:05:13
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/pay.vue
 -->
@@ -52,14 +52,14 @@
           <div class="item-flex">
             <span class="item-title">Google</span>
             <el-input
-              v-model="resetInfo.googleId"
               disabled
+              v-model="otherInfo.googleId"
               placeholder="暂无绑定信息"
             >
               <template
                 #append
                 v-if="
-                  resetInfo.googleId !== undefined && resetInfo.googleId !== ''
+                  otherInfo.googleId !== undefined && otherInfo.googleId !== ''
                 "
               >
                 <el-button @click="resetGoogle">重置Google</el-button>
@@ -71,15 +71,15 @@
           <div class="item-flex">
             <span class="item-title">FaceBook</span>
             <el-input
-              v-model="resetInfo.facebookId"
               disabled
+              v-model="otherInfo.facebookId"
               placeholder="暂无绑定信息"
             >
               <template
                 #append
                 v-if="
-                  resetInfo.facebookId !== undefined &&
-                  resetInfo.facebookId !== ''
+                  otherInfo.facebookId !== undefined &&
+                  otherInfo.facebookId !== ''
                 "
               >
                 <el-button @click="resetFaceBook">重置FaceBook</el-button>
@@ -93,14 +93,14 @@
           <div class="item-flex">
             <span class="item-title">Apple</span>
             <el-input
-              v-model="resetInfo.appleId"
               disabled
+              v-model="otherInfo.appleId"
               placeholder="暂无绑定信息"
             >
               <template
                 #append
                 v-if="
-                  resetInfo.appleId !== undefined && resetInfo.appleId !== ''
+                  otherInfo.appleId !== undefined && otherInfo.appleId !== ''
                 "
               >
                 <el-button @click="resetApple">重置Apple</el-button>
@@ -111,9 +111,13 @@
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
             <span class="item-title">用户密码</span>
-            <el-input v-model="resetInfo.pwd" disabled>
+            <el-input
+              v-model="otherInfo.pwd"
+              clearable
+              placeholder="点击右边按钮随机生成密码"
+            >
               <template #append>
-                <el-button @click="resetPassword">密码重置</el-button>
+                <el-button @click="resetPassword">随机密码生成</el-button>
               </template>
             </el-input>
           </div>
@@ -190,7 +194,7 @@ import { getItemData } from '@/service/common-api'
 import HyTable from '@/base-ui/table'
 import HyUpload from '@/base-ui/upload'
 import { mapTimeToSearch } from '@/utils'
-import { mapImageToObject } from '../../../utils/index'
+import { mapImageToObject, getPassword } from '../../../utils/index'
 import { errorTip } from '@/utils/tip-info'
 export default defineComponent({
   name: 'userOperation',
@@ -212,7 +216,7 @@ export default defineComponent({
       }
     ])
     const resetInfo = ref<any>({})
-    watch(imgList.value, () => {
+    watch(imgList, () => {
       if (imgList.value.length > 0) {
         otherInfo.value = {
           ...otherInfo.value,
@@ -264,6 +268,11 @@ export default defineComponent({
       })
     }
     const handleEdit = (item: any) => {
+      editType.value = 'edit'
+      const dec = modalConfigRef.value.formItems.find(
+        (item: any) => item.field === 'srcDec'
+      )
+      dec!.otherOptions!.disabled = true
       getItemData('userItem', {
         nickId: item.nickId
       }).then((res: any) => {
@@ -271,7 +280,11 @@ export default defineComponent({
           otherInfo.value = {
             ...res.data,
             regTime: undefined,
-            onlineTime: undefined
+            onlineTime: undefined,
+            pwd: res.data.pwd,
+            googleId: res.data.googleId ?? undefined,
+            facebookId: res.data.facebookId ?? undefined,
+            appleId: res.data.appleId ?? undefined
           }
           resetInfo.value = {
             pwd: res.data.pwd,
@@ -280,7 +293,7 @@ export default defineComponent({
             appleId: res.data.appleId ?? undefined
           }
           imgList.value = []
-          imgList.value.push(mapImageToObject(res.data.head))
+          res.data.head && imgList.value.push(mapImageToObject(res.data.head))
           handleEditData({
             ...res.data
           })
@@ -298,12 +311,31 @@ export default defineComponent({
         [name]: ''
       }
     }
-    const resetPassword = () => handleResetInfo('pwd')
+    const resetPassword = () => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        pwd: getPassword(8)
+      }
+    }
     const resetGoogle = () => handleResetInfo('googleId')
     const resetFaceBook = () => handleResetInfo('facebookId')
     const resetApple = () => handleResetInfo('appleId')
+    const editType = ref('add')
+    const newData = () => {
+      editType.value = 'add'
+      imgList.value = []
+      otherInfo.value = {}
+      resetApple()
+      resetGoogle()
+      resetFaceBook()
+      handleResetInfo('pwd')
+      const dec = modalConfigRef.value.formItems.find(
+        (item: any) => item.field === 'srcDec'
+      )
+      dec!.otherOptions!.disabled = false
+    }
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
-      usePageModal()
+      usePageModal(newData)
 
     const modalConfigRef = computed(() => {
       const jobItem = modalConfig.formItems.find(
@@ -346,6 +378,7 @@ export default defineComponent({
       imgList,
       remarkRules,
       resetInfo,
+      editType,
       resetPassword,
       resetGoogle,
       resetFaceBook,
