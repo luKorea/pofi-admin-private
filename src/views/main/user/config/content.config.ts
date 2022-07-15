@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 10:30:59
+ * @LastEditTime: 2022-07-15 16:09:01
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/content.config.ts
  */
@@ -26,7 +26,7 @@ export const contentTableConfig: TableConfig = {
   showIndexColumn: false,
   showSelectColumn: false,
   permission: {
-    add: false,
+    add: true,
     update: true,
     operation: true,
     delete: false
