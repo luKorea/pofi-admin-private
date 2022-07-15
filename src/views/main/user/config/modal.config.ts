@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-09 10:36:24
+ * @LastEditTime: 2022-07-15 16:55:12
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/pay/config/modal.config.ts
  */
@@ -15,6 +15,7 @@ export const modalConfig: IForm = {
       field: 'nickId',
       type: 'input',
       label: 'POFI ID',
+      placeholder: '系统生成',
       otherOptions: {
         disabled: true
       }
@@ -23,6 +24,7 @@ export const modalConfig: IForm = {
       field: 'srcDec',
       type: 'input',
       label: '注册类型',
+      placeholder: '注册类型',
       otherOptions: {
         disabled: true
       }
@@ -31,6 +33,7 @@ export const modalConfig: IForm = {
       field: 'regTime',
       type: 'input',
       label: '注册时间',
+      placeholder: '系统生成',
       otherOptions: {
         disabled: true
       }
@@ -39,6 +42,7 @@ export const modalConfig: IForm = {
       field: 'onlineTime',
       type: 'input',
       label: '最近登录时间',
+      placeholder: '系统生成',
       otherOptions: {
         disabled: true
       }

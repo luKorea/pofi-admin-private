@@ -2,8 +2,8 @@ import { mapTypeState } from '@/utils/index'
 /*
  * @Author: korealu
  * @Date: 2022-02-16 16:53:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 15:52:27
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-15 17:18:43
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/main/finance/pay/pay.ts
  */
@@ -15,9 +15,9 @@ import { IUserOperationType } from './types'
 
 import {
   getPageListData,
-  createPageData,
   editPageData,
-  deletePageToQueryData
+  deletePageToQueryData,
+  createPageDataJSON
 } from '@/service/common-api'
 
 const apiList: any = {
@@ -67,14 +67,31 @@ const userOperationModule: Module<IUserOperationType, IRootState> = {
       const pageUrl =
         apiList[pageName] +
         (pageName === 'userOperations' ? 'getRecords' : 'log')
+      console.log(queryInfo, 'info')
       const backQueryInfo = {
         ...queryInfo,
-        srcType: mapTypeState(queryInfo.srcType),
-        isReal: mapTypeState(queryInfo.isReal),
-        status: mapTypeState(queryInfo.status),
-        markId: mapTypeState(queryInfo.markId),
-        areaId: mapTypeState(queryInfo.areaId)
+        srcType:
+          queryInfo.srcType !== '' && queryInfo.srcType !== undefined
+            ? queryInfo.srcType
+            : -999,
+        isReal:
+          queryInfo.isReal !== '' && queryInfo.isReal !== undefined
+            ? queryInfo.isReal
+            : -999,
+        status:
+          queryInfo.status !== '' && queryInfo.status !== undefined
+            ? queryInfo.status
+            : -999,
+        markId:
+          queryInfo.markId !== '' && queryInfo.markId !== undefined
+            ? queryInfo.markId
+            : -999,
+        areaId:
+          queryInfo.areaId !== '' && queryInfo.areaId !== undefined
+            ? queryInfo.areaId
+            : -999
       }
+      console.log(payload.queryInfo)
       const pageResult = await getPageListData(
         pageUrl,
         pageName === 'userOperations' ? backQueryInfo : queryInfo
@@ -106,8 +123,16 @@ const userOperationModule: Module<IUserOperationType, IRootState> = {
       return new Promise<any>(async (resolve, reject) => {
         // 1.创建数据的请求
         const { pageName, newData } = payload
-        const pageUrl = apiList[pageName] + 'addLimit'
-        const data = await createPageData(pageUrl, newData)
+        const pageUrl = apiList[pageName] + 'add'
+        const result = {
+          ...newData,
+          apple: newData.appleId,
+          google: newData.googleId,
+          pwd: newData.pwd ? newData.pwd : undefined,
+          facebook: newData.facebookId
+        }
+        console.log(result, 'newData')
+        const data = await createPageDataJSON(pageUrl, result)
         if (data.result === 0) {
           // 2.请求最新的数据
           dispatch('getPageListAction', {
@@ -141,7 +166,7 @@ const userOperationModule: Module<IUserOperationType, IRootState> = {
           google: editData.googleId,
           facebook: editData.facebookId,
           mark: editData.mark,
-          pwd: editData.pwd === '' ? editData.pwd : undefined,
+          pwd: editData.pwd ? editData.pwd : undefined,
           phone: editData.phone,
           email: editData.email,
           remark: editData.remark
