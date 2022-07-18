@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2022-04-11 17:42:28
- * @LastEditTime: 2022-06-22 09:34:58
+ * @LastEditTime: 2022-07-18 09:56:05
  * @LastEditors: korealu 643949593@qq.com
  * @Description: /cms/mold/getSource /cms/mold/update/source /cms/mold/getSourceList
  * @FilePath: /pofi-admin-private/src/views/main/resource/center/copmonents/resource copy.vue
@@ -204,6 +204,7 @@ import {
   u3dFileOperation
 } from '@/service/main/resource/center'
 import { successTip } from '@/utils/tip-info'
+import { _debounce } from '@/utils'
 
 export default defineComponent({
   props: {
@@ -444,7 +445,7 @@ export default defineComponent({
           }
         })
     }
-    const addData = (item: any) => {
+    const addData = _debounce((item: any) => {
       let data = {
         moId: props.params.moId,
         iosSourceUrl: otherInfo.value.iosSourceUrl,
@@ -460,8 +461,8 @@ export default defineComponent({
           emit('changePage', 'relevance', { moId: props.params.moId })
         } else errorTip(res.msg)
       })
-    }
-    const editData = (item: any) => {
+    }, 1000)
+    const editData = _debounce((item: any) => {
       let data = {
         moId: props.params.moId,
         iosSourceUrl: otherInfo.value.iosSourceUrl,
@@ -481,7 +482,7 @@ export default defineComponent({
           }
         } else errorTip(res.msg)
       })
-    }
+    }, 1000)
     const sendTimer = (item: any, type = 'config') => {
       if (props.editType === 'add') {
         if (pageModalRef.value) {
@@ -509,25 +510,32 @@ export default defineComponent({
             ...fileInfo.value
           }
           if (props.editType === 'add') {
-            resourceU3dOperation(data, 'add').then((res) => {
-              if (res.result === 0) {
-                successTip(res.msg)
-                if (pageModalRef.value) pageModalRef.value.dialogVisible = false
-                resetData()
-                emit('openStep', item.step, props.params)
-              } else errorTip(res.msg)
-            })
+            _debounce(
+              () =>
+                resourceU3dOperation(data, 'add').then((res) => {
+                  if (res.result === 0) {
+                    successTip(res.msg)
+                    if (pageModalRef.value)
+                      pageModalRef.value.dialogVisible = false
+                    resetData()
+                    emit('openStep', item.step, props.params)
+                  } else errorTip(res.msg)
+                }),
+              1000
+            )
           } else {
-            resourceU3dOperation(data, 'update').then((res) => {
-              if (res.result === 0) {
-                if (pageModalRef.value) {
-                  successTip(res.msg)
-                  pageModalRef.value.dialogVisible = false
-                  resetData()
-                  emit('openStep', item.step, props.params)
-                }
-              } else errorTip(res.msg)
-            })
+            _debounce(() => {
+              resourceU3dOperation(data, 'update').then((res) => {
+                if (res.result === 0) {
+                  if (pageModalRef.value) {
+                    successTip(res.msg)
+                    pageModalRef.value.dialogVisible = false
+                    resetData()
+                    emit('openStep', item.step, props.params)
+                  }
+                } else errorTip(res.msg)
+              })
+            }, 1000)
           }
         } else {
           emit('openStep', item.step, props.params)

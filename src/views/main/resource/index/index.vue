@@ -757,6 +757,7 @@ export default defineComponent({
       resetLanguageList()
     }
     const getItem = (item: any, isItem = false) => {
+      languageList.value = []
       resetLanguageList()
       getItemData('homeIndexItem', {
         id: item.id,
