@@ -382,6 +382,7 @@ export default defineComponent({
     ] = usePageList()
     const [storeTypeInfo, operationName] = useStoreName()
     const getData = (mtId: any, isItem = false) => {
+      languageList.value = []
       resetLanguageList()
       getItemData('topicItem', {
         mtId: mtId
