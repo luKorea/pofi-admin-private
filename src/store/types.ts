@@ -1,10 +1,8 @@
-import { IPainterLibraryType } from './main/contentCenter/painterWiki/painterLibrary/types'
-import { ICreativeInspirationType } from './main/contentCenter/creativeInspiration/types'
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:07
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-22 10:32:41
+ * @LastEditTime: 2022-07-19 11:28:26
  * @Description: file content
  * @FilePath: /pofi-admin/src/store/types.ts
  */
@@ -50,6 +48,9 @@ import { IBaseVersionType } from './main/base/version/types'
 import { IResourceHomeType } from './main/resource/index/types'
 import { IUserExperienceType } from './main/contentCenter/userExperience/types'
 import { IPainterTopicType } from './main/contentCenter/painterWiki/painterTopic/types'
+import { IUserCenterOrganizationType } from './main/userCenter/organization/types'
+import { IPainterLibraryType } from './main/contentCenter/painterWiki/painterLibrary/types'
+import { ICreativeInspirationType } from './main/contentCenter/creativeInspiration/types'
 
 export interface IRootState {
   name: string
@@ -90,6 +91,7 @@ export interface IRootWithModule {
   userImeiModule: IUserImeiType
   conditionModule: IConditionType
   userOperationModule: IUserOperationType
+  userCenterOrganizationModule: IUserCenterOrganizationType
   // 资源库
   resourceDataModule: IResourceDataType
   resourceKeywordModule: IResourceKeywordType
