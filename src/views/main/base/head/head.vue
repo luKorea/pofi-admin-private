@@ -1,8 +1,8 @@
 <!--
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-24 15:35:46
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-19 18:08:58
  * @Description: 完成
  * @FilePath: /pofi-admin/src/views/main/base/head/head.vue
 -->
@@ -109,9 +109,11 @@ export default defineComponent({
     watchEffect(() => {
       if (areaIds.value.length === 0) {
         const region: any[] = []
-        countryList.value.forEach((item: any) => {
-          region.push(item.id)
-        })
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            region.push(item.id)
+          })
         otherInfo.value = {
           ...otherInfo.value,
           areaIds: region.toString()
