@@ -166,9 +166,11 @@ export default defineComponent({
     watchEffect(() => {
       if (areaIds.value.length === 0) {
         const region: any[] = []
-        countryList.value.forEach((item: any) => {
-          region.push(item.id)
-        })
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            region.push(item.id)
+          })
         otherInfo.value = {
           ...otherInfo.value,
           rids: region.toString()

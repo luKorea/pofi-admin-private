@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-10 10:17:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 15:59:46
+ * @LastEditTime: 2022-07-19 18:06:09
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/config/config.vue
 -->
@@ -170,9 +170,11 @@ export default defineComponent({
       }
       if (areaIds.value.length === 0) {
         const region: any[] = []
-        countryList.value.forEach((item: any) => {
-          region.push(item.id)
-        })
+        countryList.value
+          .filter((i: any) => i.id !== -1)
+          .forEach((item: any) => {
+            region.push(item.id)
+          })
         otherInfo.value = {
           ...otherInfo.value,
           areaIds: region.toString()
