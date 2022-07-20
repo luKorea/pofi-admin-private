@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-19 11:20:05
+ * @LastEditTime: 2022-07-20 11:46:29
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/search.config.ts
  */
@@ -18,7 +18,7 @@ export const searchFormConfig: IForm = {
       field: 'paid',
       type: 'input',
       label: '机构ID',
-      placeholder: '请输入画师ID'
+      placeholder: '请输入机构ID'
     },
     {
       field: 'nickId',
@@ -30,7 +30,7 @@ export const searchFormConfig: IForm = {
       field: 'name',
       type: 'input',
       label: '机构名称',
-      placeholder: '请输入画师名称'
+      placeholder: '请输入机构名称'
     },
     // {
     //   field: 'state',
