@@ -14,7 +14,8 @@
       @newBtnClick="handleNewData"
       @editBtnClick="editData"
     >
-      <template #isId="{ row }"> PR{{ row.id }} </template>
+      <template #isId="{ row }"> {{ row.id }} </template>
+      <!-- <template #isId="{ row }"> PR{{ row.id }} </template> -->
       <!-- <template #isJob="{ row }">
         {{ $filters.formatSelectTitle(row.job, otherFieldList.jobList) }}
       </template> -->
@@ -171,18 +172,18 @@
           <div class="item-flex">
             <div class="item-title">
               <span class="item-tip">*</span>
-              画师名
+              机构名
             </div>
             <el-input
               v-model="languageItem.name"
-              placeholder="请输入画师名"
+              placeholder="请输入机构名"
               required
               clearable
             ></el-input>
           </div>
           <div class="item-flex">
             <span class="item-title">
-              <span class="item-tip">*</span>画师摘要
+              <span class="item-tip">*</span>机构摘要
             </span>
             <el-input
               type="textarea"
@@ -190,13 +191,13 @@
               :rows="4"
               show-word-limit
               v-model="languageItem.digest"
-              placeholder="请输入画师摘要"
+              placeholder="请输入机构摘要"
               clearable
             ></el-input>
           </div>
           <div class="item-flex">
             <span class="item-title">
-              <span class="item-tip">*</span>画师简介
+              <span class="item-tip">*</span>机构简介
             </span>
             <hy-editor
               ref="editorRef"
@@ -384,7 +385,8 @@ export default defineComponent({
           }
           handleEditData({
             ...res.data,
-            kid: 'PR' + item.id,
+            // kid: 'PR' + item.id,
+            kid: item.id,
             region: +res.data.region
           })
         } else errorTip(res.msg)

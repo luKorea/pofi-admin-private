@@ -166,6 +166,7 @@ export default defineComponent({
     .user-info {
       display: flex;
       flex-direction: column;
+      align-items: flex-start !important;
       margin-top: 10px;
       .right {
         display: flex;
