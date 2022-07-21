@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-17 11:53:52
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-06 13:33:42
+ * @LastEditTime: 2022-07-21 10:15:15
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/hooks/use-page-list.ts
  */
@@ -95,7 +95,7 @@ export function usePageList() {
   const getAuthorList = _debounce(
     (author: string) => {
       loading.value = true
-      getCommonSelectList('authorType', { author: author }, false)
+      getCommonSelectList('authorType1', { author: author }, false)
         .then((res) => {
           if (res.state) {
             authorList.value = res.data

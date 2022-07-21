@@ -63,8 +63,28 @@
         </el-col>
         <el-col v-bind="modalConfigRef.colLayout">
           <div class="item-flex">
-            <span class="item-title">作者</span>
+            <span class="item-title">画师</span>
             <el-select
+              placeholder="请输入Paid 或昵称"
+              style="width: 100%"
+              filterable
+              remote
+              reserve-keyword
+              clearable
+              :remote-method="getAuthorList"
+              :loading="loading"
+              @change="handleChangeAuthor"
+              v-model="author"
+            >
+              <el-option
+                v-for="option in authorList"
+                :key="option.name"
+                :value="option.paid"
+                :label="option.name"
+                >{{ option.name }}</el-option
+              >
+            </el-select>
+            <!-- <el-select
               placeholder="请输入Pofi ID或昵称"
               style="width: 100%"
               filterable
@@ -82,7 +102,7 @@
                 :label="option.nickName"
                 >{{ option.nickName }}</el-option
               >
-            </el-select>
+            </el-select> -->
           </div>
         </el-col>
       </el-row>
@@ -388,11 +408,13 @@ export default defineComponent({
         mtId: mtId
       }).then(async (res: any) => {
         if (res.result === 0) {
-          author.value = res.data.author
+          // author.value = res.data.author
+          author.value = res.data.authorName
           areaIds.value = res.data.areaIds
           otherInfo.value = {
             mtId: res.data.mtId,
-            author: res.data.author,
+            // author: res.data.author,
+            paid: res.data.paid,
             areaIds: res.data.areaIds.toString()
           }
           if (res.data.topicList && res.data.topicList.length > 0) {
@@ -563,7 +585,6 @@ export default defineComponent({
       })
       otherInfo.value = {
         ...otherInfo.value,
-        author: author.value,
         topicJson: JSON.stringify(indexJSON)
       }
     })
@@ -601,7 +622,12 @@ export default defineComponent({
       areaIds.value = []
       resetLanguageList()
     }
-
+    const handleChangeAuthor = (e: any) => {
+      otherInfo.value = {
+        ...otherInfo.value,
+        paid: e
+      }
+    }
     const editData = (item: any) => {
       operationType.value = 'edit'
       console.log(getData, 'getData')
@@ -615,6 +641,7 @@ export default defineComponent({
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal(newData)
     return {
+      handleChangeAuthor,
       // 编辑表格
       operationType,
       contentTableEditConfig,
