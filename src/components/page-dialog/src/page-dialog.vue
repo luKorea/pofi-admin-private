@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:43:09
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-05-12 13:39:20
+ * @LastEditTime: 2022-07-21 17:21:03
  * @Description:
  * @FilePath: /pofi-admin/src/components/page-dialog/src/page-dialog.vue
 -->
@@ -14,6 +14,7 @@
       top="20vh"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      :show-close="showClose"
       destroy-on-close
       @close="closeDialog"
     >
@@ -52,6 +53,10 @@ export default defineComponent({
     showWidth: {
       type: String,
       default: '50%'
+    },
+    showClose: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['closeDialog'],
