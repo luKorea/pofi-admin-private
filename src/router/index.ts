@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 09:56:39
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 18:16:22
+ * @LastEditTime: 2022-07-21 17:26:37
  * @Description: file content
  * @FilePath: /pofi-admin/src/router/index.ts
  */
@@ -21,6 +21,11 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/login.vue')
+  },
+  {
+    path: '/pofiLink',
+    name: 'pofiLink',
+    component: () => import('@/views/link/index.vue')
   },
   {
     path: '/main',
