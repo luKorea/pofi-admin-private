@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:29:11
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-27 16:08:45
+ * @LastEditTime: 2022-07-21 17:50:52
  * @Description: file content
  * @FilePath: /pofi-admin/src/global/register-element.ts
  */

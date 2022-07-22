@@ -14,6 +14,14 @@ export function getFeedbackHistoryInfo(data: any) {
     data: data
   })
 }
+// 回复用户信息
+export function sendFeedbackInfo(data: any) {
+  return hyRequest.post<any>({
+    url: '/cms/feedback/handle',
+    data: data,
+    showLoading: false
+  })
+}
 
 // 设置用户问题tag
 export function setFeedbackQuestionTag(data: any) {
