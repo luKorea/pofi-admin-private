@@ -32,7 +32,7 @@
           <page-image :img-src="row.iconUrl"></page-image>
         </template>
         <template #isState="{ row }">
-          {{ row.status ? '启用' : '禁用' }}</template
+          {{ row.status ? '展示' : '隐藏' }}</template
         >
         <template #isUp="{ row }"> {{ row.status ? '是' : '否' }}</template>
       </page-content>
