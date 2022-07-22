@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 16:07:20
+ * @LastEditTime: 2022-07-22 14:15:00
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/base/language/config/content.config.ts
  */
@@ -17,7 +17,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'authorName', label: '画师名称' },
     { prop: 'showDate', label: '文章日期' },
     { prop: 'areaList', label: '国家/地区' },
-    { prop: 'status', label: '是否显示', slotName: 'isState' },
+    { prop: 'status', label: '展示状态', slotName: 'isState' },
     { prop: 'isUp', label: '是否上架', slotName: 'isUp' },
     { label: '操作', slotName: 'handler' }
   ],
