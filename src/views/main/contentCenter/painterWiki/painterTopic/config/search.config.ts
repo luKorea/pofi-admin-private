@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-22 12:06:44
+ * @LastEditTime: 2022-07-22 14:14:22
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/search.config.ts
  */
@@ -37,15 +37,15 @@ export const searchFormConfig: IForm = {
     {
       field: 'status',
       type: 'select',
-      label: '是否显示',
-      placeholder: '请选择是否显示',
+      label: '展示状态',
+      placeholder: '请选择展示状态',
       options: [
         {
-          title: '是',
+          title: '显示',
           value: 1
         },
         {
-          title: '否',
+          title: '隐藏',
           value: 0
         }
       ]
