@@ -9,6 +9,9 @@
     <el-descriptions-item label="用户名">{{
       userInfo.nickName
     }}</el-descriptions-item>
+    <el-descriptions-item label="Poif ID">{{
+      userInfo.nickId
+    }}</el-descriptions-item>
     <el-descriptions-item label="用户头像">
       <page-image :img-src="userInfo.head"></page-image>
     </el-descriptions-item>

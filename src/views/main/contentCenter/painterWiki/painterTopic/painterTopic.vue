@@ -9,7 +9,7 @@
       <page-search
         :searchFormConfig="searchFormConfigRef"
         @resetBtnClick="handleResetBtnClick"
-        @queryBtnClick="handleQueryBtnClick"
+        @queryBtnClick="resetBtn"
       >
       </page-search>
       <page-content
@@ -205,7 +205,7 @@ import {
 } from './hooks/use-page-list'
 import { getItemData, deleteItemData } from '@/service/common-api'
 import { errorTip } from '@/utils/tip-info'
-import { mapImageToObject } from '@/utils/index'
+import { mapImageToObject, mapTimeToSearch } from '@/utils/index'
 import HyEditor from '@/base-ui/editor'
 import HyUpload from '@/base-ui/upload'
 import PageCountry from '@/components/page-country'
@@ -306,6 +306,7 @@ export default defineComponent({
             id: res.data.id,
             uid: res.data.uid,
             paid: res.data.paid,
+            poid: res.data.poid,
             areaIds: res.data.areaIds,
             type: item.type
           }
@@ -402,8 +403,33 @@ export default defineComponent({
         })
       }
     }
+    const {
+      pageContentRef,
+      handleCountryList,
+      countryRef,
+      selectCountryClick,
+      handleQueryBtnClick,
+      handleResetBtnClick,
+      selectNodeClick
+    } = useMapCountry()
+    const resetBtn = (queryInfo: any) => {
+      const beginDate = mapTimeToSearch(queryInfo.dateTime).start
+      const endDate = mapTimeToSearch(queryInfo.dateTime).end
+      handleQueryBtnClick({
+        ...queryInfo,
+        beginDate,
+        endDate
+      })
+    }
     return {
-      ...useMapCountry(),
+      resetBtn,
+      pageContentRef,
+      handleCountryList,
+      countryRef,
+      selectCountryClick,
+      handleQueryBtnClick,
+      handleResetBtnClick,
+      selectNodeClick,
       showDifferentContent,
       handleChangeSelect,
       imgList,

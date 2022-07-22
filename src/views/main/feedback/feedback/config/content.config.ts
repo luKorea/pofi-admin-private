@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-09 17:34:25
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 14:12:22
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-22 10:27:45
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/content.config.ts
  */
@@ -22,7 +22,7 @@ export const contentTableConfig: TableConfig = {
     { prop: 'optTag', label: '标签', slotName: 'isTag' },
     { prop: 'remark', label: '备注' },
     { prop: 'optTime', label: '最后更新', slotName: 'updateAt' },
-    { prop: 'time', label: '创建时间', slotName: 'updateAt' },
+    { prop: 'time', label: '创建时间' },
     { label: '操作', slotName: 'handler' }
   ],
   showIndexColumn: false,
