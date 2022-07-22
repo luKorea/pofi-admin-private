@@ -1,8 +1,8 @@
 /*
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
- * @LastEditors: korealu
- * @LastEditTime: 2022-02-28 17:29:01
+ * @LastEditors: korealu 643949593@qq.com
+ * @LastEditTime: 2022-07-22 10:29:34
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/config/search.config.ts
  */
@@ -25,7 +25,7 @@ export const searchFormConfig: IForm = {
       placeholder: '请输入反馈内容'
     },
     {
-      field: 'uid',
+      field: 'nickId',
       type: 'input',
       label: 'Pofi ID',
       placeholder: '请输入Pofi ID'

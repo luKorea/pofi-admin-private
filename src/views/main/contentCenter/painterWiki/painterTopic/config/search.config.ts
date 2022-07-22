@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-08 09:30:58
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-07-04 14:11:56
+ * @LastEditTime: 2022-07-22 12:06:44
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/oa/user/config/search.config.ts
  */
@@ -51,11 +51,12 @@ export const searchFormConfig: IForm = {
       ]
     },
     {
-      field: 'showDate',
-      type: 'datetime',
+      field: 'dateTime',
+      type: 'daterange',
       label: '文章日期',
       otherOptions: {
-        placeholder: '请输入文章日期',
+        startPlaceholder: '请输入开始时间',
+        endPlaceholder: '请输入结束时间',
         valueFormat: 'YYYY-MM-DD'
       }
     }

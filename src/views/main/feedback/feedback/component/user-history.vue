@@ -1,4 +1,29 @@
 <template>
+  <!-- 这里展示用户问题 -->
+  <el-descriptions
+    direction="vertical"
+    :column="3"
+    border
+    size="small"
+    style="margin-bottom: 10px"
+  >
+    <el-descriptions-item label="问题描述">{{
+      userHistory.fb.content
+    }}</el-descriptions-item>
+    <el-descriptions-item label="问题类型">{{ typeDec }}</el-descriptions-item>
+    <el-descriptions-item label="附件">
+      <template
+        v-if="userHistory.fb.imgList && userHistory.fb.imgList.length > 0"
+      >
+        <page-image
+          v-for="(item, index) in userHistory.fb.imgList"
+          :key="index"
+          :img-src="item"
+          style="margin-right: 10px"
+        ></page-image>
+      </template>
+    </el-descriptions-item>
+  </el-descriptions>
   <hy-card :title="'当前用户为：' + userName">
     <template #handler>
       <el-select
@@ -15,6 +40,7 @@
         ></el-option>
       </el-select>
     </template>
+    <!-- 这里展示聊天信息 -->
     <div class="message-wrap" id="chat-room">
       <template v-for="item in list" :key="item.name">
         <div class="item">
@@ -26,9 +52,18 @@
           <div class="user-info">
             <div class="right">
               <div class="name">{{ item.name }}</div>
-              <div class="time">{{ item.time }}</div>
+              <div class="time">{{ item.replyTime }}</div>
             </div>
-            <div class="user-message">{{ item.content }}</div>
+            <div class="user-message">
+              {{ item.replyContent }}
+              <template v-if="item.replyFile">
+                <page-image
+                  :showWidth="200"
+                  :showHeight="200"
+                  :img-src="item.replyFile"
+                ></page-image>
+              </template>
+            </div>
           </div>
         </div>
       </template>
@@ -66,7 +101,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, nextTick } from 'vue'
+import { defineComponent, ref, watch, nextTick, computed } from 'vue'
 import HyCard from '@/base-ui/card/index'
 import HyUpload from '@/base-ui/upload'
 import { errorTip } from '@/utils/tip-info'
@@ -82,6 +117,10 @@ export default defineComponent({
       type: Array,
       default: () => []
     },
+    typeDec: {
+      type: String,
+      default: ''
+    },
     userName: {
       type: String,
       default: ''
@@ -92,41 +131,44 @@ export default defineComponent({
     }
   },
   emits: ['handleSendData', 'changeTag'],
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const selectItem = ref<any>()
     const message = ref<any>()
-    const img = ref<any>()
-    const list = ref<any>([
-      {
-        name: 'korea',
-        img: 'http://f3.pofiart.com/yuanyuan.jpg',
-        time: new Date().toLocaleString(),
-        content: '测试号衬衫付了定金是否离开两款发动机是'
-      },
-      {
-        name: 'korea',
-        img: 'http://f3.pofiart.com/yuanyuan.jpg',
-        time: new Date().toLocaleString(),
-        content: '测试号衬衫付了定金是否离开两款发动机是'
-      }
-    ])
+    const img = ref<any>([])
+    // 用户聊天信息
+    const list = computed(() => {
+      return props?.userHistory?.replys?.length > 0
+        ? props.userHistory.replys.map((item: any) => {
+            return {
+              ...item,
+              replyFile: item.replyImgurl,
+              img:
+                item.replyType === 2
+                  ? props.userHistory.fb.user.head
+                  : 'https://f3.pofiart.com/base/1638164937055YQjkm.jpg'
+            }
+          })
+        : []
+    })
     // 这里是信息地方
     const sendData = () => {
       if (message.value === '') {
         errorTip('请输入内容')
       } else {
         const data = {
-          name: '管理员',
-          time: new Date().toLocaleString(),
-          content: message.value,
+          replyTime: new Date().toLocaleString(),
+          replyContent: message.value,
+          reply: message.value,
+          replyFile: img.value.length > 0 ? img.value[0].url : undefined,
           img: 'https://f3.pofiart.com/base/1638164937055YQjkm.jpg'
         }
-        list.value.push(data)
+        emit('handleSendData', data)
+        // list.value.push(data)
         message.value = ''
-        // emit('handleSendData', data)
+        img.value = []
       }
     }
-    watch(list.value, async () => {
+    watch(list, async () => {
       let ele = document.getElementById('chat-room') as HTMLElement
       await nextTick()
       ele.scrollTop = ele.scrollHeight
@@ -154,7 +196,7 @@ export default defineComponent({
   // border: 1px solid rgb(220, 223, 230);
   border-radius: 4px;
   height: calc(100vh - 420px);
-  min-height: 500px;
+  min-height: 300px;
   overflow: hidden;
   overflow-y: scroll;
   // padding: 10px;
@@ -195,6 +237,8 @@ export default defineComponent({
         max-width: 400px;
         word-break: break-word;
         text-align: left;
+        display: flex;
+        flex-direction: column;
       }
     }
   }

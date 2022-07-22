@@ -2,7 +2,7 @@
  * @Author: korealu
  * @Date: 2022-02-16 16:58:51
  * @LastEditors: korealu 643949593@qq.com
- * @LastEditTime: 2022-06-10 13:41:07
+ * @LastEditTime: 2022-07-22 11:48:24
  * @Description: file content
  * @FilePath: /pofi-admin/src/views/main/finance/tradeRecord/tradeRecord.vue
 -->
@@ -107,7 +107,9 @@
         :user-history="userHistory"
         :user-name="otherInfo.userName"
         :tag-list="selectList.tagList"
+        :type-dec="typeDec"
         @changeTag="handleChangeTag"
+        @handleSendData="sendInfo"
       ></use-history>
     </page-modal>
   </div>
@@ -130,6 +132,7 @@ import useInfo from './component/user-info.vue'
 import useHistory from './component/user-history.vue'
 import {
   getFeedbackUserInfo,
+  sendFeedbackInfo,
   getFeedbackHistoryInfo
 } from '@/service/main/feedback/feedback'
 import { errorTip, successTip } from '@/utils/tip-info'
@@ -154,6 +157,7 @@ export default defineComponent({
       })
     }
     const [selectList] = useGetSelect()
+    const typeDec = ref<string>('')
     const [pageModalRef, defaultInfo, handleNewData, handleEditData] =
       usePageModal()
 
@@ -209,8 +213,10 @@ export default defineComponent({
       } else {
         otherInfo.value = {
           userName: row.user.nickName,
+          uid: row.user.uid,
           fid: row.id
         }
+        typeDec.value = row.typeDec
         getFeedbackHistoryInfo({ fbId: row.id }).then((res) => {
           if (res.result === 0) {
             userHistory.value = res.data
@@ -218,6 +224,26 @@ export default defineComponent({
           } else errorTip(res.msg)
         })
       }
+    }
+    const getHistory = (id: any) => {
+      getFeedbackHistoryInfo({ fbId: id }).then((res) => {
+        if (res.result === 0) {
+          userHistory.value = res.data
+        } else errorTip(res.msg)
+      })
+    }
+    const sendInfo = (data: any) => {
+      let result = {
+        ...data,
+        id: otherInfo.value.fid,
+        uid: otherInfo.value.uid
+      }
+      sendFeedbackInfo(result).then((res) => {
+        if (!res.result) {
+          getHistory(otherInfo.value.fid)
+        } else errorTip(res.msg)
+      })
+      console.log(result)
     }
     const handleChangeTag = (tag: any) => {
       setFeedbackQuestionTag({
@@ -251,7 +277,9 @@ export default defineComponent({
       operationName,
       userInfo,
       otherInfo,
-      userHistory
+      userHistory,
+      sendInfo,
+      typeDec
     }
   }
 })
